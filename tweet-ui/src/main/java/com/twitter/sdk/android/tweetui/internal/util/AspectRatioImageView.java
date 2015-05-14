@@ -36,7 +36,7 @@ public class AspectRatioImageView extends ImageView {
     static final int ADJUST_DIMENSION_HEIGHT = 0;
     static final int ADJUST_DIMENSION_WIDTH = 1;
 
-    private double aspectRatio;          // width to height ratio
+    private double aspectRatio;         // width to height ratio
     private int dimensionToAdjust;      // ADJUST_DIMENSION_HEIGHT or ADJUST_DIMENSION_WIDTH
 
     public AspectRatioImageView(Context context) {
@@ -68,7 +68,6 @@ public class AspectRatioImageView extends ImageView {
 
     /**
      * Sets the aspect ratio that should be respected during measurement.
-     *
      * @param aspectRatio desired width to height ratio
      */
     public void setAspectRatio(final double aspectRatio) {

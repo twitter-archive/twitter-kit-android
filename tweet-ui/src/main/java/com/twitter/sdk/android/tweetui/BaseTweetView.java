@@ -699,6 +699,19 @@ public abstract class BaseTweetView extends LinearLayout {
         }
     }
 
+    /**
+     * Picasso Callback which asynchronously sets the error bitmap onError.
+     */
+    class PicassoCallback implements Callback {
+        @Override
+        public void onSuccess() { /* intentionally blank */ }
+
+        @Override
+        public void onError() {
+            setErrorImage();
+        }
+    }
+
     protected void setErrorImage() {
         // async load the error image and set the proper background color behind it once it's loaded
         // this does incur the necessity of clearing the background on each load of an image however

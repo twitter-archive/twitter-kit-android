@@ -53,7 +53,7 @@ public class TweetViewTest extends BaseTweetViewTest {
     }
 
     @Override
-    BaseTweetView createViewWithMocks(Context context, Tweet tweet, int styleResId,
+    TweetView createViewWithMocks(Context context, Tweet tweet, int styleResId,
             BaseTweetView.DependencyProvider dependencyProvider) {
         return new TweetView(context, tweet, styleResId, dependencyProvider);
     }

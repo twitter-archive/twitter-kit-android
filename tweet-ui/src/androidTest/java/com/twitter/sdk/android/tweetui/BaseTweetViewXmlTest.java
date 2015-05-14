@@ -32,6 +32,7 @@ import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.FabricAndroidTestCase;
 import io.fabric.sdk.android.FabricTestUtils;
 
+import com.squareup.picasso.RequestCreator;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -277,8 +278,7 @@ public abstract class BaseTweetViewXmlTest extends FabricAndroidTestCase {
     private void createMocks() {
         mainHandler = mock(Handler.class);
         queue = mock(TweetRepositoryTest.TestAuthRequestQueue.class);
-        picasso = mock(Picasso.class);
-        MockUtils.mockPicasso(picasso);
+        picasso = MockUtils.mockPicasso(mock(Picasso.class), mock(RequestCreator.class));
 
         statusesService = mock(StatusesService.class);
 

@@ -39,23 +39,21 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public final class MockUtils {
 
     private MockUtils() {}
 
-    public static void mockPicasso(Picasso picasso) {
-        final RequestCreator picassoRequestCreator = mock(RequestCreator.class);
-
-        when(picasso.load(anyString())).thenReturn(picassoRequestCreator);
-        when(picasso.load(anyInt())).thenReturn(picassoRequestCreator);
-        when(picassoRequestCreator.centerCrop()).thenReturn(picassoRequestCreator);
-        when(picassoRequestCreator.fit()).thenReturn(picassoRequestCreator);
-        when(picassoRequestCreator.placeholder(any(Drawable.class)))
-                .thenReturn(picassoRequestCreator);
-        doNothing().when(picassoRequestCreator).into(any(ImageView.class));
+    public static Picasso mockPicasso(Picasso picasso, RequestCreator requestCreator) {
+        when(picasso.load(anyString())).thenReturn(requestCreator);
+        when(picasso.load(anyInt())).thenReturn(requestCreator);
+        when(requestCreator.centerCrop()).thenReturn(requestCreator);
+        when(requestCreator.fit()).thenReturn(requestCreator);
+        when(requestCreator.placeholder(any(Drawable.class)))
+                .thenReturn(requestCreator);
+        doNothing().when(requestCreator).into(any(ImageView.class));
+        return picasso;
     }
 
     public static void mockExecutorService(ExecutorService executorService) {
