@@ -29,6 +29,7 @@ import java.util.List;
 public class Tweet implements Identifiable {
     public static final long INVALID_ID = -1L;
 
+
     /**
      * Nullable. Represents the geographic location of this Tweet as reported by the user or client
      * application. The inner coordinates array is formatted as geoJSON (longitude first,
@@ -182,6 +183,7 @@ public class Tweet implements Identifiable {
      * original tweet. (Users can also unretweet a retweet they created by deleting their retweet.)
      */
     @SerializedName("retweeted_status")
+
     public final Tweet retweetedStatus;
 
     /**
