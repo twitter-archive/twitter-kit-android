@@ -3,6 +3,8 @@
 
 ## Unreleased
 
+* (DH) Added ListService, with lists/statuses endpoint, to TwitterApiClient.
+
 ## v1.3.4
 
 * (IC) (internal) OAuth1 refactoring and improvements.
