@@ -116,7 +116,7 @@ public class SearchTimelineTest extends TweetUiTestCase {
         request.success(new Result<>(mockTwitterApiClient, null));
         // assert search service is requested once
         verify(mockTwitterApiClient).getSearchService();
-        // assert userTimeline call is made with the correct arguments
+        // assert searchTimeline call is made with the correct arguments
         verify(mockSearchService).tweets(eq(TEST_QUERY + SearchTimeline.FILTER_RETWEETS),
                 isNull(Geocode.class), eq(TEST_LANG), isNull(String.class),
                 eq(SearchTimeline.RESULT_TYPE), eq(TEST_ITEMS_PER_REQUEST), isNull(String.class),
@@ -190,7 +190,7 @@ public class SearchTimelineTest extends TweetUiTestCase {
         assertEquals(TEST_LANG, timeline.languageCode);
     }
 
-    public void testBuilder_itemsPerRequest() {
+    public void testBuilder_maxItemsPerRequest() {
         final SearchTimeline timeline = new SearchTimeline.Builder(tweetUi)
                 .query(TEST_QUERY)
                 .maxItemsPerRequest(TEST_ITEMS_PER_REQUEST)

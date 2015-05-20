@@ -34,6 +34,7 @@ public class TimelinesActivity extends FragmentActivity {
     private static final int PAGE_SEARCH = 0;
     private static final int PAGE_USER = 1;
     private static final int PAGE_COLLECTION = 2;
+    private static final int PAGE_LIST = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,7 @@ public class TimelinesActivity extends FragmentActivity {
                 R.string.search_timeline_title,
                 R.string.user_timeline_title,
                 R.string.collection_timeline_title,
+                R.string.list_timeline_title,
         };
         private Resources resources;
 
@@ -69,6 +71,8 @@ public class TimelinesActivity extends FragmentActivity {
                     return UserTimelineFragment.newInstance();
                 case PAGE_COLLECTION:
                     return CollectionTimelineFragment.newInstance();
+                case PAGE_LIST:
+                    return ListTimelineFragment.newInstance();
                 default:
                     throw new IllegalStateException("Unexpected Fragment page item requested.");
             }
@@ -88,6 +92,8 @@ public class TimelinesActivity extends FragmentActivity {
                     return resources.getString(PAGE_TITLE_RES_IDS[PAGE_USER]);
                 case PAGE_COLLECTION:
                     return resources.getString(PAGE_TITLE_RES_IDS[PAGE_COLLECTION]);
+                case PAGE_LIST:
+                    return resources.getString(PAGE_TITLE_RES_IDS[PAGE_LIST]);
                 default:
                     throw new IllegalStateException("Unexpected Fragment page title requested.");
             }

@@ -4,6 +4,7 @@
 
 ## Unreleased
 
+* (DH) Added TwitterListTimeline to support Timelines of Tweets from Twitter Lists.
 * (DH) Fixed bug in SearchTimeline preventing some filter queries from being used.
 * (DH) Removed cobalt performance-metrics dependency.
 * (DH) Added result_type=filtered to SearchTimeline queries to use new backend search workflow.

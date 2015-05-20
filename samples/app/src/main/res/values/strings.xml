@@ -39,6 +39,7 @@
     <string name="search_timeline_title">Search Timeline</string>
     <string name="user_timeline_title">User Timeline</string>
     <string name="collection_timeline_title">Collection Timeline</string>
+    <string name="list_timeline_title">List Timeline</string>
     <string name="button_tweet_preview_activity">Preview</string>
     <string name="button_show_light">Light</string>
     <string name="button_show_dark">Dark</string>

@@ -72,7 +72,7 @@ public class TweetListFragment extends ListFragment {
             public void failure(TwitterException exception) {
                 final Activity activity = getActivity();
                 if (activity != null && !activity.isFinishing()) {
-                    Toast.makeText(activity, R.string.tweet_load_error,
+                    Toast.makeText(activity, R.string.multi_tweet_view_error,
                             Toast.LENGTH_SHORT).show();
                 }
             }

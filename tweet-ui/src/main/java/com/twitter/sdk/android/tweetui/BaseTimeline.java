@@ -18,9 +18,14 @@
 package com.twitter.sdk.android.tweetui;
 
 import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterApiClient;
+import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.internal.scribe.SyndicatedSdkImpressionEvent;
+import com.twitter.sdk.android.core.models.Tweet;
+
+import java.util.List;
 
 /**
  * BaseTimeline which handles TweetUi instance argument.
@@ -92,5 +97,37 @@ abstract class BaseTimeline {
      */
     void addRequest(final Callback<TwitterApiClient> cb) {
         tweetUi.getAuthRequestQueue().addRequest(cb);
+    }
+
+    /**
+     * Wrapper callback which unpacks a list of Tweets into a TimelineResult (cursor and items).
+     */
+    static class TweetsCallback extends Callback<List<Tweet>> {
+        protected final Callback<TimelineResult<Tweet>> cb;
+
+        /**
+         * Constructs a TweetsCallback
+         * @param cb A callback which expects a TimelineResult
+         */
+        TweetsCallback(Callback<TimelineResult<Tweet>> cb) {
+            this.cb = cb;
+        }
+
+        @Override
+        public void success(Result<List<Tweet>> result) {
+            final List<Tweet> tweets = result.data;
+            final TimelineResult<Tweet> timelineResult
+                    = new TimelineResult<>(new TimelineCursor(tweets), tweets);
+            if (cb != null) {
+                cb.success(timelineResult, result.response);
+            }
+        }
+
+        @Override
+        public void failure(TwitterException exception) {
+            if (cb != null) {
+                cb.failure(exception);
+            }
+        }
     }
 }

@@ -134,7 +134,7 @@ public class UserTimelineTest extends TweetUiTestCase {
     }
 
     // api arguments should default to Null to allow the backend to determine default behavior
-    public void testBuilderConstructor_defaults() {
+    public void testBuilder_defaults() {
         final UserTimeline timeline = new UserTimeline.Builder(tweetUi).build();
         assertEquals(tweetUi, timeline.tweetUi);
         assertNull(timeline.userId);
@@ -145,7 +145,7 @@ public class UserTimelineTest extends TweetUiTestCase {
         assertFalse(timeline.includeReplies);
     }
 
-    public void testBuilderConstructor_nullTweetUi() {
+    public void testBuilder_nullTweetUi() {
         try {
             new UserTimeline.Builder(null);
             fail();
@@ -169,7 +169,7 @@ public class UserTimelineTest extends TweetUiTestCase {
         assertEquals(TestFixtures.TEST_USER.screenName, timeline.screenName);
     }
 
-    public void testBuilder_itemsPerRequest() {
+    public void testBuilder_maxItemsPerRequest() {
         final UserTimeline timeline = new UserTimeline.Builder(tweetUi)
                 .maxItemsPerRequest(TEST_ITEMS_PER_REQUEST)
                 .build();
