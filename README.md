@@ -76,7 +76,7 @@ The master branch of this repository contains the latest stable release of Twitt
 
 ## Contact
 
-For usage questions post on [Twitter Community](https://twittercommunity.com/c/fabric/twitter) or email <support@fabric.io>
+For usage questions post on [Twitter Community](https://twittercommunity.com/c/fabric/twitter).
 
 Please report any bugs as [issues](https://github.com/twitter/twitter-kit-android/issues).
 
