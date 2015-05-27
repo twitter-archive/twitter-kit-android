@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/FillParent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/selector_input_tweet_id"
+        style="@style/FillWidth"
+        android:inputType="number"
+        android:hint="@string/selector_input_hint"/>
+
+    <LinearLayout
+        style="@style/FillWidth"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button_show_light"
+            style="@style/WrapContent"
+            android:text="@string/button_show_light"/>
+
+        <Button
+            android:id="@+id/button_show_dark"
+            style="@style/WrapContent"
+            android:text="@string/button_show_dark"/>
+
+    </LinearLayout>
+
+    <ScrollView
+        style="@style/FillParent">
+
+        <LinearLayout
+            android:id="@+id/tweet_region"
+            style="@style/FillWidth"
+            android:orientation="vertical"/>
+
+    </ScrollView>
+
+</LinearLayout>
+

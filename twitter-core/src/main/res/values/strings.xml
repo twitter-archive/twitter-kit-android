@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2015 Twitter, Inc.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<resources>
+    <!-- Button text to log in with Twitter -->
+    <!--suppress MissingTranslation -->
+    <string name="tw__login_btn_txt">Log in with Twitter</string>
+    <!-- Title shown in Share email activity -->
+    <!--suppress MissingTranslation -->
+    <string name="tw__share_email_title">Share your email address</string>
+    <!-- Description shown in Share email activity -->
+    <!--suppress MissingTranslation -->
+    <string name="tw__share_email_desc">Get updates and other information from %1$s when you allow
+        them access to your email on your Twitter account \@%2$s</string>
+    <!-- Button text to allow action -->
+    <!--suppress MissingTranslation -->
+    <string name="tw__allow_btn_txt">Allow</string>
+    <!-- Button text to not allow action -->
+    <!--suppress MissingTranslation -->
+    <string name="tw__not_now_btn_txt">Not now</string>
+</resources>

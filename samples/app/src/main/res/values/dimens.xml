@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="pager_top_padding">7dp</dimen>
+    <dimen name="pager_bottom_padding">7dp</dimen>
+    <dimen name="padding_container">16dp</dimen>
+    <dimen name="demo_tweet_space">15dp</dimen>
+    <dimen name="divider_height">1dp</dimen>
+</resources>

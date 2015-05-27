@@ -1,0 +1,84 @@
+{
+  "name": "Twitter HQ",
+  "polylines": [
+
+  ],
+  "country": "United States",
+  "country_code": "US",
+  "attributes": {
+    "street_address": "795 Folsom St",
+    "623:id": "210176",
+    "twitter": "twitter"
+  },
+  "url": "https://api.twitter.com/1.1/geo/id/247f43d441defc03.json",
+  "bounding_box": {
+    "coordinates": [
+      [
+        [
+          -122.400612831116,
+          37.7821120598956
+        ],
+        [
+          -122.400612831116,
+          37.7821120598956
+        ],
+        [
+          -122.400612831116,
+          37.7821120598956
+        ],
+        [
+          -122.400612831116,
+          37.7821120598956
+        ]
+      ]
+    ],
+    "type": "Polygon"
+  },
+  "id": "247f43d441defc03",
+  "contained_within": [
+    {
+      "name": "San Francisco",
+      "country": "United States",
+      "country_code": "US",
+      "attributes": {
+
+      },
+      "url": "https://api.twitter.com/1.1/geo/id/5a110d312052166f.json",
+      "bounding_box": {
+        "coordinates": [
+          [
+            [
+              -122.51368188,
+              37.70813196
+            ],
+            [
+              -122.35845384,
+              37.70813196
+            ],
+            [
+              -122.35845384,
+              37.83245301
+            ],
+            [
+              -122.51368188,
+              37.83245301
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      },
+      "id": "5a110d312052166f",
+      "full_name": "San Francisco, CA",
+      "place_type": "city"
+    }
+  ],
+  "full_name": "Twitter HQ, San Francisco",
+  "geometry": {
+    "coordinates": [
+      -122.400612831116,
+      37.7821120598956
+    ],
+    "type": "Point"
+  },
+  "place_type": "poi"
+}

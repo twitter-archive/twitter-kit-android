@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (C) 2015 Twitter, Inc.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__allow_btn_txt">允許</string>
+    <string name="tw__login_btn_txt">使用 Twitter 登入</string>
+    <string name="tw__not_now_btn_txt">現在不要</string>
+    <string name="tw__share_email_desc">當你允許 %1$s 存取你的 Twitter 帳戶上的電子郵件時，就可以取得來自他們的最新消息和其他資訊 \@%2$s</string>
+    <string name="tw__share_email_title">分享你的電子郵件地址</string>
+</resources>

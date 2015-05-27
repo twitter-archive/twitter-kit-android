@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2015 Twitter, Inc.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<resources>
+
+    <!--TweetView-->
+
+    <!--Container-->
+    <dimen name="tw__tweet_container_width">1dp</dimen>
+    <dimen name="tw__tweet_container_padding_top">0dp</dimen>
+    <dimen name="tw__tweet_container_padding_bottom">18dp</dimen>
+    <!--Retweeted By line-->
+    <dimen name="tw__tweet_retweeted_by_margin_top">10dp</dimen>
+    <dimen name="tw__tweet_retweeted_by_margin_bottom">-10dp</dimen>
+    <dimen name="tw__tweet_retweeted_by_margin_left">20dp</dimen>
+    <dimen name="tw__tweet_retweeted_by_drawable_padding">3dp</dimen>
+
+    <!--Tweet Author Avatar-->
+    <dimen name="tw__tweet_avatar_size">36dp</dimen>
+    <dimen name="tw__tweet_avatar_margin_top">18dp</dimen>
+    <dimen name="tw__tweet_avatar_margin_left">20dp</dimen>
+    <dimen name="tw__tweet_avatar_margin_right">8dp</dimen>
+    <!--Twitter Logo-->
+    <dimen name="tw__tweet_logo_margin_top">18dp</dimen>
+    <dimen name="tw__tweet_logo_margin_right">20dp</dimen>
+    <!--Tweet Author Attribution-->
+    <dimen name="tw__tweet_full_name_margin_top">15dp</dimen>
+    <dimen name="tw__tweet_verified_margin_bottom">3dp</dimen>
+    <dimen name="tw__tweet_verified_check_padding_left">3dp</dimen>
+    <dimen name="tw__tweet_screen_name_margin_top">-4dp</dimen>
+    <dimen name="tw__tweet_screen_name_margin_bottom">1dp</dimen>
+    <dimen name="tw__tweet_timestamp_margin_top">-4dp</dimen>
+    <dimen name="tw__tweet_timestamp_padding_left">4dp</dimen>
+    <!--Tweet text-->
+    <dimen name="tw__tweet_text_margin_top">12dp</dimen>
+    <dimen name="tw__tweet_text_margin_left">20dp</dimen>
+    <dimen name="tw__tweet_text_margin_right">20dp</dimen>
+    <!--Tweet actions-->
+    <dimen name="tw__tweet_action_layout_margin_top">0dp</dimen>
+    <!--Share button-->
+    <dimen name="tw__tweet_share_layout_height">36dp</dimen>
+    <dimen name="tw__tweet_share_extra_top_margin">11dp</dimen>
+    <dimen name="tw__tweet_share_extra_bottom_margin">2dp</dimen>
+    <dimen name="tw__tweet_share_margin_left">20dp</dimen>
+    <dimen name="tw__tweet_share_padding_bottom">12dp</dimen>
+
+    <!--CompactTweetView-->
+
+    <!--Container-->
+    <dimen name="tw__compact_tweet_container_padding_top">10.5dp</dimen>
+    <dimen name="tw__compact_tweet_container_padding_bottom">13dp</dimen>
+    <!--Retweeted By line-->
+    <dimen name="tw__compact_tweet_retweeted_by_margin_left">-25dp</dimen>
+    <dimen name="tw__compact_tweet_retweeted_by_margin_top">0dp</dimen>
+    <dimen name="tw__compact_tweet_retweeted_by_margin_bottom">0dp</dimen>
+    <dimen name="tw__compact_tweet_retweeted_by_drawable_padding">7dp</dimen>
+
+    <!--Tweet Author Avatar-->
+    <dimen name="tw__compact_tweet_avatar_margin_top">5.5dp</dimen>
+    <dimen name="tw__compact_tweet_avatar_margin_left">12dp</dimen>
+    <dimen name="tw__compact_tweet_avatar_margin_right">8dp</dimen>
+    <!--Twitter Logo-->
+    <dimen name="tw__compact_tweet_logo_margin_top">5dp</dimen>
+    <dimen name="tw__compact_tweet_logo_margin_right">12dp</dimen>
+    <!--Tweet Author Attribution-->
+    <dimen name="tw__compact_tweet_attribution_line_margin_right">36dp</dimen>
+    <dimen name="tw__compact_tweet_full_name_margin_top">0dp</dimen>
+    <dimen name="tw__compact_tweet_screen_name_layout_width">0dp</dimen>
+    <dimen name="tw__compact_tweet_screen_name_margin_top">0dp</dimen>
+    <dimen name="tw__compact_tweet_screen_name_margin_bottom">0dp</dimen>
+    <dimen name="tw__compact_tweet_screen_name_padding_left">3dp</dimen>
+    <dimen name="tw__compact_tweet_timestamp_margin_top">0dp</dimen>
+    <!--Tweet Media-->
+    <dimen name="tw__compact_tweet_media_margin_top">7dp</dimen>
+    <dimen name="tw__compact_tweet_media_margin_right">12dp</dimen>
+    <dimen name="tw__compact_tweet_media_margin_bottom">3dp</dimen>
+    <item name="tw__compact_tweet_media_aspect_ratio" format="float" type="dimen">1.777777</item>
+    <!--Tweet text-->
+    <dimen name="tw__compact_tweet_text_margin_top">1dp</dimen>
+    <dimen name="tw__compact_tweet_text_margin_left">0dp</dimen>
+    <dimen name="tw__compact_tweet_text_margin_right">12dp</dimen>
+
+    <!-- Text sizes -->
+    <!--density-independent(micro 10dp, small 12dp, medium 14dp, large 16dp)-->
+    <dimen name="tw__text_size_large">16dp</dimen>
+    <dimen name="tw__text_size_medium">14dp</dimen>
+    <!--scale-independent(micro 10sp, small 12sp, medium 14sp, large 16sp)-->
+    <dimen name="tw__font_size_large">16sp</dimen>
+
+    <!-- login -->
+    <dimen name="tw__login_btn_radius">5dp</dimen>
+    <dimen name="tw__login_btn_text_size">14sp</dimen>
+    <dimen name="tw__login_btn_height">32dp</dimen>
+    <dimen name="tw__login_btn_drawable_padding">4dp</dimen>
+    <dimen name="tw__login_btn_left_padding">8dp</dimen>
+    <dimen name="tw__login_btn_right_padding">12dp</dimen>
+
+</resources>

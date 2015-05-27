@@ -1,0 +1,541 @@
+{
+  "objects": {
+    "timelines": {
+      "custom-539487832448843776": {
+        "custom_timeline_url": "https://twitter.com/TwitterDev/timelines/539487832448843776",
+        "description": "A collection of Tweets about National Parks in the United States.",
+        "following": false,
+        "name": "National Park Tweets",
+        "timeline_order": "curation_reverse_chron",
+        "url": "",
+        "user_id": "2244994945",
+        "visibility": "public"
+      }
+    },
+    "tweets": {
+      "504032379045179393": {
+        "contributors": null,
+        "coordinates": null,
+        "created_at": "Mon Aug 25 22:27:38 +0000 2014",
+        "entities": {
+          "hashtags": [],
+          "media": [
+            {
+              "display_url": "pic.twitter.com/HtdvV0bPEu",
+              "expanded_url": "http://twitter.com/Interior/status/504032379045179393/photo/1",
+              "id": 504032378411446273,
+              "id_str": "504032378411446273",
+              "indices": [
+                99,
+                121
+              ],
+              "media_url": "http://pbs.twimg.com/media/Bv6uxxaCcAEjWHD.jpg",
+              "media_url_https": "https://pbs.twimg.com/media/Bv6uxxaCcAEjWHD.jpg",
+              "sizes": {
+                "large": {
+                  "h": 695,
+                  "resize": "fit",
+                  "w": 1024
+                },
+                "medium": {
+                  "h": 407,
+                  "resize": "fit",
+                  "w": 600
+                },
+                "small": {
+                  "h": 230,
+                  "resize": "fit",
+                  "w": 340
+                },
+                "thumb": {
+                  "h": 150,
+                  "resize": "crop",
+                  "w": 150
+                }
+              },
+              "type": "photo",
+              "url": "http://t.co/HtdvV0bPEu"
+            }
+          ],
+          "symbols": [],
+          "urls": [],
+          "user_mentions": [
+            {
+              "id": 66453289,
+              "id_str": "66453289",
+              "indices": [
+                47,
+                60
+              ],
+              "name": "Lake Clark NP&P",
+              "screen_name": "LakeClarkNPS"
+            }
+          ]
+        },
+        "extended_entities": {
+          "media": [
+            {
+              "display_url": "pic.twitter.com/HtdvV0bPEu",
+              "expanded_url": "http://twitter.com/Interior/status/504032379045179393/photo/1",
+              "id": 504032378411446273,
+              "id_str": "504032378411446273",
+              "indices": [
+                99,
+                121
+              ],
+              "media_url": "http://pbs.twimg.com/media/Bv6uxxaCcAEjWHD.jpg",
+              "media_url_https": "https://pbs.twimg.com/media/Bv6uxxaCcAEjWHD.jpg",
+              "sizes": {
+                "large": {
+                  "h": 695,
+                  "resize": "fit",
+                  "w": 1024
+                },
+                "medium": {
+                  "h": 407,
+                  "resize": "fit",
+                  "w": 600
+                },
+                "small": {
+                  "h": 230,
+                  "resize": "fit",
+                  "w": 340
+                },
+                "thumb": {
+                  "h": 150,
+                  "resize": "crop",
+                  "w": 150
+                }
+              },
+              "type": "photo",
+              "url": "http://t.co/HtdvV0bPEu"
+            }
+          ]
+        },
+        "favorite_count": 655,
+        "favorited": false,
+        "geo": null,
+        "id": 504032379045179393,
+        "id_str": "504032379045179393",
+        "in_reply_to_screen_name": null,
+        "in_reply_to_status_id": null,
+        "in_reply_to_status_id_str": null,
+        "in_reply_to_user_id": null,
+        "in_reply_to_user_id_str": null,
+        "lang": "en",
+        "place": null,
+        "possibly_sensitive": false,
+        "retweet_count": 613,
+        "retweeted": false,
+        "source": "<a>Twitter for iPhone</a>",
+        "text": "How about a grizzly bear waving for the camera @LakeClarkNPS to end the day? Photo: Kevin Dietrich http://t.co/HtdvV0bPEu",
+        "truncated": false,
+        "user": {
+          "id": 76348185,
+          "id_str": "76348185"
+        }
+      },
+      "524573263163572224": {
+        "contributors": null,
+        "coordinates": null,
+        "created_at": "Tue Oct 21 14:49:46 +0000 2014",
+        "entities": {
+          "hashtags": [
+            {
+              "indices": [
+                11,
+                19
+              ],
+              "text": "sunrise"
+            },
+            {
+              "indices": [
+                78,
+                86
+              ],
+              "text": "Wyoming"
+            }
+          ],
+          "media": [
+            {
+              "display_url": "pic.twitter.com/ODxB4Jdf0h",
+              "expanded_url": "http://twitter.com/Interior/status/524573263163572224/photo/1",
+              "id": 524573259606409217,
+              "id_str": "524573259606409217",
+              "indices": [
+                87,
+                109
+              ],
+              "media_url": "http://pbs.twimg.com/media/B0eoma2CQAETgA_.jpg",
+              "media_url_https": "https://pbs.twimg.com/media/B0eoma2CQAETgA_.jpg",
+              "sizes": {
+                "large": {
+                  "h": 682,
+                  "resize": "fit",
+                  "w": 1024
+                },
+                "medium": {
+                  "h": 400,
+                  "resize": "fit",
+                  "w": 600
+                },
+                "small": {
+                  "h": 226,
+                  "resize": "fit",
+                  "w": 340
+                },
+                "thumb": {
+                  "h": 150,
+                  "resize": "crop",
+                  "w": 150
+                }
+              },
+              "type": "photo",
+              "url": "http://t.co/ODxB4Jdf0h"
+            }
+          ],
+          "symbols": [],
+          "urls": [],
+          "user_mentions": [
+            {
+              "id": 44991932,
+              "id_str": "44991932",
+              "indices": [
+                47,
+                61
+              ],
+              "name": "Grand Teton NP",
+              "screen_name": "GrandTetonNPS"
+            }
+          ]
+        },
+        "extended_entities": {
+          "media": [
+            {
+              "display_url": "pic.twitter.com/ODxB4Jdf0h",
+              "expanded_url": "http://twitter.com/Interior/status/524573263163572224/photo/1",
+              "id": 524573259606409217,
+              "id_str": "524573259606409217",
+              "indices": [
+                87,
+                109
+              ],
+              "media_url": "http://pbs.twimg.com/media/B0eoma2CQAETgA_.jpg",
+              "media_url_https": "https://pbs.twimg.com/media/B0eoma2CQAETgA_.jpg",
+              "sizes": {
+                "large": {
+                  "h": 682,
+                  "resize": "fit",
+                  "w": 1024
+                },
+                "medium": {
+                  "h": 400,
+                  "resize": "fit",
+                  "w": 600
+                },
+                "small": {
+                  "h": 226,
+                  "resize": "fit",
+                  "w": 340
+                },
+                "thumb": {
+                  "h": 150,
+                  "resize": "crop",
+                  "w": 150
+                }
+              },
+              "type": "photo",
+              "url": "http://t.co/ODxB4Jdf0h"
+            }
+          ]
+        },
+        "favorite_count": 748,
+        "favorited": false,
+        "geo": null,
+        "id": 524573263163572224,
+        "id_str": "524573263163572224",
+        "in_reply_to_screen_name": null,
+        "in_reply_to_status_id": null,
+        "in_reply_to_status_id_str": null,
+        "in_reply_to_user_id": null,
+        "in_reply_to_user_id_str": null,
+        "lang": "en",
+        "place": null,
+        "possibly_sensitive": false,
+        "retweet_count": 679,
+        "retweeted": false,
+        "source": "<a>Twitter Web Client</a>",
+        "text": "A gorgeous #sunrise after a fresh coat of snow @GrandTetonNPS by Robert Buman #Wyoming http://t.co/ODxB4Jdf0h",
+        "truncated": false,
+        "user": {
+          "id": 76348185,
+          "id_str": "76348185"
+        }
+      },
+      "532654992071852032": {
+        "contributors": null,
+        "coordinates": null,
+        "created_at": "Wed Nov 12 22:03:41 +0000 2014",
+        "entities": {
+          "hashtags": [],
+          "media": [
+            {
+              "display_url": "pic.twitter.com/zt8tHTw2cU",
+              "expanded_url": "http://twitter.com/Interior/status/532654992071852032/photo/1",
+              "id": 532654988409835520,
+              "id_str": "532654988409835520",
+              "indices": [
+                118,
+                140
+              ],
+              "media_url": "http://pbs.twimg.com/media/B2Re48wCEAAeY5m.jpg",
+              "media_url_https": "https://pbs.twimg.com/media/B2Re48wCEAAeY5m.jpg",
+              "sizes": {
+                "large": {
+                  "h": 682,
+                  "resize": "fit",
+                  "w": 1024
+                },
+                "medium": {
+                  "h": 400,
+                  "resize": "fit",
+                  "w": 600
+                },
+                "small": {
+                  "h": 226,
+                  "resize": "fit",
+                  "w": 340
+                },
+                "thumb": {
+                  "h": 150,
+                  "resize": "crop",
+                  "w": 150
+                }
+              },
+              "type": "photo",
+              "url": "http://t.co/zt8tHTw2cU"
+            }
+          ],
+          "symbols": [],
+          "urls": [],
+          "user_mentions": []
+        },
+        "extended_entities": {
+          "media": [
+            {
+              "display_url": "pic.twitter.com/zt8tHTw2cU",
+              "expanded_url": "http://twitter.com/Interior/status/532654992071852032/photo/1",
+              "id": 532654988409835520,
+              "id_str": "532654988409835520",
+              "indices": [
+                118,
+                140
+              ],
+              "media_url": "http://pbs.twimg.com/media/B2Re48wCEAAeY5m.jpg",
+              "media_url_https": "https://pbs.twimg.com/media/B2Re48wCEAAeY5m.jpg",
+              "sizes": {
+                "large": {
+                  "h": 682,
+                  "resize": "fit",
+                  "w": 1024
+                },
+                "medium": {
+                  "h": 400,
+                  "resize": "fit",
+                  "w": 600
+                },
+                "small": {
+                  "h": 226,
+                  "resize": "fit",
+                  "w": 340
+                },
+                "thumb": {
+                  "h": 150,
+                  "resize": "crop",
+                  "w": 150
+                }
+              },
+              "type": "photo",
+              "url": "http://t.co/zt8tHTw2cU"
+            }
+          ]
+        },
+        "favorite_count": 1099,
+        "favorited": false,
+        "geo": null,
+        "id": 532654992071852032,
+        "id_str": "532654992071852032",
+        "in_reply_to_screen_name": null,
+        "in_reply_to_status_id": null,
+        "in_reply_to_status_id_str": null,
+        "in_reply_to_user_id": null,
+        "in_reply_to_user_id_str": null,
+        "lang": "en",
+        "place": null,
+        "possibly_sensitive": false,
+        "retweet_count": 1047,
+        "retweeted": false,
+        "source": "<a>Twitter Web Client</a>",
+        "text": "If you like night sky photos, you'll love this pic of the Milky Way over Devils Tower National Monument by David Lane http://t.co/zt8tHTw2cU",
+        "truncated": false,
+        "user": {
+          "id": 76348185,
+          "id_str": "76348185"
+        }
+      }
+    },
+    "users": {
+      "2244994945": {
+        "contributors_enabled": false,
+        "created_at": "Sat Dec 14 04:35:55 +0000 2013",
+        "default_profile": false,
+        "default_profile_image": false,
+        "description": "Developers and Platform Relations @Twitter. We are developer advocates. We can't answer all your questions, but we listen to all of them!",
+        "entities": {
+          "description": {
+            "urls": []
+          },
+          "url": {
+            "urls": [
+              {
+                "display_url": "dev.twitter.com",
+                "expanded_url": "https://dev.twitter.com/",
+                "indices": [
+                  0,
+                  23
+                ],
+                "url": "https://t.co/66w26cd6ZO"
+              }
+            ]
+          }
+        },
+        "favourites_count": 289,
+        "follow_request_sent": false,
+        "followers_count": 24611,
+        "following": false,
+        "friends_count": 1444,
+        "geo_enabled": true,
+        "id": 2244994945,
+        "id_str": "2244994945",
+        "is_translation_enabled": false,
+        "is_translator": false,
+        "lang": "en",
+        "listed_count": 243,
+        "location": "Internet",
+        "name": "TwitterDev",
+        "notifications": false,
+        "profile_background_color": "FFFFFF",
+        "profile_background_image_url": "http://abs.twimg.com/images/themes/theme1/bg.png",
+        "profile_background_image_url_https": "https://abs.twimg.com/images/themes/theme1/bg.png",
+        "profile_background_tile": false,
+        "profile_banner_url": "https://pbs.twimg.com/profile_banners/2244994945/1396995246",
+        "profile_image_url": "http://pbs.twimg.com/profile_images/530814764687949824/npQQVkq8_normal.png",
+        "profile_image_url_https": "https://pbs.twimg.com/profile_images/530814764687949824/npQQVkq8_normal.png",
+        "profile_link_color": "0084B4",
+        "profile_location": null,
+        "profile_sidebar_border_color": "FFFFFF",
+        "profile_sidebar_fill_color": "DDEEF6",
+        "profile_text_color": "333333",
+        "profile_use_background_image": false,
+        "protected": false,
+        "screen_name": "TwitterDev",
+        "statuses_count": 788,
+        "time_zone": "Pacific Time (US & Canada)",
+        "url": "https://t.co/66w26cd6ZO",
+        "utc_offset": -28800,
+        "verified": true
+      },
+      "76348185": {
+        "contributors_enabled": false,
+        "created_at": "Tue Sep 22 14:36:29 +0000 2009",
+        "default_profile": false,
+        "default_profile_image": false,
+        "description": "Protecting America\u2019s Great Outdoors and Powering Our Future",
+        "entities": {
+          "description": {
+            "urls": []
+          },
+          "url": {
+            "urls": [
+              {
+                "display_url": "doi.gov",
+                "expanded_url": "http://www.doi.gov",
+                "indices": [
+                  0,
+                  22
+                ],
+                "url": "http://t.co/gUty7d4LZ8"
+              }
+            ]
+          }
+        },
+        "favourites_count": 567,
+        "follow_request_sent": false,
+        "followers_count": 245891,
+        "following": true,
+        "friends_count": 254623,
+        "geo_enabled": true,
+        "id": 76348185,
+        "id_str": "76348185",
+        "is_translation_enabled": false,
+        "is_translator": false,
+        "lang": "en",
+        "listed_count": 4650,
+        "location": "Washington, DC",
+        "name": "US Dept of Interior",
+        "notifications": false,
+        "profile_background_color": "C6E2EE",
+        "profile_background_image_url": "http://pbs.twimg.com/profile_background_images/688410897/0390727e0b833fa7f8536a100da185fa.jpeg",
+        "profile_background_image_url_https": "https://pbs.twimg.com/profile_background_images/688410897/0390727e0b833fa7f8536a100da185fa.jpeg",
+        "profile_background_tile": false,
+        "profile_banner_url": "https://pbs.twimg.com/profile_banners/76348185/1396962244",
+        "profile_image_url": "http://pbs.twimg.com/profile_images/432081479/DOI_LOGO_normal.jpg",
+        "profile_image_url_https": "https://pbs.twimg.com/profile_images/432081479/DOI_LOGO_normal.jpg",
+        "profile_link_color": "1F98C7",
+        "profile_location": null,
+        "profile_sidebar_border_color": "FFFFFF",
+        "profile_sidebar_fill_color": "DAECF4",
+        "profile_text_color": "050505",
+        "profile_use_background_image": true,
+        "protected": false,
+        "screen_name": "Interior",
+        "statuses_count": 7013,
+        "time_zone": "Eastern Time (US & Canada)",
+        "url": "http://t.co/gUty7d4LZ8",
+        "utc_offset": -18000,
+        "verified": true
+      }
+    }
+  },
+  "response": {
+    "position": {
+      "max_position": "371578415352947200",
+      "min_position": "371578380871797248",
+      "was_truncated": false
+    },
+    "timeline": [
+      {
+        "feature_context": "HBgGY3VzdG9tFoCAktzo1NL8DgAA",
+        "tweet": {
+          "id": "504032379045179393",
+          "sort_index": "371578415352947200"
+        }
+      },
+      {
+        "feature_context": "HBgGY3VzdG9tFoCAktzo1NL8DgAA",
+        "tweet": {
+          "id": "532654992071852032",
+          "sort_index": "371578393139797760"
+        }
+      },
+      {
+        "feature_context": "HBgGY3VzdG9tFoCAktzo1NL8DgAA",
+        "tweet": {
+          "id": "524573263163572224",
+          "sort_index": "371578380871797248"
+        }
+      }
+    ],
+    "timeline_id": "custom-539487832448843776"
+  }
+}

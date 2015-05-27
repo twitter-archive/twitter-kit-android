@@ -1,0 +1,50 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <Button
+        android:id="@+id/button_xml_tweet_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_xml_tweet_activity"/>
+
+    <Button
+        android:id="@+id/button_tweet_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_tweet_activity"/>
+
+    <Button
+        android:id="@+id/button_unique_tweet_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_unqiue_tweet_activity"/>
+
+    <Button
+        android:id="@+id/button_tweet_list_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_tweet_list_activity"/>
+
+    <Button
+        android:id="@+id/button_timeline_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_timeline_activity"/>
+
+    <Button
+        android:id="@+id/button_timelines_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_timelines_activity"/>
+
+    <Button
+        android:id="@+id/button_tweet_preview_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_tweet_preview_activity"/>
+
+</LinearLayout>

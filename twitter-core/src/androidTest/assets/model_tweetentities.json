@@ -1,0 +1,72 @@
+{
+  "hashtags": [
+    {
+      "indices": [
+        32,
+        36
+      ],
+      "text": "lol"
+    }
+  ],
+  "media": [
+    {
+      "type": "photo",
+      "sizes": {
+        "thumb": {
+          "h": 150,
+          "resize": "crop",
+          "w": 150
+        },
+        "large": {
+          "h": 238,
+          "resize": "fit",
+          "w": 226
+        },
+        "medium": {
+          "h": 238,
+          "resize": "fit",
+          "w": 226
+        },
+        "small": {
+          "h": 238,
+          "resize": "fit",
+          "w": 226
+        }
+      },
+      "indices": [
+        15,
+        35
+      ],
+      "url": "http:\/\/t.co\/rJC5Pxsu",
+      "media_url": "http:\/\/p.twimg.com\/AZVLmp-CIAAbkyy.jpg",
+      "display_url": "pic.twitter.com\/rJC5Pxsu",
+      "id": 1.1408049304097e+17,
+      "id_str": "114080493040967680",
+      "expanded_url": "http:\/\/twitter.com\/yunorno\/status\/114080493036773378\/photo\/1",
+      "media_url_https": "https:\/\/p.twimg.com\/AZVLmp-CIAAbkyy.jpg"
+    }
+  ],
+  "urls": [
+    {
+      "indices": [
+        32,
+        52
+      ],
+      "url": "http:\/\/t.co\/IOwBrTZR",
+      "display_url": "youtube.com\/watch?v=oHg5SJ\u2026",
+      "expanded_url": "http:\/\/www.youtube.com\/watch?v=oHg5SJYRHA0"
+    }
+  ],
+  "user_mentions": [
+    {
+      "name": "Twitter API",
+      "indices": [
+        4,
+        15
+      ],
+      "screen_name": "twitterapi",
+      "id": 6253282,
+      "id_str": "6253282"
+    }
+  ]
+}

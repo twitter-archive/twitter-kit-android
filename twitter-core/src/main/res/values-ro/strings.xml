@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (C) 2015 Twitter, Inc.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__allow_btn_txt">Permite</string>
+    <string name="tw__login_btn_txt">Conectează-te cu Twitter</string>
+    <string name="tw__not_now_btn_txt">Nu acum</string>
+    <string name="tw__share_email_desc">Primește noutăți și alte informații de la %1$s când îi permiți să îți acceseze e-mailul din contul tău Twitter \@%2$s</string>
+    <string name="tw__share_email_title">Partajează-ți adresa de e-mail</string>
+</resources>

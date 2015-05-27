@@ -1,0 +1,108 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:twittersdk="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/tweet_region"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!--emoji-->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/demo_tweet_space"/>
+
+        <com.twitter.sdk.android.tweetui.TweetView
+            android:id="@+id/xml_emoji_and_html_entities_with_url_tweet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            twittersdk:tw__tweet_id="494602461928120321"/>
+
+        <!--entities-->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/demo_tweet_space"/>
+
+        <com.twitter.sdk.android.tweetui.CompactTweetView
+            android:id="@+id/xml_every_entity_tweet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            twittersdk:tw__tweet_id="448195611393658880"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/demo_tweet_space"/>
+
+        <!--no text-->
+
+        <com.twitter.sdk.android.tweetui.TweetView
+            android:id="@+id/xml_photo_only_tweet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            twittersdk:tw__tweet_id="489905840904605696"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/demo_tweet_space"/>
+
+        <com.twitter.sdk.android.tweetui.CompactTweetView
+            android:id="@+id/xml_photo_only_tweet_compact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            twittersdk:tw__tweet_id="489905840904605696"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/demo_tweet_space"/>
+
+        <!--Retweet with photo-->
+
+        <com.twitter.sdk.android.tweetui.TweetView
+            android:id="@+id/retweet_simpsons_tweet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            twittersdk:tw__tweet_id="574000939800993792"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/demo_tweet_space"/>
+
+        <com.twitter.sdk.android.tweetui.CompactTweetView
+            android:id="@+id/retweet_simpsons_compact_tweet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            twittersdk:tw__tweet_id="574000939800993792"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/demo_tweet_space"/>
+
+        <!--Retweet without photo-->
+
+        <com.twitter.sdk.android.tweetui.TweetView
+            android:id="@+id/retweet_vanity_fair_tweet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            twittersdk:tw__tweet_id="520736867218505728"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/demo_tweet_space"/>
+
+        <com.twitter.sdk.android.tweetui.CompactTweetView
+            android:id="@+id/retweet_vanity_fair_tweet_compact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            twittersdk:tw__tweet_id="520736867218505728"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/demo_tweet_space"/>
+
+    </LinearLayout>
+</ScrollView>

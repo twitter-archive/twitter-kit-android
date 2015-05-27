@@ -1,0 +1,7 @@
+<resources>
+    <color name="twitter_blue">#ff55acee</color>
+    <color name="twitter_dark">#ff292f33</color>
+    <color name="solid_red">#ff0000</color>
+    <color name="solid_yellow">#fff000</color>
+    <color name="divider_gray">#ffe1e8ed</color>
+</resources>

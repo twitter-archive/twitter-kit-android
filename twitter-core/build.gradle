@@ -1,0 +1,97 @@
+/*
+ * Copyright (C) 2015 Twitter, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
+
+    defaultConfig {
+        versionCode 1
+        versionName version
+        minSdkVersion 8
+        consumerProguardFiles 'proguard.txt'
+    }
+
+    def scribeEndpointOverride
+    if (project.hasProperty('scribeEndpointOverride')) {
+        scribeEndpointOverride = project.getProperty('scribeEndpointOverride')
+    } else {
+        scribeEndpointOverride = ''
+    }
+    def scribeSequence
+    if (project.hasProperty("scribeSequence")) {
+        scribeSequence = project.getProperty('scribeSequence')
+    } else {
+        scribeSequence = ''
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField "String", "GROUP", "\"${pom_group_id}\""
+            buildConfigField "String", "ARTIFACT_ID", "\"${pom_artifact_id}\""
+            buildConfigField "String", "BUILD_NUMBER", "\"${buildNumber}\""
+            buildConfigField "long", "BUILD_TIME", "${System.currentTimeMillis()}L"
+            buildConfigField "String", "SCRIBE_ENDPOINT_OVERRIDE", "\"${scribeEndpointOverride}\""
+            buildConfigField "String", "SCRIBE_SEQUENCE", "\"${scribeSequence}\""
+        }
+
+        release {
+            buildConfigField "String", "GROUP", "\"${pom_group_id}\""
+            buildConfigField "String", "ARTIFACT_ID", "\"${pom_artifact_id}\""
+            buildConfigField "String", "BUILD_NUMBER", "\"${buildNumber}\""
+            buildConfigField "long", "BUILD_TIME", "${System.currentTimeMillis()}L"
+            buildConfigField "String", "SCRIBE_ENDPOINT_OVERRIDE", "\"${scribeEndpointOverride}\""
+            buildConfigField "String", "SCRIBE_SEQUENCE", "\"${scribeSequence}\""
+        }
+    }
+
+    lintOptions {
+        warningsAsErrors true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    //Gradle publishes only release by default for multi module projects
+    //This will publish all build variants and we can specifically choose them
+    defaultPublishConfig 'release'
+    publishNonDefault true
+
+}
+
+dependencies {
+
+    compile rootProject.fabric
+    compile rootProject.retrofit
+    compile rootProject.gson
+
+    //Will use the provided packages if they are available in the app developers workspace.
+    provided rootProject.okHttp
+    provided rootProject.okHttpUrlConnection
+
+    androidTestCompile (rootProject.junitAddons) {
+        transitive = false
+    }
+
+    debugCompile rootProject.mockito
+    debugCompile rootProject.dexmakerMockito
+    debugCompile rootProject.fabricTest
+}

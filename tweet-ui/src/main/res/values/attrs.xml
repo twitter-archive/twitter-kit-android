@@ -1,0 +1,33 @@
+<!--
+  ~ Copyright (C) 2015 Twitter, Inc.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<resources>
+    <declare-styleable name="tw__TweetView">
+        <attr name="tw__tweet_id" format="string"/>
+        <!--style attributes-->
+        <attr name="tw__container_bg_color" format="color"/>
+        <attr name="tw__primary_text_color" format="color"/>
+        <attr name="tw__action_color" format="color"/>
+    </declare-styleable>
+    <declare-styleable name="tw__AspectRatioImageView">
+        <attr name="tw__image_aspect_ratio" format="float"/>
+        <attr name="tw__image_dimension_to_adjust" format="enum">
+            <enum name="height" value="0"/>
+            <enum name="width" value="1"/>
+        </attr>
+    </declare-styleable>
+</resources>
