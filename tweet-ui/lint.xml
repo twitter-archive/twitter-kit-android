@@ -31,4 +31,5 @@
     <!--Ignore support library point updates unless there are useful fixes or features. Any updates
     should be communicated to developers since they require downloading new libs from the manager-->
     <issue id="GradleDependency" severity="ignore" />
+    <issue id="WrongRegion" severity="ignore" />
 </lint>

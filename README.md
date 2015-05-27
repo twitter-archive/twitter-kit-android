@@ -1,6 +1,6 @@
 # Twitter Kit for Android
 
-Twitter Kit is a multi-module gradle project containing several Twitter SDKs including TweetComposer, TwitterCore, TweetUi, and Digits. It is built on the Fabric platform and uses many shared components.
+Twitter Kit is a multi-module gradle project containing several Twitter SDKs including TweetComposer, TwitterCore, and TweetUi. It is built on the Fabric platform and uses many shared components.
 
 Using TwitterKit from source in production applications is not officially supported by Fabric. Please utilize the available binaries.
 
@@ -40,8 +40,8 @@ Check out [more details and other build tool integrations](https://fabric.io/dow
 ## Getting Started
 
 * Sign up for a [Fabric account](https://fabric.io) and follow onboarding instructions to get your Fabric API Key and build secret, found under the organization settings of the Fabric web dashboard.
-* Either create your Twitter app by through (this portal)[https://apps.twitter.com/] or by using the Fabric IDE plugin.
-* Rename /samples/app/fabric.properties.sample to /samples/app/fabric.properties and populate information.
+* Either create your Twitter app by through [this portal](https://apps.twitter.com/) or by using the Fabric IDE plugin.
+* Rename samples/app/fabric.properties.sample to samples/app/fabric.properties and populate information.
 * Run Sample app to verify build.
 * For extensive documentation, please see the [official documentation](http://docs.fabric.io/android/twitter/index.html).
 

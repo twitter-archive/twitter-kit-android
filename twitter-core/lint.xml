@@ -35,4 +35,5 @@
     </issue>
     <!-- TODO: Update to 'com.google.code.gson:gson:2.3 in next commit'-->
     <issue id="GradleDependency" severity="ignore"/>
+    <issue id="WrongRegion" severity="ignore" />
 </lint>
