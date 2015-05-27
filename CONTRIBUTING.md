@@ -9,15 +9,14 @@ If you have anything you'd like to contribute, we recommend discussing it with t
 The workflow that we support:
 
 1.  Fork twitter-kit-android
-2.  Check out the `develop` branch
+2.  Check out the `master` branch
 3.  Make a feature branch
 4.  Make your cool new feature or bugfix on your branch
 5.  Write a test for your change
-6.  From your branch, make a pull request against `twitter/twitter-kit-android/develop`
+6.  From your branch, make a pull request against `twitter/twitter-kit-android/master`
 7.  Work with repo maintainers to get your change reviewed
-8.  Wait for your change to be pulled into `twitter/twitter-kit-android/develop`
-9.  Merge `twitter/twitter-kit-android/develop` into your origin `develop`
-10.  Delete your feature branch
+8.  Wait for your change to be merged internally by staff
+9.  Delete your feature branch
 
 ## Testing
 
