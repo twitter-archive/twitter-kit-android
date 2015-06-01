@@ -28,18 +28,18 @@ import com.example.app.tweetcomposer.TweetComposerMainActivity;
 import com.example.app.tweetui.TweetUiMainActivity;
 import com.example.app.twittercore.TwitterCoreMainActivity;
 
-public class MainActivity extends Activity {
+public class TwitterSampleActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.twitter_activity);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         final MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.activity_main_actions, menu);
+        inflater.inflate(R.menu.twitter_activity_actions, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

@@ -1,32 +1,32 @@
 <resources>
 
     <!--Demos client styling with a style inheriting from our styles-->
-    <style name="InheritedLightTweet" parent="tw__TweetLightStyle">
+    <style name="twitter_InheritedLightTweet" parent="tw__TweetLightStyle">
         <item name="tw__primary_text_color">@color/solid_red</item>
     </style>
 
     <!--Demos client styling a subset of custom attributes-->
-    <style name="IndependentTweetStyle">
+    <style name="twitter_IndependentTweetStyle">
         <item name="tw__primary_text_color">@color/solid_yellow</item>
         <item name="tw__action_color">@color/solid_red</item>
     </style>
 
-    <style name="FillParent">
+    <style name="twitter_FillParent">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
     </style>
 
-    <style name="FillWidth">
+    <style name="twitter_FillWidth">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="WrapContent">
+    <style name="twitter_WrapContent">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="Divider">
+    <style name="twitter_Divider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
         <item name="android:background">?android:attr/listDivider</item>
