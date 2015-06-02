@@ -89,10 +89,11 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.support:support-v4:21.0.0'
 
-    debugCompile 'com.google.dexmaker:dexmaker-mockito:1.2',
-            'org.mockito:mockito-core:1.9.5'
+    // TODO: Move MockUtils into the test directory so that the debug build type doesn't require it
+    debugCompile rootProject.mockito
+    debugCompile rootProject.dexmakerMockito
 
     androidTestCompile 'com.squareup.retrofit:retrofit-mock:1.6.1'
-    androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.2',
-            'org.mockito:mockito-core:1.9.5'
+    androidTestCompile rootProject.mockito
+    androidTestCompile rootProject.dexmakerMockito
 }

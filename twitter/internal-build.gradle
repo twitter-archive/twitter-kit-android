@@ -84,6 +84,6 @@ dependencies {
         debugCompile project(path: it, configuration: 'debug')
         releaseCompile kitDependency(path: it, configuration: 'release')
     }
-    androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.2',
-            'org.mockito:mockito-core:1.9.5'
+    androidTestCompile rootProject.mockito
+    androidTestCompile rootProject.dexmakerMockito
 }
