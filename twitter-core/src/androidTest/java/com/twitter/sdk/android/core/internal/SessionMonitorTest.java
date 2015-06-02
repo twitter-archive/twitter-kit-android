@@ -25,7 +25,11 @@ import io.fabric.sdk.android.services.common.SystemCurrentTimeProvider;
 
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
+import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
+import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.services.AccountService;
+
+import org.mockito.ArgumentCaptor;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +44,12 @@ public class SessionMonitorTest extends FabricAndroidTestCase {
     private static final long TEST_TIME_1200_UTC = 1422014401245L;
     private static final long TEST_TIME_2359_UTC = 1422057541245L;
     private static final long TEST_TIME_0001_UTC = 1422057661245L;
+    private static final String REQUIRED_IMPRESSION_CLIENT = "android";
+    private static final String REQUIRED_IMPRESSION_PAGE = "credentials";
+    private static final String REQUIRED_IMPRESSION_SECTION = "";
+    private static final String REQUIRED_IMPRESSION_COMPONENT = "";
+    private static final String REQUIRED_IMPRESSION_ELEMENT = "";
+    private static final String REQUIRED_IMPRESSION_ACTION = "impression";
 
     private SessionManager<Session> mockSessionManager;
     private SessionMonitor.AccountServiceProvider mockAccountServiceProvider;
@@ -47,6 +57,7 @@ public class SessionMonitorTest extends FabricAndroidTestCase {
     private AccountService mockAccountService;
     private ExecutorService mockExecutorService;
     private SessionMonitor.MonitorState mockMonitorState;
+    private DefaultScribeClient mockScribeClient;
 
     private SessionMonitor<Session> sessionMonitor;
     private SessionMonitor.MonitorState monitorState;
@@ -62,6 +73,7 @@ public class SessionMonitorTest extends FabricAndroidTestCase {
         mockAccountService = mock(AccountService.class);
         mockExecutorService = mock(ExecutorService.class);
         mockMonitorState = mock(SessionMonitor.MonitorState.class);
+        mockScribeClient = mock(DefaultScribeClient.class);
         sessionMonitor = new SessionMonitor<>(mockSessionManager, mockSystemCurrentTimeProvider,
                 mockAccountServiceProvider, mockExecutorService, mockMonitorState);
         monitorState = new SessionMonitor.MonitorState();
@@ -131,6 +143,57 @@ public class SessionMonitorTest extends FabricAndroidTestCase {
     public void testVerifySession_callsAccountService() {
         sessionMonitor.verifySession(mock(Session.class));
         verify(mockAccountService).verifyCredentials(true, false);
+    }
+
+    public void testVerifySession_scribesImpression() {
+        sessionMonitor = new SessionMonitor<Session>(mockSessionManager,
+                mockSystemCurrentTimeProvider, mockAccountServiceProvider, mockExecutorService,
+                mockMonitorState) {
+            @Override
+            protected DefaultScribeClient getScribeClient() {
+                return mockScribeClient;
+            }
+        };
+        sessionMonitor.verifySession(mock(Session.class));
+        verify(mockScribeClient).scribeSyndicatedSdkImpressionEvents(any(EventNamespace.class));
+    }
+
+    public void testVerifySession_scribeHandlesNullClient() {
+        sessionMonitor = new SessionMonitor<Session>(mockSessionManager,
+                mockSystemCurrentTimeProvider, mockAccountServiceProvider, mockExecutorService,
+                mockMonitorState) {
+            @Override
+            protected DefaultScribeClient getScribeClient() {
+                return null;
+            }
+        };
+        try {
+            sessionMonitor.verifySession(mock(Session.class));
+        } catch (NullPointerException e) {
+            fail("should handle a null scribe client");
+        }
+    }
+
+    public void testScribeVerifySession_eventNamespace() {
+        final ArgumentCaptor<EventNamespace> namespaceCaptor
+                = ArgumentCaptor.forClass(EventNamespace.class);
+        sessionMonitor = new SessionMonitor<Session>(mockSessionManager,
+                mockSystemCurrentTimeProvider, mockAccountServiceProvider, mockExecutorService,
+                mockMonitorState) {
+            @Override
+            protected DefaultScribeClient getScribeClient() {
+                return mockScribeClient;
+            }
+        };
+        sessionMonitor.scribeVerifySession();
+        verify(mockScribeClient).scribeSyndicatedSdkImpressionEvents(namespaceCaptor.capture());
+        final EventNamespace ns = namespaceCaptor.getValue();
+        assertEquals(REQUIRED_IMPRESSION_CLIENT, ns.client);
+        assertEquals(REQUIRED_IMPRESSION_PAGE, ns.page);
+        assertEquals(REQUIRED_IMPRESSION_SECTION, ns.section);
+        assertEquals(REQUIRED_IMPRESSION_COMPONENT, ns.component);
+        assertEquals(REQUIRED_IMPRESSION_ELEMENT, ns.element);
+        assertEquals(REQUIRED_IMPRESSION_ACTION, ns.action);
     }
 
     public void testMonitorStateStartVerification_duringVerification() {

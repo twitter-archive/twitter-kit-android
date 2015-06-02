@@ -14,7 +14,7 @@
 ## v1.2.0
 
 * (DH) Added CollectionTimeline to show Tweets from a Twitter collection.
-* (DH) Added 'next' support to the TimelineListAdapter
+* (DH) Added 'refresh' support to the TimelineListAdapter
 * (DH) Removed final from TimelineCursor class.
 * (AP) Updated Picasso dependency version to 2.5.2, OkHttp required to be 2.0 or greater.
 

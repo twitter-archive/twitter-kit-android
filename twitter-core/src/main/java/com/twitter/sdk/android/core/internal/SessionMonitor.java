@@ -23,6 +23,9 @@ import android.text.format.DateUtils;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.TwitterApiClient;
+import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
+import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
+import com.twitter.sdk.android.core.internal.scribe.TwitterCoreScribeClientHolder;
 import com.twitter.sdk.android.core.services.AccountService;
 
 import java.util.Calendar;
@@ -38,6 +41,13 @@ import retrofit.RetrofitError;
  * @param <T>
  */
 public class SessionMonitor<T extends Session> {
+    static final String SCRIBE_CLIENT = "android";
+    static final String SCRIBE_PAGE = "credentials";
+    static final String SCRIBE_SECTION = ""; // intentionally blank
+    static final String SCRIBE_COMPONENT = ""; // intentionally blank
+    static final String SCRIBE_ELEMENT = ""; // intentionally blank
+    static final String SCRIBE_ACTION = "impression";
+
     protected final MonitorState monitorState;
 
     private final SystemCurrentTimeProvider time;
@@ -116,13 +126,33 @@ public class SessionMonitor<T extends Session> {
     protected void verifySession(final Session session) {
         final AccountService accountService = accountServiceProvider.getAccountService(session);
         try {
-
+            scribeVerifySession();
             accountService.verifyCredentials(true, false);
         } catch (RetrofitError e) {
             // We ignore failures since we will attempt the verification again the next time
             // the verification period comes up. This has the potential to lose events, but we
             // are not aiming towards 100% capture rate.
         }
+    }
+
+    protected DefaultScribeClient getScribeClient() {
+        return TwitterCoreScribeClientHolder.getScribeClient();
+    }
+
+    protected void scribeVerifySession() {
+        final DefaultScribeClient scribeClient = getScribeClient();
+        if (scribeClient == null) return;
+
+        final EventNamespace ns = new EventNamespace.Builder()
+                .setClient(SCRIBE_CLIENT)
+                .setPage(SCRIBE_PAGE)
+                .setSection(SCRIBE_SECTION)
+                .setComponent(SCRIBE_COMPONENT)
+                .setElement(SCRIBE_ELEMENT)
+                .setAction(SCRIBE_ACTION)
+                .builder();
+
+        scribeClient.scribeSyndicatedSdkImpressionEvents(ns);
     }
 
     /**

@@ -3,6 +3,7 @@
 
 ## Unreleased
 
+* (DH) (internal) Added session verify credential scribing on daily ping.
 * (DH) Added ListService, with lists/statuses endpoint, to TwitterApiClient.
 
 ## v1.3.4
