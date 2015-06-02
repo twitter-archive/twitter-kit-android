@@ -20,58 +20,78 @@ package com.twitter.sdk.android;
 import android.test.AndroidTestCase;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.annotation.Config;
+
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = com.twitter.sdk.android.tweetcomposer.BuildConfig.class, emulateSdk = 21)
 public class TwitterTest extends AndroidTestCase {
     private static final int KIT_COUNT = 4;
 
     private Twitter twitter;
 
+    @Before
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
         twitter = new Twitter(new TwitterAuthConfig("", ""));
     }
 
+    @Test
     public void testGetVersion() {
         assertEquals(BuildConfig.VERSION_NAME + "." + BuildConfig.BUILD_NUMBER,
                 twitter.getVersion());
     }
 
+    @Test
     public void testTwitter() {
         assertNotNull(twitter.core);
     }
 
+    @Test
     public void testTweetUi() {
         assertNotNull(twitter.tweetUi);
     }
 
+    @Test
     public void testTweetComposer() {
         assertNotNull(twitter.tweetComposer);
     }
 
+    @Test
     public void testDigits() {
         assertNotNull(twitter.digits);
     }
 
+    @Test
     public void testGetKits_notNull() {
         assertNotNull(twitter.getKits());
     }
 
+    @Test
     public void testGetKits_length() {
         assertEquals(KIT_COUNT, twitter.getKits().size());
     }
 
+    @Test
     public void testGetKits_containsTwitter() {
         assertTrue(twitter.getKits().contains(twitter.core));
     }
 
+    @Test
     public void testGetKits_containsTweetUi() {
         assertTrue(twitter.getKits().contains(twitter.tweetUi));
     }
 
+    @Test
     public void testGetKits_containsTweetComposer() {
         assertTrue(twitter.getKits().contains(twitter.tweetComposer));
     }
 
+    @Test
     public void testGetKits_containsDigits() {
         assertTrue(twitter.getKits().contains(twitter.digits));
     }

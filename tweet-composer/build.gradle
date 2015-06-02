@@ -62,7 +62,7 @@ dependencies {
     testCompile rootProject.mockito
     testCompile rootProject.junit
     testCompile rootProject.mavenAntTasks
-    testCompile(roboelectric) {
+    testCompile(rootProject.roboelectric) {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
