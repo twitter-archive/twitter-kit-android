@@ -70,6 +70,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 ext.projectDependencies = [
@@ -83,6 +87,11 @@ dependencies {
         releaseCompile kitDependency(path: it, configuration: 'release')
     }
 
-    androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.2',
-            'org.mockito:mockito-core:1.9.5'
+    testCompile 'org.mockito:mockito-core:1.9.5'
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.apache.maven:maven-ant-tasks:2.1.3'
+    testCompile('org.robolectric:robolectric:3.0-rc2') {
+        exclude group: 'commons-logging', module: 'commons-logging'
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+    }
 }

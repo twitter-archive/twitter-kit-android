@@ -22,7 +22,6 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:1.1.3'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
-        classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.1.1'
     }
 }
 
@@ -48,9 +47,10 @@ ext {
     fabricTest = 'io.fabric.sdk.android:fabric-test:0.0.+@aar'
 
     androidTestingSupport = 'com.android.support.test:testing-support-lib:0.1'
-    junit = 'junit:junit:4.10'
+    junit = 'junit:junit:4.12'
     junitAddons = 'junit-addons:junit-addons:1.4'
-    robolectric = 'org.robolectric:robolectric:2.3'
+    robolectric = 'org.robolectric:robolectric:3.0-rc2'
+    mavenAntTasks = 'org.apache.maven:maven-ant-tasks:2.1.3'
     fest = 'com.squareup:fest-android:1.0.8'
     appCompat = 'com.android.support:appcompat-v7:21.0.2'
     picasso = 'com.squareup.picasso:picasso:2.5.2'

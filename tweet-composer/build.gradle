@@ -50,12 +50,20 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
     compile rootProject.fabric
 
-    androidTestCompile rootProject.fabricTest
-    androidTestCompile rootProject.mockito
-    androidTestCompile rootProject.dexmakerMockito
+    testCompile rootProject.mockito
+    testCompile rootProject.junit
+    testCompile rootProject.mavenAntTasks
+    testCompile(roboelectric) {
+        exclude group: 'commons-logging', module: 'commons-logging'
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+    }
 }

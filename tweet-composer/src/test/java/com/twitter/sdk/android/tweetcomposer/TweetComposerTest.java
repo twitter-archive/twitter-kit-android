@@ -23,13 +23,17 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.test.AndroidTestCase;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.annotation.Config;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -37,13 +41,18 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class TweetComposerTest extends FabricAndroidTestCase {
 
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, emulateSdk = 21)
+public class TweetComposerTest extends AndroidTestCase {
+
+    @Test
     public void testBuilder_constructor() {
-        final TweetComposer.Builder builder = new TweetComposer.Builder(getContext());
+        final TweetComposer.Builder builder = new TweetComposer.Builder(mock(Context.class));
         assertNotNull(builder);
     }
 
+    @Test
     public void testBuilder_constructorNullContext() {
         try {
             new TweetComposer.Builder(null);
@@ -53,6 +62,7 @@ public class TweetComposerTest extends FabricAndroidTestCase {
         }
     }
 
+    @Test
     public void testBuilder_text() {
         final Context context = createIntentContext(true);
         final String text = "test";
@@ -61,25 +71,28 @@ public class TweetComposerTest extends FabricAndroidTestCase {
         assertEquals(text, intent.getStringExtra(Intent.EXTRA_TEXT));
     }
 
+    @Test
     public void testBuilder_textNull() {
         try {
-            new TweetComposer.Builder(getContext()).text(null);
+            new TweetComposer.Builder(mock(Context.class)).text(null);
             fail();
         } catch (IllegalArgumentException ignored) {
             assertEquals("text must not be null.", ignored.getMessage());
         }
     }
 
+    @Test
     public void testBuilder_textAlreadySet() {
         final String text = "test";
         try {
-            new TweetComposer.Builder(getContext()).text(text).text(text);
+            new TweetComposer.Builder(mock(Context.class)).text(text).text(text);
             fail();
         } catch (IllegalStateException ignored) {
             assertEquals("text already set.", ignored.getMessage());
         }
     }
 
+    @Test
     public void testBuilder_textAndUrl() throws MalformedURLException {
         final Context context = createIntentContext(true);
         final String text = "test";
@@ -93,6 +106,7 @@ public class TweetComposerTest extends FabricAndroidTestCase {
         assertEquals(result, intent.getStringExtra(Intent.EXTRA_TEXT));
     }
 
+    @Test
     public void testBuilder_url() throws MalformedURLException {
         final Context context = createIntentContext(true);
         final URL url = new URL("http://www.twitter.com");
@@ -101,25 +115,28 @@ public class TweetComposerTest extends FabricAndroidTestCase {
         assertEquals(url.toString(), intent.getStringExtra(Intent.EXTRA_TEXT));
     }
 
+    @Test
     public void testBuilder_urlNull() {
         try {
-            new TweetComposer.Builder(getContext()).url(null);
+            new TweetComposer.Builder(mock(Context.class)).url(null);
             fail();
         } catch (IllegalArgumentException ignored) {
             assertEquals("url must not be null.", ignored.getMessage());
         }
     }
 
+    @Test
     public void testBuilder_urlAlreadySet() throws MalformedURLException {
         final URL url = new URL("http://www.twitter.com");
         try {
-            new TweetComposer.Builder(getContext()).url(url).url(url);
+            new TweetComposer.Builder(mock(Context.class)).url(url).url(url);
             fail();
         } catch (IllegalStateException ignored) {
             assertEquals("url already set.", ignored.getMessage());
         }
     }
 
+    @Test
     public void testBuilder_image() {
         final Context context = createIntentContext(true);
         final Uri uri = Uri.parse("http://www.twitter.com");
@@ -128,25 +145,28 @@ public class TweetComposerTest extends FabricAndroidTestCase {
         assertEquals(uri, intent.getParcelableExtra(Intent.EXTRA_STREAM));
     }
 
+    @Test
     public void testBuilder_imageNull() {
         try {
-            new TweetComposer.Builder(getContext()).image(null);
+            new TweetComposer.Builder(mock(Context.class)).image(null);
             fail();
         } catch (IllegalArgumentException ignored) {
             assertEquals("imageUri must not be null.", ignored.getMessage());
         }
     }
 
+    @Test
     public void testBuilder_imageAlreadySet() {
         final Uri uri = Uri.parse("http://www.twitter.com");
         try {
-            new TweetComposer.Builder(getContext()).image(uri).image(uri);
+            new TweetComposer.Builder(mock(Context.class)).image(uri).image(uri);
             fail();
         } catch (IllegalStateException ignored) {
             assertEquals("imageUri already set.", ignored.getMessage());
         }
     }
 
+    @Test
     public void testBuilder_createIntentTwitterInstalled() {
         final Context context = createIntentContext(true);
         final TweetComposer.Builder builder = new TweetComposer.Builder(context);
@@ -158,6 +178,7 @@ public class TweetComposerTest extends FabricAndroidTestCase {
         assertIntentEquals(intentTwitter, intent);
     }
 
+    @Test
     public void testBuilder_createIntentTwitterNotInstalled() {
         final Context context = createIntentContext(false);
         final TweetComposer.Builder builder = new TweetComposer.Builder(context);
@@ -170,6 +191,7 @@ public class TweetComposerTest extends FabricAndroidTestCase {
         assertIntentEquals(intentWeb, intent);
     }
 
+    @Test
     public void testBuilder_show() {
         final Context context = createIntentContext(true);
         final TweetComposer.Builder builder = new TweetComposer.Builder(context);
@@ -178,17 +200,20 @@ public class TweetComposerTest extends FabricAndroidTestCase {
         verify(context).startActivity(any(Intent.class));
     }
 
+    @Test
     public void testGetVersion() {
         final TweetComposer composer = new TweetComposer();
         final String version = BuildConfig.VERSION_NAME + "." + BuildConfig.BUILD_NUMBER;
         assertEquals(version, composer.getVersion());
     }
 
+    @Test
     public void testDoInBackground() {
         final TweetComposer composer = new TweetComposer();
         assertTrue(composer.doInBackground());
     }
 
+    @Test
     public void testGetIdentifier() {
         final TweetComposer composer = new TweetComposer();
         final String identifier = BuildConfig.GROUP + ":" + BuildConfig.ARTIFACT_ID;
