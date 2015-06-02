@@ -17,6 +17,7 @@
 
 package com.example.app.tweetui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -36,8 +37,6 @@ import com.example.app.R;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import io.fabric.sdk.android.services.common.SafeToast;
 
 /**
  * Displays a layout with a ListView widget bound to a TweetViewAdapter data source.
@@ -71,8 +70,11 @@ public class TweetListFragment extends ListFragment {
 
             @Override
             public void failure(TwitterException exception) {
-                SafeToast.makeText(getActivity(), R.string.multi_tweet_view_error,
-                        Toast.LENGTH_SHORT).show();
+                final Activity activity = getActivity();
+                if (activity != null && !activity.isFinishing()) {
+                    Toast.makeText(activity, R.string.tweet_load_error,
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

@@ -18,6 +18,7 @@
 package com.example.app.twittercore;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -46,30 +47,28 @@ public class TwitterCoreMainActivity extends Activity {
         loginButton.setCallback(new Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> result) {
-                requestEmailAddress(result.data);
+                requestEmailAddress(getApplicationContext(), result.data);
             }
 
             @Override
             public void failure(TwitterException exception) {
                 // Upon error, show a toast message indicating that authorization request failed.
-                Toast.makeText(TwitterCoreMainActivity.this, exception.getMessage(),
+                Toast.makeText(getApplicationContext(), exception.getMessage(),
                         Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void requestEmailAddress(TwitterSession session) {
+    private static void requestEmailAddress(final Context context, TwitterSession session) {
         new TwitterAuthClient().requestEmail(session, new Callback<String>() {
             @Override
             public void success(Result<String> result) {
-                Toast.makeText(TwitterCoreMainActivity.this, result.data,
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, result.data, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void failure(TwitterException exception) {
-                Toast.makeText(TwitterCoreMainActivity.this, exception.getMessage(),
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, exception.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

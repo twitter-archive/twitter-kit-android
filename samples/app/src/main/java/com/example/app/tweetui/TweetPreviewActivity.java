@@ -17,6 +17,7 @@
 
 package com.example.app.tweetui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -120,9 +121,11 @@ public class TweetPreviewActivity extends TweetUiActivity {
 
                 @Override
                 public void failure(TwitterException exception) {
-                    final Context context = getActivity();
-                    if (context == null) return;
-                    Toast.makeText(context, R.string.tweet_load_error, Toast.LENGTH_SHORT).show();
+                    final Activity activity = getActivity();
+                    if (activity != null && !activity.isFinishing()) {
+                        Toast.makeText(activity, R.string.tweet_load_error,
+                                Toast.LENGTH_SHORT).show();
+                    }
                     Log.e(TAG, "loadTweet failure", exception);
                 }
             };
