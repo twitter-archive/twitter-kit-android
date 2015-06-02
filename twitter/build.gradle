@@ -58,4 +58,8 @@ dependencies {
 
     compile rootProject.digits
     compile rootProject.fabric
+
+    androidTestCompile rootProject.mockito
+    androidTestCompile rootProject.dexmakerMockito
+    androidTestCompile rootProject.fabricTest
 }

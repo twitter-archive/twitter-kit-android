@@ -60,5 +60,12 @@ dependencies {
     compile rootProject.picasso
     compile rootProject.supportV4
 
+    // TODO: Move MockUtils into the test directory so that the debug build type doesn't require it
+    debugCompile rootProject.mockito
+    debugCompile rootProject.dexmakerMockito
+
     androidTestCompile rootProject.retrofitMock
+    androidTestCompile rootProject.mockito
+    androidTestCompile rootProject.dexmakerMockito
+    androidTestCompile rootProject.fabricTest
 }

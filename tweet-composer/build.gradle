@@ -55,7 +55,7 @@ android {
 dependencies {
     compile rootProject.fabric
 
-    debugCompile rootProject.fabricTest
-    debugCompile rootProject.mockito
-    debugCompile rootProject.dexmakerMockito
+    androidTestCompile rootProject.fabricTest
+    androidTestCompile rootProject.mockito
+    androidTestCompile rootProject.dexmakerMockito
 }

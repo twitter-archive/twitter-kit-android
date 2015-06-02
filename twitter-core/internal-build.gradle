@@ -107,4 +107,6 @@ dependencies {
     androidTestCompile ('junit-addons:junit-addons:1.4') {
         transitive = false
     }
+    androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.2',
+            'org.mockito:mockito-core:1.9.5'
 }
