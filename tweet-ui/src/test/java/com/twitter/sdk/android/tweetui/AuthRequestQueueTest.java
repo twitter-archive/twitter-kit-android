@@ -31,11 +31,19 @@ import com.twitter.sdk.android.core.internal.oauth.GuestAuthToken;
 import com.twitter.sdk.android.core.internal.oauth.OAuth2Token;
 import com.twitter.sdk.android.tweetui.internal.ActiveSessionProvider;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.annotation.Config;
 
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class AuthRequestQueueTest extends FabricAndroidTestCase {
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, emulateSdk = 21)
+public class AuthRequestQueueTest {
     private TwitterCore mockTwitterCoreKit;
     private ActiveSessionProvider mockActiveSessionProvider;
     private GuestAuthToken mockGuestAuthToken;
@@ -43,9 +51,9 @@ public class AuthRequestQueueTest extends FabricAndroidTestCase {
     private Callback<TwitterApiClient> mockRequest;
     private TwitterApiClient mockTwitterApiClient;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
+
         mockTwitterCoreKit = mock(TwitterCore.class);
         mockActiveSessionProvider = mock(ActiveSessionProvider.class);
         mockGuestAuthToken = mock(GuestAuthToken.class);
@@ -54,10 +62,9 @@ public class AuthRequestQueueTest extends FabricAndroidTestCase {
         mockTwitterApiClient = mock(TwitterApiClient.class);
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         mockTwitterCoreKit.logOut();
-        super.tearDown();
     }
 
     private AuthRequestQueue setupQueue(Session session) {
@@ -65,6 +72,7 @@ public class AuthRequestQueueTest extends FabricAndroidTestCase {
         return new AuthRequestQueue(mockTwitterCoreKit, mockActiveSessionProvider);
     }
 
+    @Test
     public void testConstructor_awaitingSessionTrue() {
         final AuthRequestQueue authRequestQueue = setupQueue(null);
         assertTrue(authRequestQueue.awaitingSession.get());
@@ -73,6 +81,7 @@ public class AuthRequestQueueTest extends FabricAndroidTestCase {
     /*
      * test addRequest queues request and does not request logInGuest
      */
+    @Test
     public void testAddRequest_addsToQueueAndNoCallToLogInGuest() {
         final AuthRequestQueue authRequestQueue = setupQueue(null);
         authRequestQueue.addRequest(mockRequest);
@@ -83,6 +92,7 @@ public class AuthRequestQueueTest extends FabricAndroidTestCase {
     /*
      * test addRequest with no Session
      */
+    @Test
     public void testAddRequest_notAwaitingSessionNoSession() {
         final AuthRequestQueue authRequestQueue = setupQueue(null);
         authRequestQueue.awaitingSession.set(false);
@@ -99,6 +109,7 @@ public class AuthRequestQueueTest extends FabricAndroidTestCase {
     /*
      * test addRequest with session that has no Auth Token
      */
+    @Test
     public void testAddRequest_notAwaitingSessionHasSessionNoToken() {
         final AuthRequestQueue authRequestQueue = setupQueue(mock(AppSession.class));
         authRequestQueue.awaitingSession.set(false);
@@ -113,6 +124,7 @@ public class AuthRequestQueueTest extends FabricAndroidTestCase {
     }
 
 
+    @Test
     public void testAddRequest_awaitingSession() {
         final AuthRequestQueue authRequestQueue = setupQueue(null);
         authRequestQueue.addRequest(mockRequest);
@@ -128,6 +140,7 @@ public class AuthRequestQueueTest extends FabricAndroidTestCase {
     /*
      * test addRequest with OAuth2Service and guest auth token
      */
+    @Test
     public void testAddRequest_withAuth() {
         final AppSession appSession = mock(AppSession.class);
         when(appSession.getAuthToken()).thenReturn(mockGuestAuthToken);
@@ -142,6 +155,7 @@ public class AuthRequestQueueTest extends FabricAndroidTestCase {
     /*
      * Test flushQueueOnSuccess
      */
+    @Test
     public void testFlushQueueOnSuccess_drainsQueue() {
         final AuthRequestQueue authRequestQueue = setupQueue(null);
         authRequestQueue.addRequest(mockRequest);
@@ -151,6 +165,7 @@ public class AuthRequestQueueTest extends FabricAndroidTestCase {
         assertEquals(0, authRequestQueue.queue.size());
     }
 
+    @Test
     public void testFlushQueueOnSuccess_setsAwaitingSessionToFalse() {
         final AuthRequestQueue authRequestQueue = setupQueue(null);
         authRequestQueue.awaitingSession.set(true);
@@ -161,6 +176,7 @@ public class AuthRequestQueueTest extends FabricAndroidTestCase {
     /*
      * Test flushQueueOnError
      */
+    @Test
     public void testFlushQueueOnError_drainsQueue() {
         final TwitterAuthException exception = mock(TwitterAuthException.class);
         final AuthRequestQueue authRequestQueue = setupQueue(null);
@@ -172,6 +188,7 @@ public class AuthRequestQueueTest extends FabricAndroidTestCase {
         verify(mockRequest, times(2)).failure(any(TwitterException.class));
     }
 
+    @Test
     public void testFlushQueueOnError_setsActiveFlagToFalse() {
         final AuthRequestQueue authRequestQueue = setupQueue(null);
         authRequestQueue.awaitingSession.set(true);
@@ -182,16 +199,19 @@ public class AuthRequestQueueTest extends FabricAndroidTestCase {
     /*
      * Test hasValidSession
      */
+    @Test
     public void testHasValidSession_noAppSession() {
         final AuthRequestQueue authRequestQueue = setupQueue(null);
         assertNull(authRequestQueue.getValidSession());
     }
 
+    @Test
     public void testHasValidSession_hasAppSessionNoAuthToken() {
         final AuthRequestQueue authRequestQueue = setupQueue(mock(AppSession.class));
         assertNull(authRequestQueue.getValidSession());
     }
 
+    @Test
     public void testHasValidSession_hasAppAuthToken() {
         final AppSession session = mock(AppSession.class);
         when(session.getAuthToken()).thenReturn(mockAppAuthToken);
@@ -199,6 +219,7 @@ public class AuthRequestQueueTest extends FabricAndroidTestCase {
         assertNotNull(authRequestQueue.getValidSession());
     }
 
+    @Test
     public void testHasValidSession_hasGuestAuthToken() {
         final AppSession session = mock(AppSession.class);
         when(session.getAuthToken()).thenReturn(mockGuestAuthToken);
@@ -206,6 +227,7 @@ public class AuthRequestQueueTest extends FabricAndroidTestCase {
         assertNotNull(authRequestQueue.getValidSession());
     }
 
+    @Test
     public void testHasValidSession_hasUserAuthToken() {
         final TwitterSession session = mock(TwitterSession.class);
         when(session.getAuthToken()).thenReturn(mock(TwitterAuthToken.class));
@@ -213,6 +235,7 @@ public class AuthRequestQueueTest extends FabricAndroidTestCase {
         assertNotNull(authRequestQueue.getValidSession());
     }
 
+    @Test
     public void testSessionRestored_validSessionQueueNotEmpty() {
         final AuthRequestQueue authRequestQueue = setupQueue(null);
         final AppSession session = mock(AppSession.class);
@@ -227,6 +250,7 @@ public class AuthRequestQueueTest extends FabricAndroidTestCase {
         verify(mockTwitterCoreKit, times(0)).logInGuest(any(Callback.class));
     }
 
+    @Test
     public void testSessionRestored_validSessionQueueEmpty() {
         final AuthRequestQueue authRequestQueue = setupQueue(null);
         final AppSession session = mock(AppSession.class);
@@ -238,6 +262,7 @@ public class AuthRequestQueueTest extends FabricAndroidTestCase {
         verify(mockTwitterCoreKit, times(0)).logInGuest(any(Callback.class));
     }
 
+    @Test
     public void testSessionRestored_noSessionQueueEmpty() {
         final AuthRequestQueue authRequestQueue = setupQueue(null);
 
@@ -247,6 +272,7 @@ public class AuthRequestQueueTest extends FabricAndroidTestCase {
         verify(mockTwitterCoreKit, times(0)).logInGuest(any(Callback.class));
     }
 
+    @Test
     public void testSessionRestored_noSessionQueueNotEmpty() {
         final AuthRequestQueue authRequestQueue = setupQueue(null);
         final Callback mockCallback = mock(Callback.class);

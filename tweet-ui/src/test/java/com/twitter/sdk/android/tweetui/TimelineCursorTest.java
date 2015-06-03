@@ -17,21 +17,30 @@
 
 package com.twitter.sdk.android.tweetui;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.annotation.Config;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
+import static org.junit.Assert.assertEquals;
 
-public class TimelineCursorTest extends FabricAndroidTestCase {
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, emulateSdk = 21)
+public class TimelineCursorTest {
     private static final Long TEST_MAX_POSITION = 200L;
     private static final Long TEST_MIN_POSITION = 100L;
 
+    @Test
     public void testConstructor() {
         final TimelineCursor cursor = new TimelineCursor(TEST_MIN_POSITION, TEST_MAX_POSITION);
         assertEquals(TEST_MIN_POSITION, cursor.minPosition);
         assertEquals(TEST_MAX_POSITION, cursor.maxPosition);
     }
 
+    @Test
     public void testConstructor_withList() {
         final List<TestItem> testItems = new ArrayList<>();
         testItems.add(new TestItem(TEST_MAX_POSITION));

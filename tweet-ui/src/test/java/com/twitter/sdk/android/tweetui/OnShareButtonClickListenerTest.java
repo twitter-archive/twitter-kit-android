@@ -23,8 +23,16 @@ import android.content.res.Resources;
 
 import com.twitter.sdk.android.core.models.TweetBuilder;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.annotation.Config;
+
 import static org.mockito.Mockito.*;
 
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, emulateSdk = 21)
 public class OnShareButtonClickListenerTest extends EnglishLocaleTestCase {
 
     private static final String REQUIRED_SEND_ACTION = Intent.ACTION_SEND;
@@ -38,13 +46,15 @@ public class OnShareButtonClickListenerTest extends EnglishLocaleTestCase {
     private OnShareButtonClickListener listener;
     private Resources resources;
 
+    @Before
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
         listener = new OnShareButtonClickListener(TestFixtures.TEST_TWEET);
         resources = getContext().getResources();
     }
 
+    @Test
     public void testOnClick_nullTweet() {
         final OnShareButtonClickListener listener = new OnShareButtonClickListener(null);
         final Context context = mock(Context.class);
@@ -52,6 +62,7 @@ public class OnShareButtonClickListenerTest extends EnglishLocaleTestCase {
         verify(context, times(0)).startActivity(any(Intent.class));
     }
 
+    @Test
     public void testOnClick_nullTweetUser() {
         final OnShareButtonClickListener listener = new OnShareButtonClickListener(
                 new TweetBuilder().build());
@@ -60,22 +71,26 @@ public class OnShareButtonClickListenerTest extends EnglishLocaleTestCase {
         verify(context, times(0)).startActivity(any(Intent.class));
     }
 
+    @Test
     public void testOnClick_tweetWithData() {
         final Context context = mock(Context.class);
         listener.onClick(context, resources);
         verify(context, times(1)).startActivity(any(Intent.class));
     }
 
+    @Test
     public void testGetShareContent() {
         final String shareContent = listener.getShareContent(getContext().getResources());
         assertEquals(A_SHARE_TEXT, shareContent);
     }
 
+    @Test
     public void testGetShareSubject() {
         final String shareSubject = listener.getShareSubject(getContext().getResources());
         assertEquals(A_SHARE_SUBJECT, shareSubject);
     }
 
+    @Test
     public void testLaunchShareIntent_startsActivity() {
         final Intent intent = mock(Intent.class);
         final Context context = mock(Context.class);
@@ -83,6 +98,7 @@ public class OnShareButtonClickListenerTest extends EnglishLocaleTestCase {
         verify(context, times(1)).startActivity(intent);
     }
 
+    @Test
     public void testGetShareIntent() {
         final Intent intent = listener.getShareIntent(A_SHARE_SUBJECT, A_SHARE_TEXT);
         assertEquals(REQUIRED_SEND_ACTION, intent.getAction());

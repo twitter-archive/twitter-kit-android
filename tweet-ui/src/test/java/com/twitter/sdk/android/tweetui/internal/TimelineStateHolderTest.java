@@ -17,13 +17,21 @@
 
 package com.twitter.sdk.android.tweetui.internal;
 
-import android.test.AndroidTestCase;
-
+import com.twitter.sdk.android.tweetui.BuildConfig;
 import com.twitter.sdk.android.tweetui.TimelineCursor;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.annotation.Config;
+
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
-public class TimelineStateHolderTest extends AndroidTestCase {
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, emulateSdk = 21)
+public class TimelineStateHolderTest {
     private static final Long ANY_POSITION = 1234L;
     private static final Long TEST_MIN_POSITION = 1111L;
     private static final Long TEST_MAX_POSITION = 3333L;
@@ -32,12 +40,13 @@ public class TimelineStateHolderTest extends AndroidTestCase {
 
     private TimelineCursor mockTimelineCursor;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
+
         mockTimelineCursor = mock(TimelineCursor.class);
     }
 
+    @Test
     public void testConstructor() {
         final TimelineStateHolder holder = new TimelineStateHolder();
         assertNull(holder.nextCursor);
@@ -45,6 +54,7 @@ public class TimelineStateHolderTest extends AndroidTestCase {
         assertFalse(holder.requestInFlight.get());
     }
 
+    @Test
     public void testInternalConstructor() {
         final TimelineStateHolder holder = new TimelineStateHolder(TEST_TIMELINE_CURSOR,
                 TEST_TIMELINE_CURSOR);
@@ -53,6 +63,7 @@ public class TimelineStateHolderTest extends AndroidTestCase {
         assertFalse(holder.requestInFlight.get());
     }
 
+    @Test
     public void testResetCursors() {
         final TimelineStateHolder holder = new TimelineStateHolder(TEST_TIMELINE_CURSOR,
                 TEST_TIMELINE_CURSOR);
@@ -61,17 +72,20 @@ public class TimelineStateHolderTest extends AndroidTestCase {
         assertNull(holder.previousCursor);
     }
 
+    @Test
     public void testPositionForNext() {
         final TimelineStateHolder holder = new TimelineStateHolder(new TimelineCursor(ANY_POSITION,
                 TEST_MAX_POSITION), mockTimelineCursor);
         assertEquals(TEST_MAX_POSITION, holder.positionForNext());
     }
 
+    @Test
     public void testPositionForNext_nullCursor() {
         final TimelineStateHolder holder = new TimelineStateHolder(null, mockTimelineCursor);
         assertNull(holder.positionForNext());
     }
 
+    @Test
     public void testSetNextCursor() {
         final TimelineCursor previousCursor = new TimelineCursor(ANY_POSITION, ANY_POSITION);
         final TimelineStateHolder holder = new TimelineStateHolder(
@@ -83,6 +97,7 @@ public class TimelineStateHolderTest extends AndroidTestCase {
     }
 
     // first next load will set both nextCursor and previousCursor
+    @Test
     public void testSetNextCursor_firstLoad() {
         final TimelineStateHolder holder = new TimelineStateHolder();
         holder.setNextCursor(TEST_TIMELINE_CURSOR);
@@ -90,17 +105,20 @@ public class TimelineStateHolderTest extends AndroidTestCase {
         assertEquals(TEST_TIMELINE_CURSOR, holder.previousCursor);
     }
 
+    @Test
     public void testPositionForPrevious() {
         final TimelineStateHolder holder = new TimelineStateHolder(mockTimelineCursor,
                 new TimelineCursor(TEST_MIN_POSITION, ANY_POSITION));
         assertEquals(TEST_MIN_POSITION, holder.positionForPrevious());
     }
 
+    @Test
     public void testPositionForPrevious_nullCursor() {
         final TimelineStateHolder holder = new TimelineStateHolder(mockTimelineCursor, null);
         assertNull(holder.positionForPrevious());
     }
 
+    @Test
     public void testSetPreviousCursor() {
         final TimelineCursor nextCursor = new TimelineCursor(ANY_POSITION, ANY_POSITION);
         final TimelineStateHolder holder = new TimelineStateHolder(nextCursor,
@@ -111,6 +129,7 @@ public class TimelineStateHolderTest extends AndroidTestCase {
     }
 
     // first previous load will set both nextCursor and previousCursor
+    @Test
     public void testSetPreviousCursor_firstLoad() {
         final TimelineStateHolder holder = new TimelineStateHolder();
         holder.setPreviousCursor(TEST_TIMELINE_CURSOR);
@@ -118,6 +137,7 @@ public class TimelineStateHolderTest extends AndroidTestCase {
         assertEquals(TEST_TIMELINE_CURSOR, holder.previousCursor);
     }
 
+    @Test
     public void testStartTimelineRequest() {
         final TimelineStateHolder holder = new TimelineStateHolder();
         assertFalse(holder.requestInFlight.get());
@@ -126,6 +146,7 @@ public class TimelineStateHolderTest extends AndroidTestCase {
         assertFalse(holder.startTimelineRequest());
     }
 
+    @Test
     public void testFinishTimelineRequest() {
         final TimelineStateHolder holder = new TimelineStateHolder();
         holder.requestInFlight.set(true);

@@ -51,6 +51,16 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
+
+    // Forcibly add debug and the generated "R" files onto the test classpath
+    sourceSets {
+        test.java.srcDirs += "build/generated/source/r/debug"
+        test.java.srcDirs += "src/debug"
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -60,8 +70,22 @@ dependencies {
     compile rootProject.picasso
     compile rootProject.supportV4
 
+    debugCompile rootProject.mockito
+
     androidTestCompile rootProject.retrofitMock
     androidTestCompile rootProject.mockito
     androidTestCompile rootProject.dexmakerMockito
     androidTestCompile rootProject.fabricTest
+
+    testCompile rootProject.fabricTest
+    testCompile rootProject.mockito
+    testCompile rootProject.junit
+    testCompile rootProject.mavenAntTasks
+    testCompile(rootProject.roboelectric) {
+        exclude group: 'commons-logging', module: 'commons-logging'
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+    }
+    testCompile (rootProject.junitAddons) {
+        transitive = false
+    }
 }

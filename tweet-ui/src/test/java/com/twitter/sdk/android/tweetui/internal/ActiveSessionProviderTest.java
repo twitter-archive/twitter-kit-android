@@ -21,26 +21,33 @@ import com.twitter.sdk.android.core.AppSession;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.tweetui.BuildConfig;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.*;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.when;
-
-public class ActiveSessionProviderTest extends FabricAndroidTestCase {
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, emulateSdk = 21)
+public class ActiveSessionProviderTest {
 
     private List<SessionManager<? extends Session>> sessionManagers;
     private SessionManager<TwitterSession> mockTwitterSessionManager;
     private SessionManager<AppSession> mockAppSessionManager;
     private ActiveSessionProvider activeSessionProvider;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
+
         sessionManagers = new ArrayList<>();
         mockTwitterSessionManager = mock(SessionManager.class);
         mockAppSessionManager = mock(SessionManager.class);
@@ -51,10 +58,12 @@ public class ActiveSessionProviderTest extends FabricAndroidTestCase {
         activeSessionProvider = new ActiveSessionProvider(sessionManagers);
     }
 
+    @Test
     public void testGetActiveSession_activeSessionDoesNotExist() {
         assertNull(activeSessionProvider.getActiveSession());
     }
 
+    @Test
     public void testGetActiveSession_activeSessionFirstManager() {
         final TwitterSession mockSession = mock(TwitterSession.class);
         when(mockTwitterSessionManager.getActiveSession()).thenReturn(mockSession);
@@ -64,6 +73,7 @@ public class ActiveSessionProviderTest extends FabricAndroidTestCase {
         verifyZeroInteractions(mockAppSessionManager);
     }
 
+    @Test
     public void testGetActiveSession_activeSessionSecondManager() {
         final AppSession mockSession = mock(AppSession.class);
         when(mockAppSessionManager.getActiveSession()).thenReturn(mockSession);

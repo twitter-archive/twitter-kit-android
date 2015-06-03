@@ -20,14 +20,22 @@ package com.twitter.sdk.android.tweetui;
 import com.twitter.sdk.android.core.models.User;
 import com.twitter.sdk.android.core.models.UserBuilder;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.annotation.Config;
 
-public class UserUtilsTest extends FabricAndroidTestCase {
+import static org.junit.Assert.assertEquals;
+
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, emulateSdk = 21)
+public class UserUtilsTest {
     private User user;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
+
         user = new UserBuilder()
                 .setId(1)
                 .setProfileImageUrlHttps(
@@ -35,11 +43,13 @@ public class UserUtilsTest extends FabricAndroidTestCase {
                 ).build();
     }
 
+    @Test
     public void testGetProfileImageUrlHttps_nullSize() {
         assertEquals(user.profileImageUrlHttps,
                 UserUtils.getProfileImageUrlHttps(user, null));
     }
 
+    @Test
     public void testGetProfileImageUrlHttps_reasonablySmall() {
         final String reasonableSize = "https://pbs.twimg.com/profile_images/2284174872/" +
                   "7df3h38zabcvjylnyfe3_reasonably_small.png";
@@ -47,11 +57,13 @@ public class UserUtilsTest extends FabricAndroidTestCase {
                 UserUtils.getProfileImageUrlHttps(user, UserUtils.AvatarSize.REASONABLY_SMALL));
     }
 
+    @Test
     public void testFormatScreenName_alreadyFormatted() {
         final String test = "@test";
         assertEquals(test, UserUtils.formatScreenName(test));
     }
 
+    @Test
     public void testFormatScreenName() {
         final String test = "@test";
         assertEquals("@test", UserUtils.formatScreenName(test));

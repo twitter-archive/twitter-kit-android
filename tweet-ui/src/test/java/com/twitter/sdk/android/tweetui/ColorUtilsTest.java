@@ -18,30 +18,44 @@
 package com.twitter.sdk.android.tweetui;
 
 import android.graphics.Color;
-import android.test.AndroidTestCase;
 
-public class ColorUtilsTest extends AndroidTestCase {
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.annotation.Config;
 
+import static org.junit.Assert.*;
+
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, emulateSdk = 21)
+public class ColorUtilsTest {
+
+    @Test
     public void testIsLightColor_blue() {
         assertFalse(ColorUtils.isLightColor(Color.BLUE));
     }
 
+    @Test
     public void testIsLightColor_black() {
         assertFalse(ColorUtils.isLightColor(Color.BLACK));
     }
 
+    @Test
     public void testIsLightColor_white() {
         assertTrue(ColorUtils.isLightColor(Color.WHITE));
     }
 
+    @Test
     public void testCalculateOpacityTransform_zeroOpacity() {
         assertEquals(Color.WHITE, ColorUtils.calculateOpacityTransform(0, Color.BLUE, Color.WHITE));
     }
 
+    @Test
     public void testCalculateOpacityTransform_fullOpacity() {
         assertEquals(Color.BLUE, ColorUtils.calculateOpacityTransform(1, Color.BLUE, Color.WHITE));
     }
 
+    @Test
     public void testCalculateOpacityTransform_returnsFullOpacity() {
         final int color = ColorUtils.calculateOpacityTransform(0, Color.BLUE, Color.WHITE);
         assertEquals(0xFF000000, color & 0xFF000000);

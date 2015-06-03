@@ -26,29 +26,36 @@ import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.models.Identifiable;
 import com.twitter.sdk.android.tweetui.internal.TimelineDelegate;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.annotation.Config;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
-public class TimelineListAdapterTest extends FabricAndroidTestCase {
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, emulateSdk = 21)
+public class TimelineListAdapterTest extends TweetUiAndroidTestCase {
     private static final int TEST_POSITION = 10;
     private TimelineListAdapter<TestItem> listAdapter;
     private TimelineDelegate<TestItem> mockTimelineDelegate;
 
+    @Before
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
         mockTimelineDelegate = mock(TestTimelineDelegate.class);
     }
 
+    @Test
     public void testConstructor() {
         listAdapter = new TestTimelineListAdapter<>(getContext(), mockTimelineDelegate);
         verify(mockTimelineDelegate).refresh(null);
     }
 
+    @Test
     public void testConstructor_nullTimeline() {
         try {
             new TestTimelineListAdapter<>(getContext(), (Timeline) null);
@@ -58,6 +65,7 @@ public class TimelineListAdapterTest extends FabricAndroidTestCase {
         }
     }
 
+    @Test
     public void testRefresh() {
         listAdapter = new TestTimelineListAdapter<>(getContext(), mockTimelineDelegate);
         final Callback<TimelineResult<TestItem>> mockCallback = mock(Callback.class);
@@ -65,30 +73,35 @@ public class TimelineListAdapterTest extends FabricAndroidTestCase {
         verify(mockTimelineDelegate).refresh(mockCallback);
     }
 
+    @Test
     public void testGetCount() {
         listAdapter = new TestTimelineListAdapter<>(getContext(), mockTimelineDelegate);
         listAdapter.getCount();
         verify(mockTimelineDelegate).getCount();
     }
 
+    @Test
     public void testGetItem() {
         listAdapter = new TestTimelineListAdapter<>(getContext(), mockTimelineDelegate);
         listAdapter.getItem(TEST_POSITION);
         verify(mockTimelineDelegate).getItem(TEST_POSITION);
     }
 
+    @Test
     public void testGetItemId() {
         listAdapter = new TestTimelineListAdapter<>(getContext(), mockTimelineDelegate);
         listAdapter.getItemId(TEST_POSITION);
         verify(mockTimelineDelegate).getItemId(TEST_POSITION);
     }
 
+    @Test
     public void testRegisterDataSetObserver() {
         listAdapter = new TestTimelineListAdapter<>(getContext(), mockTimelineDelegate);
         listAdapter.registerDataSetObserver(mock(DataSetObserver.class));
         verify(mockTimelineDelegate, times(1)).registerDataSetObserver(any(DataSetObserver.class));
     }
 
+    @Test
     public void testUnregisterDataSetObserver() {
         listAdapter = new TestTimelineListAdapter<>(getContext(), mockTimelineDelegate);
         listAdapter.unregisterDataSetObserver(mock(DataSetObserver.class));
@@ -96,12 +109,14 @@ public class TimelineListAdapterTest extends FabricAndroidTestCase {
                 .unregisterDataSetObserver(any(DataSetObserver.class));
     }
 
+    @Test
     public void testNotifyDataSetChanged() {
         listAdapter = new TestTimelineListAdapter<>(getContext(), mockTimelineDelegate);
         listAdapter.notifyDataSetChanged();
         verify(mockTimelineDelegate, times(1)).notifyDataSetChanged();
     }
 
+    @Test
     public void testNotifyDataSetInvalidated() {
         listAdapter = new TestTimelineListAdapter<>(getContext(), mockTimelineDelegate);
         listAdapter.notifyDataSetInvalidated();

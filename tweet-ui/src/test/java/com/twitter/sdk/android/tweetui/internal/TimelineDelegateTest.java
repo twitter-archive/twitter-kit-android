@@ -19,26 +19,34 @@ package com.twitter.sdk.android.tweetui.internal;
 
 import android.database.DataSetObservable;
 import android.database.DataSetObserver;
-import android.test.AndroidTestCase;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.tweetui.BuildConfig;
 import com.twitter.sdk.android.tweetui.TestItem;
 import com.twitter.sdk.android.tweetui.Timeline;
 import com.twitter.sdk.android.tweetui.TimelineCursor;
 import com.twitter.sdk.android.tweetui.TimelineResult;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class TimelineDelegateTest extends AndroidTestCase {
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, emulateSdk = 21)
+public class TimelineDelegateTest {
     private static final TestItem TEST_ITEM_1 = new TestItem(1111L);
     private static final TestItem TEST_ITEM_2 = new TestItem(2222L);
     private static final TestItem TEST_ITEM_3 = new TestItem(3333L);
@@ -64,9 +72,9 @@ public class TimelineDelegateTest extends AndroidTestCase {
     private List<TestItem> testExtraItems = new ArrayList<>();
     private static Result<TimelineResult<TestItem>> testResult;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
+
         mockTimeline = mock(Timeline.class);
         mockObservable = mock(DataSetObservable.class);
         // lists of items ordered from larger id to smaller
@@ -78,6 +86,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
         testResult = new Result<>(new TimelineResult<>(TEST_TIMELINE_CURSOR, testItems), null);
     }
 
+    @Test
     public void testConstructor() {
         delegate = new TimelineDelegate<>(mockTimeline, mockObservable, testItems);
         assertEquals(mockTimeline, delegate.timeline);
@@ -89,6 +98,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
         assertNull(delegate.timelineStateHolder.positionForPrevious());
     }
 
+    @Test
     public void testConstructor_defaults() {
         delegate = new TimelineDelegate<>(mockTimeline);
         assertEquals(mockTimeline, delegate.timeline);
@@ -100,6 +110,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
         assertNull(delegate.timelineStateHolder.positionForPrevious());
     }
 
+    @Test
     public void testConstructor_nullTimeline() {
         try {
             delegate = new TimelineDelegate<>(null);
@@ -109,6 +120,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
         }
     }
 
+    @Test
     public void testGetCount() {
         delegate = new TimelineDelegate<>(mockTimeline);
         assertEquals(0, delegate.getCount());
@@ -116,12 +128,14 @@ public class TimelineDelegateTest extends AndroidTestCase {
         assertEquals(testItems.size(), delegate.getCount());
     }
 
+    @Test
     public void testGetItem() {
         delegate = new TimelineDelegate<>(mockTimeline, null, testItems);
         assertEquals(TEST_ITEM_2, delegate.getItem(0));
         assertEquals(TEST_ITEM_1, delegate.getItem(1));
     }
 
+    @Test
     public void testGetLastItem_loadsPrevious() {
         final Timeline<TestItem> fakeTimeline = new FakeItemTimeline(NUM_ITEMS, ANY_POSITION,
                 ANY_POSITION);
@@ -135,6 +149,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
         verify(mockObservable, times(2)).notifyChanged();
     }
 
+    @Test
     public void testGetNonLastItem_doesNotLoadPrevious() {
         final Timeline<TestItem> fakeTimeline = new FakeItemTimeline(NUM_ITEMS, ANY_POSITION,
                 ANY_POSITION);
@@ -149,12 +164,14 @@ public class TimelineDelegateTest extends AndroidTestCase {
         verify(mockObservable, times(1)).notifyChanged();
     }
 
+    @Test
     public void testGetItemId() {
         delegate = new TimelineDelegate<>(mockTimeline, null, testItems);
         assertEquals(TEST_ITEM_2.getId(), delegate.getItemId(0));
         assertEquals(TEST_ITEM_1.getId(), delegate.getItemId(1));
     }
 
+    @Test
     public void testWithinMaxCapacity() {
         delegate = new TimelineDelegate<>(mockTimeline);
         assertTrue(delegate.withinMaxCapacity());
@@ -163,6 +180,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
         assertFalse(delegate.withinMaxCapacity());
     }
 
+    @Test
     public void testIsLastPosition() {
         testItems = new LinkedList<>();
         TestItem.populateList(testItems, NUM_ITEMS);
@@ -174,6 +192,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
 
     // reset, next, previous
 
+    @Test
     public void testRefresh_resetsTimelineCursors() {
         delegate = new TimelineDelegate<>(mockTimeline);
         delegate.timelineStateHolder.setNextCursor(new TimelineCursor(ANY_POSITION, ANY_POSITION));
@@ -184,12 +203,14 @@ public class TimelineDelegateTest extends AndroidTestCase {
         assertNull(delegate.timelineStateHolder.positionForPrevious());
     }
 
+    @Test
     public void testRefresh_callsNextForLatest() {
         delegate = new TimelineDelegate<>(mockTimeline);
         delegate.refresh(null);
         verify(mockTimeline).next(isNull(Long.class), any(TimelineDelegate.NextCallback.class));
     }
 
+    @Test
     public void testRefresh_replacesItems() {
         // refresh replaces initial items
         final Timeline<TestItem> fakeTimeline = new FakeItemTimeline(NUM_ITEMS, ANY_POSITION,
@@ -202,6 +223,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
         verify(mockObservable).notifyChanged();
     }
 
+    @Test
     public void testNext_addsItems() {
         final Timeline<TestItem> fakeTimeline = new FakeItemTimeline(NUM_ITEMS, ANY_POSITION,
                 ANY_POSITION);
@@ -214,6 +236,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
         verify(mockObservable, times(2)).notifyChanged();
     }
 
+    @Test
     public void testNext_doesNotAddItemsAtBeginningOfTimeline() {
         // when a Timeline successfully returns an empty set of items, there are no next items (yet)
         LinkedList<TestItem> initialItems = new LinkedList<>();
@@ -228,6 +251,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
         verifyZeroInteractions(mockObservable);
     }
 
+    @Test
     public void testNext_updatesPositionForNext() {
         final Timeline<TestItem> fakeTimeline = new FakeItemTimeline(NUM_ITEMS, ANY_POSITION,
                 TEST_MAX_POSITION);
@@ -237,6 +261,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
         assertEquals(TEST_MAX_POSITION, delegate.timelineStateHolder.positionForNext());
     }
 
+    @Test
     public void testNext_doesNotUpdatePositionAtBeginningOfTimeline() {
         final Timeline<TestItem> fakeEndTimeline = new FakeItemTimeline(ZERO_ITEMS, ANY_POSITION,
                 ANY_POSITION);
@@ -246,6 +271,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
         assertNull(delegate.timelineStateHolder.positionForNext());
     }
 
+    @Test
     public void testPrevious_addsItems() {
         final Timeline<TestItem> fakeTimeline = new FakeItemTimeline(NUM_ITEMS, ANY_POSITION,
                 ANY_POSITION);
@@ -258,6 +284,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
         verify(mockObservable, times(2)).notifyChanged();
     }
 
+    @Test
     public void testPrevious_doesNotAddItemsAtEndOfTimeline() {
         // when a Timeline successfully returns an empty set of items, its end has been reached
         LinkedList<TestItem> initialItems = new LinkedList<>();
@@ -272,6 +299,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
         verifyZeroInteractions(mockObservable);
     }
 
+    @Test
     public void testPrevious_updatesPositionForPrevious() {
         final Timeline<TestItem> fakeTimeline = new FakeItemTimeline(NUM_ITEMS, TEST_MIN_POSITION,
                 ANY_POSITION);
@@ -281,6 +309,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
         assertEquals(TEST_MIN_POSITION, delegate.timelineStateHolder.positionForPrevious());
     }
 
+    @Test
     public void testPrevious_doesNotUpdatePositionAtEndOfTimeline() {
         final Timeline<TestItem> fakeEndTimeline = new FakeItemTimeline(ZERO_ITEMS, ANY_POSITION,
                 ANY_POSITION);
@@ -292,6 +321,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
 
     // loadNext, loadPrevious
 
+    @Test
     public void testLoadNext() {
         delegate = new TimelineDelegate<>(mockTimeline);
         final Callback<TimelineResult<TestItem>> testCb = delegate.new NextCallback(null,
@@ -300,6 +330,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
         verify(mockTimeline).next(TEST_MIN_POSITION, testCb);
     }
 
+    @Test
     public void testLoadNext_respectsMaxCapacity() {
         delegate = new TimelineDelegate<>(mockTimeline);
         TestItem.populateList(delegate.itemList, TimelineDelegate.CAPACITY);
@@ -312,6 +343,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
         assertEquals(exceptionCaptor.getValue().getMessage(), REQUIRED_MAX_CAPACITY_ERROR);
     }
 
+    @Test
     public void testLoadNext_respectsRequestInFlight() {
         delegate = new TimelineDelegate<>(mockTimeline);
         delegate.timelineStateHolder.startTimelineRequest();
@@ -324,6 +356,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
         assertEquals(exceptionCaptor.getValue().getMessage(), REQUIRED_REQUEST_IN_FLIGHT_ERROR);
     }
 
+    @Test
     public void testLoadPrevious() {
         delegate = new TimelineDelegate<>(mockTimeline);
         final Callback<TimelineResult<TestItem>> testCb = delegate.new PreviousCallback(
@@ -332,6 +365,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
         verify(mockTimeline).previous(TEST_MAX_POSITION, testCb);
     }
 
+    @Test
     public void testLoadPrevious_respectsMaxCapacity() {
         delegate = new TimelineDelegate<>(mockTimeline);
         TestItem.populateList(delegate.itemList, TimelineDelegate.CAPACITY);
@@ -344,6 +378,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
         assertEquals(exceptionCaptor.getValue().getMessage(), REQUIRED_MAX_CAPACITY_ERROR);
     }
 
+    @Test
     public void testLoadPrevious_respectsRequestInFlight() {
         delegate = new TimelineDelegate<>(mockTimeline);
         delegate.timelineStateHolder.startTimelineRequest();
@@ -359,6 +394,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
     /* nested Callbacks */
 
     // should unconditionally set requestInFlight to false
+    @Test
     public void testDefaultCallback_successCallsFinishTimelineRequest() {
         delegate = new TimelineDelegate<>(mockTimeline);
         final TimelineStateHolder mockHolder = mock(TimelineStateHolder.class);
@@ -367,6 +403,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
         verify(mockHolder).finishTimelineRequest();
     }
 
+    @Test
     public void testDefaultCallback_successCallsDeveloperCallback() {
         final Callback<TimelineResult<TestItem>> developerCb = mock(Callback.class);
         delegate = new TimelineDelegate<>(mockTimeline);
@@ -376,6 +413,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
         verify(developerCb).success(testResult);
     }
 
+    @Test
     public void testDefaultCallback_successHandlesNullDeveloperCallback() {
         delegate = new TimelineDelegate<>(mockTimeline);
         final TimelineDelegate.DefaultCallback cb = delegate.new DefaultCallback(null,
@@ -388,6 +426,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
     }
 
     // should unconditionally set requestInFlight to false
+    @Test
     public void testDefaultCallback_failureCallsFinishTimelineRequest() {
         delegate = new TimelineDelegate<>(mockTimeline);
         final TimelineStateHolder mockHolder = mock(TimelineStateHolder.class);
@@ -396,6 +435,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
         verify(mockHolder).finishTimelineRequest();
     }
 
+    @Test
     public void testDefaultCallback_failureCallsDeveloperCallback() {
         final Callback<TimelineResult<TestItem>> developerCb = mock(Callback.class);
         delegate = new TimelineDelegate<>(mockTimeline);
@@ -405,6 +445,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
         verify(developerCb).failure(TEST_TWITTER_EXCEPTION);
     }
 
+    @Test
     public void testDefaultCallback_failureHandlesNullDeveloperCallback() {
         delegate = new TimelineDelegate<>(mockTimeline);
         final TimelineDelegate.DefaultCallback cb = delegate.new DefaultCallback(null,
@@ -417,6 +458,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
     }
 
     // should prepend result items, set next cursor, and call notifyChanged
+    @Test
     public void testNextCallback_successReceivedItems() {
         delegate = new TimelineDelegate<>(mockTimeline, mockObservable, testItems);
         final TimelineStateHolder timelineStateHolder = new TimelineStateHolder(
@@ -439,6 +481,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
     }
 
     // should set both nextCursor and previousCursor to be non-null
+    @Test
     public void testNextCallback_successFirstReceivedItems() {
         delegate = new TimelineDelegate<>(mockTimeline, mockObservable, testItems);
         final TimelineStateHolder timelineStateHolder = new TimelineStateHolder();
@@ -451,6 +494,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
     }
 
     // should do nothing
+    @Test
     public void testNextCallback_successReceivedZeroItems() {
         delegate = new TimelineDelegate<>(mockTimeline, mockObservable, testItems);
         final TimelineStateHolder timelineStateHolder = new TimelineStateHolder();
@@ -466,6 +510,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
     }
 
     // should clear items with result items, set next cursor, and call notifyChanged
+    @Test
     public void testRefreshCallback_successReceivedItems() {
         delegate = new TimelineDelegate<>(mockTimeline, mockObservable, testItems);
         final TimelineStateHolder timelineStateHolder = new TimelineStateHolder(
@@ -486,6 +531,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
     }
 
     // should do nothing
+    @Test
     public void testRefreshCallback_successReceivedZeroItems() {
         delegate = new TimelineDelegate<>(mockTimeline, mockObservable, testItems);
         final TimelineStateHolder timelineStateHolder = new TimelineStateHolder();
@@ -501,6 +547,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
     }
 
     // should append result items, set previous cursor, and call notifyChanged
+    @Test
     public void testPreviousCallback_successReceivedItems() {
         delegate = new TimelineDelegate<>(mockTimeline, mockObservable, testItems);
         final TimelineStateHolder timelineStateHolder = new TimelineStateHolder(
@@ -523,6 +570,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
     }
 
     // should set both nextCursor and previousCursor to be non-null
+    @Test
     public void testPreviousCallback_successFirstReceivedItems() {
         delegate = new TimelineDelegate<>(mockTimeline, mockObservable, testItems);
         final TimelineStateHolder timelineStateHolder = new TimelineStateHolder();
@@ -536,6 +584,7 @@ public class TimelineDelegateTest extends AndroidTestCase {
 
 
     // should do nothing
+    @Test
     public void testPreviousCallback_successReceivedZeroItems() {
         delegate = new TimelineDelegate<>(mockTimeline, mockObservable, testItems);
         final TimelineStateHolder timelineStateHolder = new TimelineStateHolder();
@@ -552,24 +601,28 @@ public class TimelineDelegateTest extends AndroidTestCase {
 
     /* test DataSetObservable */
 
+    @Test
     public void testRegisterDataSetObserver() {
         delegate = new TimelineDelegate<>(mockTimeline, mockObservable, null);
         delegate.registerDataSetObserver(mock(DataSetObserver.class));
         verify(mockObservable, times(1)).registerObserver(any(DataSetObserver.class));
     }
 
+    @Test
     public void testUnregisterDataSetObserver() {
         delegate = new TimelineDelegate<>(mockTimeline, mockObservable, null);
         delegate.unregisterDataSetObserver(mock(DataSetObserver.class));
         verify(mockObservable, times(1)).unregisterObserver(any(DataSetObserver.class));
     }
 
+    @Test
     public void testNotifyDataSetChanged() {
         delegate = new TimelineDelegate<>(mockTimeline, mockObservable, null);
         delegate.notifyDataSetChanged();
         verify(mockObservable, times(1)).notifyChanged();
     }
 
+    @Test
     public void testNotifyDataSetInvalidated() {
         delegate = new TimelineDelegate<>(mockTimeline, mockObservable, null);
         delegate.notifyDataSetInvalidated();

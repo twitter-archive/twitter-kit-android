@@ -19,13 +19,19 @@ package com.twitter.sdk.android.tweetui;
 
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.annotation.Config;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
-import static org.mockito.Mockito.*;
-
-public class BaseTimelineTest extends FabricAndroidTestCase {
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, emulateSdk = 21)
+public class BaseTimelineTest {
     private static final String ILLEGAL_TWEET_UI_MESSAGE = "TweetUi instance must not be null";
     private static final Long TEST_ID = 200L;
     private static final String TEST_SCRIBE_SECTION = "test";
@@ -39,12 +45,14 @@ public class BaseTimelineTest extends FabricAndroidTestCase {
     private static final String REQUIRED_TFW_ELEMENT = "initial";
     private static final String REQUIRED_IMPRESSION_ACTION = "impression";
 
+    @Test
     public void testConstructor() {
         final TweetUi tweetUi = mock(TweetUi.class);
         final TestBaseTimeline baseTimeline = new TestBaseTimeline(tweetUi);
         assertEquals(tweetUi, baseTimeline.tweetUi);
     }
 
+    @Test
     public void testConstructor_nullTweetUi() {
         try {
             new TestBaseTimeline(null);
@@ -54,6 +62,7 @@ public class BaseTimelineTest extends FabricAndroidTestCase {
         }
     }
 
+    @Test
     public void testConstructor_scribesImpression() {
         final TweetUi tweetUi = mock(TestTweetUi.class);
         final ArgumentCaptor<EventNamespace> sdkNamespaceCaptor
@@ -82,11 +91,13 @@ public class BaseTimelineTest extends FabricAndroidTestCase {
         assertEquals(REQUIRED_IMPRESSION_ACTION, tfwNs.action);
     }
 
+    @Test
     public void testDecrementMaxId_positive() {
         final Long correctedId = BaseTimeline.decrementMaxId(TEST_ID);
         assertEquals((Long) (TEST_ID - 1L), correctedId);
     }
 
+    @Test
     public void testDecrementMaxId_nullId() {
         assertNull(BaseTimeline.decrementMaxId(null));
     }

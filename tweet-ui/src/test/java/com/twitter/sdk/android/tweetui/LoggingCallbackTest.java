@@ -17,20 +17,28 @@
 
 package com.twitter.sdk.android.tweetui;
 
+import io.fabric.sdk.android.Logger;
+
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
-import io.fabric.sdk.android.Logger;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.annotation.Config;
 
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-public class LoggingCallbackTest extends FabricAndroidTestCase {
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, emulateSdk = 21)
+public class LoggingCallbackTest {
 
+    @Test
     public void testFailure_callsCb() {
         final Callback<Tweet> developerCallback = mock(Callback.class);
         final LoggingCallback<Tweet> cb
@@ -39,6 +47,7 @@ public class LoggingCallbackTest extends FabricAndroidTestCase {
         verify(developerCallback).failure(any(TwitterException.class));
     }
 
+    @Test
     public void testFailure_handlesNullCb() {
         final Logger logger = mock(Logger.class);
         final LoggingCallback<Tweet> cb = new TestLoggingCallback<>(null, logger);
@@ -50,6 +59,7 @@ public class LoggingCallbackTest extends FabricAndroidTestCase {
         }
     }
 
+    @Test
     public void testFailure_logsFailure() {
         final Callback<Tweet> developerCallback = mock(Callback.class);
         final Logger logger = mock(Logger.class);

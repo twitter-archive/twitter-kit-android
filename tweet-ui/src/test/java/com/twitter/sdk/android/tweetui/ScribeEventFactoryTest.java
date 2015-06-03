@@ -21,9 +21,16 @@ import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.internal.scribe.ScribeEvent;
 import com.twitter.sdk.android.core.internal.scribe.SyndicatedSdkImpressionEvent;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.annotation.Config;
 
-public class ScribeEventFactoryTest extends FabricAndroidTestCase {
+import static org.junit.Assert.assertEquals;
+
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, emulateSdk = 21)
+public class ScribeEventFactoryTest {
     private static long ANY_TIMESTAMP = 0;
     private static String ANY_ADVERTISING_ID = "id";
     private static String ANY_LANGUAGE = "lang";
@@ -32,6 +39,7 @@ public class ScribeEventFactoryTest extends FabricAndroidTestCase {
     private static final String SDK_CLIENT_NAME = "android";
     private static final String OTHER_CLIENT_NAME = "other";
 
+    @Test
     public void testNewScribeEvent_tfwEvent() {
         final EventNamespace ns
                 = new EventNamespace.Builder().setClient(TFW_CLIENT_NAME).builder();
@@ -40,6 +48,7 @@ public class ScribeEventFactoryTest extends FabricAndroidTestCase {
         assertEquals(SyndicationClientEvent.class, event.getClass());
     }
 
+    @Test
     public void testNewScribeEvent_sdkEvent() {
         final EventNamespace ns
                 = new EventNamespace.Builder().setClient(SDK_CLIENT_NAME).builder();
@@ -48,6 +57,7 @@ public class ScribeEventFactoryTest extends FabricAndroidTestCase {
         assertEquals(SyndicatedSdkImpressionEvent.class, event.getClass());
     }
 
+    @Test
     public void testNewScribeEvent_otherEvent() {
         final EventNamespace ns
                 = new EventNamespace.Builder().setClient(OTHER_CLIENT_NAME).builder();

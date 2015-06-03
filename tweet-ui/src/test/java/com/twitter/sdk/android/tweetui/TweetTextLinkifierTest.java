@@ -23,17 +23,24 @@ import android.text.style.ClickableSpan;
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.UrlEntity;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.annotation.Config;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 
-import static org.mockito.Mockito.*;
-
-public class TweetTextLinkifierTest extends FabricAndroidTestCase {
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, emulateSdk = 21)
+public class TweetTextLinkifierTest {
     static final String BASE_TEXT = "just setting up my twttr";
     static final EntityFactory entityFactory = new EntityFactory();
 
+    @Test
     public void testLinkifyUrls_nullFormattedTweetText() {
         try {
             TweetTextLinkifier.linkifyUrls(null, null, false, 0);
@@ -42,6 +49,7 @@ public class TweetTextLinkifierTest extends FabricAndroidTestCase {
         }
     }
 
+    @Test
     public void testLinkifyUrls_newFormattedTweetText() {
         try {
             TweetTextLinkifier.linkifyUrls(new FormattedTweetText(), null, false, 0);
@@ -50,6 +58,7 @@ public class TweetTextLinkifierTest extends FabricAndroidTestCase {
         }
     }
 
+    @Test
     public void testLinkifyUrls_oneUrlEntity() {
         final String url = "http://t.co/foo";
         final String displayUrl = "dev.twitter.com";
@@ -68,6 +77,7 @@ public class TweetTextLinkifierTest extends FabricAndroidTestCase {
         assertEquals(urlEntity.displayUrl, displayUrlFromEntity);
     }
 
+    @Test
     public void testLinkifyUrls_oneInvalidUrlEntity() {
         final String fullText = "";
         final UrlEntity urlEntity = new UrlEntity("x z", "y", "z", -1, 30);
@@ -80,6 +90,7 @@ public class TweetTextLinkifierTest extends FabricAndroidTestCase {
         assertEquals("", linkifiedText.toString());
     }
 
+    @Test
     public void testLinkifyUrls_linkClickListener() {
         final String url = "http://t.co/foo";
         final String displayUrl = "dev.twitter.com";
@@ -101,6 +112,7 @@ public class TweetTextLinkifierTest extends FabricAndroidTestCase {
         assertEquals(1, clickables.length);
     }
 
+    @Test
     public void testLinkifyUrls_stripPhotoUrlTrue() {
         final FormattedTweetText formattedText = setupPicTwitterEntities();
         final FormattedMediaEntity lastPhotoUrl = formattedText.mediaEntities.get(0);
@@ -114,6 +126,7 @@ public class TweetTextLinkifierTest extends FabricAndroidTestCase {
         assertTrue(!linkifiedText.toString().contains(lastPhotoUrl.displayUrl));
     }
 
+    @Test
     public void testLinkifyUrls_stripPhotoUrlFalse() {
         final FormattedTweetText formattedText = setupPicTwitterEntities();
         final FormattedMediaEntity lastPhotoUrl = formattedText.mediaEntities.get(0);
@@ -147,12 +160,14 @@ public class TweetTextLinkifierTest extends FabricAndroidTestCase {
     /*
      * mergeAndSortEntities method
      */
+    @Test
     public void testMergeAndSortEntities_nullMedia() {
         final List<FormattedUrlEntity> urls
                 = new ArrayList<>();
         assertEquals(urls, TweetTextLinkifier.mergeAndSortEntities(urls, null));
     }
 
+    @Test
     public void testMergeAndSortEntities_sortUrlsAndMedia() {
         final List<FormattedUrlEntity> urls = new ArrayList<>();
         final UrlEntity url = TestFixtures.newUrlEntity(2, 5);

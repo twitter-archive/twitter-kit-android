@@ -17,26 +17,40 @@
 
 package com.twitter.sdk.android.tweetui;
 
-import java.util.Locale;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.annotation.Config;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
+import java.util.Locale;
 
 /**
  * Use this test case if you are making assertions about English specific format strings that will
  * break if the locale changes.
  */
-public class EnglishLocaleTestCase extends FabricAndroidTestCase {
+
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, emulateSdk = 21)
+public class EnglishLocaleTestCase extends TweetUiAndroidTestCase {
     private Locale defaultLocale;
 
+    @Before
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
         defaultLocale = TestUtils.setLocale(getContext(), Locale.ENGLISH);
     }
 
+    @After
     @Override
-    protected void tearDown() throws Exception {
+    public void tearDown() throws Exception {
         super.tearDown();
         TestUtils.setLocale(getContext(), defaultLocale);
     }
+
+    @Test
+    public void test() {}
 }
+
