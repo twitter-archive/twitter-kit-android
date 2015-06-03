@@ -17,9 +17,11 @@
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="twitter_app_name">TwitterSampleApp</string>
+    <string name="twitter_app_name"
+            tools:ignore="UnusedResources">TwitterSampleApp</string>
+    <string name="twitter_sample_activity"
+            tools:ignore="UnusedResources">TwitterSampleActivity</string>
 
-    <string name="twitter_sample_activity">TwitterSampleActivity</string>
     <string name="kit_twittercore">Twitter Core</string>
     <string name="kit_tweetcomposer">Tweet Composer</string>
     <string name="kit_tweetui">Tweet Ui</string>
