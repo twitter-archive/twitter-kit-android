@@ -109,4 +109,16 @@ dependencies {
     }
     androidTestCompile rootProject.mockito
     androidTestCompile rootProject.dexmakerMockito
+
+    testCompile project(path: ':sdk:fabric:fabric', configuration: 'debug')
+    testCompile rootProject.mockito
+    testCompile rootProject.junit
+    testCompile rootProject.mavenAntTasks
+    testCompile(rootProject.roboelectric) {
+        exclude group: 'commons-logging', module: 'commons-logging'
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+    }
+    testCompile (rootProject.junitAddons) {
+        transitive = false
+    }
 }

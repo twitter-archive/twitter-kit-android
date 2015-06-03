@@ -94,4 +94,16 @@ dependencies {
     androidTestCompile rootProject.mockito
     androidTestCompile rootProject.dexmakerMockito
     androidTestCompile rootProject.fabricTest
+
+    testCompile rootProject.fabricTest
+    testCompile rootProject.mockito
+    testCompile rootProject.junit
+    testCompile rootProject.mavenAntTasks
+    testCompile(rootProject.roboelectric) {
+        exclude group: 'commons-logging', module: 'commons-logging'
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+    }
+    testCompile (rootProject.junitAddons) {
+        transitive = false
+    }
 }
