@@ -26,7 +26,7 @@ import android.widget.LinearLayout;
 import com.twitter.sdk.android.tweetui.R;
 
 public class AspectRatioImageViewTest extends AndroidTestCase {
-
+    private static final double TEST_ASPECT_RATIO = 2.0;
     private static final float DELTA = 0.001f;
 
     private AspectRatioImageView getHeightAdjustedView() {
@@ -55,5 +55,39 @@ public class AspectRatioImageViewTest extends AndroidTestCase {
         final ViewGroup group = new LinearLayout(getContext());
         return LayoutInflater.from(getContext()).inflate(
                 R.layout.activity_aspect_ratio_image_view_test, group, true);
+    }
+
+    public void testSetAspectRatio() {
+        final AspectRatioImageView av = new AspectRatioImageView(getContext());
+        av.setAspectRatio(TEST_ASPECT_RATIO);
+        assertEquals(TEST_ASPECT_RATIO, av.getAspectRatio());
+    }
+
+    public void testSetAspectRatio_xml() {
+        final AspectRatioImageView av = getHeightAdjustedView();
+        av.setAspectRatio(TEST_ASPECT_RATIO);
+        assertEquals(TEST_ASPECT_RATIO, av.getAspectRatio());
+    }
+
+    public void testCalculateHeight() {
+        final AspectRatioImageView av = new AspectRatioImageView(getContext());
+        assertEquals(400, av.calculateHeight(600, 1.5));
+        assertEquals(600, av.calculateHeight(300, 0.5));
+        assertEquals(300, av.calculateHeight(300, 1.0));
+        assertEquals(0, av.calculateHeight(0, 1.3));
+        assertEquals(0, av.calculateHeight(100, 0));
+        // sub-pixel space for images mean aspect ratios cannot be respected
+        assertEquals(1, av.calculateHeight(10, 15.0));
+    }
+
+    public void testCalculateWidth() {
+        final AspectRatioImageView av = new AspectRatioImageView(getContext());
+        assertEquals(300, av.calculateWidth(200, 1.5));
+        assertEquals(201, av.calculateWidth(401, 0.5));
+        assertEquals(200, av.calculateWidth(200, 1.0));
+        assertEquals(0, av.calculateWidth(0, 1.3));
+        assertEquals(0, av.calculateWidth(100, 0));
+        // sub-pixel space for images mean aspect ratios cannot be respected
+        assertEquals(1, av.calculateWidth(10, 0.05));
     }
 }
