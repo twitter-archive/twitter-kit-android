@@ -49,6 +49,7 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
     private static final String REQUIRED_SCRIBE_IMPRESSION_ACTION = "impression";
     private static final String ANY_ADVERTISING_ID = "ANY_ID";
     private static final String REQUIRED_RETWEETED_BY_TEXT = "Retweeted by Mr Retweets";
+    protected static final double DELTA = 0.001f;
 
     protected Context context;
     private Resources resources;
@@ -345,6 +346,38 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
         final BaseTweetView view = createView(context, TestFixtures.TEST_RETWEET,
                R.style.tw__TweetDarkStyle);
         assertEquals(R.drawable.tw__ic_retweet_dark, view.retweetIconResId);
+    }
+
+    public void testGetAspectRatio_withNullMediaEntity() {
+        final BaseTweetView view = createView(context, TestFixtures.TEST_TWEET);
+
+        assertEquals(BaseTweetView.DEFAULT_ASPECT_RATIO, view.getAspectRatio(null));
+    }
+
+    public void testGetAspectRatio_mediaEntityWithNullSizes() {
+        final BaseTweetView view = createView(context, TestFixtures.TEST_TWEET);
+        final MediaEntity mediaEntity = TestFixtures.createMediaEntityWithSizes(null);
+
+        assertEquals(BaseTweetView.DEFAULT_ASPECT_RATIO, view.getAspectRatio(mediaEntity));
+    }
+
+    public void testGetAspectRatio_mediaEntityWithEmptySizes() {
+        final BaseTweetView view = createView(context, TestFixtures.TEST_TWEET);
+        final MediaEntity.Sizes sizes = new MediaEntity.Sizes(null, null, null, null);
+        final MediaEntity mediaEntity = TestFixtures.createMediaEntityWithSizes(sizes);
+
+        assertEquals(BaseTweetView.DEFAULT_ASPECT_RATIO, view.getAspectRatio(mediaEntity));
+    }
+
+    public void testGetAspectRatio_mediaEntityWithZeroDimension() {
+        final BaseTweetView view = createView(context, TestFixtures.TEST_TWEET);
+
+        assertEquals(BaseTweetView.DEFAULT_ASPECT_RATIO,
+                view.getAspectRatio(TestFixtures.createMediaEntityWithSizes(0, 0)));
+        assertEquals(BaseTweetView.DEFAULT_ASPECT_RATIO,
+                view.getAspectRatio(TestFixtures.createMediaEntityWithSizes(100, 0)));
+        assertEquals(BaseTweetView.DEFAULT_ASPECT_RATIO,
+                view.getAspectRatio(TestFixtures.createMediaEntityWithSizes(0, 100)));
     }
 
     // Scribing

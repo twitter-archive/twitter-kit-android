@@ -63,7 +63,6 @@ public class TweetView extends BaseTweetView {
     @Override
     void findSubviews() {
         super.findSubviews();
-        mediaPhotoView = (ImageView) findViewById(R.id.tw__tweet_media);
         shareButton = (Button) findViewById(R.id.tw__tweet_share);
     }
 

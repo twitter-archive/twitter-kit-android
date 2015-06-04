@@ -50,6 +50,8 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:visibility">gone</item>
         <item name="android:focusable">false</item>
+        <item name="tw__image_aspect_ratio">@dimen/tw__tweet_media_aspect_ratio</item>
+        <item name="tw__image_dimension_to_adjust">height</item>
     </style>
 
     <!--Compact Styles-->
@@ -77,8 +79,6 @@
         <item name="android:layout_marginTop">@dimen/tw__compact_tweet_media_margin_top</item>
         <item name="android:layout_marginBottom">@dimen/tw__compact_tweet_media_margin_bottom</item>
         <item name="android:layout_marginRight">@dimen/tw__compact_tweet_media_margin_right</item>
-        <item name="tw__image_aspect_ratio">@dimen/tw__compact_tweet_default_photo_aspect_ratio</item>
-        <item name="tw__image_dimension_to_adjust">height</item>
     </style>
 
 </resources>

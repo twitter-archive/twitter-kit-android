@@ -4,6 +4,7 @@
 
 ## Unreleased
 
+* (EF) Updated TweetView so images display full width on API < 17
 * (DH) Updated the CompactTweetView photo display to support a range of aspect ratios to reduce cropping. Made portrait oriented photos square cropped.
 * (DH) Added TwitterListTimeline to support Timelines of Tweets from Twitter Lists.
 * (DH) Fixed bug in SearchTimeline preventing some filter queries from being used.

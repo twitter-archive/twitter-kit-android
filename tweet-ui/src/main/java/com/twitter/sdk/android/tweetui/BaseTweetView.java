@@ -45,6 +45,7 @@ import com.twitter.sdk.android.core.internal.scribe.SyndicatedSdkImpressionEvent
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
+import com.twitter.sdk.android.tweetui.internal.util.AspectRatioImageView;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -54,6 +55,7 @@ public abstract class BaseTweetView extends LinearLayout {
     private static final String TAG = TweetUi.LOGTAG;
     private static final int DEFAULT_STYLE = R.style.tw__TweetLightStyle;
     private static final String EMPTY_STRING = "";
+    static final double DEFAULT_ASPECT_RATIO = 16.0 / 9.0;
 
     static final double SECONDARY_TEXT_COLOR_LIGHT_OPACITY = 0.4;
     static final double SECONDARY_TEXT_COLOR_DARK_OPACITY = 0.35;
@@ -90,7 +92,7 @@ public abstract class BaseTweetView extends LinearLayout {
     TextView fullNameView;
     TextView screenNameView;
     ImageView verifiedCheckView;
-    ImageView mediaPhotoView;
+    AspectRatioImageView mediaPhotoView;
     TextView contentView;
     TextView timestampView;
     ImageView twitterLogoView;
@@ -359,7 +361,7 @@ public abstract class BaseTweetView extends LinearLayout {
         fullNameView = (TextView) findViewById(R.id.tw__tweet_author_full_name);
         screenNameView = (TextView) findViewById(R.id.tw__tweet_author_screen_name);
         verifiedCheckView = (ImageView) findViewById(R.id.tw__tweet_author_verified);
-        mediaPhotoView = (ImageView) findViewById(R.id.tw__tweet_media);
+        mediaPhotoView = (AspectRatioImageView) findViewById(R.id.tw__tweet_media);
         contentView = (TextView) findViewById(R.id.tw__tweet_text);
         timestampView = (TextView) findViewById(R.id.tw__tweet_timestamp);
         twitterLogoView = (ImageView) findViewById(R.id.tw__twitter_logo);
@@ -671,22 +673,31 @@ public abstract class BaseTweetView extends LinearLayout {
         }
     }
 
-    protected void setTweetPhoto(MediaEntity photoEntity) {
+    void setTweetPhoto(MediaEntity photoEntity) {
         final Picasso imageLoader = dependencyProvider.getImageLoader();
 
         if (imageLoader == null) return;
 
+        // Picasso fit is a deferred call to resize(w,h) which waits until the target has a
+        // non-zero width or height and resizes the bitmap to the target's width and height.
+        // For recycled targets, which already have a width and (stale) height, reset the size
+        // target to zero so Picasso fit works correctly.
+        mediaPhotoView.resetSize();
+        mediaPhotoView.setAspectRatio(getAspectRatio(photoEntity));
         imageLoader.load(photoEntity.mediaUrlHttps)
                 .placeholder(mediaBg)
-                .into(mediaPhotoView, new Callback() {
-                    @Override
-                    public void onSuccess() { /* intentionally blank */ }
+                .fit()
+                .centerCrop()
+                .into(mediaPhotoView, new PicassoCallback());
+    }
 
-                    @Override
-                    public void onError() {
-                        setErrorImage();
-                    }
-                });
+    protected double getAspectRatio(MediaEntity photoEntity) {
+        if (photoEntity == null || photoEntity.sizes == null || photoEntity.sizes.medium == null ||
+                photoEntity.sizes.medium.w == 0 || photoEntity.sizes.medium.h == 0) {
+            return DEFAULT_ASPECT_RATIO;
+        }
+
+        return (double) photoEntity.sizes.medium.w / photoEntity.sizes.medium.h;
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)

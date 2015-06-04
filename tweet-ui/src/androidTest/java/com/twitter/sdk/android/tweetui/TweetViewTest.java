@@ -92,6 +92,17 @@ public class TweetViewTest extends BaseTweetViewTest {
         assertEquals(color, view.shareButton.getCurrentTextColor());
     }
 
+    public void testGetAspectRatio() {
+        final BaseTweetView view = createView(context, TestFixtures.TEST_TWEET);
+
+        assertEquals(1, view.getAspectRatio(
+                TestFixtures.createMediaEntityWithSizes(100, 100)), DELTA);
+        assertEquals(.5, view.getAspectRatio(
+                TestFixtures.createMediaEntityWithSizes(100, 200)), DELTA);
+        assertEquals(2, view.getAspectRatio(
+                TestFixtures.createMediaEntityWithSizes(200, 100)), DELTA);
+    }
+
     // Scribing
     @Override
     void assertSdkScribeSection(EventNamespace ns) {

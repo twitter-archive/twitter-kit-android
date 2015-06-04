@@ -58,6 +58,8 @@
     <dimen name="tw__tweet_share_extra_bottom_margin">2dp</dimen>
     <dimen name="tw__tweet_share_margin_left">20dp</dimen>
     <dimen name="tw__tweet_share_padding_bottom">12dp</dimen>
+    <!--Tweet Media-->
+    <item name="tw__tweet_media_aspect_ratio" format="float" type="dimen">1.777777</item>
 
     <!--CompactTweetView-->
 
@@ -89,7 +91,6 @@
     <dimen name="tw__compact_tweet_media_margin_top">7dp</dimen>
     <dimen name="tw__compact_tweet_media_margin_right">12dp</dimen>
     <dimen name="tw__compact_tweet_media_margin_bottom">3dp</dimen>
-    <item name="tw__compact_tweet_default_photo_aspect_ratio" format="float" type="dimen">1.777777</item>
     <!--Tweet text-->
     <dimen name="tw__compact_tweet_text_margin_top">1dp</dimen>
     <dimen name="tw__compact_tweet_text_margin_left">0dp</dimen>

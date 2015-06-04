@@ -23,7 +23,6 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
-import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.Tweet;
 
 import static org.mockito.Matchers.*;
@@ -68,7 +67,7 @@ public class CompactTweetViewTest extends BaseTweetViewTest {
     // Layout
 
     public void testLayout() {
-        final CompactTweetView compactView = new CompactTweetView(context, TestFixtures.TEST_TWEET);
+        final CompactTweetView compactView = createView(context, TestFixtures.TEST_TWEET);
         assertEquals(R.layout.tw__tweet_compact, compactView.getLayout());
     }
 
@@ -85,25 +84,28 @@ public class CompactTweetViewTest extends BaseTweetViewTest {
     }
 
     public void testGetAspectRatio() {
-        assertEquals(1.0, CompactTweetView.getAspectRatio(fakeMediaEntity(100, 100)), DELTA);
-        assertEquals(1.0, CompactTweetView.getAspectRatio(fakeMediaEntity(300, 400)), DELTA);
-        assertEquals(1.0, CompactTweetView.getAspectRatio(fakeMediaEntity(100, 800)), DELTA);
-        assertEquals(1.3333, CompactTweetView.getAspectRatio(fakeMediaEntity(400, 300)), DELTA);
-        assertEquals(1.6666, CompactTweetView.getAspectRatio(fakeMediaEntity(500, 300)), DELTA);
-        assertEquals(2.0, CompactTweetView.getAspectRatio(fakeMediaEntity(600, 300)), DELTA);
-        assertEquals(2.3333, CompactTweetView.getAspectRatio(fakeMediaEntity(700, 300)), DELTA);
-        assertEquals(2.6666, CompactTweetView.getAspectRatio(fakeMediaEntity(800, 300)), DELTA);
-        assertEquals(3.0, CompactTweetView.getAspectRatio(fakeMediaEntity(900, 300)), DELTA);
-        assertEquals(3.0, CompactTweetView.getAspectRatio(fakeMediaEntity(1000, 50)), DELTA);
-    }
+        final CompactTweetView compactView = createView(context, TestFixtures.TEST_TWEET);
 
-    public void testGetAspectRatio_missingSizeDimension() {
-        assertEquals(CompactTweetView.DEFAULT_ASPECT_RATIO,
-                CompactTweetView.getAspectRatio(fakeMediaEntity(0, 0)));
-        assertEquals(CompactTweetView.DEFAULT_ASPECT_RATIO,
-                CompactTweetView.getAspectRatio(fakeMediaEntity(100, 0)));
-        assertEquals(CompactTweetView.DEFAULT_ASPECT_RATIO,
-                CompactTweetView.getAspectRatio(fakeMediaEntity(0, 100)));
+        assertEquals(1.0, compactView.getAspectRatio(
+                TestFixtures.createMediaEntityWithSizes(100, 100)), DELTA);
+        assertEquals(1.0, compactView.getAspectRatio(
+                TestFixtures.createMediaEntityWithSizes(300, 400)), DELTA);
+        assertEquals(1.0, compactView.getAspectRatio(
+                TestFixtures.createMediaEntityWithSizes(100, 800)), DELTA);
+        assertEquals(1.3333, compactView.getAspectRatio(
+                TestFixtures.createMediaEntityWithSizes(400, 300)), DELTA);
+        assertEquals(1.6666, compactView.getAspectRatio(
+                TestFixtures.createMediaEntityWithSizes(500, 300)), DELTA);
+        assertEquals(2.0, compactView.getAspectRatio(
+                TestFixtures.createMediaEntityWithSizes(600, 300)), DELTA);
+        assertEquals(2.3333, compactView.getAspectRatio(
+                TestFixtures.createMediaEntityWithSizes(700, 300)), DELTA);
+        assertEquals(2.6666, compactView.getAspectRatio(
+                TestFixtures.createMediaEntityWithSizes(800, 300)), DELTA);
+        assertEquals(3.0, compactView.getAspectRatio(
+                TestFixtures.createMediaEntityWithSizes(900, 300)), DELTA);
+        assertEquals(3.0, compactView.getAspectRatio(
+                TestFixtures.createMediaEntityWithSizes(1000, 50)), DELTA);
     }
 
     public void testSetTweetPhoto() {
@@ -118,12 +120,5 @@ public class CompactTweetViewTest extends BaseTweetViewTest {
         verify(mockPicasso, times(2)).load(anyString());
         // assert fit is called once when the compact tweet photo is loaded
         verify(mockRequestCreator, times(1)).fit();
-    }
-
-    private MediaEntity fakeMediaEntity(int width, int height) {
-        final MediaEntity.Size medium = new MediaEntity.Size(width, height, "fit");
-        final MediaEntity.Sizes sizes = new MediaEntity.Sizes(null, null, medium, null);
-        return new MediaEntity(null, null, null, 0, 0, 0L, null, null, "fake", sizes, 0L, null,
-                null);
     }
 }
