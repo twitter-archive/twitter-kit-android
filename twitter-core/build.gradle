@@ -83,6 +83,8 @@ dependencies {
     compile rootProject.retrofit
     compile rootProject.gson
 
+    debugCompile rootProject.fabricTest
+
     //Will use the provided packages if they are available in the app developers workspace.
     provided rootProject.okHttp
     provided rootProject.okHttpUrlConnection
@@ -93,13 +95,13 @@ dependencies {
 
     androidTestCompile rootProject.mockito
     androidTestCompile rootProject.dexmakerMockito
-    androidTestCompile rootProject.fabricTest
+
 
     testCompile rootProject.fabricTest
     testCompile rootProject.mockito
     testCompile rootProject.junit
     testCompile rootProject.mavenAntTasks
-    testCompile(rootProject.roboelectric) {
+    testCompile(rootProject.robolectric) {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
