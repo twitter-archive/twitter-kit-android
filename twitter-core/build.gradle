@@ -83,6 +83,8 @@ dependencies {
     compile rootProject.retrofit
     compile rootProject.gson
 
+    debugCompile rootProject.fabricTest
+
     //Will use the provided packages if they are available in the app developers workspace.
     provided rootProject.okHttp
     provided rootProject.okHttpUrlConnection
