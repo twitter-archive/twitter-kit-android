@@ -3,6 +3,7 @@
 
 ## Unreleased
 
+* (DH) Improved security of WebView used by OAuthActivity by disabling form data saving.
 * (DH) (internal) Added session verify credential scribing on daily ping.
 * (DH) Added ListService, with lists/statuses endpoint, to TwitterApiClient.
 

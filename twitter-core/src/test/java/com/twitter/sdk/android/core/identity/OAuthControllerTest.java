@@ -140,6 +140,7 @@ public class OAuthControllerTest  {
         controller.setUpWebView(mockWebView, mockWebClient, TEST_URL, mockWebChromeClient);
         verify(mockWebSettings).setJavaScriptEnabled(false);
         verify(mockWebSettings).setAllowFileAccess(false);
+        verify(mockWebSettings).setSaveFormData(false);
         verify(mockWebView).setVerticalScrollBarEnabled(false);
         verify(mockWebView).setHorizontalScrollBarEnabled(false);
         verify(mockWebView).setWebViewClient(mockWebClient);
