@@ -39,12 +39,12 @@ https://source.android.com/source/code-style.html
 
 * the style guide is unclear on the naming of private static final fields, they should be SCREAMING_SNAKE_CASE
 
-* AOSP uses Hungarian notation, however this is discouraged in modern open source libaries and applications. Instance variables should be named with CamelCase and without prefixes.
+* AOSP uses Hungarian notation, however this is discouraged in modern open source libraries and applications. Instance variables should be named with CamelCase and without prefixes.
 
 ### Java Style Guide
 http://google-styleguide.googlecode.com/svn/trunk/javaguide.html (MikeFu suggestion)
 
-* Limit the use of horizontal alignment. While it may aid readaiblity, it creates problems for future maintainers. More [here](http://google-styleguide.googlecode.com/svn/trunk/javaguide.html#s4.6.3-horizontal-alignment)
+* Limit the use of horizontal alignment. While it may aid readability, it creates problems for future maintainers. More [here](http://google-styleguide.googlecode.com/svn/trunk/javaguide.html#s4.6.3-horizontal-alignment)
 * For testing purposes, we allow static imports, as well, as wildcard imports. This exclusion is added to our checkstyle config.
 
 ### Javadoc Style Guide
