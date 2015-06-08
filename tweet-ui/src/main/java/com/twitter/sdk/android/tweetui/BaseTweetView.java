@@ -39,6 +39,7 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import io.fabric.sdk.android.Fabric;
 
+import com.twitter.sdk.android.core.IntentUtils;
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.internal.scribe.SyndicatedSdkImpressionEvent;
@@ -491,7 +492,9 @@ public abstract class BaseTweetView extends LinearLayout {
 
     void launchPermalink() {
         final Intent intent = new Intent(Intent.ACTION_VIEW, getPermalinkUri());
-        getContext().startActivity(intent);
+        if (!IntentUtils.safeStartActivity(getContext(), intent)) {
+            Fabric.getLogger().e(TweetUi.LOGTAG, "Activity cannot be found to open permalink URI");
+        }
     }
 
     void scribeImpression() {
@@ -788,7 +791,10 @@ public abstract class BaseTweetView extends LinearLayout {
                     if (TextUtils.isEmpty(url)) return;
 
                     final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    getContext().startActivity(intent);
+                    if (!IntentUtils.safeStartActivity(getContext(), intent)) {
+                        Fabric.getLogger().e(TweetUi.LOGTAG,
+                                "Activity cannot be found to open URL");
+                    }
                 }
 
                 @Override
