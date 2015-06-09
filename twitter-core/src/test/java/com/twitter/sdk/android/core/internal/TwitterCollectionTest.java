@@ -17,17 +17,29 @@
 
 package com.twitter.sdk.android.core.internal;
 
-import android.test.AndroidTestCase;
-
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
+import com.twitter.sdk.android.core.BuildConfig;
+import com.twitter.sdk.android.core.TestResources;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 import io.fabric.sdk.android.services.common.CommonUtils;
 
-public class TwitterCollectionTest extends AndroidTestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, emulateSdk = 21)
+public class TwitterCollectionTest {
     private static final int EXPECTED_NUM_USERS = 2;
     private static final int EXPECTED_NUM_TWEETS = 3;
     private static final Long EXPECTED_TWEET_ID_FIRST = 504032379045179393L;
@@ -39,19 +51,22 @@ public class TwitterCollectionTest extends AndroidTestCase {
     private static final Long EXPECTED_MAX_POSITION = 371578415352947200L;
     private static final Long EXPECTED_MIN_POSITION = 371578380871797248L;
 
+    @Rule
+    public final TestResources testResources = new TestResources();
+
     private Gson gson;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
         gson = new Gson();
     }
 
+    @Test
     public void testDeserialization() throws IOException {
         JsonReader reader = null;
         try {
-            reader = new JsonReader(new InputStreamReader(
-                    getContext().getAssets().open("model_twitter_collection.json")));
+            reader = new JsonReader(new InputStreamReader(testResources
+                    .getAsStream("model_twitter_collection.json")));
             final TwitterCollection twitterCollection
                     = gson.fromJson(reader, TwitterCollection.class);
 

@@ -17,31 +17,47 @@
 
 package com.twitter.sdk.android.core.models;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
 import io.fabric.sdk.android.services.common.CommonUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
+import com.twitter.sdk.android.core.BuildConfig;
+import com.twitter.sdk.android.core.TestResources;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Collections;
 
-public class TweetEntitiesTest extends FabricAndroidTestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, emulateSdk = 21)
+public class TweetEntitiesTest {
 
     private static final int EXPECTED_URLS_SIZE = 1;
     private static final int EXPECTED_USER_MENTIONS_SIZE = 1;
     private static final int EXPECTED_MEDIA_SIZE = 1;
     private static final int EXPECTED_HASHTAGS_SIZE = 1;
 
+    @Rule
+    public final TestResources testResources = new TestResources();
+
     private Gson gson;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         gson = new Gson();
     }
 
+    @Test
     public void testConstructor_nullParameters() {
         try {
             final TweetEntities entities = new TweetEntities(null, null, null, null);
@@ -54,11 +70,12 @@ public class TweetEntitiesTest extends FabricAndroidTestCase {
         }
     }
 
+    @Test
     public void testDeserialization() throws IOException {
         JsonReader reader = null;
         try {
-            reader = new JsonReader(new InputStreamReader(
-                    getContext().getAssets().open("model_tweetentities.json")));
+            reader = new JsonReader(new InputStreamReader(testResources
+                    .getAsStream("model_tweetentities.json")));
             final TweetEntities tweetEntities = gson.fromJson(reader, TweetEntities.class);
             // We simply assert that we parsed it successfully and rely on our other unit tests to
             // verify parsing of the individual objects.

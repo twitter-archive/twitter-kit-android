@@ -17,18 +17,30 @@
 
 package com.twitter.sdk.android.core.models;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
 import io.fabric.sdk.android.services.common.CommonUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
+import com.twitter.sdk.android.core.BuildConfig;
+import com.twitter.sdk.android.core.TestResources;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 
-public class PlaceTest extends FabricAndroidTestCase {
+import static org.junit.Assert.assertEquals;
+
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, emulateSdk = 21)
+public class PlaceTest {
 
     private static final String EXPECTED_COUNTRY = "United States";
     private static final String EXPECTED_COUNTRY_CODE = "US";
@@ -49,19 +61,22 @@ public class PlaceTest extends FabricAndroidTestCase {
     private static final Double EXPECTED_BOUNDING_BOX_LATITUDE = 37.7821120598956;
     private static final String EXPECTED_BOUNDING_BOX_TYPE = "Polygon";
 
+    @Rule
+    public final TestResources testResources = new TestResources();
+
     private Gson gson;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         gson = new Gson();
     }
 
+    @Test
     public void testDeserialization() throws IOException {
         JsonReader reader = null;
         try {
-            reader = new JsonReader(new InputStreamReader(
-                    getContext().getAssets().open("model_places.json")));
+            reader = new JsonReader(new InputStreamReader(testResources
+                    .getAsStream("model_places.json")));
             final Place place = gson.fromJson(reader, Place.class);
             assertAttributes(place.attributes);
             assertBoundingBox(place.boundingBox);

@@ -17,16 +17,30 @@
 
 package com.twitter.sdk.android.core.models;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
 import io.fabric.sdk.android.services.common.CommonUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
+import com.twitter.sdk.android.core.BuildConfig;
+import com.twitter.sdk.android.core.TestResources;
+
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class UserTest extends FabricAndroidTestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, emulateSdk = 21)
+public class UserTest {
 
     private static final long EXPECTED_ID = 795649L;
     private static final String EXPECTED_NAME = "Ryan Sarver";
@@ -35,19 +49,22 @@ public class UserTest extends FabricAndroidTestCase {
             = "https://si0.twimg.com/profile_images/1777569006/image1327396628_normal.png";
     private static final boolean EXPECTED_VERIFIED = false;
 
+    @Rule
+    public final TestResources testResources = new TestResources();
+
     private Gson gson;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         gson = new Gson();
     }
 
+    @Test
     public void testDeserialization() throws IOException {
         JsonReader reader = null;
         try {
-            reader = new JsonReader(new InputStreamReader(
-                    getContext().getAssets().open("model_user.json")));
+            reader = new JsonReader(new InputStreamReader(testResources
+                    .getAsStream("model_user.json")));
             final User user = gson.fromJson(reader, User.class);
             // We simply assert that we parsed it successfully and rely on our other unit tests to
             // verify parsing of the individual objects.
