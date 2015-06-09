@@ -29,16 +29,18 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, emulateSdk = 21)
-public class OnShareButtonClickListenerTest extends EnglishLocaleTestCase {
+public class OnShareButtonClickListenerTest {
 
     private static final String REQUIRED_SEND_ACTION = Intent.ACTION_SEND;
     private static final String REQUIRED_MIME_TYPE = "text/plain";
@@ -52,11 +54,9 @@ public class OnShareButtonClickListenerTest extends EnglishLocaleTestCase {
     private Resources resources;
 
     @Before
-    @Override
     public void setUp() throws Exception {
-        super.setUp();
         listener = new OnShareButtonClickListener(TestFixtures.TEST_TWEET);
-        resources = getContext().getResources();
+        resources = RuntimeEnvironment.application.getResources();
     }
 
     @Test
@@ -85,13 +85,13 @@ public class OnShareButtonClickListenerTest extends EnglishLocaleTestCase {
 
     @Test
     public void testGetShareContent() {
-        final String shareContent = listener.getShareContent(getContext().getResources());
+        final String shareContent = listener.getShareContent(resources);
         assertEquals(A_SHARE_TEXT, shareContent);
     }
 
     @Test
     public void testGetShareSubject() {
-        final String shareSubject = listener.getShareSubject(getContext().getResources());
+        final String shareSubject = listener.getShareSubject(resources);
         assertEquals(A_SHARE_SUBJECT, shareSubject);
     }
 

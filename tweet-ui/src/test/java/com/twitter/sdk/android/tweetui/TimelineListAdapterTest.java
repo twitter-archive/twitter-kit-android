@@ -30,35 +30,38 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, emulateSdk = 21)
-public class TimelineListAdapterTest extends TweetUiAndroidTestCase {
+public class TimelineListAdapterTest {
     private static final int TEST_POSITION = 10;
     private TimelineListAdapter<TestItem> listAdapter;
     private TimelineDelegate<TestItem> mockTimelineDelegate;
+    private Context context;
 
     @Before
-    @Override
     public void setUp() throws Exception {
-        super.setUp();
         mockTimelineDelegate = mock(TestTimelineDelegate.class);
+        context = RuntimeEnvironment.application;
     }
 
     @Test
     public void testConstructor() {
-        listAdapter = new TestTimelineListAdapter<>(getContext(), mockTimelineDelegate);
+        listAdapter = new TestTimelineListAdapter<>(context, mockTimelineDelegate);
         verify(mockTimelineDelegate).refresh(null);
     }
 
     @Test
     public void testConstructor_nullTimeline() {
         try {
-            new TestTimelineListAdapter<>(getContext(), (Timeline) null);
+            new TestTimelineListAdapter<>(context, (Timeline) null);
             fail("IllegalArgumentException expected");
         } catch (IllegalArgumentException e) {
             assertEquals("Timeline must not be null", e.getMessage());
@@ -67,7 +70,7 @@ public class TimelineListAdapterTest extends TweetUiAndroidTestCase {
 
     @Test
     public void testRefresh() {
-        listAdapter = new TestTimelineListAdapter<>(getContext(), mockTimelineDelegate);
+        listAdapter = new TestTimelineListAdapter<>(context, mockTimelineDelegate);
         final Callback<TimelineResult<TestItem>> mockCallback = mock(Callback.class);
         listAdapter.refresh(mockCallback);
         verify(mockTimelineDelegate).refresh(mockCallback);
@@ -75,35 +78,35 @@ public class TimelineListAdapterTest extends TweetUiAndroidTestCase {
 
     @Test
     public void testGetCount() {
-        listAdapter = new TestTimelineListAdapter<>(getContext(), mockTimelineDelegate);
+        listAdapter = new TestTimelineListAdapter<>(context, mockTimelineDelegate);
         listAdapter.getCount();
         verify(mockTimelineDelegate).getCount();
     }
 
     @Test
     public void testGetItem() {
-        listAdapter = new TestTimelineListAdapter<>(getContext(), mockTimelineDelegate);
+        listAdapter = new TestTimelineListAdapter<>(context, mockTimelineDelegate);
         listAdapter.getItem(TEST_POSITION);
         verify(mockTimelineDelegate).getItem(TEST_POSITION);
     }
 
     @Test
     public void testGetItemId() {
-        listAdapter = new TestTimelineListAdapter<>(getContext(), mockTimelineDelegate);
+        listAdapter = new TestTimelineListAdapter<>(context, mockTimelineDelegate);
         listAdapter.getItemId(TEST_POSITION);
         verify(mockTimelineDelegate).getItemId(TEST_POSITION);
     }
 
     @Test
     public void testRegisterDataSetObserver() {
-        listAdapter = new TestTimelineListAdapter<>(getContext(), mockTimelineDelegate);
+        listAdapter = new TestTimelineListAdapter<>(context, mockTimelineDelegate);
         listAdapter.registerDataSetObserver(mock(DataSetObserver.class));
         verify(mockTimelineDelegate, times(1)).registerDataSetObserver(any(DataSetObserver.class));
     }
 
     @Test
     public void testUnregisterDataSetObserver() {
-        listAdapter = new TestTimelineListAdapter<>(getContext(), mockTimelineDelegate);
+        listAdapter = new TestTimelineListAdapter<>(context, mockTimelineDelegate);
         listAdapter.unregisterDataSetObserver(mock(DataSetObserver.class));
         verify(mockTimelineDelegate, times(1))
                 .unregisterDataSetObserver(any(DataSetObserver.class));
@@ -111,14 +114,14 @@ public class TimelineListAdapterTest extends TweetUiAndroidTestCase {
 
     @Test
     public void testNotifyDataSetChanged() {
-        listAdapter = new TestTimelineListAdapter<>(getContext(), mockTimelineDelegate);
+        listAdapter = new TestTimelineListAdapter<>(context, mockTimelineDelegate);
         listAdapter.notifyDataSetChanged();
         verify(mockTimelineDelegate, times(1)).notifyDataSetChanged();
     }
 
     @Test
     public void testNotifyDataSetInvalidated() {
-        listAdapter = new TestTimelineListAdapter<>(getContext(), mockTimelineDelegate);
+        listAdapter = new TestTimelineListAdapter<>(context, mockTimelineDelegate);
         listAdapter.notifyDataSetInvalidated();
         verify(mockTimelineDelegate, times(1)).notifyDataSetInvalidated();
     }

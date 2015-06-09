@@ -21,28 +21,31 @@ import io.fabric.sdk.android.services.persistence.PreferenceStore;
 import io.fabric.sdk.android.services.persistence.PreferenceStoreImpl;
 import io.fabric.sdk.android.services.persistence.PreferenceStoreStrategy;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, emulateSdk = 21)
-public class PreferenceStoreStrategyTest extends TwitterCoreAndroidTestCase {
+public class PreferenceStoreStrategyTest {
     private PreferenceStore preferenceStore;
     private PreferenceStoreStrategy<TwitterSession> preferenceStrategy;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
-        preferenceStore = new PreferenceStoreImpl(getContext(), "testSession");
+        preferenceStore = new PreferenceStoreImpl(RuntimeEnvironment.application, "testSession");
         preferenceStrategy = new PreferenceStoreStrategy<>(preferenceStore,
                 new TwitterSession.Serializer(), "testSession");
     }
 
-    @Override
+    @After
     public void tearDown() throws Exception {
-        super.tearDown();
         preferenceStrategy.clear();
     }
 

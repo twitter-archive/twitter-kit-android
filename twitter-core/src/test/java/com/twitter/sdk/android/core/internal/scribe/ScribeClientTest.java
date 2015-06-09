@@ -25,12 +25,12 @@ import io.fabric.sdk.android.services.events.EventsStrategy;
 
 import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
-import com.twitter.sdk.android.core.TwitterCoreAndroidTestCase;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import java.io.IOException;
@@ -39,12 +39,16 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import javax.net.ssl.SSLSocketFactory;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, emulateSdk = 21)
-public class ScribeClientTest extends TwitterCoreAndroidTestCase {
+public class ScribeClientTest {
 
     private static final long TEST_USER_ID = 12L;
     private static final String ANY_PATH_VERSION = "version";
@@ -54,11 +58,9 @@ public class ScribeClientTest extends TwitterCoreAndroidTestCase {
     private ScribeClient scribeClient;
 
     @Before
-    @Override
     public void setUp() throws Exception {
-        super.setUp();
         kitStub = new KitStub();
-        kitStub.init(getContext());
+        kitStub.init(RuntimeEnvironment.application);
 
         scribeClient = new ScribeClient(kitStub, mock(ScheduledExecutorService.class),
                 mock(ScribeConfig.class), mock(ScribeEvent.Transform.class),

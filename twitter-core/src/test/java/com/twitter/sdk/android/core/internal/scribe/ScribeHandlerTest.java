@@ -22,34 +22,33 @@ import io.fabric.sdk.android.services.events.EventsFilesManager;
 import io.fabric.sdk.android.services.events.EventsStrategy;
 
 import com.twitter.sdk.android.core.BuildConfig;
-import com.twitter.sdk.android.core.TwitterCoreAndroidTestCase;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import java.util.concurrent.ScheduledExecutorService;
 
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, emulateSdk = 21)
-public class ScribeHandlerTest extends TwitterCoreAndroidTestCase {
+public class ScribeHandlerTest {
 
     private ScheduledExecutorService mockExecutorService;
     private ScribeHandler scribeHandler;
 
     @Before
-    @Override
     public void setUp() throws Exception {
-        super.setUp();
         mockExecutorService = mock(ScheduledExecutorService.class);
-        scribeHandler = new ScribeHandler(getContext(), mock(EventsStrategy.class),
-                mock(EventsFilesManager.class), mockExecutorService);
+        scribeHandler = new ScribeHandler(RuntimeEnvironment.application,
+                mock(EventsStrategy.class), mock(EventsFilesManager.class), mockExecutorService);
     }
 
     @Test
