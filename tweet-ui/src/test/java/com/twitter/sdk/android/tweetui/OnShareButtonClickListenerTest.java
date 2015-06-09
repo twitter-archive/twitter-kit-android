@@ -19,6 +19,8 @@ package com.twitter.sdk.android.tweetui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 
 import com.twitter.sdk.android.core.models.TweetBuilder;
@@ -29,6 +31,9 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.Mockito.*;
 
 @RunWith(RobolectricGradleTestRunner.class)
@@ -38,7 +43,7 @@ public class OnShareButtonClickListenerTest extends EnglishLocaleTestCase {
     private static final String REQUIRED_SEND_ACTION = Intent.ACTION_SEND;
     private static final String REQUIRED_MIME_TYPE = "text/plain";
     private static final String A_SHARE_SUBJECT =
-            "Tweet from " + TestFixtures.TEST_NAME + " (@" + TestFixtures.TEST_SCREEN_NAME +  ")";
+            "Tweet from " + TestFixtures.TEST_NAME + " (@" + TestFixtures.TEST_SCREEN_NAME + ")";
     private static final String A_SHARE_TEXT
             = "Check out @" + TestFixtures.TEST_SCREEN_NAME + "'s Tweet: https://twitter.com/" +
             TestFixtures.TEST_SCREEN_NAME + "/status/" + TestFixtures.TEST_TWEET.id;
@@ -73,7 +78,7 @@ public class OnShareButtonClickListenerTest extends EnglishLocaleTestCase {
 
     @Test
     public void testOnClick_tweetWithData() {
-        final Context context = mock(Context.class);
+        final Context context = createContextWithPackageManager();
         listener.onClick(context, resources);
         verify(context, times(1)).startActivity(any(Intent.class));
     }
@@ -93,7 +98,7 @@ public class OnShareButtonClickListenerTest extends EnglishLocaleTestCase {
     @Test
     public void testLaunchShareIntent_startsActivity() {
         final Intent intent = mock(Intent.class);
-        final Context context = mock(Context.class);
+        final Context context = createContextWithPackageManager();
         listener.launchShareIntent(intent, context);
         verify(context, times(1)).startActivity(intent);
     }
@@ -105,5 +110,17 @@ public class OnShareButtonClickListenerTest extends EnglishLocaleTestCase {
         assertEquals(REQUIRED_MIME_TYPE, intent.getType());
         assertEquals(A_SHARE_SUBJECT, intent.getStringExtra(Intent.EXTRA_SUBJECT));
         assertEquals(A_SHARE_TEXT, intent.getStringExtra(Intent.EXTRA_TEXT));
+    }
+
+    private Context createContextWithPackageManager() {
+        final Context context = mock(Context.class);
+        final PackageManager pm = mock(PackageManager.class);
+        final List<ResolveInfo> activities = new ArrayList<>();
+        activities.add(mock(ResolveInfo.class));
+
+        when(pm.queryIntentActivities(any(Intent.class), anyInt())).thenReturn(activities);
+        when(context.getPackageManager()).thenReturn(pm);
+
+        return context;
     }
 }
