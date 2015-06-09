@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+## v0.8.0
+
 * (DH) Removed tweet-composer dependency on twitter-core.
 
 ## v0.7.4
