@@ -277,7 +277,7 @@ public abstract class BaseTweetViewXmlTest extends FabricAndroidTestCase {
 
     private void createMocks() {
         mainHandler = mock(Handler.class);
-        queue = mock(TweetRepositoryTest.TestAuthRequestQueue.class);
+        queue = mock(TestAuthRequestQueue.class);
         picasso = MockUtils.mockPicasso(mock(Picasso.class), mock(RequestCreator.class));
 
         statusesService = mock(StatusesService.class);

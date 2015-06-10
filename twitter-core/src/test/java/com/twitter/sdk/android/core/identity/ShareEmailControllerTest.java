@@ -60,7 +60,7 @@ public class ShareEmailControllerTest  {
     public void setUp() throws Exception {
 
 
-        mockEmailClient = mock(TestShareEmailClient.class);
+        mockEmailClient = mock(ShareEmailClient.class);
         mockResultReceiver = mock(ResultReceiver.class);
         bundleArgCaptor = ArgumentCaptor.forClass(Bundle.class);
 

@@ -17,7 +17,12 @@
 
 package com.twitter.sdk.android.core;
 
-import android.test.AndroidTestCase;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
 
 import io.fabric.sdk.android.services.network.NetworkUtils;
 
@@ -30,19 +35,24 @@ import java.security.NoSuchAlgorithmException;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSocketFactory;
 
-public class DefaultClientTest extends AndroidTestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, emulateSdk = 21)
+public class DefaultClientTest {
     SSLSocketFactory sslSocketFactory;
     DefaultClient client;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         sslSocketFactory = NetworkUtils.getSSLSocketFactory(
-                new TwitterPinningInfoProvider(getContext()));
+                new TwitterPinningInfoProvider(RuntimeEnvironment.application));
 
         client = new DefaultClient(sslSocketFactory);
     }
 
+    @Test
     public void testOpenSslConnection_https() throws NoSuchAlgorithmException,
             KeyManagementException, IOException {
         final URL httpsUrl = new URL("https://example.com");
@@ -53,7 +63,7 @@ public class DefaultClientTest extends AndroidTestCase {
         assertEquals(sslSocketFactory, connection.getSSLSocketFactory());
     }
 
-
+    @Test
     public void testOpenSslConnection_http() throws NoSuchAlgorithmException,
             KeyManagementException, IOException {
         final URL httpUrl = new URL("http://example.com");
@@ -64,6 +74,7 @@ public class DefaultClientTest extends AndroidTestCase {
         assertFalse(connection instanceof HttpsURLConnection);
     }
 
+    @Test
     public void testOpenSslConnection_nullSslSocketFactory() throws IOException {
         final DefaultClient client = new DefaultClient(null);
 

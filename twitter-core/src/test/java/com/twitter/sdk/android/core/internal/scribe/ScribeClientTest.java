@@ -70,7 +70,7 @@ public class ScribeClientTest {
 
     @Test
     public void testScribe() {
-        final ScribeHandler mockHandler = mock(TestScribeHandler.class);
+        final ScribeHandler mockHandler = mock(ScribeHandler.class);
         final ScribeEvent mockScribeEvent = mock(ScribeEvent.class);
 
         scribeClient.scribeHandlers.put(ScribeConstants.LOGGED_OUT_USER_ID, mockHandler);
@@ -81,7 +81,7 @@ public class ScribeClientTest {
 
     @Test
     public void testScribeAndFlush() {
-        final ScribeHandler mockHandler = mock(TestScribeHandler.class);
+        final ScribeHandler mockHandler = mock(ScribeHandler.class);
         final ScribeEvent mockScribeEvent = mock(ScribeEvent.class);
 
         scribeClient.scribeHandlers.put(ScribeConstants.LOGGED_OUT_USER_ID, mockHandler);

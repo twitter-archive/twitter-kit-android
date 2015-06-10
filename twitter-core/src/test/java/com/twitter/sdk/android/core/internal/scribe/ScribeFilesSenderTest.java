@@ -17,18 +17,29 @@
 
 package com.twitter.sdk.android.core.internal.scribe;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
+import android.content.Context;
+
 import io.fabric.sdk.android.services.common.CommonUtils;
 import io.fabric.sdk.android.services.common.IdManager;
 
+import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
+import com.twitter.sdk.android.core.TestResources;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 
 import org.apache.http.HttpStatus;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -47,9 +58,16 @@ import retrofit.RetrofitError;
 import retrofit.client.Header;
 import retrofit.client.Response;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
-public class ScribeFilesSenderTest extends FabricAndroidTestCase {
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, emulateSdk = 21)
+public class ScribeFilesSenderTest {
 
     private static final int NUM_SCRIBE_EVENTS = 9;
     private static final String TEST_LOGS = "testlogs";
@@ -70,15 +88,19 @@ public class ScribeFilesSenderTest extends FabricAndroidTestCase {
     private RestAdapter mockAdapter;
     private ScribeFilesSender.ScribeService mockService;
     private IdManager mockIdManager;
+    private Context context;
 
     private ScribeFilesSender filesSender;
     private String[] filenames;
     private List<File> tempFiles;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Rule
+    public final TestResources testResources = new TestResources();
 
+    @Before
+    public void setUp() throws Exception {
+
+        context = RuntimeEnvironment.application;
         mockSessionMgr = mock(SessionManager.class);
         mockSession = mock(Session.class);
         when(mockSessionMgr.getSession(anyLong())).thenReturn(mockSession);
@@ -95,7 +117,7 @@ public class ScribeFilesSenderTest extends FabricAndroidTestCase {
                 ScribeConfig.DEFAULT_SEND_INTERVAL_SECONDS);
         sessionManagers = new ArrayList<>();
         sessionManagers.add(mockSessionMgr);
-        filesSender = new ScribeFilesSender(getContext(), scribeConfig,
+        filesSender = new ScribeFilesSender(context, scribeConfig,
                 ScribeConstants.LOGGED_OUT_USER_ID, mock(TwitterAuthConfig.class), sessionManagers,
                 mock(SSLSocketFactory.class), mock(ExecutorService.class), mockIdManager);
         filesSender.setApiAdapter(mockAdapter);
@@ -106,7 +128,7 @@ public class ScribeFilesSenderTest extends FabricAndroidTestCase {
         };
 
         // Read asset files into temporary files that can be passed to the ScribeFilesSender.
-        final File outputDir = getContext().getCacheDir();
+        final File outputDir = context.getCacheDir();
         tempFiles = new ArrayList<>(filenames.length);
         final byte[] buffer = new byte[1024];
 
@@ -117,7 +139,7 @@ public class ScribeFilesSenderTest extends FabricAndroidTestCase {
             InputStream is = null;
             OutputStream os = null;
             try {
-                is = getContext().getAssets().open(filenames[i]);
+                is = testResources.getAsStream(filenames[i]);
                 os = new FileOutputStream(tempFiles.get(i));
                 CommonUtils.copyStream(is, os, buffer);
             } finally {
@@ -127,12 +149,11 @@ public class ScribeFilesSenderTest extends FabricAndroidTestCase {
         }
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         for (File f : tempFiles) {
             f.delete();
         }
-        super.tearDown();
     }
 
     private void setUpMockServiceResponse(Response response) {
@@ -152,7 +173,7 @@ public class ScribeFilesSenderTest extends FabricAndroidTestCase {
                 ANY_SCRIBE_PATH_TYPE, sequence, ANY_USER_AGENT,
                 ScribeConfig.DEFAULT_MAX_FILES_TO_KEEP, ScribeConfig.DEFAULT_SEND_INTERVAL_SECONDS);
 
-        filesSender = new ScribeFilesSender(getContext(), config,
+        filesSender = new ScribeFilesSender(context, config,
                 ScribeConstants.LOGGED_OUT_USER_ID, mock(TwitterAuthConfig.class), sessionManagers,
                 mock(SSLSocketFactory.class), mock(ExecutorService.class), mock(IdManager.class));
         filesSender.setApiAdapter(mockAdapter);
@@ -163,7 +184,7 @@ public class ScribeFilesSenderTest extends FabricAndroidTestCase {
     }
 
     // tests follow
-
+    @Test
     public void testGetScribeEventsAsJsonArrayString() throws IOException, JSONException {
         final String jsonArrayString = filesSender.getScribeEventsAsJsonArrayString(tempFiles);
 
@@ -173,23 +194,27 @@ public class ScribeFilesSenderTest extends FabricAndroidTestCase {
         assertEquals(NUM_SCRIBE_EVENTS, jsonArray.length());
     }
 
+    @Test
     public void testGetApiAdapter_nullSession() {
         filesSender.setApiAdapter(null); // set api adapter to null since we pre-set it in setUp
         when(mockSessionMgr.getSession(anyLong())).thenReturn(null);
         assertNull(filesSender.getApiAdapter());
     }
 
+    @Test
     public void testGetApiAdapter_validSession() {
         when(mockSessionMgr.getSession(anyLong())).thenReturn(mockSession);
         assertNotNull(filesSender.getApiAdapter());
     }
 
+    @Test
     public void testGetApiAdapter_multipleCalls() {
         when(mockSessionMgr.getSession(anyLong())).thenReturn(mockSession);
         final RestAdapter apiAdapter = filesSender.getApiAdapter();
         assertEquals(apiAdapter, filesSender.getApiAdapter());
     }
 
+    @Test
     public void testUpload_noSequence() {
         final String logs = TEST_LOGS;
         setUpScribeSequence(null);
@@ -197,6 +222,7 @@ public class ScribeFilesSenderTest extends FabricAndroidTestCase {
         verify(mockService).upload(ANY_SCRIBE_PATH_VERSION, ANY_SCRIBE_PATH_TYPE, logs);
     }
 
+    @Test
     public void testUpload_withSequence() {
         final String sequence = "1";
         final String logs = TEST_LOGS;
@@ -205,6 +231,7 @@ public class ScribeFilesSenderTest extends FabricAndroidTestCase {
         verify(mockService).uploadSequence(sequence, logs);
     }
 
+    @Test
     public void testSend_nullSession() {
         // Send should fail when we don't have a valid session.
         filesSender.setApiAdapter(null); // set api adapter to null since we pre-set it in setUp
@@ -213,28 +240,33 @@ public class ScribeFilesSenderTest extends FabricAndroidTestCase {
         verifyZeroInteractions(mockAdapter);
     }
 
+    @Test
     public void testSend_uploadSucceeds() {
         setUpMockServiceResponse(newResponse(HttpStatus.SC_OK));
         assertTrue(filesSender.send(tempFiles));
     }
 
+    @Test
     public void testSend_uploadFailsInternalServerError() {
         setUpMockServiceErrorResponse(newResponse(HttpStatus.SC_INTERNAL_SERVER_ERROR));
         assertTrue(filesSender.send(tempFiles));
         verify(mockService, times(1)).upload(anyString(), anyString(), anyString());
     }
 
+    @Test
     public void testSend_uploadFailsBadRequest() {
         setUpMockServiceErrorResponse(newResponse(HttpStatus.SC_BAD_REQUEST));
         assertTrue(filesSender.send(tempFiles));
         verify(mockService, times(1)).upload(anyString(), anyString(), anyString());
     }
 
+    @Test
     public void testSend_uploadFailsForbidden() {
         setUpMockServiceErrorResponse(newResponse(HttpStatus.SC_FORBIDDEN));
         assertFalse(filesSender.send(tempFiles));
     }
 
+    @Test
     public void testConfigRequestInterceptor_addsPollingHeader() {
         final ScribeConfig config = mock(ScribeConfig.class);
         final RequestInterceptor.RequestFacade facade
@@ -246,6 +278,7 @@ public class ScribeFilesSenderTest extends FabricAndroidTestCase {
                 REQUIRED_TWITTER_POLLING_HEADER_VALUE);
     }
 
+    @Test
     public void testConfigRequestInterceptor_nullUserAgent() {
         final ScribeConfig config = new ScribeConfig(true, ScribeConfig.BASE_URL,
                 ANY_SCRIBE_PATH_VERSION, ANY_SCRIBE_PATH_TYPE, null, null,
@@ -258,6 +291,7 @@ public class ScribeFilesSenderTest extends FabricAndroidTestCase {
         verify(facade, times(0)).addHeader(eq(USER_AGENT_HEADER), anyString());
     }
 
+    @Test
     public void testConfigRequestInterceptor_anUserAgent() {
         final ScribeConfig config = new ScribeConfig(true, ScribeConfig.BASE_URL,
                 ANY_SCRIBE_PATH_VERSION, ANY_SCRIBE_PATH_TYPE, null, ANY_USER_AGENT,
@@ -270,6 +304,7 @@ public class ScribeFilesSenderTest extends FabricAndroidTestCase {
         verify(facade, times(1)).addHeader(USER_AGENT_HEADER, ANY_USER_AGENT);
     }
 
+    @Test
     public void testConfigRequestInterceptor_nullIdManager() {
         final ScribeConfig config = mock(ScribeConfig.class);
         final RequestInterceptor.RequestFacade facade
@@ -280,6 +315,7 @@ public class ScribeFilesSenderTest extends FabricAndroidTestCase {
         verify(facade, times(0)).addHeader(eq(DEVICE_ID_HEADER) , anyString());
     }
 
+    @Test
     public void testConfigRequestInterceptor_anIdManager() {
         final ScribeConfig config = mock(ScribeConfig.class);
         final RequestInterceptor.RequestFacade facade

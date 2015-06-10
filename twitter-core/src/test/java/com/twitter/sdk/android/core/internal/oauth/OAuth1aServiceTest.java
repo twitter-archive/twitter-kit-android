@@ -17,12 +17,10 @@
 
 package com.twitter.sdk.android.core.internal.oauth;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
 import io.fabric.sdk.android.services.common.CommonUtils;
-import io.fabric.sdk.android.services.network.DefaultHttpRequestFactory;
-import io.fabric.sdk.android.services.network.HttpMethod;
 import io.fabric.sdk.android.services.network.HttpRequest;
 
+import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -32,11 +30,18 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.internal.TwitterApi;
 
 import org.apache.http.HttpStatus;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import retrofit.client.Response;
@@ -44,44 +49,56 @@ import retrofit.http.Header;
 import retrofit.http.Query;
 import retrofit.mime.TypedInput;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
 
-public class OAuth1aServiceTest extends FabricAndroidTestCase {
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, emulateSdk = 21)
+public class OAuth1aServiceTest {
 
     private TwitterAuthConfig authConfig;
     private TwitterCore twitterCore;
     private OAuth1aService service;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         authConfig = new TwitterAuthConfig("key", "secret");
         twitterCore = new TwitterCore(authConfig);
         service = new OAuth1aService(twitterCore, null , new TwitterApi());
     }
 
+    @Test
     public void testGetTempTokenUrl() {
         assertEquals("https://api.twitter.com/oauth/request_token", service.getTempTokenUrl());
     }
 
+    @Test
     public void testGetAccessTokenUrl() throws NoSuchMethodException {
         assertEquals("https://api.twitter.com/oauth/access_token", service.getAccessTokenUrl());
     }
 
-    public void testSignRequest() {
+    @Test
+    public void testSignRequest() throws MalformedURLException {
         final TwitterAuthConfig config = new TwitterAuthConfig("consumerKey", "consumerSecret");
-        final DefaultHttpRequestFactory requestFactory = new DefaultHttpRequestFactory();
         final TwitterAuthToken accessToken = new TwitterAuthToken("token", "tokenSecret");
-        final HttpRequest request = requestFactory.buildHttpRequest(HttpMethod.GET,
-                "https://api.twitter.com/1.1/statuses/home_timeline.json");
-        OAuth1aService.signRequest(config, accessToken, request.getConnection(), null);
-        // Verify that request contains authorization header.
-        final HttpURLConnection connection = request.getConnection();
-        assertNotNull(connection.getRequestProperty(HttpRequest.HEADER_AUTHORIZATION));
+
+        final HttpURLConnection connection = mock(HttpURLConnection.class);
+        when(connection.getRequestMethod()).thenReturn("GET");
+        when(connection.getURL())
+                .thenReturn(new URL("https://api.twitter.com/1.1/statuses/home_timeline.json"));
+
+        OAuth1aService.signRequest(config, accessToken, connection, null);
+        verify(connection)
+                .setRequestProperty(eq(HttpRequest.HEADER_AUTHORIZATION), any(String.class));
 
         // TODO: Make it so that nonce and timestamp can be specified for testing puproses?
     }
 
+    @Test
     public void testRequestTempToken() {
         service.api = new MockOAuth1aService() {
             @Override
@@ -93,6 +110,7 @@ public class OAuth1aServiceTest extends FabricAndroidTestCase {
         service.requestTempToken(null);
     }
 
+    @Test
     public void testRequestAccessToken() {
         final TwitterAuthToken token = new TwitterAuthToken("token", "secret");
         final String verifier = "verifier";
@@ -110,18 +128,21 @@ public class OAuth1aServiceTest extends FabricAndroidTestCase {
         service.requestAccessToken(null, token, verifier);
     }
 
+    @Test
     public void testApiHost() {
         final TwitterApi api = new TwitterApi();
         final OAuth1aService localService = new OAuth1aService(twitterCore, null, api);
         assertEquals(api, localService.getApi());
     }
 
+    @Test
     public void testGetUserAgent() {
         final String userAgent = TwitterApi.buildUserAgent("TwitterAndroidSDK",
                 twitterCore.getVersion());
         assertEquals(userAgent, service.getUserAgent());
     }
 
+    @Test
     public void testBuildCallbackUrl() {
         final String callbackUrl = service.buildCallbackUrl(authConfig);
 
@@ -129,12 +150,14 @@ public class OAuth1aServiceTest extends FabricAndroidTestCase {
                 twitterCore.getVersion(), authConfig.getConsumerKey()), callbackUrl);
     }
 
+    @Test
     public void testGetAuthorizeUrl() {
         final TwitterAuthToken authToken = new TwitterAuthToken("token", "secret");
         final String authorizeUrl = service.getAuthorizeUrl(authToken);
         assertEquals("https://api.twitter.com/oauth/authorize?oauth_token=token", authorizeUrl);
     }
 
+    @Test
     public void testParseAuthResponse() {
         final String response = "oauth_token=7588892-kagSNqWge8gB1WwE3plnFsJHAZVfxWD7Vb57p0b4&"
                 + "oauth_token_secret=PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo&"
@@ -147,12 +170,14 @@ public class OAuth1aServiceTest extends FabricAndroidTestCase {
         assertEquals(1L, authResponse.userId);
     }
 
+    @Test
     public void testParseAuthResponse_noQueryParameters() {
         final String response = "noQueryParameters";
         final OAuthResponse authResponse = OAuth1aService.parseAuthResponse(response);
         assertNull(authResponse);
     }
 
+    @Test
     public void testParseAuthResponse_noToken() {
         final String response = "oauth_token_secret=PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo&"
                 + "screen_name=test&user_id=1";
@@ -160,6 +185,7 @@ public class OAuth1aServiceTest extends FabricAndroidTestCase {
         assertNull(authResponse);
     }
 
+    @Test
     public void testParseAuthResponse_noSecret() {
         final String response = "oauth_token=7588892-kagSNqWge8gB1WwE3plnFsJHAZVfxWD7Vb57p0b4&"
                 + "screen_name=test&user_id=1";
@@ -167,6 +193,7 @@ public class OAuth1aServiceTest extends FabricAndroidTestCase {
         assertNull(authResponse);
     }
 
+    @Test
     public void testParseAuthResponse_noScreenName() {
         final String response = "oauth_token=7588892-kagSNqWge8gB1WwE3plnFsJHAZVfxWD7Vb57p0b4&"
                 + "oauth_token_secret=PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo&"
@@ -179,6 +206,7 @@ public class OAuth1aServiceTest extends FabricAndroidTestCase {
         assertEquals(1L, authResponse.userId);
     }
 
+    @Test
     public void testParseAuthResponse_noUserId() {
         final String response = "oauth_token=7588892-kagSNqWge8gB1WwE3plnFsJHAZVfxWD7Vb57p0b4&"
                 + "oauth_token_secret=PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo&"
@@ -191,6 +219,7 @@ public class OAuth1aServiceTest extends FabricAndroidTestCase {
         assertEquals(0L, authResponse.userId);
     }
 
+    @Test
     public void testCallbackWrapperSuccess() throws IOException {
         final String response = "oauth_token=7588892-kagSNqWge8gB1WwE3plnFsJHAZVfxWD7Vb57p0b4&"
                 + "oauth_token_secret=PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo&"
@@ -231,6 +260,7 @@ public class OAuth1aServiceTest extends FabricAndroidTestCase {
         }
     }
 
+    @Test
     public void testCallbackWrapperSuccess_noToken() throws IOException {
         final String response = "oauth_token_secret=PbKfYqSryyeKDWz4ebtY3o5ogNLG11WJuZBc9fQrQo&"
                 + "screen_name=test&user_id=1";
@@ -248,6 +278,7 @@ public class OAuth1aServiceTest extends FabricAndroidTestCase {
         setupCallbackWrapperTest(response, callback);
     }
 
+    @Test
     public void testCallbackWrapperSuccess_iOException() throws IOException {
         final Callback<OAuthResponse> callback = new Callback<OAuthResponse>() {
             @Override
@@ -268,6 +299,7 @@ public class OAuth1aServiceTest extends FabricAndroidTestCase {
         callbackWrapper.success(new Result<>(mockResponse, mockResponse));
     }
 
+    @Test
     public void testCallbackWrapperFailure() {
         final Callback<OAuthResponse> authResponseCallback = mock(Callback.class);
         final Callback<Response> callbackWrapper = service.getCallbackWrapper(authResponseCallback);

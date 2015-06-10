@@ -19,7 +19,14 @@ package com.twitter.sdk.android.core;
 
 import android.content.SharedPreferences;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
+
 import io.fabric.sdk.android.services.persistence.PreferenceStore;
 import io.fabric.sdk.android.services.persistence.PreferenceStoreImpl;
 import io.fabric.sdk.android.services.persistence.PreferenceStoreStrategy;
@@ -29,12 +36,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-
-public class PersistedSessionManagerTest extends FabricAndroidTestCase {
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, emulateSdk = 21)
+public class PersistedSessionManagerTest {
 
     static final String PREF_KEY_ACTIVE_SESSION = "active_session";
     static final String PREF_KEY_SESSION = "session";
@@ -50,10 +64,9 @@ public class PersistedSessionManagerTest extends FabricAndroidTestCase {
     private PreferenceStoreStrategy<TwitterSession> mockActiveSessionStorage;
     private PersistedSessionManager<TwitterSession> sessionManager;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        preferenceStore = new PreferenceStoreImpl(getContext(), "testSession");
+    @Before
+    public void setUp() throws Exception {
+        preferenceStore = new PreferenceStoreImpl(RuntimeEnvironment.application, "testSession");
         mockSerializer = mock(SerializationStrategy.class);
         sessionMap = new ConcurrentHashMap<>();
         storageMap = new ConcurrentHashMap<>();
@@ -63,27 +76,30 @@ public class PersistedSessionManagerTest extends FabricAndroidTestCase {
                 PREF_KEY_ACTIVE_SESSION, PREF_KEY_SESSION);
     }
 
-    @Override
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         preferenceStore.edit().clear().commit();
-        super.tearDown();
     }
 
+    @Test
     public void testIsSessionPreferenceKey_validKey() {
         final String preferenceKey = PREF_KEY_SESSION + "_" + TestFixtures.USER_ID;
         assertTrue(sessionManager.isSessionPreferenceKey(preferenceKey));
     }
 
+    @Test
     public void testIsSessionPreferenceKey_invalidKey() {
         assertFalse(sessionManager.isSessionPreferenceKey(PREF_RANDOM_KEY));
     }
 
+    @Test
     public void testRestoreSession_noSavedSession() {
         when(mockActiveSessionStorage.restore()).thenReturn(null);
         sessionManager.restoreAllSessionsIfNecessary();
         assertNull(sessionManager.getActiveSession());
     }
 
+    @Test
     public void testRestoreSession_savedSession() {
         final TwitterSession mockSession = mock(TwitterSession.class);
         when(mockActiveSessionStorage.restore()).thenReturn(mockSession);
@@ -91,6 +107,7 @@ public class PersistedSessionManagerTest extends FabricAndroidTestCase {
         assertEquals(mockSession, sessionManager.getActiveSession());
     }
 
+    @Test
     public void testRestoreSession_multipleSavedSessions() {
         // Set up test by creating and serializing some test TwitterSessions.
         final SharedPreferences.Editor editor = preferenceStore.edit();
@@ -118,6 +135,7 @@ public class PersistedSessionManagerTest extends FabricAndroidTestCase {
         }
     }
 
+    @Test
     public void testRestoreSession_invalidPreferenceKey() {
         final SharedPreferences.Editor editor = preferenceStore.edit();
         editor.putString(PREF_RANDOM_KEY, "random value");
@@ -127,6 +145,7 @@ public class PersistedSessionManagerTest extends FabricAndroidTestCase {
         assertMapSizes(0);
     }
 
+    @Test
     public void testRestoreSession_multipleRestoreCalls() throws Exception {
         final TwitterSession mockSession = mock(TwitterSession.class);
         when(mockActiveSessionStorage.restore()).thenReturn(mockSession);
@@ -138,6 +157,7 @@ public class PersistedSessionManagerTest extends FabricAndroidTestCase {
         verify(mockActiveSessionStorage).restore();
     }
 
+    @Test
     public void testRestoreSession_afterActiveSessionSetExternally() throws Exception {
         final TwitterSession mockRestoredSession = mock(TwitterSession.class);
         when(mockActiveSessionStorage.restore()).thenReturn(mockRestoredSession);
@@ -149,6 +169,7 @@ public class PersistedSessionManagerTest extends FabricAndroidTestCase {
         assertEquals(mockActiveSession, sessionManager.getActiveSession());
     }
 
+    @Test
     public void testGetActiveSession_restoredSession() {
         final TwitterSession mockRestoredSession = mock(TwitterSession.class);
         when(mockActiveSessionStorage.restore()).thenReturn(mockRestoredSession);
@@ -158,10 +179,12 @@ public class PersistedSessionManagerTest extends FabricAndroidTestCase {
         verify(mockActiveSessionStorage).restore();
     }
 
+    @Test
     public void testGetActiveSession_nullSession() {
         assertNull(sessionManager.getActiveSession());
     }
 
+    @Test
     public void testGetActiveSession_validSession() {
         final TwitterSession session = setupActiveSessionTest();
         assertEquals(session, sessionManager.getActiveSession());
@@ -174,6 +197,7 @@ public class PersistedSessionManagerTest extends FabricAndroidTestCase {
         return mockSession;
     }
 
+    @Test
     public void testSetActiveSession_nullSession() {
         try {
             sessionManager.setActiveSession(null);
@@ -183,6 +207,7 @@ public class PersistedSessionManagerTest extends FabricAndroidTestCase {
         }
     }
 
+    @Test
     public void testSetActiveSession_validSession() {
         final TwitterSession session = setupActiveSessionTest();
         final int numSessionsThisTest = 1;
@@ -198,6 +223,7 @@ public class PersistedSessionManagerTest extends FabricAndroidTestCase {
         assertEquals(count, storageMap.size());
     }
 
+    @Test
     public void testSetActiveSession_differentSession() {
         final TwitterSession session = setupActiveSessionTest();
         int numSessionsThisTest = 1;
@@ -216,6 +242,7 @@ public class PersistedSessionManagerTest extends FabricAndroidTestCase {
         assertEquals(session2, sessionManager.getActiveSession());
     }
 
+    @Test
     public void testClearActiveSession() {
         setupActiveSessionTest();
         sessionManager.clearActiveSession();
@@ -224,6 +251,7 @@ public class PersistedSessionManagerTest extends FabricAndroidTestCase {
         assertNull(sessionManager.getActiveSession());
     }
 
+    @Test
     public void testClearActiveSession_noActiveSession() {
         try {
             sessionManager.clearActiveSession();
@@ -232,17 +260,20 @@ public class PersistedSessionManagerTest extends FabricAndroidTestCase {
         }
     }
 
+    @Test
     public void testClearActiveSession_beforeRestoreSession() {
         setupActiveSessionTest();
         sessionManager.clearActiveSession();
         assertNull(sessionManager.getActiveSession());
     }
 
+    @Test
     public void testGetSession() {
         final TwitterSession session = setupActiveSessionTest();
         assertEquals(session, sessionManager.getSession(session.getId()));
     }
 
+    @Test
     public void testGetSession_multipleSessions() {
         final int count = 2;
         final List<TwitterSession> sessions = setupMultipleSessionsTest(count);
@@ -264,6 +295,7 @@ public class PersistedSessionManagerTest extends FabricAndroidTestCase {
         return sessions;
     }
 
+    @Test
     public void testSetSession_nullSession() {
         try {
             sessionManager.setSession(TEST_SESSION_ID, null);
@@ -273,6 +305,7 @@ public class PersistedSessionManagerTest extends FabricAndroidTestCase {
         }
     }
 
+    @Test
     public void testSetSession_noActiveSession() {
         final TwitterSession session = mock(TwitterSession.class);
         when(session.getId()).thenReturn(TEST_SESSION_ID);
@@ -286,6 +319,7 @@ public class PersistedSessionManagerTest extends FabricAndroidTestCase {
         assertEquals(session, sessionManager.getActiveSession());
     }
 
+    @Test
     public void testSetSession_multipleSessions() {
         final int count = 2;
         final List<TwitterSession> sessions = setupMultipleSessionsTest(count);
@@ -299,6 +333,7 @@ public class PersistedSessionManagerTest extends FabricAndroidTestCase {
         assertEquals(sessions.get(0), sessionManager.getActiveSession());
     }
 
+    @Test
     public void testSetSession_updateExistingSession() {
         final TwitterAuthToken authToken = mock(TwitterAuthToken.class);
         final TwitterSession session = new TwitterSession(authToken, TestFixtures.USER_ID,
@@ -314,6 +349,7 @@ public class PersistedSessionManagerTest extends FabricAndroidTestCase {
         assertMapSizes(1);
     }
 
+    @Test
     public void testSetSession_beforeRestoreSession() {
         final TwitterAuthToken authToken = mock(TwitterAuthToken.class);
 
@@ -340,6 +376,7 @@ public class PersistedSessionManagerTest extends FabricAndroidTestCase {
         editor.commit();
     }
 
+    @Test
     public void testClearSession() {
         final TwitterSession session = setupActiveSessionTest();
         sessionManager.clearSession(session.getId());
@@ -348,6 +385,7 @@ public class PersistedSessionManagerTest extends FabricAndroidTestCase {
         assertNull(sessionManager.getSession(session.getId()));
     }
 
+    @Test
     public void testClearSession_noSessions() {
         try {
             sessionManager.clearSession(TEST_SESSION_ID);
@@ -356,6 +394,7 @@ public class PersistedSessionManagerTest extends FabricAndroidTestCase {
         }
     }
 
+    @Test
     public void testClearSession_multipleSessionsClearFirstSession() {
         final int count = 2;
         final List<TwitterSession> sessions = setupMultipleSessionsTest(count);
@@ -373,6 +412,7 @@ public class PersistedSessionManagerTest extends FabricAndroidTestCase {
         assertEquals(sessions.get(1), sessionManager.getSession(secondSessionId));
     }
 
+    @Test
     public void testClearSession_multipleSessionsClearSecondSession() {
         final int count = 2;
         final List<TwitterSession> sessions = setupMultipleSessionsTest(count);
@@ -390,6 +430,7 @@ public class PersistedSessionManagerTest extends FabricAndroidTestCase {
         assertEquals(sessions.get(0), sessionManager.getSession(firstSessionId));
     }
 
+    @Test
     public void testClearSession_beforeRestoreSession() {
         final TwitterSession restoredSession =
                 new TwitterSession(mock(TwitterAuthToken.class), TestFixtures.USER_ID,
@@ -401,11 +442,13 @@ public class PersistedSessionManagerTest extends FabricAndroidTestCase {
         assertNull(sessionManager.getSession(TestFixtures.USER_ID));
     }
 
+    @Test
     public void testGetPrefKey() {
         assertEquals(PREF_KEY_SESSION + "_" + TEST_SESSION_ID,
                 sessionManager.getPrefKey(TEST_SESSION_ID));
     }
 
+    @Test
     public void testGetSessionMap() {
         try {
             sessionManager.getSessionMap().put(1L, null);
@@ -415,6 +458,7 @@ public class PersistedSessionManagerTest extends FabricAndroidTestCase {
         }
     }
 
+    @Test
     public void testGetSessionMap_restoresSessionsIfNecessary() {
         final TwitterSession mockSession = mock(TwitterSession.class);
         when(mockActiveSessionStorage.restore()).thenReturn(mockSession);

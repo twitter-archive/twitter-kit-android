@@ -38,7 +38,7 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, emulateSdk = 21)
-public class EnabledScribeStrategyTest  {
+public class EnabledScribeStrategyTest {
 
     private static final String ANY_USER_AGENT = "ua";
     private static final String ANY_PATH_VERSION = "version";
@@ -52,8 +52,8 @@ public class EnabledScribeStrategyTest  {
                 ANY_PATH_VERSION, ANY_PATH_TYPE, null, ANY_USER_AGENT,
                 ScribeConfig.DEFAULT_MAX_FILES_TO_KEEP, TEST_SEND_INTERVAL_SECONDS);
         new EnabledScribeStrategy(mock(Context.class),
-                mockExecutor, mock(TestScribeFilesManager.class), scribeConfig,
-                mock(TestScribeFilesSender.class));
+                mockExecutor, mock(ScribeFilesManager.class), scribeConfig,
+                mock(ScribeFilesSender.class));
 
         verify(mockExecutor).scheduleAtFixedRate(any(Runnable.class), anyLong(),
                 eq((long) TEST_SEND_INTERVAL_SECONDS), eq(TimeUnit.SECONDS));
@@ -64,9 +64,9 @@ public class EnabledScribeStrategyTest  {
         final ScribeConfig scribeConfig = new ScribeConfig(true, ScribeConfig.BASE_URL,
                 ANY_PATH_VERSION, ANY_PATH_TYPE, null, ANY_USER_AGENT,
                 ScribeConfig.DEFAULT_MAX_FILES_TO_KEEP, TEST_SEND_INTERVAL_SECONDS);
-        final ScribeFilesSender mockSender = mock(TestScribeFilesSender.class);
+        final ScribeFilesSender mockSender = mock(ScribeFilesSender.class);
         final EnabledScribeStrategy strategy = new EnabledScribeStrategy(mock(Context.class),
-                mock(ScheduledExecutorService.class), mock(TestScribeFilesManager.class),
+                mock(ScheduledExecutorService.class), mock(ScribeFilesManager.class),
                 scribeConfig, mockSender);
         assertEquals(mockSender, strategy.getFilesSender());
     }

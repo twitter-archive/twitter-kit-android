@@ -17,27 +17,20 @@
 
 package com.twitter.sdk.android.tweetui;
 
-import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.models.Tweet;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.annotation.Config;
 
 import static org.mockito.Mockito.*;
 
-public class TweetRepositoryTest extends TweetUiTestCase {
-    private TwitterCore twitterCoreKit;
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, emulateSdk = 21)
+public class TweetRepositoryTest {
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        twitterCoreKit = TwitterCore.getInstance();
-    }
-
-    @Override
-    protected void tearDown() throws Exception {
-        twitterCoreKit.logOut();
-        scrubClass(TweetRepositoryTest.class);  // gross
-        super.tearDown();
-    }
-
+    @Test
     public void testDefaultApiCallbackRunnableSuccess_updateCache() {
         final TestTweetRepository mockRepo = mock(TestTweetRepository.class);
 

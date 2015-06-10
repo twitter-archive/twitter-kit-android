@@ -88,7 +88,7 @@ public class TweetUiTestCase extends FabricAndroidTestCase {
 
     private void createMocks() {
         mainHandler = mock(Handler.class);
-        queue = mock(TweetRepositoryTest.TestAuthRequestQueue.class);
+        queue = mock(TestAuthRequestQueue.class);
         picasso = MockUtils.mockPicasso(mock(Picasso.class), mock(RequestCreator.class));
 
         statusesService = mock(StatusesService.class);
@@ -103,12 +103,5 @@ public class TweetUiTestCase extends FabricAndroidTestCase {
 
         clients = mock(ConcurrentHashMap.class);
         MockUtils.mockClients(clients, apiClient);
-    }
-
-    // Make AuthRequestQueue public so we can mock it using Mockito
-    public static class TestAuthRequestQueue extends AuthRequestQueue {
-        public TestAuthRequestQueue() {
-            super(null, null);
-        }
     }
 }
