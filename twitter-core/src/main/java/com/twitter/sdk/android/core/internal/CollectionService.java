@@ -41,7 +41,7 @@ public interface CollectionService {
      * @param minPosition Returns results with a position greater than the specified position.
      * @param cb The callback to invoke when the request completes.
      */
-    @GET("/1.1/collections/collection.json")
+    @GET("/1.1/collections/entries.json")
     void collection(@Query("id") String id,
                     @Query("count") Integer count,
                     @Query("max_position") Long maxPosition,

@@ -3,6 +3,8 @@
 
 ## Unreleased
 
+* (DH) Switch CollectionService from the beta collections endpoint to the public collections endpoint.
+
 ## v1.4.0
 
 * (DH) Improved security of WebView used by OAuthActivity by disabling form data saving.
