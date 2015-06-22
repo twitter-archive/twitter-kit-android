@@ -105,7 +105,7 @@ dependencies {
     androidTestCompile rootProject.mockito
     androidTestCompile rootProject.dexmakerMockito
 
-    testCompile project(path: ':sdk:fabric:fabric', configuration: 'debug')
+//    testCompile project(path: ':sdk:fabric:fabric', configuration: 'debug')
     testCompile rootProject.mockito
     testCompile rootProject.junit
     testCompile rootProject.mavenAntTasks
