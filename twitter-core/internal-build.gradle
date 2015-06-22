@@ -87,15 +87,12 @@ android {
     }
 }
 
-ext.projectDependencies = [
-        ':sdk:fabric:fabric'
-]
-
 dependencies {
-    projectDependencies.each {
-        debugCompile project(path: it, configuration: 'debug')
-        releaseCompile kitDependency(path: it, configuration: 'release')
-    }
+
+    debugCompile project(':sdk:fabric:fabric')
+    debugCompile rootProject.fabricTest
+
+    releaseCompile kitDependency(path:':sdk:fabric:fabric')
 
     compile 'com.squareup.retrofit:retrofit:1.6.1'
     compile 'com.google.code.gson:gson:2.2.4'
@@ -110,7 +107,7 @@ dependencies {
     androidTestCompile rootProject.mockito
     androidTestCompile rootProject.dexmakerMockito
 
-//    testCompile project(path: ':sdk:fabric:fabric', configuration: 'debug')
+    testCompile rootProject.fabricTest
     testCompile rootProject.mockito
     testCompile rootProject.junit
     testCompile rootProject.mavenAntTasks

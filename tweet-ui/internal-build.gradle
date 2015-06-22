@@ -84,17 +84,10 @@ android {
     }
 }
 
-ext.projectDependencies = [
-        ':sdk:fabric:fabric',
-        ':sdk:twitter:twitter-core'
-]
-
 dependencies {
 
-    projectDependencies.each {
-        debugCompile project(path: it, configuration: 'debug')
-        releaseCompile kitDependency(path: it, configuration: 'release')
-    }
+    debugCompile project(path: ':sdk:twitter:twitter-core', configuration: 'debug')
+    releaseCompile kitDependency(path: ':sdk:twitter:twitter-core', configuration: 'release')
 
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.support:support-v4:21.0.0'
@@ -105,7 +98,7 @@ dependencies {
     androidTestCompile rootProject.mockito
     androidTestCompile rootProject.dexmakerMockito
 
-//    testCompile project(path: ':sdk:fabric:fabric', configuration: 'debug')
+    testCompile rootProject.fabricTest
     testCompile rootProject.mockito
     testCompile rootProject.junit
     testCompile rootProject.mavenAntTasks
