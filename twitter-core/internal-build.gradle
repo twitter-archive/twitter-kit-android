@@ -92,7 +92,7 @@ dependencies {
     debugCompile project(':sdk:fabric:fabric')
     debugCompile rootProject.fabricTest
 
-    releaseCompile kitDependency(path:':sdk:fabric:fabric')
+    releaseCompile kitDependency(path:':sdk:fabric:fabric', configuration: 'release')
 
     compile 'com.squareup.retrofit:retrofit:1.6.1'
     compile 'com.google.code.gson:gson:2.2.4'
