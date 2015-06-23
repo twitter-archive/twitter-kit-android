@@ -17,33 +17,26 @@
 
 package com.twitter.sdk.android.tweetui.internal;
 
+
+import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
+import com.twitter.sdk.android.core.TwitterApiException;
 
 import java.util.List;
 
-/**
- * Mockable class that simplifies code that depends on sessions but is agnostic to session type.
- *
- * Note, the order of the SessionManager list is important if one type is more desirable to use
- * than another.
- */
-public class ActiveSessionProvider {
+public class UserSessionProvider extends SessionProvider {
 
-    private final List<SessionManager<? extends  Session>> sessionManagers;
-
-    public ActiveSessionProvider(List<SessionManager<? extends Session>> sessionManagers) {
-        this.sessionManagers = sessionManagers;
+    public UserSessionProvider(List<SessionManager<? extends Session>> sessionManagers) {
+        super(sessionManagers);
     }
 
-    public Session getActiveSession() {
-        Session session = null;
-        for (SessionManager<? extends Session> sessionManager : sessionManagers) {
-            session = sessionManager.getActiveSession();
-            if (session != null) {
-                break;
-            }
-        }
-        return session;
+    /*
+     * Requests a Twitter user login flow.
+     */
+    public void requestAuth(Callback<Session> cb) {
+        // treat as a failure to complete the Twitter login flow
+        // TODO launch a Login with Twitter Activity to try to obtain user auth
+        cb.failure((TwitterApiException) null);
     }
 }

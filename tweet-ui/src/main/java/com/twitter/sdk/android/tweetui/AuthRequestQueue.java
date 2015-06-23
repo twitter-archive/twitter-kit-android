@@ -17,22 +17,21 @@
 
 package com.twitter.sdk.android.tweetui;
 
-import com.twitter.sdk.android.core.AppSession;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.tweetui.internal.ActiveSessionProvider;
+import com.twitter.sdk.android.tweetui.internal.SessionProvider;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /*
- * This queue transparently fetches guest auth tokens when no other signing mechanism is present
- * and then passes the requests off to the network layer.
+ * * Queues requests until a TwitterApiClient with a session is ready. Gets an active session from
+ * the sessionProvider or requests sessionProvider perform authentication.
  *
  * In order to solve concurrent access problems we have put synchronized around the public methods
  * in order to lock queue access so that we can avoid orphaning requests in the queue
@@ -44,11 +43,11 @@ class AuthRequestQueue {
     final AtomicBoolean awaitingSession;
 
     private final TwitterCore twitterCore;
-    private final ActiveSessionProvider activeSessionProvider;
+    private final SessionProvider sessionProvider;
 
-    AuthRequestQueue(TwitterCore twitterCore, ActiveSessionProvider activeSessionProvider) {
+    AuthRequestQueue(TwitterCore twitterCore, SessionProvider sessionProvider) {
         this.twitterCore = twitterCore;
-        this.activeSessionProvider = activeSessionProvider;
+        this.sessionProvider = sessionProvider;
         queue = new ConcurrentLinkedQueue<>();
         awaitingSession = new AtomicBoolean(true);
     }
@@ -58,12 +57,12 @@ class AuthRequestQueue {
      * 1: if we are not waiting for a session (from file restoration or from network request)
      *    and there is an active session and an authConfig it will simply pass the request
      *    off to the network layer
-     * 2: if we have already kicked off a request to get a guest auth token or otherwise just
+     * 2: if we have already kicked off a request to get a session or otherwise just
      *    don't have an auth config in the form of an oauth2service (provided once TweetUi
      *    has been given a client id and secret we will queue the request
-     * 3: otherwise we queue the request and start a request to the twitter api to get a guest
-     *    auth token. We set the request flag to be active so that we don't end up kicking off
-     *    duplicate requests to the api to get guest auth keys.
+     * 3: otherwise we queue the request and start a request to the twitter api to get a session.
+     *    We set the request flag to be active so that we don't end up kicking off duplicate
+     *    requests.
      */
     protected synchronized boolean addRequest(Callback<TwitterApiClient> callback) {
         if (callback == null) return false;
@@ -102,19 +101,23 @@ class AuthRequestQueue {
         }
     }
 
-    /*
-     * Requests from the twitter api first an app auth token and then a guest auth token, only
-     * is successful if both requests are successful.
-     */
     void requestAuth() {
-        twitterCore.logInGuest(getAppAuthTokenCallback());
+        sessionProvider.requestAuth(new Callback<Session>() {
+            @Override
+            public void success(Result<Session> result) {
+                flushQueueOnSuccess(twitterCore.getApiClient(result.data));
+            }
+
+            @Override
+            public void failure(TwitterException exception) {
+                flushQueueOnError(exception);
+            }
+        });
     }
 
     /*
-     * This is called only once we have a guest auth token and can pass these requests off to the
-     * network layer to be signed with our new guest auth token.
-     *
-     * TODO: pass new token explicitly to the requests, currently this is only done by reference
+     * This is called only once we have a TwitterApiClient with a session so requests can be
+     * performed.
      */
     synchronized void flushQueueOnSuccess(TwitterApiClient apiClient) {
         awaitingSession.set(false);
@@ -126,8 +129,8 @@ class AuthRequestQueue {
     }
 
     /*
-     * If we weren't able to get a guest auth token we can't make these requests so we just call
-     * back to the configured listener with an error
+     * If we weren't able to get a session we can't make these requests so we just call back to the
+     * configured listener with an error.
      */
     synchronized void flushQueueOnError(TwitterException error) {
         awaitingSession.set(false);
@@ -140,7 +143,7 @@ class AuthRequestQueue {
 
     // not synchronized, only package protected for testing
     Session getValidSession() {
-        final Session session = activeSessionProvider.getActiveSession();
+        final Session session = sessionProvider.getActiveSession();
         // Only use session if it has auth token.
         if (session != null && session.getAuthToken() != null &&
                 !session.getAuthToken().isExpired()) {
@@ -148,19 +151,5 @@ class AuthRequestQueue {
         } else {
             return null;
         }
-    }
-
-    Callback<AppSession> getAppAuthTokenCallback() {
-        return new Callback<AppSession>() {
-            @Override
-            public void success(Result<AppSession> result) {
-                flushQueueOnSuccess(twitterCore.getApiClient(result.data));
-            }
-
-            @Override
-            public void failure(TwitterException exception) {
-                flushQueueOnError(exception);
-            }
-        };
     }
 }

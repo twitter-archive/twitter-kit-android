@@ -25,14 +25,17 @@ abstract class Repository {
     protected final TweetUi tweetUiKit;
     protected final ExecutorService executorService;
     protected final Handler mainHandler;
-    protected final AuthRequestQueue queue;
+    protected final AuthRequestQueue guestAuthQueue;
+    protected final AuthRequestQueue userAuthQueue;
 
     public Repository(TweetUi tweetUiKit, ExecutorService executorService,
-                      Handler mainHandler, AuthRequestQueue queue) {
+                      Handler mainHandler, AuthRequestQueue userAuthQueue,
+                      AuthRequestQueue guestAuthQueue) {
 
         this.tweetUiKit = tweetUiKit;
         this.executorService = executorService;
         this.mainHandler = mainHandler;
-        this.queue = queue;
+        this.userAuthQueue = userAuthQueue;
+        this.guestAuthQueue = guestAuthQueue;
     }
 }

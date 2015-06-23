@@ -45,7 +45,7 @@ public class TweetViewFetchAdapterTest extends TweetUiTestCase {
             expectedTweets.add(tweet);
         }
         final TweetRepository tweetRepository = new TestTweetRepository(tweetUi, executorService,
-                mainHandler, queue);
+                mainHandler, userAuthQueue, guestAuthQueue);
         tweetUi.setTweetRepository(tweetRepository);
     }
 
@@ -105,8 +105,9 @@ public class TweetViewFetchAdapterTest extends TweetUiTestCase {
      */
     public class TestTweetRepository extends TweetRepository {
         TestTweetRepository(TweetUi tweetUiKit, ExecutorService executorService,
-                            Handler mainHandler, AuthRequestQueue queue) {
-            super(tweetUiKit, executorService, mainHandler, queue);
+                Handler mainHandler, AuthRequestQueue userAuthQueue,
+                AuthRequestQueue guestAuthQueue) {
+            super(tweetUiKit, executorService, mainHandler, userAuthQueue, guestAuthQueue);
         }
 
         @Override

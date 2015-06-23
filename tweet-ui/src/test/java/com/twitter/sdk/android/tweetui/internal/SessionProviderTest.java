@@ -17,6 +17,8 @@
 
 package com.twitter.sdk.android.tweetui.internal;
 
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.AppSession;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
@@ -38,37 +40,34 @@ import static org.mockito.Mockito.*;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, emulateSdk = 21)
-public class ActiveSessionProviderTest {
-
+public class SessionProviderTest {
+    private TwitterCore mockTwitterCore;
     private List<SessionManager<? extends Session>> sessionManagers;
     private SessionManager<TwitterSession> mockTwitterSessionManager;
     private SessionManager<AppSession> mockAppSessionManager;
-    private ActiveSessionProvider activeSessionProvider;
+    private SessionProvider sessionProvider;
 
     @Before
     public void setUp() throws Exception {
-
         sessionManagers = new ArrayList<>();
+        mockTwitterCore = mock(TwitterCore.class);
         mockTwitterSessionManager = mock(SessionManager.class);
         mockAppSessionManager = mock(SessionManager.class);
-
         sessionManagers.add(mockTwitterSessionManager);
         sessionManagers.add(mockAppSessionManager);
-
-        activeSessionProvider = new ActiveSessionProvider(sessionManagers);
+        sessionProvider = new TestSessionProvider(sessionManagers);
     }
 
     @Test
     public void testGetActiveSession_activeSessionDoesNotExist() {
-        assertNull(activeSessionProvider.getActiveSession());
+        assertNull(sessionProvider.getActiveSession());
     }
 
     @Test
     public void testGetActiveSession_activeSessionFirstManager() {
         final TwitterSession mockSession = mock(TwitterSession.class);
         when(mockTwitterSessionManager.getActiveSession()).thenReturn(mockSession);
-        assertSame(mockSession, activeSessionProvider.getActiveSession());
-
+        assertSame(mockSession, sessionProvider.getActiveSession());
         // Verify that we exited the loop early.
         verifyZeroInteractions(mockAppSessionManager);
     }
@@ -77,6 +76,18 @@ public class ActiveSessionProviderTest {
     public void testGetActiveSession_activeSessionSecondManager() {
         final AppSession mockSession = mock(AppSession.class);
         when(mockAppSessionManager.getActiveSession()).thenReturn(mockSession);
-        assertSame(mockSession, activeSessionProvider.getActiveSession());
+        assertSame(mockSession, sessionProvider.getActiveSession());
+    }
+
+    // testing purposes
+    class TestSessionProvider extends SessionProvider {
+        public TestSessionProvider(List<SessionManager<? extends Session>> sessionManagers) {
+            super(sessionManagers);
+        }
+
+        @Override
+        public void requestAuth(Callback<Session> cb) {
+            // tested in concrete SessionProvider's
+        }
     }
 }

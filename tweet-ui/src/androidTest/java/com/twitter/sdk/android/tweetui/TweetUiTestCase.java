@@ -44,7 +44,8 @@ public class TweetUiTestCase extends FabricAndroidTestCase {
     protected TweetUi tweetUi;
 
     // mocks
-    protected AuthRequestQueue queue;
+    protected AuthRequestQueue guestAuthQueue;
+    protected AuthRequestQueue userAuthQueue;
     protected Picasso picasso;
     private StatusesService statusesService;
     protected DefaultScribeClient scribeClient;
@@ -65,7 +66,8 @@ public class TweetUiTestCase extends FabricAndroidTestCase {
 
         tweetUi = TweetUi.getInstance();
         final TweetRepository tweetRepository
-                = new TweetRepository(tweetUi, executorService, mainHandler, queue);
+                = new TweetRepository(tweetUi, executorService, mainHandler, userAuthQueue,
+                guestAuthQueue);
         tweetUi.setTweetRepository(tweetRepository);
         tweetUi.setImageLoader(picasso);
     }
@@ -88,7 +90,8 @@ public class TweetUiTestCase extends FabricAndroidTestCase {
 
     private void createMocks() {
         mainHandler = mock(Handler.class);
-        queue = mock(TestAuthRequestQueue.class);
+        guestAuthQueue = mock(TestAuthRequestQueue.class);
+        userAuthQueue = mock(TestAuthRequestQueue.class);
         picasso = MockUtils.mockPicasso(mock(Picasso.class), mock(RequestCreator.class));
 
         statusesService = mock(StatusesService.class);

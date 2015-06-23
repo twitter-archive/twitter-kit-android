@@ -28,10 +28,9 @@ import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.internal.oauth.GuestAuthToken;
+import com.twitter.sdk.android.tweetui.internal.SessionProvider;
 import com.twitter.sdk.android.core.internal.oauth.OAuth2Token;
-import com.twitter.sdk.android.tweetui.internal.ActiveSessionProvider;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,7 +44,7 @@ import static org.mockito.Mockito.*;
 @Config(constants = BuildConfig.class, emulateSdk = 21)
 public class AuthRequestQueueTest {
     private TwitterCore mockTwitterCoreKit;
-    private ActiveSessionProvider mockActiveSessionProvider;
+    private SessionProvider mockSessionProvider;
     private GuestAuthToken mockGuestAuthToken;
     private OAuth2Token mockAppAuthToken;
     private Callback<TwitterApiClient> mockRequest;
@@ -53,23 +52,21 @@ public class AuthRequestQueueTest {
 
     @Before
     public void setUp() throws Exception {
-
         mockTwitterCoreKit = mock(TwitterCore.class);
-        mockActiveSessionProvider = mock(ActiveSessionProvider.class);
+        mockSessionProvider = mock(SessionProvider.class);
+        doNothing().when(mockSessionProvider).requestAuth(any(Callback.class));
+
         mockGuestAuthToken = mock(GuestAuthToken.class);
         mockAppAuthToken = mock(OAuth2Token.class);
         mockRequest = mock(Callback.class);
         mockTwitterApiClient = mock(TwitterApiClient.class);
     }
 
-    @After
-    public void tearDown() throws Exception {
-        mockTwitterCoreKit.logOut();
-    }
-
+    // constructs an AuthRequestQueue with mocks, whose session provider returns the given
+    // active session
     private AuthRequestQueue setupQueue(Session session) {
-        when(mockActiveSessionProvider.getActiveSession()).thenReturn(session);
-        return new AuthRequestQueue(mockTwitterCoreKit, mockActiveSessionProvider);
+        when(mockSessionProvider.getActiveSession()).thenReturn(session);
+        return new AuthRequestQueue(mockTwitterCoreKit, mockSessionProvider);
     }
 
     @Test
@@ -79,14 +76,14 @@ public class AuthRequestQueueTest {
     }
 
     /*
-     * test addRequest queues request and does not request logInGuest
+     * test addRequest queues request and does not requestAuth
      */
     @Test
-    public void testAddRequest_addsToQueueAndNoCallToLogInGuest() {
+    public void testAddRequest_addsToQueueAndNoCallToRequestAuth() {
         final AuthRequestQueue authRequestQueue = setupQueue(null);
         authRequestQueue.addRequest(mockRequest);
         assertEquals(1, authRequestQueue.queue.size());
-        verify(mockTwitterCoreKit, times(0)).logInGuest(any(Callback.class));
+        verify(mockSessionProvider, times(0)).requestAuth(any(Callback.class));
     }
 
     /*
@@ -99,10 +96,10 @@ public class AuthRequestQueueTest {
         authRequestQueue.addRequest(mockRequest);
         // asserts that:
         // - we added the request to the queue until a token is obtained
-        // - we called logInGuest to get an auth token
+        // - we called requestAuth to get a session
         // - we set the awaitingSession flag to true
         assertEquals(1, authRequestQueue.queue.size());
-        verify(mockTwitterCoreKit, times(1)).logInGuest(any(Callback.class));
+        verify(mockSessionProvider, times(1)).requestAuth(any(Callback.class));
         assertTrue(authRequestQueue.awaitingSession.get());
     }
 
@@ -116,10 +113,10 @@ public class AuthRequestQueueTest {
         authRequestQueue.addRequest(mockRequest);
         // asserts that:
         // - we added the request to the queue until a token is obtained
-        // - we called logInGuest to get an auth token
+        // - we called requestAuth to get a session
         // - we set the awaitingSession flag to true
         assertEquals(1, authRequestQueue.queue.size());
-        verify(mockTwitterCoreKit, times(1)).logInGuest(any(Callback.class));
+        verify(mockSessionProvider, times(1)).requestAuth(any(Callback.class));
         assertTrue(authRequestQueue.awaitingSession.get());
     }
 
@@ -130,10 +127,10 @@ public class AuthRequestQueueTest {
         authRequestQueue.addRequest(mockRequest);
         // asserts that
         // - we added the request to the queue until a token is obtained
-        // - we did NOT call logInGuest, since an auth request is in-flight
+        // - we did NOT call requestAuth, since an auth request is in-flight
         // - awaitingSession flag sanity check
         assertEquals(1, authRequestQueue.queue.size());
-        verify(mockTwitterCoreKit, times(0)).logInGuest(any(Callback.class));
+        verify(mockSessionProvider, times(0)).requestAuth(any(Callback.class));
         assertTrue(authRequestQueue.awaitingSession.get());
     }
 
@@ -247,7 +244,7 @@ public class AuthRequestQueueTest {
 
         assertFalse(authRequestQueue.awaitingSession.get());
         verify(mockCallback).success(any(Result.class));
-        verify(mockTwitterCoreKit, times(0)).logInGuest(any(Callback.class));
+        verify(mockSessionProvider, times(0)).requestAuth(any(Callback.class));
     }
 
     @Test
@@ -259,7 +256,7 @@ public class AuthRequestQueueTest {
         authRequestQueue.sessionRestored(session);
 
         assertFalse(authRequestQueue.awaitingSession.get());
-        verify(mockTwitterCoreKit, times(0)).logInGuest(any(Callback.class));
+        verify(mockSessionProvider, times(0)).requestAuth(any(Callback.class));
     }
 
     @Test
@@ -269,7 +266,7 @@ public class AuthRequestQueueTest {
         authRequestQueue.sessionRestored(null);
 
         assertFalse(authRequestQueue.awaitingSession.get());
-        verify(mockTwitterCoreKit, times(0)).logInGuest(any(Callback.class));
+        verify(mockSessionProvider, times(0)).requestAuth(any(Callback.class));
     }
 
     @Test
@@ -278,7 +275,7 @@ public class AuthRequestQueueTest {
         final Callback mockCallback = mock(Callback.class);
         authRequestQueue.addRequest(mockCallback);
         authRequestQueue.sessionRestored(null);
-        verify(mockTwitterCoreKit, times(1)).logInGuest(any(Callback.class));
+        verify(mockSessionProvider, times(1)).requestAuth(any(Callback.class));
         verifyZeroInteractions(mockCallback);
         assertTrue(authRequestQueue.awaitingSession.get());
     }

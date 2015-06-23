@@ -33,8 +33,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 /**
- * Encapsulates Tweet API access as a read through cache. The LruCache implementation we use handles
- * thread safe access.
+ * Encapsulates Tweet API access. Tweet loads are read through a thread safe LruCache.
  */
 class TweetRepository extends Repository {
     private static final String TAG = TweetUi.LOGTAG;
@@ -48,8 +47,8 @@ class TweetRepository extends Repository {
     final LruCache<Long, FormattedTweetText> formatCache;
 
     TweetRepository(TweetUi tweetUiKit, ExecutorService executorService,
-            Handler mainHandler, AuthRequestQueue queue) {
-        super(tweetUiKit, executorService, mainHandler, queue);
+            Handler mainHandler, AuthRequestQueue userAuthQueue, AuthRequestQueue guestAuthQueue) {
+        super(tweetUiKit, executorService, mainHandler, userAuthQueue, guestAuthQueue);
 
         tweetCache = new LruCache<>(DEFAULT_CACHE_SIZE);
         formatCache = new LruCache<>(DEFAULT_CACHE_SIZE);
@@ -91,7 +90,7 @@ class TweetRepository extends Repository {
             return;
         }
 
-        queue.addRequest(new Callback<TwitterApiClient>() {
+        guestAuthQueue.addRequest(new Callback<TwitterApiClient>() {
             @Override
             public void success(Result<TwitterApiClient> result) {
                 result.data.getStatusesService().show(tweetId, null, null, null,
@@ -116,7 +115,7 @@ class TweetRepository extends Repository {
      * @param cb repository callback
      */
     void loadTweets(final List<Long> tweetIds, final LoadCallback<List<Tweet>> cb) {
-        queue.addRequest(new Callback<TwitterApiClient>() {
+        guestAuthQueue.addRequest(new Callback<TwitterApiClient>() {
             @Override
             public void success(Result<TwitterApiClient> result) {
                 final String commaSepIds = TextUtils.join(",", tweetIds);

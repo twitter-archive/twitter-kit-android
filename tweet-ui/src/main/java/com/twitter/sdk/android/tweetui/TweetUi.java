@@ -30,7 +30,8 @@ import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
-import com.twitter.sdk.android.tweetui.internal.ActiveSessionProvider;
+import com.twitter.sdk.android.tweetui.internal.GuestSessionProvider;
+import com.twitter.sdk.android.tweetui.internal.UserSessionProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,14 +47,17 @@ public class TweetUi extends Kit<Boolean> {
 
     private static final String KIT_SCRIBE_NAME = "TweetUi";
 
-    List<SessionManager<? extends Session>> sessionManagers;
-    ActiveSessionProvider activeSessionProvider;
+    List<SessionManager<? extends Session>> userSessionManagers;
+    List<SessionManager<? extends Session>> guestSessionManagers;
+    UserSessionProvider userSessionProvider;
+    GuestSessionProvider guestSessionProvider;
     String advertisingId;
     DefaultScribeClient scribeClient;
 
     private final AtomicReference<Gson> gsonRef;
     private TweetRepository tweetRepository;
-    private AuthRequestQueue queue;
+    private AuthRequestQueue userAuthQueue;
+    private AuthRequestQueue guestAuthQueue;
     private Picasso imageLoader;
 
     // Singleton class, should only be created using getInstance()
@@ -84,14 +88,19 @@ public class TweetUi extends Kit<Boolean> {
     protected boolean onPreExecute() {
         super.onPreExecute();
         final TwitterCore twitterCore = TwitterCore.getInstance();
-        sessionManagers = new ArrayList<>(2);
-        sessionManagers.add(twitterCore.getSessionManager());
-        sessionManagers.add(twitterCore.getAppSessionManager());
-        activeSessionProvider = new ActiveSessionProvider(sessionManagers);
+        userSessionManagers = new ArrayList<>(1);
+        userSessionManagers.add(twitterCore.getSessionManager());
+        userSessionProvider = new UserSessionProvider(userSessionManagers);
+        userAuthQueue = new AuthRequestQueue(twitterCore, userSessionProvider);
 
-        queue = new AuthRequestQueue(twitterCore, activeSessionProvider);
+        guestSessionManagers = new ArrayList<>(2);
+        guestSessionManagers.add(twitterCore.getSessionManager());
+        guestSessionManagers.add(twitterCore.getAppSessionManager());
+        guestSessionProvider = new GuestSessionProvider(twitterCore, guestSessionManagers);
+        guestAuthQueue = new AuthRequestQueue(twitterCore, guestSessionProvider);
+
         tweetRepository = new TweetRepository(this, getFabric().getExecutorService(),
-                getFabric().getMainHandler(), queue);
+                getFabric().getMainHandler(), userAuthQueue, guestAuthQueue);
         return true;
     }
 
@@ -102,7 +111,10 @@ public class TweetUi extends Kit<Boolean> {
          * ends up being strict mode violations if it is initialized on the main thread.
          */
         imageLoader = Picasso.with(getContext());
-        queue.sessionRestored(activeSessionProvider.getActiveSession());
+
+        // restore active sessions to user and guest auth queues
+        userAuthQueue.sessionRestored(userSessionProvider.getActiveSession());
+        guestAuthQueue.sessionRestored(guestSessionProvider.getActiveSession());
 
         // ensure initialization of gson, this initialization in most cases will always
         // happen here.
@@ -124,7 +136,7 @@ public class TweetUi extends Kit<Boolean> {
 
     private void setUpScribeClient() {
         scribeClient = new DefaultScribeClient(this, KIT_SCRIBE_NAME, gsonRef.get(),
-                sessionManagers, getIdManager());
+                guestSessionManagers, getIdManager());
     }
 
     void scribe(EventNamespace... namespaces) {
@@ -159,8 +171,8 @@ public class TweetUi extends Kit<Boolean> {
         return tweetRepository;
     }
 
-    AuthRequestQueue getAuthRequestQueue() {
-        return queue;
+    AuthRequestQueue getGuestAuthQueue() {
+        return guestAuthQueue;
     }
 
     // Testing purposes only
