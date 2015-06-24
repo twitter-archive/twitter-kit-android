@@ -17,6 +17,9 @@
 
 package com.twitter.sdk.android.tweetui;
 
+import android.os.Handler;
+
+import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.models.Tweet;
 
 import org.junit.Test;
@@ -24,11 +27,73 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
+import org.junit.Before;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+
 import static org.mockito.Mockito.*;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, emulateSdk = 21)
 public class TweetRepositoryTest {
+    private static final Long anyId = 1L;
+    private static final List<Long> anyIds = new ArrayList<Long>();
+    private AuthRequestQueue mockUserAuthQueue;
+    private AuthRequestQueue mockGuestAuthQueue;
+    private TweetRepository tweetRepository;
+
+    @Before
+    public void setUp() throws Exception {
+        anyIds.add(anyId);
+        mockUserAuthQueue = mock(AuthRequestQueue.class);
+        mockGuestAuthQueue = mock(AuthRequestQueue.class);
+        tweetRepository = new TweetRepository(null, mock(ExecutorService.class),
+                mock(Handler.class), mockUserAuthQueue, mockGuestAuthQueue);
+    }
+
+    @Test
+    public void testFavoriteDelegation() {
+        tweetRepository.favorite(anyId, mock(Callback.class));
+        verify(mockUserAuthQueue, times(1)).addRequest(any(Callback.class));
+        verifyZeroInteractions(mockGuestAuthQueue);
+    }
+
+    @Test
+    public void testUnfavoriteDelegation() {
+        tweetRepository.unfavorite(anyId, mock(Callback.class));
+        verify(mockUserAuthQueue, times(1)).addRequest(any(Callback.class));
+        verifyZeroInteractions(mockGuestAuthQueue);
+    }
+
+    @Test
+    public void testRetweetDelegation() {
+        tweetRepository.retweet(anyId, mock(Callback.class));
+        verify(mockUserAuthQueue, times(1)).addRequest(any(Callback.class));
+        verifyZeroInteractions(mockGuestAuthQueue);
+    }
+
+    @Test
+    public void testUnretweetDelegation() {
+        tweetRepository.unretweet(anyId, mock(Callback.class));
+        verify(mockUserAuthQueue, times(1)).addRequest(any(Callback.class));
+        verifyZeroInteractions(mockGuestAuthQueue);
+    }
+
+    @Test
+    public void testLoadTweetDelegation() {
+        tweetRepository.loadTweet(anyId, mock(LoadCallback.class));
+        verifyZeroInteractions(mockUserAuthQueue);
+        verify(mockGuestAuthQueue, times(1)).addRequest(any(Callback.class));
+    }
+
+    @Test
+    public void testLoadTweestDelegation() {
+        tweetRepository.loadTweets(anyIds, mock(LoadCallback.class));
+        verifyZeroInteractions(mockUserAuthQueue);
+        verify(mockGuestAuthQueue, times(1)).addRequest(any(Callback.class));
+    }
 
     @Test
     public void testDefaultApiCallbackRunnableSuccess_updateCache() {

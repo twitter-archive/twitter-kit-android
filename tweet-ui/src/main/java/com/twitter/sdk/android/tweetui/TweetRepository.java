@@ -75,6 +75,42 @@ class TweetRepository extends Repository {
         return formattedTweetText;
     }
 
+    void favorite(final long tweetId, final Callback<Tweet> cb) {
+        userAuthQueue.addRequest(new LoggingCallback<TwitterApiClient>(cb, Fabric.getLogger()) {
+            @Override
+            public void success(Result<TwitterApiClient> result) {
+                result.data.getFavoriteService().create(tweetId, true, cb);
+            }
+        });
+    }
+
+    void unfavorite(final long tweetId, final Callback<Tweet> cb) {
+        userAuthQueue.addRequest(new LoggingCallback<TwitterApiClient>(cb, Fabric.getLogger()) {
+            @Override
+            public void success(Result<TwitterApiClient> result) {
+                result.data.getFavoriteService().destroy(tweetId, true, cb);
+            }
+        });
+    }
+
+    void retweet(final long tweetId, final Callback<Tweet> cb) {
+        userAuthQueue.addRequest(new LoggingCallback<TwitterApiClient>(cb, Fabric.getLogger()) {
+            @Override
+            public void success(Result<TwitterApiClient> result) {
+                result.data.getStatusesService().retweet(tweetId, false, cb);
+            }
+        });
+    }
+
+    void unretweet(final long tweetId, final Callback<Tweet> cb) {
+        userAuthQueue.addRequest(new LoggingCallback<TwitterApiClient>(cb, Fabric.getLogger()) {
+            @Override
+            public void success(Result<TwitterApiClient> result) {
+                result.data.getStatusesService().unretweet(tweetId, false, cb);
+            }
+        });
+    }
+
     /**
      * Queues and loads a Tweet from the API statuses/show endpoint. Queue ensures a guest or app
      * auth token is obtained before performing the request. Adds the the Tweet from the response
