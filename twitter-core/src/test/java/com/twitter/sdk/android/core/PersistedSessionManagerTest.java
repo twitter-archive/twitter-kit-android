@@ -50,7 +50,6 @@ import static org.mockito.Mockito.when;
 @Config(constants = BuildConfig.class, emulateSdk = 21)
 public class PersistedSessionManagerTest {
 
-    static final String PREF_KEY_ACTIVE_SESSION = "active_session";
     static final String PREF_KEY_SESSION = "session";
 
     private static final long TEST_SESSION_ID = 1L;
@@ -73,7 +72,7 @@ public class PersistedSessionManagerTest {
         mockActiveSessionStorage = mock(PreferenceStoreStrategy.class);
         sessionManager = new PersistedSessionManager<>(preferenceStore,
                 mockSerializer, sessionMap, storageMap, mockActiveSessionStorage,
-                PREF_KEY_ACTIVE_SESSION, PREF_KEY_SESSION);
+                PREF_KEY_SESSION);
     }
 
     @After
@@ -121,7 +120,7 @@ public class PersistedSessionManagerTest {
         final PersistedSessionManager<TwitterSession> localSessionManager =
                 new PersistedSessionManager<>(preferenceStore,
                         serializer, sessionMap, storageMap, mockActiveSessionStorage,
-                        PREF_KEY_ACTIVE_SESSION, PREF_KEY_SESSION);
+                        PREF_KEY_SESSION);
         for (TwitterSession session : sessions) {
             final String serializedObject = serializer.serialize(session);
             editor.putString(localSessionManager.getPrefKey(session.getId()), serializedObject);
@@ -341,11 +340,14 @@ public class PersistedSessionManagerTest {
         final long sessionId = session.getId();
         sessionManager.setSession(sessionId, session);
         assertEquals(session, sessionManager.getSession(sessionId));
+        assertEquals(session, sessionManager.getActiveSession());
+        assertMapSizes(1);
 
         final TwitterSession sessionWithDifferentUserName = new TwitterSession(authToken, sessionId,
                 "differentUserName");
         sessionManager.setSession(sessionId, sessionWithDifferentUserName);
         assertEquals(sessionWithDifferentUserName, sessionManager.getSession(sessionId));
+        assertEquals(sessionWithDifferentUserName, sessionManager.getActiveSession());
         assertMapSizes(1);
     }
 

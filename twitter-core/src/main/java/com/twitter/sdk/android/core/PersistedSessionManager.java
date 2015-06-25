@@ -39,7 +39,6 @@ public class PersistedSessionManager<T extends Session> implements SessionManage
     private final ConcurrentHashMap<Long, PreferenceStoreStrategy<T>> storageMap;
     private final PreferenceStoreStrategy<T> activeSessionStorage;
     private final AtomicReference<T> activeSessionRef;
-    private final String prefKeyActiveSession;
     private final String prefKeySession;
     private volatile boolean restorePending = true;
 
@@ -49,13 +48,13 @@ public class PersistedSessionManager<T extends Session> implements SessionManage
         this(preferenceStore, serializer, new ConcurrentHashMap<Long, T>(NUM_SESSIONS),
                 new ConcurrentHashMap<Long, PreferenceStoreStrategy<T>>(NUM_SESSIONS),
                 new PreferenceStoreStrategy<>(preferenceStore, serializer,
-                        prefKeyActiveSession), prefKeyActiveSession, prefKeySession);
+                        prefKeyActiveSession), prefKeySession);
     }
 
     PersistedSessionManager(PreferenceStore preferenceStore,
             SerializationStrategy<T> serializer, ConcurrentHashMap<Long, T> sessionMap,
             ConcurrentHashMap<Long, PreferenceStoreStrategy<T>> storageMap,
-            PreferenceStoreStrategy<T> activesSessionStorage, String prefKeyActiveSession,
+            PreferenceStoreStrategy<T> activesSessionStorage,
             String prefKeySession) {
         this.preferenceStore = preferenceStore;
         this.serializer = serializer;
@@ -63,7 +62,6 @@ public class PersistedSessionManager<T extends Session> implements SessionManage
         this.storageMap = storageMap;
         this.activeSessionStorage = activesSessionStorage;
         this.activeSessionRef = new AtomicReference<>();
-        this.prefKeyActiveSession = prefKeyActiveSession;
         this.prefKeySession = prefKeySession;
     }
 
@@ -178,7 +176,7 @@ public class PersistedSessionManager<T extends Session> implements SessionManage
         storage.save(session);
 
         final T activeSession = activeSessionRef.get();
-        if (activeSession == null || forceUpdate) {
+        if (activeSession == null || activeSession.getId() == id || forceUpdate) {
             synchronized (this) {
                 activeSessionRef.compareAndSet(activeSession, session);
                 activeSessionStorage.save(session);
