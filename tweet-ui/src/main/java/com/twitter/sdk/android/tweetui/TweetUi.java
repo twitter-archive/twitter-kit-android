@@ -99,8 +99,8 @@ public class TweetUi extends Kit<Boolean> {
         guestSessionProvider = new GuestSessionProvider(twitterCore, guestSessionManagers);
         guestAuthQueue = new AuthRequestQueue(twitterCore, guestSessionProvider);
 
-        tweetRepository = new TweetRepository(this, getFabric().getExecutorService(),
-                getFabric().getMainHandler(), userAuthQueue, guestAuthQueue);
+        tweetRepository = new TweetRepository(getFabric().getMainHandler(), userAuthQueue,
+                guestAuthQueue);
         return true;
     }
 

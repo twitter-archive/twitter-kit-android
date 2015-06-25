@@ -24,7 +24,6 @@ import com.twitter.sdk.android.core.models.TweetBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 
 /**
  * Tests the TweetViewFetchAdapter which can accept Tweet ids and retrieves the corresponding Tweet
@@ -44,8 +43,8 @@ public class TweetViewFetchAdapterTest extends TweetUiTestCase {
             final Tweet tweet = new TweetBuilder().setId(tweetId).build();
             expectedTweets.add(tweet);
         }
-        final TweetRepository tweetRepository = new TestTweetRepository(tweetUi, executorService,
-                mainHandler, userAuthQueue, guestAuthQueue);
+        final TweetRepository tweetRepository = new TestTweetRepository(mainHandler, userAuthQueue,
+                guestAuthQueue);
         tweetUi.setTweetRepository(tweetRepository);
     }
 
@@ -104,10 +103,9 @@ public class TweetViewFetchAdapterTest extends TweetUiTestCase {
      * requested Tweets immediately.
      */
     public class TestTweetRepository extends TweetRepository {
-        TestTweetRepository(TweetUi tweetUiKit, ExecutorService executorService,
-                Handler mainHandler, AuthRequestQueue userAuthQueue,
+        TestTweetRepository(Handler mainHandler, AuthRequestQueue userAuthQueue,
                 AuthRequestQueue guestAuthQueue) {
-            super(tweetUiKit, executorService, mainHandler, userAuthQueue, guestAuthQueue);
+            super(mainHandler, userAuthQueue, guestAuthQueue);
         }
 
         @Override

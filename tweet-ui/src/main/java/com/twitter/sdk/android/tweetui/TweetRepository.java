@@ -30,26 +30,29 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 
 /**
  * Encapsulates Tweet API access. Tweet loads are read through a thread safe LruCache.
  */
-class TweetRepository extends Repository {
+class TweetRepository {
     private static final String TAG = TweetUi.LOGTAG;
     private static final String AUTH_ERROR = "Auth could not be obtained.";
-
     // Cache size units are in number of entries, an average Tweet is roughly 900 bytes in memory
     private static final int DEFAULT_CACHE_SIZE = 20;
+
+    private final Handler mainHandler;
+    private final AuthRequestQueue guestAuthQueue;
+    private final AuthRequestQueue userAuthQueue;
 
     // leave this package accessible for testing
     final LruCache<Long, Tweet> tweetCache;
     final LruCache<Long, FormattedTweetText> formatCache;
 
-    TweetRepository(TweetUi tweetUiKit, ExecutorService executorService,
-            Handler mainHandler, AuthRequestQueue userAuthQueue, AuthRequestQueue guestAuthQueue) {
-        super(tweetUiKit, executorService, mainHandler, userAuthQueue, guestAuthQueue);
-
+    TweetRepository(Handler mainHandler, AuthRequestQueue userAuthQueue,
+            AuthRequestQueue guestAuthQueue) {
+        this.mainHandler = mainHandler;
+        this.userAuthQueue = userAuthQueue;
+        this.guestAuthQueue = guestAuthQueue;
         tweetCache = new LruCache<>(DEFAULT_CACHE_SIZE);
         formatCache = new LruCache<>(DEFAULT_CACHE_SIZE);
     }

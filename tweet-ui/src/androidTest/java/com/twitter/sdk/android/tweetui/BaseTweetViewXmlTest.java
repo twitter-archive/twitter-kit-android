@@ -78,8 +78,7 @@ public abstract class BaseTweetViewXmlTest extends FabricAndroidTestCase {
         FabricTestUtils.with(getContext(), twitterCore, new TweetUi());
 
         tweetUi = TweetUi.getInstance();
-        final TweetRepository tweetRepository
-                = new TweetRepository(tweetUi, executorService, mainHandler, userAuthQueue,
+        final TweetRepository tweetRepository = new TweetRepository(mainHandler, userAuthQueue,
                 guestAuthQueue);
         tweetUi.setTweetRepository(tweetRepository);
         tweetUi.setImageLoader(picasso);

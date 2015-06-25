@@ -31,7 +31,6 @@ import org.junit.Before;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
 
 import static org.mockito.Mockito.*;
 
@@ -49,8 +48,8 @@ public class TweetRepositoryTest {
         anyIds.add(anyId);
         mockUserAuthQueue = mock(AuthRequestQueue.class);
         mockGuestAuthQueue = mock(AuthRequestQueue.class);
-        tweetRepository = new TweetRepository(null, mock(ExecutorService.class),
-                mock(Handler.class), mockUserAuthQueue, mockGuestAuthQueue);
+        tweetRepository = new TweetRepository(mock(Handler.class), mockUserAuthQueue,
+                mockGuestAuthQueue);
     }
 
     @Test

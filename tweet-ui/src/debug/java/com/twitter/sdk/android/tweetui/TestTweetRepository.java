@@ -19,11 +19,9 @@ package com.twitter.sdk.android.tweetui;
 
 import android.os.Handler;
 
-import java.util.concurrent.ExecutorService;
-
 public class TestTweetRepository extends TweetRepository {
-    TestTweetRepository(TweetUi tweetUiKit, ExecutorService executorService,
-            Handler mainHandler, AuthRequestQueue userAuthQueue, AuthRequestQueue guestAuthQueue) {
-        super(tweetUiKit, executorService, mainHandler, userAuthQueue, guestAuthQueue);
+    TestTweetRepository(Handler mainHandler, AuthRequestQueue userAuthQueue,
+            AuthRequestQueue guestAuthQueue) {
+        super(mainHandler, userAuthQueue, guestAuthQueue);
     }
 }
