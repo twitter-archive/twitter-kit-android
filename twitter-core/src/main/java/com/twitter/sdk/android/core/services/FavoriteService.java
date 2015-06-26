@@ -62,7 +62,7 @@ public interface FavoriteService {
      * un-favorited status in the requested format when successful.
      * <p>
      * This process invoked by this method is asynchronous. The immediately returned status may not
-     * indicate the resultant favorited status of the tweet. A 200 OK response from this method will
+     * indicate the resultant favorited status of the Tweet. A 200 OK response from this method will
      * indicate whether the intended action was successful or not.
      *
      * @param id (required) The numerical ID of the desired status.
@@ -80,7 +80,7 @@ public interface FavoriteService {
      * favorite status when successful.
      * <p>
      * This process invoked by this method is asynchronous. The immediately returned status may not
-     * indicate the resultant favorited status of the tweet. A 200 OK response from this method will
+     * indicate the resultant favorited status of the Tweet. A 200 OK response from this method will
      * indicate whether the intended action was successful or not.
      *
      * @param id (required) The numerical ID of the desired status.

@@ -43,9 +43,9 @@ public interface ListService {
      * @param maxId Returns results with an ID less than (that is, older than) or equal to the
      *              specified ID.
      * @param count Specifies the number of results to retrieve per “page.”
-     * @param includeEntities Entities are ON by default in API 1.1, each tweet includes a node
+     * @param includeEntities Entities are ON by default in API 1.1, each Tweet includes a node
      *                        called “entities”. This node offers a variety of metadata about the
-     *                        tweet in a discrete structure, including: user_mentions, urls, and
+     *                        Tweet in a discrete structure, including: user_mentions, urls, and
      *                        hashtags.
      * @param includeRetweets When set to either true, t or 1, the list timeline will contain native
      *                        retweets (if they exist) in addition to the standard stream of tweets.

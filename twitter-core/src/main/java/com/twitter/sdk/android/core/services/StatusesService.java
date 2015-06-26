@@ -47,12 +47,12 @@ public interface StatusesService {
      *              supplied. It is recommended you always send include_rts=1 when using this API
      *              method.
      * @param sinceId (optional) Returns results with an ID greater than (that is, more recent than)
-     *                the specified ID. There are limits to the number of Tweets which can be
-     *                accessed through the API. If the limit of Tweets has occurred since the
+     *                the specified ID. There are limits to the number of tweets which can be
+     *                accessed through the API. If the limit of tweets has occurred since the
      *                since_id, the since_id will be forced to the oldest ID available.
      * @param maxId (optional) Returns results with an ID less than (that is, older than) or equal
      *              to the specified ID.
-     * @param trimUser (optional) When set to either true, t or 1, each tweet returned in a timeline
+     * @param trimUser (optional) When set to either true, t or 1, each Tweet returned in a timeline
      *                 will include a user object including only the status authors numerical ID.
      *                 Omit this parameter to receive the complete user object.
      * @param contributeDetails (optional) This parameter enhances the contributors element of the
@@ -71,7 +71,7 @@ public interface StatusesService {
                           Callback<List<Tweet>> cb);
 
     /**
-     * Returns a collection of the most recent Tweets posted by the user indicated by the
+     * Returns a collection of the most recent tweets posted by the user indicated by the
      * screen_name or user_id parameters.
      * <p>
      * User timelines belonging to protected users may only be requested when the authenticated user
@@ -95,12 +95,12 @@ public interface StatusesService {
      *              supplied. It is recommended you always send include_rts=1 when using this API
      *              method.
      * @param sinceId (optional) Returns results with an ID greater than (that is, more recent than)
-     *                the specified ID. There are limits to the number of Tweets which can be
-     *                accessed through the API. If the limit of Tweets has occurred since the
+     *                the specified ID. There are limits to the number of tweets which can be
+     *                accessed through the API. If the limit of tweets has occurred since the
      *                since_id, the since_id will be forced to the oldest ID available.
      * @param maxId (optional) Returns results with an ID less than (that is, older than) or equal
      *              to the specified ID.
-     * @param trimUser (optional) When set to either true, t or 1, each tweet returned in a timeline
+     * @param trimUser (optional) When set to either true, t or 1, each Tweet returned in a timeline
      *                 will include a user object including only the status authors numerical ID.
      *                 Omit this parameter to receive the complete user object.
      * @param excludeReplies (optional) This parameter will prevent replies from appearing in the
@@ -136,7 +136,7 @@ public interface StatusesService {
      * Twitter service.
      * <p>
      * The Twitter REST API goes back up to 800 tweets on the home timeline.
-     * It is more volatile for users that follow many users or follow users who tweet frequently.
+     * It is more volatile for users that follow many users or follow users who Tweet frequently.
      *
      * @param count (optional) Specifies the number of tweets to try and retrieve, up to a maximum
      *              of 200. The value of count is best thought of as a limit to the number of tweets
@@ -150,7 +150,7 @@ public interface StatusesService {
      *                since_id, the since_id will be forced to the oldest ID available.
      * @param maxId (optional) Returns results with an ID less than (that is, older than) or equal
      *              to the specified ID.
-     * @param trimUser (optional) When set to either true, t or 1, each tweet returned in a timeline
+     * @param trimUser (optional) When set to either true, t or 1, each Tweet returned in a timeline
      *                 will include a user object including only the status authors numerical ID.
      *                 Omit this parameter to receive the complete user object.
      * @param excludeReplies (optional) This parameter will prevent replies from appearing in the
@@ -190,7 +190,7 @@ public interface StatusesService {
      *                since_id, the since_id will be forced to the oldest ID available.
      * @param maxId (optional) Returns results with an ID less than (that is, older than) or equal
      *              to the specified ID.
-     * @param trimUser (optional) When set to either true, t or 1, each tweet returned in a timeline
+     * @param trimUser (optional) When set to either true, t or 1, each Tweet returned in a timeline
      *                 will include a user object including only the status authors numerical ID.
      *                 Omit this parameter to receive the complete user object.
      * @param includeEntities (optional) The entities node will be disincluded when set to false.
@@ -209,10 +209,10 @@ public interface StatusesService {
 
     /**
      * Returns a single Tweet, specified by the id parameter. The Tweet's author will also be
-     * embedded within the tweet.
+     * embedded within the Tweet.
      *
      * @param id (required) The numerical ID of the desired Tweet.
-     * @param trimUser (optional) When set to either true, t or 1, each tweet returned in a timeline
+     * @param trimUser (optional) When set to either true, t or 1, each Tweet returned in a timeline
      *                 will include a user object including only the status authors numerical ID.
      *                 Omit this parameter to receive the complete user object.
      * @param includeMyRetweet (optional) When set to either true, t or 1, any Tweets returned that
@@ -230,27 +230,27 @@ public interface StatusesService {
               Callback<Tweet> cb);
 
     /**
-     * Returns fully-hydrated tweet objects for up to 100 tweets per request, as specified by
+     * Returns fully-hydrated Tweet objects for up to 100 tweets per request, as specified by
      * comma-separated values passed to the id parameter.
      * <p>
      * This method is especially useful to get the details (hydrate) a collection of Tweet IDs.
      * <p>
-     * GET statuses / show / :id is used to retrieve a single tweet object.
+     * GET statuses / show / :id is used to retrieve a single Tweet object.
      * <p>
      * There are a few things to note when using this method.
      * <li>You must be following a protected user to be able to see their most recent tweets. If you
      * don't follow a protected user their status will be removed.</li>
-     * <li>The order of tweet IDs may not match the order of tweets in the returned array.</li>
-     * <li>If a requested tweet is unknown or deleted, then that tweet will not be returned in the
+     * <li>The order of Tweet IDs may not match the order of tweets in the returned array.</li>
+     * <li>If a requested Tweet is unknown or deleted, then that Tweet will not be returned in the
      * results list, unless the map parameter is set to true, in which case it will be returned with
      * a value of null.</li>
-     * <li>If none of your lookup criteria matches valid tweet IDs an empty array will be returned
+     * <li>If none of your lookup criteria matches valid Tweet IDs an empty array will be returned
      * for map=false.</li>
      * <li>You are strongly encouraged to use a POST for larger requests.</li>
      *
      * @param id (required) The numerical ID of the desired Tweet.
      * @param includeEntities (optional) The entities node will be disincluded when set to false.
-     * @param trimUser (optional) When set to either true, t or 1, each tweet returned in a timeline
+     * @param trimUser (optional) When set to either true, t or 1, each Tweet returned in a timeline
      *                 will include a user object including only the status authors numerical ID.
      *                 Omit this parameter to receive the complete user object.
      * @param map (optional) When using the map parameter, tweets that do not exist or cannot be
@@ -284,25 +284,25 @@ public interface StatusesService {
      *               it.
      * @param inReplyToStatusId (optional) The ID of an existing status that the update is in reply
      *                          to. Note:: This parameter will be ignored unless the author of the
-     *                          tweet this parameter references is mentioned within the status text.
+     *                          Tweet this parameter references is mentioned within the status text.
      *                          Therefore, you must include @username, where username is the author
-     *                          of the referenced tweet, within the update.
+     *                          of the referenced Tweet, within the update.
      * @param possiblySensitive (optional) If you upload Tweet media that might be considered
      *                          sensitive content such as nudity, violence, or medical procedures,
      *                          you should set this value to true. See Media setting and best
      *                          practices for more context. Defaults to false.
-     * @param latitude (optional) The latitude of the location this tweet refers to. This parameter
+     * @param latitude (optional) The latitude of the location this Tweet refers to. This parameter
      *                 will be ignored unless it is inside the range -90.0 to +90.0 (North is
      *                 positive) inclusive. It will also be ignored if there isn't a corresponding
      *                 long parameter.
-     * @param longitude (optional) The longitude of the location this tweet refers to. The valid
+     * @param longitude (optional) The longitude of the location this Tweet refers to. The valid
      *                  ranges for longitude is -180.0 to +180.0 (East is positive) inclusive. This
      *                  parameter will be ignored if outside that range, if it is not a number, if
      *                  geo_enabled is disabled, or if there not a corresponding lat parameter.
      * @param placeId (optional) A place in the world. These IDs can be retrieved from [node:29].
      * @param displayCoordinates (optional) Whether or not to put a pin on the exact coordinates a
-     *                           tweet has been sent from.
-     * @param trimUser (optional) When set to either true, t or 1, each tweet returned in a timeline
+     *                           Tweet has been sent from.
+     * @param trimUser (optional) When set to either true, t or 1, each Tweet returned in a timeline
      *                 will include a user object including only the status authors numerical ID.
      *                 Omit this parameter to receive the complete user object.
      * @param cb The callback to invoke when the request completes.
@@ -320,11 +320,10 @@ public interface StatusesService {
            Callback<Tweet> cb);
 
     /**
-     * Returns a collection of the 100 most recent retweets of the tweet specified by the id
-     * parameter.
+     * Retweets a Tweet. Returns the original Tweet with retweet details embedded.
      *
      * @param id (required) The numerical ID of the desired Tweet.
-     * @param trimUser (optional) When set to either true, t or 1, each tweet returned in a timeline
+     * @param trimUser (optional) When set to either true, t or 1, each Tweet returned in a timeline
      *                 will include a user object including only the status authors numerical ID.
      *                 Omit this parameter to receive the complete user object.
      * @param cb The callback to invoke when the request completes.
@@ -340,7 +339,7 @@ public interface StatusesService {
      * the author of the specified status. Returns the destroyed status if successful.
      *
      * @param id (required) The numerical ID of the desired Tweet.
-     * @param trimUser (optional) When set to either true, t or 1, each tweet returned in a timeline
+     * @param trimUser (optional) When set to either true, t or 1, each Tweet returned in a timeline
      *                 will include a user object including only the status authors numerical ID.
      *                 Omit this parameter to receive the complete user object.
      * @param cb The callback to invoke when the request completes.
