@@ -3,6 +3,7 @@
 
 ## Unreleased
 
+* (EF) Added unretweet endpoint to StatusesService
 * (DH) Switch CollectionService from the beta collections endpoint to the public collections endpoint.
 
 ## v1.4.0

@@ -349,4 +349,20 @@ public interface StatusesService {
     void destroy(@Path("id") Long id,
                  @Field("trim_user") Boolean trimUser,
                  Callback<Tweet> cb);
+
+    /**
+     * Destroys the retweet specified by the required source Tweet's ID parameter. Returns the
+     * source Tweet if successful.
+     *
+     * @param id (required) The numerical ID of the source Tweet.
+     * @param trimUser (optional) When set to either true, t or 1, each Tweet returned in a timeline
+     *                 will include a user object including only the status authors numerical ID.
+     *                 Omit this parameter to receive the complete user object.
+     * @param cb The callback to invoke when the request completes.
+     */
+    @FormUrlEncoded
+    @POST("/1.1/statuses/unretweet/{id}.json")
+    void unretweet(@Path("id") Long id,
+            @Field("trim_user") Boolean trimUser,
+            Callback<Tweet> cb);
 }
