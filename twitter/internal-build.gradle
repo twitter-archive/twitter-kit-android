@@ -20,8 +20,8 @@ apply plugin: 'com.android.library'
 apply from: rootProject.qualityScript
 apply from: rootProject.sizeScript
 apply from: rootProject.deployScript
-apply plugin: com.twitter.one.gradle.FabricPropertiesPlugin
-apply plugin: com.twitter.one.gradle.release.FabricKitReleasePlugin
+apply plugin: io.fabric.gradle.weaving.FabricPropertiesPlugin
+apply plugin: io.fabric.gradle.release.FabricKitReleasePlugin
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }

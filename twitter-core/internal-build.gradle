@@ -20,7 +20,7 @@ apply plugin: 'com.android.library'
 apply from: rootProject.qualityScript
 apply from: rootProject.sizeScript
 apply from: rootProject.deployScript
-apply plugin: com.twitter.one.gradle.FabricPropertiesPlugin
+apply plugin: io.fabric.gradle.weaving.FabricPropertiesPlugin
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
