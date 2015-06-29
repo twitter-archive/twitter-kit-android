@@ -30,9 +30,9 @@ public final class TestUtils {
         // Private constructor
     }
 
-    public static void setUpTwitterInstalled(Context mockContext)
+    public static void setupTwitterInstalled(Context mockContext)
             throws PackageManager.NameNotFoundException {
-        setupTwitterInstalled(mockContext, SSOAuthHandler.APP_SIGNATURE);
+        setupTwitterInstalled(mockContext, SSOAuthHandler.TWITTER_SIGNATURE);
     }
 
     public static void setupTwitterInstalled(Context mockContext, String signature)
@@ -42,18 +42,23 @@ public final class TestUtils {
         mockPackageInfo.signatures = new Signature[] {
                 new Signature(signature)
         };
-
         when(mockContext.getPackageManager()).thenReturn(mockPm);
-        when(mockPm.getPackageInfo(SSOAuthHandler.PACKAGE_NAME, PackageManager.GET_SIGNATURES))
-                .thenReturn(mockPackageInfo);
+        when(mockPm.getPackageInfo(SSOAuthHandler.TWITTER_PACKAGE_NAME,
+                PackageManager.GET_SIGNATURES)).thenReturn(mockPackageInfo);
+        when(mockPm.getPackageInfo(SSOAuthHandler.DOGFOOD_PACKAGE_NAME,
+                PackageManager.GET_SIGNATURES))
+                .thenThrow(new PackageManager.NameNotFoundException());
     }
 
-    public static void setUpTwitterNotInstalled(Context mockContext)
+    public static void setupNoSSOAppInstalled(Context mockContext)
             throws PackageManager.NameNotFoundException {
         final PackageManager mockPm = mock(PackageManager.class);
-
         when(mockContext.getPackageManager()).thenReturn(mockPm);
-        when(mockPm.getPackageInfo(SSOAuthHandler.PACKAGE_NAME, PackageManager.GET_SIGNATURES))
+        when(mockPm.getPackageInfo(SSOAuthHandler.TWITTER_PACKAGE_NAME,
+                PackageManager.GET_SIGNATURES))
+                .thenThrow(new PackageManager.NameNotFoundException());
+        when(mockPm.getPackageInfo(SSOAuthHandler.DOGFOOD_PACKAGE_NAME,
+                PackageManager.GET_SIGNATURES))
                 .thenThrow(new PackageManager.NameNotFoundException());
     }
 }

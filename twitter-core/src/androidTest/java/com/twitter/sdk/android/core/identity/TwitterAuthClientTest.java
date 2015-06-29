@@ -116,7 +116,7 @@ public class TwitterAuthClientTest extends FabricAndroidTestCase {
 
     public void testAuthorize_authorizeInProgress() throws PackageManager.NameNotFoundException {
         final Activity mockActivity = mock(Activity.class);
-        TestUtils.setUpTwitterNotInstalled(mockActivity);
+        TestUtils.setupNoSSOAppInstalled(mockActivity);
         when(mockAuthState.isAuthorizeInProgress()).thenReturn(true);
 
         // Verify that when authorize is in progress, callback is notified of error.
@@ -126,7 +126,20 @@ public class TwitterAuthClientTest extends FabricAndroidTestCase {
 
     public void testAuthorize_ssoAvailable() throws PackageManager.NameNotFoundException {
         final Activity mockActivity = mock(Activity.class);
-        TestUtils.setUpTwitterInstalled(mockActivity);
+        TestUtils.setupTwitterInstalled(mockActivity);
+        when(mockAuthState.beginAuthorize(any(Activity.class), any(AuthHandler.class)))
+                .thenReturn(true);
+
+        // Verify that when SSO is available, SSOAuthHandler is used to complete the authorization
+        // flow.
+        authClient.authorize(mockActivity, mockCallback);
+        verify(mockAuthState).beginAuthorize(eq(mockActivity), any(SSOAuthHandler.class));
+    }
+
+    public void testAuthorize_ssoAvailableViaTwitterDogfood()
+            throws PackageManager.NameNotFoundException {
+        final Activity mockActivity = mock(Activity.class);
+        TestUtils.setupTwitterInstalled(mockActivity);
         when(mockAuthState.beginAuthorize(any(Activity.class), any(AuthHandler.class)))
                 .thenReturn(true);
 
@@ -138,7 +151,7 @@ public class TwitterAuthClientTest extends FabricAndroidTestCase {
 
     public void testAuthorize_ssoNotAvailable() throws PackageManager.NameNotFoundException {
         final Activity mockActivity = mock(Activity.class);
-        TestUtils.setUpTwitterNotInstalled(mockActivity);
+        TestUtils.setupNoSSOAppInstalled(mockActivity);
         when(mockAuthState.beginAuthorize(any(Activity.class), any(AuthHandler.class)))
                 .thenReturn(true);
 
@@ -150,7 +163,7 @@ public class TwitterAuthClientTest extends FabricAndroidTestCase {
 
     public void testAuthorize_bothSsoAndOAuthFail() throws PackageManager.NameNotFoundException {
         final Activity mockActivity = mock(Activity.class);
-        TestUtils.setUpTwitterInstalled(mockActivity);
+        TestUtils.setupTwitterInstalled(mockActivity);
         when(mockAuthState.beginAuthorize(any(Activity.class), any(AuthHandler.class)))
                 .thenReturn(false);
 
@@ -164,7 +177,7 @@ public class TwitterAuthClientTest extends FabricAndroidTestCase {
 
     public void testAuthorize_scribesImpression() throws PackageManager.NameNotFoundException {
         final Activity mockActivity = mock(Activity.class);
-        TestUtils.setUpTwitterNotInstalled(mockActivity);
+        TestUtils.setupNoSSOAppInstalled(mockActivity);
         authClient = new TwitterAuthClient(mockContext, mockAuthConfig, mockSessionManager,
                 mockAuthState) {
             @Override
@@ -180,7 +193,7 @@ public class TwitterAuthClientTest extends FabricAndroidTestCase {
     public void testAuthorize_scribeHandlesNullClient()
             throws PackageManager.NameNotFoundException {
         final Activity mockActivity = mock(Activity.class);
-        TestUtils.setUpTwitterNotInstalled(mockActivity);
+        TestUtils.setupNoSSOAppInstalled(mockActivity);
 
         authClient = new TwitterAuthClient(mockContext, mockAuthConfig, mockSessionManager,
                 mockAuthState) {

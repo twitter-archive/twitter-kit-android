@@ -18,10 +18,16 @@
 package com.twitter.sdk.android.core.identity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.pm.Signature;
 
+import java.util.List;
+import java.util.ArrayList;
+
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -31,11 +37,6 @@ public final class TestUtils {
         // Private constructor
     }
 
-    public static void setUpTwitterInstalled(Context mockContext)
-            throws PackageManager.NameNotFoundException {
-        setupTwitterInstalled(mockContext, SSOAuthHandler.APP_SIGNATURE);
-    }
-
     public static void setupTwitterInstalled(Context mockContext, String signature)
             throws PackageManager.NameNotFoundException {
         final PackageManager mockPm = mock(PackageManager.class);
@@ -43,18 +44,47 @@ public final class TestUtils {
         mockPackageInfo.signatures = new Signature[] {
                 new Signature(signature)
         };
-
         when(mockContext.getPackageManager()).thenReturn(mockPm);
-        when(mockPm.getPackageInfo(SSOAuthHandler.PACKAGE_NAME, PackageManager.GET_SIGNATURES))
-                .thenReturn(mockPackageInfo);
+        when(mockPm.getPackageInfo(SSOAuthHandler.TWITTER_PACKAGE_NAME,
+            PackageManager.GET_SIGNATURES)).thenReturn(mockPackageInfo);
+        when(mockPm.getPackageInfo(SSOAuthHandler.DOGFOOD_PACKAGE_NAME,
+                PackageManager.GET_SIGNATURES))
+            .thenThrow(new PackageManager.NameNotFoundException());
+        final List<ResolveInfo> activities = new ArrayList<ResolveInfo>();
+        activities.add(mock(ResolveInfo.class));
+        when(mockContext.getPackageManager().queryIntentActivities(any(Intent.class),
+                anyInt())).thenReturn(activities);
     }
 
-    public static void setUpTwitterNotInstalled(Context mockContext)
+    public static void setupTwitterDogfoodInstalled(Context mockContext, String signature)
+            throws PackageManager.NameNotFoundException {
+        final PackageManager mockPm = mock(PackageManager.class);
+        final PackageInfo mockPackageInfo = mock(PackageInfo.class);
+        mockPackageInfo.signatures = new Signature[] {
+                new Signature(signature)
+        };
+        when(mockContext.getPackageManager()).thenReturn(mockPm);
+        when(mockPm.getPackageInfo(SSOAuthHandler.DOGFOOD_PACKAGE_NAME,
+                PackageManager.GET_SIGNATURES)).thenReturn(mockPackageInfo);
+        when(mockPm.getPackageInfo(SSOAuthHandler.TWITTER_PACKAGE_NAME,
+                PackageManager.GET_SIGNATURES))
+                .thenThrow(new PackageManager.NameNotFoundException());
+        final List<ResolveInfo> activities = new ArrayList<ResolveInfo>();
+        activities.add(mock(ResolveInfo.class));
+        when(mockContext.getPackageManager().queryIntentActivities(any(Intent.class),
+                anyInt())).thenReturn(activities);
+    }
+
+    public static void setupNoSSOAppInstalled(Context mockContext)
             throws PackageManager.NameNotFoundException {
         final PackageManager mockPm = mock(PackageManager.class);
 
         when(mockContext.getPackageManager()).thenReturn(mockPm);
-        when(mockPm.getPackageInfo(SSOAuthHandler.PACKAGE_NAME, PackageManager.GET_SIGNATURES))
-                .thenThrow(new PackageManager.NameNotFoundException());
+        when(mockPm.getPackageInfo(SSOAuthHandler.TWITTER_PACKAGE_NAME,
+            PackageManager.GET_SIGNATURES))
+            .thenThrow(new PackageManager.NameNotFoundException());
+        when(mockPm.getPackageInfo(SSOAuthHandler.DOGFOOD_PACKAGE_NAME,
+            PackageManager.GET_SIGNATURES))
+            .thenThrow(new PackageManager.NameNotFoundException());
     }
 }

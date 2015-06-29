@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 
 import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.Callback;
@@ -32,8 +33,11 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.util.Collections;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.eq;
@@ -51,7 +55,6 @@ public class SSOAuthHandlerTest  {
 
     @Before
     public void setUp() throws Exception {
-
         ssoAuthHandler = new SSOAuthHandler(mock(TwitterAuthConfig.class),
                 mock(Callback.class), REQUEST_CODE);
     }
@@ -59,7 +62,7 @@ public class SSOAuthHandlerTest  {
     @Test
     public void testIsAvailable_twitterInstalled() throws PackageManager.NameNotFoundException {
         final Context mockContext = mock(Context.class);
-        TestUtils.setupTwitterInstalled(mockContext, SSOAuthHandler.APP_SIGNATURE);
+        TestUtils.setupTwitterInstalled(mockContext, SSOAuthHandler.TWITTER_SIGNATURE);
         assertTrue(SSOAuthHandler.isAvailable(mockContext));
     }
 
@@ -72,16 +75,32 @@ public class SSOAuthHandlerTest  {
     }
 
     @Test
-    public void testIsAvailable_twitterNotInstalled() throws PackageManager.NameNotFoundException {
+    public void testIsAvailable_twitterDogfoodInstalled()
+            throws PackageManager.NameNotFoundException {
         final Context mockContext = mock(Context.class);
-        TestUtils.setUpTwitterNotInstalled(mockContext);
+        TestUtils.setupTwitterDogfoodInstalled(mockContext, SSOAuthHandler.DOGFOOD_SIGNATURE);
+        assertTrue(SSOAuthHandler.isAvailable(mockContext));
+    }
+
+    @Test
+    public void testIsAvailable_twitterDogfoodInstalledInvalidSignature()
+            throws PackageManager.NameNotFoundException {
+        final Context mockContext = mock(Context.class);
+        TestUtils.setupTwitterDogfoodInstalled(mockContext, INVALID_SIGNATURE);
+        assertFalse(SSOAuthHandler.isAvailable(mockContext));
+    }
+
+    @Test
+    public void testIsAvailable_noSSOAppsInstalled() throws PackageManager.NameNotFoundException {
+        final Context mockContext = mock(Context.class);
+        TestUtils.setupNoSSOAppInstalled(mockContext);
         assertFalse(SSOAuthHandler.isAvailable(mockContext));
     }
 
     @Test
     public void testAuthorize_twitterInstalled() throws PackageManager.NameNotFoundException {
         final Activity mockActivity = mock(Activity.class);
-        TestUtils.setupTwitterInstalled(mockActivity, SSOAuthHandler.APP_SIGNATURE);
+        TestUtils.setupTwitterInstalled(mockActivity, SSOAuthHandler.TWITTER_SIGNATURE);
         assertTrue(ssoAuthHandler.authorize(mockActivity));
     }
 
@@ -94,20 +113,35 @@ public class SSOAuthHandlerTest  {
     }
 
     @Test
-    public void testAuthorize_twitterInstalledNoSsoActivity()
+    public void testAuthorize_twitterDogfoodInstalled()
             throws PackageManager.NameNotFoundException {
         final Activity mockActivity = mock(Activity.class);
-        TestUtils.setupTwitterInstalled(mockActivity, SSOAuthHandler.APP_SIGNATURE);
-        final PackageManager mockPm = mockActivity.getPackageManager();
-        when(mockPm.getActivityInfo(SSOAuthHandler.SSO_ACTIVITY, 0))
-                .thenThrow(mock(PackageManager.NameNotFoundException.class));
+        TestUtils.setupTwitterDogfoodInstalled(mockActivity, SSOAuthHandler.DOGFOOD_SIGNATURE);
+        assertTrue(ssoAuthHandler.authorize(mockActivity));
+    }
+
+    @Test
+    public void testAuthorize_twitterDogfoodInstalledInvalidSignature()
+            throws PackageManager.NameNotFoundException {
+        final Activity mockActivity = mock(Activity.class);
+        TestUtils.setupTwitterDogfoodInstalled(mockActivity, INVALID_SIGNATURE);
         assertFalse(ssoAuthHandler.authorize(mockActivity));
     }
 
     @Test
-    public void testAuthorize_twitterNotInstalled() throws PackageManager.NameNotFoundException {
+    public void testAuthorize_twitterInstalledNoSsoActivity()
+            throws PackageManager.NameNotFoundException {
         final Activity mockActivity = mock(Activity.class);
-        TestUtils.setUpTwitterNotInstalled(mockActivity);
+        TestUtils.setupTwitterInstalled(mockActivity, SSOAuthHandler.TWITTER_SIGNATURE);
+        when(mockActivity.getPackageManager().queryIntentActivities(any(Intent.class),
+                anyInt())).thenReturn(Collections.<ResolveInfo>emptyList());
+        assertFalse(ssoAuthHandler.authorize(mockActivity));
+    }
+
+    @Test
+    public void testAuthorize_noSSOAppsInstalled() throws PackageManager.NameNotFoundException {
+        final Activity mockActivity = mock(Activity.class);
+        TestUtils.setupNoSSOAppInstalled(mockActivity);
         assertFalse(ssoAuthHandler.authorize(mockActivity));
     }
 
@@ -115,7 +149,7 @@ public class SSOAuthHandlerTest  {
     public void testAuthorize_startActivityForResultThrowsException()
             throws PackageManager.NameNotFoundException {
         final Activity mockActivity = mock(Activity.class);
-        TestUtils.setupTwitterInstalled(mockActivity, SSOAuthHandler.APP_SIGNATURE);
+        TestUtils.setupTwitterInstalled(mockActivity, SSOAuthHandler.TWITTER_SIGNATURE);
         doThrow(new RuntimeException()).when(mockActivity)
                 .startActivityForResult(any(Intent.class), eq(REQUEST_CODE));
         assertFalse(ssoAuthHandler.authorize(mockActivity));

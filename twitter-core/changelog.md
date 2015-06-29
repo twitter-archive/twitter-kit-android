@@ -3,8 +3,9 @@
 
 ## Unreleased
 
+* (DH) (internal) Added support for Twitter Single Signon with the Twitter Android Dogfood App
 * (EF) Added unretweet endpoint to StatusesService
-* (DH) Switch CollectionService from the beta collections endpoint to the public collections endpoint.
+* (DH) Switched CollectionService from the beta collections endpoint to the public collections endpoint.
 
 ## v1.4.0
 
