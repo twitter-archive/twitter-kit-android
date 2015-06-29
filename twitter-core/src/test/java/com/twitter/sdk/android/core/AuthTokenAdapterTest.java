@@ -47,19 +47,19 @@ public class AuthTokenAdapterTest  {
             + "\"auth_token\":{"
             + "\"token\":\"" + TestFixtures.TOKEN + "\","
             + "\"secret\":\"" + TestFixtures.SECRET + "\","
-            + "\"createdAt\":" + CREATED_AT + "}}}";
+            + "\"created_at\":" + CREATED_AT + "}}}";
     private static final String JSON_OAUTH2_TOKEN
             = "{\"authToken\":{\"auth_type\":\"oauth2\","
             + "\"auth_token\":{"
             + "\"token_type\":\"" + TOKEN_TYPE + "\","
             + "\"access_token\":\"" + ACCESS_TOKEN + "\","
-            + "\"createdAt\":" + CREATED_AT + "}}}";
+            + "\"created_at\":" + CREATED_AT + "}}}";
     private static final String JSON_GUEST_AUTH_TOKEN
             = "{\"authToken\":{\"auth_type\":\"guest\","
             + "\"auth_token\":{\"guest_token\":\"" + GUEST_TOKEN + "\","
             + "\"token_type\":\"" + TOKEN_TYPE + "\","
             + "\"access_token\":\"" + ACCESS_TOKEN + "\","
-            + "\"createdAt\":" + CREATED_AT + "}}}";
+            + "\"created_at\":" + CREATED_AT + "}}}";
     private static final String JSON_OAUTH1A_TOKEN_MISSING_CREATED_AT
             = "{\"authToken\":{\"auth_type\":\"oauth1a\","
             + "\"auth_token\":{\"secret\":\"" + TestFixtures.SECRET + "\","

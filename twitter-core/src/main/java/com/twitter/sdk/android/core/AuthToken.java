@@ -17,6 +17,7 @@
 
 package com.twitter.sdk.android.core;
 
+import com.google.gson.annotations.SerializedName;
 import com.twitter.sdk.android.core.internal.oauth.AuthHeaders;
 
 /**
@@ -28,6 +29,7 @@ public abstract class AuthToken implements AuthHeaders {
      * Unit time or epoch time when the token was created (always in UTC). The
      * time may be 0 if the token is deserialized from data missing the field.
      */
+    @SerializedName("created_at")
     protected final long createdAt;
 
     public AuthToken() {

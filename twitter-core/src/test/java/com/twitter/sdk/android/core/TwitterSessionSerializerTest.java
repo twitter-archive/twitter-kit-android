@@ -36,19 +36,19 @@ public class TwitterSessionSerializerTest  {
             + "\"auth_token\":{"
             + "\"token\":\"" + TestFixtures.TOKEN + "\","
             + "\"secret\":\"" + TestFixtures.SECRET + "\","
-            + "\"createdAt\":" + CREATED_AT + "},"
+            + "\"created_at\":" + CREATED_AT + "},"
             + "\"id\":-1}";
     public static final String FULL_SESSION_JSON =
             "{\"user_name\":\"" + TestFixtures.SCREEN_NAME + "\","
             + "\"auth_token\":{"
             + "\"token\":\"" + TestFixtures.TOKEN + "\","
             + "\"secret\":\"" + TestFixtures.SECRET + "\","
-            + "\"createdAt\":" + CREATED_AT + "},"
+            + "\"created_at\":" + CREATED_AT + "},"
             + "\"id\":" + TestFixtures.USER_ID + "}";
     public static final String SESSION_JSON_NULL_USERNAME = "{\"auth_token\":{"
             + "\"token\":\"token\","
             + "\"secret\":\"secret\","
-            + "\"createdAt\":" + CREATED_AT + "},"
+            + "\"created_at\":" + CREATED_AT + "},"
             + "\"id\":" + TestFixtures.USER_ID + "}";
 
     private TwitterSession.Serializer serializer;
