@@ -20,7 +20,6 @@ package com.twitter.sdk.android.tweetui;
 import android.os.Handler;
 
 import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.models.Tweet;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -82,26 +81,15 @@ public class TweetRepositoryTest {
 
     @Test
     public void testLoadTweetDelegation() {
-        tweetRepository.loadTweet(anyId, mock(LoadCallback.class));
+        tweetRepository.loadTweet(anyId, mock(Callback.class));
         verifyZeroInteractions(mockUserAuthQueue);
         verify(mockGuestAuthQueue, times(1)).addRequest(any(Callback.class));
     }
 
     @Test
-    public void testLoadTweestDelegation() {
-        tweetRepository.loadTweets(anyIds, mock(LoadCallback.class));
+    public void testLoadTweetsDelegation() {
+        tweetRepository.loadTweets(anyIds, mock(Callback.class));
         verifyZeroInteractions(mockUserAuthQueue);
         verify(mockGuestAuthQueue, times(1)).addRequest(any(Callback.class));
-    }
-
-    @Test
-    public void testDefaultApiCallbackRunnableSuccess_updateCache() {
-        final TestTweetRepository mockRepo = mock(TestTweetRepository.class);
-
-        final TestTweetRepository.TweetApiCallback callback
-                = mockRepo.new TweetApiCallback(null);
-        callback.success(null, null);
-
-        verify(mockRepo, times(1)).updateCache(any(Tweet.class));
     }
 }

@@ -22,10 +22,9 @@ import android.net.Uri;
 import io.fabric.sdk.android.FabricAndroidTestCase;
 import io.fabric.sdk.android.FabricTestUtils;
 import io.fabric.sdk.android.KitStub;
-import io.fabric.sdk.android.Logger;
 
+import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.core.models.UserBuilder;
@@ -44,7 +43,7 @@ public class TweetUtilsTest extends FabricAndroidTestCase {
         FabricTestUtils.resetFabric();
         try {
             FabricTestUtils.with(getContext(), new KitStub<TwitterCore>());
-            TweetUtils.loadTweet(TestFixtures.TEST_TWEET_ID, null);
+            TweetUtils.loadTweet(TestFixtures.TEST_TWEET_ID, (Callback) null);
             fail("IllegalStateException not thrown");
         } catch (IllegalStateException e) {
             assertEquals(TweetUi.NOT_STARTED_ERROR, e.getMessage());
@@ -59,7 +58,7 @@ public class TweetUtilsTest extends FabricAndroidTestCase {
         FabricTestUtils.resetFabric();
         try {
             FabricTestUtils.with(getContext(), new KitStub<TwitterCore>());
-            TweetUtils.loadTweets(TestFixtures.TWEET_IDS, null);
+            TweetUtils.loadTweets(TestFixtures.TWEET_IDS, (Callback) null);
             fail("IllegalStateException not thrown");
         } catch (IllegalStateException e) {
             assertEquals(TweetUi.NOT_STARTED_ERROR, e.getMessage());
@@ -67,58 +66,6 @@ public class TweetUtilsTest extends FabricAndroidTestCase {
             fail();
         } finally {
             FabricTestUtils.resetFabric();
-        }
-    }
-
-    public void testLoggingCallback_callsCbOnSuccess() {
-        final LoadCallback<Tweet> developerCallback = mock(LoadCallback.class);
-        final TweetUtils.LoggingCallback cb
-                = new TweetUtils.LoggingCallback(A_VALID_TWEET_ID, developerCallback, null);
-
-        cb.success(mock(Tweet.class));
-        verify(developerCallback).success(any(Tweet.class));
-    }
-
-    public void testLoggingCallback_callsCbOnFailure() {
-        final LoadCallback<Tweet> developerCallback = mock(LoadCallback.class);
-        final TweetUtils.LoggingCallback cb = new TweetUtils.LoggingCallback(A_VALID_TWEET_ID,
-                developerCallback, mock(Logger.class));
-
-        cb.failure(mock(TwitterException.class));
-        verify(developerCallback).failure(any(TwitterException.class));
-    }
-
-    public void testLoggingCallback_logsOnFailure() {
-        final LoadCallback<Tweet> developerCallback = mock(LoadCallback.class);
-        final Logger logger = mock(Logger.class);
-        final TweetUtils.LoggingCallback cb = new TweetUtils.LoggingCallback(A_VALID_TWEET_ID,
-                developerCallback, logger);
-
-        cb.failure(mock(TwitterException.class));
-        verify(logger).d(any(String.class), any(String.class));
-    }
-
-    public void testLoggingCallback_handlesNullCallbackOnSuccess() {
-        final TweetUtils.LoggingCallback cb = new TweetUtils.LoggingCallback(A_VALID_TWEET_ID,
-                null, mock(Logger.class));
-
-        try {
-            cb.success(mock(Tweet.class));
-        } catch (NullPointerException e) {
-            fail("Should have handled null callback");
-        }
-    }
-
-    public void testLoggingCallback_handlesNullCallbackOnFailure() {
-        final Logger logger = mock(Logger.class);
-        final TweetUtils.LoggingCallback cb = new TweetUtils.LoggingCallback(A_VALID_TWEET_ID,
-                null, logger);
-
-        try {
-            cb.failure(mock(TwitterException.class));
-            verify(logger).d(any(String.class), any(String.class));
-        } catch (NullPointerException e) {
-            fail("Should have handled null callback");
         }
     }
 

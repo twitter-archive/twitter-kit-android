@@ -26,6 +26,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.app.R;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.tweetui.CompactTweetView;
@@ -80,11 +82,12 @@ public class TweetActivity extends TweetUiActivity {
          * known id to simplify UI automation testing.
          */
         private void loadTweet(long tweetId, final ViewGroup container, final int viewId) {
-            final LoadCallback<Tweet> singleTweetCallback = new LoadCallback<Tweet>() {
+            final Callback<Tweet> singleTweetCallback = new Callback<Tweet>() {
                 @Override
-                public void success(Tweet tweet) {
+                public void success(Result<Tweet> result) {
                     final Context context = getActivity();
                     if (context == null) return;
+                    final Tweet tweet = result.data;
                     final View view = new TweetView(context, tweet);
                     view.setId(viewId);
                     container.addView(view);
@@ -104,13 +107,13 @@ public class TweetActivity extends TweetUiActivity {
          */
         private void loadTweets(final List<Long> tweetIds, final ViewGroup container,
                                 final List<Integer> viewIds) {
-            TweetUtils.loadTweets(tweetIds, new LoadCallback<List<Tweet>>() {
+            TweetUtils.loadTweets(tweetIds, new Callback<List<Tweet>>() {
                 @Override
-                public void success(List<Tweet> tweets) {
+                public void success(Result<List<Tweet>> result) {
                     final Context context = getActivity();
                     if (context == null) return;
-                    for (int i = 0; i < tweets.size(); i++) {
-                        final View view = new CompactTweetView(context, tweets.get(i));
+                    for (int i = 0; i < result.data.size(); i++) {
+                        final View view = new CompactTweetView(context, result.data.get(i));
                         view.setId(viewIds.get(i));
                         container.addView(view);
                     }

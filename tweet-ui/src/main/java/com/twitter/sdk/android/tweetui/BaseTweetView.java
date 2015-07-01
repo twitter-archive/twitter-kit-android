@@ -35,11 +35,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import io.fabric.sdk.android.Fabric;
 
+import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.IntentUtils;
+import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.internal.scribe.SyndicatedSdkImpressionEvent;
@@ -451,14 +452,14 @@ public abstract class BaseTweetView extends LinearLayout {
     private void loadTweet() {
         final long tweetId = getTweetId();
         // create a callback to setTweet on the view or log a failure to load the Tweet
-        final LoadCallback<Tweet> repoCb = new LoadCallback<Tweet>() {
+        final Callback<Tweet> repoCb = new Callback<Tweet>() {
             @Override
-            public void success(Tweet tweet) {
-                setTweet(tweet);
+            public void success(Result<Tweet> result) {
+                setTweet(result.data);
             }
 
             @Override
-            public void failure(TwitterException e) {
+            public void failure(TwitterException exception) {
                 Fabric.getLogger().d(TAG, String.format(TweetUtils.LOAD_TWEET_DEBUG, tweetId));
             }
         };
@@ -722,7 +723,7 @@ public abstract class BaseTweetView extends LinearLayout {
     /**
      * Picasso Callback which asynchronously sets the error bitmap onError.
      */
-    class PicassoCallback implements Callback {
+    class PicassoCallback implements com.squareup.picasso.Callback {
         @Override
         public void onSuccess() { /* intentionally blank */ }
 
@@ -740,7 +741,7 @@ public abstract class BaseTweetView extends LinearLayout {
         if (imageLoader == null) return;
 
         imageLoader.load(photoErrorResId)
-                .into(mediaPhotoView, new Callback() {
+                .into(mediaPhotoView, new com.squareup.picasso.Callback() {
                     @Override
                     public void onSuccess() {
                         mediaPhotoView.setBackgroundColor(mediaBgColor);

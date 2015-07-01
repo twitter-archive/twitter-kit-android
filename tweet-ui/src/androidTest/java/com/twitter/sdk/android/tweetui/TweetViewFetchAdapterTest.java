@@ -19,6 +19,8 @@ package com.twitter.sdk.android.tweetui;
 
 import android.os.Handler;
 
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 
@@ -109,17 +111,17 @@ public class TweetViewFetchAdapterTest extends TweetUiTestCase {
         }
 
         @Override
-        void loadTweets(List<Long> tweetIds, final LoadCallback<List<Tweet>> cb) {
+        void loadTweets(List<Long> tweetIds, final Callback<List<Tweet>> cb) {
             final List<Tweet> tweets = new ArrayList<>();
             if (tweetIds == null) {
-                cb.success(tweets);
+                cb.success(new Result<>(tweets, null));
                 return;
             }
             for (long id : tweetIds) {
                 final Tweet tweet = new TweetBuilder().setId(id).build();
                 tweets.add(tweet);
             }
-            cb.success(tweets);
+            cb.success(new Result<>(tweets, null));
         }
     }
 }

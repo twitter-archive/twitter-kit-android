@@ -19,6 +19,8 @@ package com.twitter.sdk.android.tweetui;
 
 import android.content.Context;
 
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
 
@@ -64,7 +66,7 @@ public class TweetViewFetchAdapter<T extends BaseTweetView> extends TweetViewAda
      * @param tweetIds Tweet ids
      */
     public void setTweetIds(final List<Long> tweetIds) {
-        setTweetIds(tweetIds, null);
+        setTweetIds(tweetIds, (Callback) null);
     }
 
     /**
@@ -73,24 +75,38 @@ public class TweetViewFetchAdapter<T extends BaseTweetView> extends TweetViewAda
      * @param tweetIds Tweet ids
      * @param cb callback
      */
-    public void setTweetIds(final List<Long> tweetIds, final LoadCallback<List<Tweet>> cb) {
-        final LoadCallback<List<Tweet>> repoCallback = new LoadCallback<List<Tweet>>() {
+    public void setTweetIds(final List<Long> tweetIds, final Callback<List<Tweet>> cb) {
+        final Callback<List<Tweet>> repoCallback = new Callback<List<Tweet>>() {
             @Override
-            public void success(List<Tweet> tweets) {
-                setTweets(tweets);
+            public void success(Result<List<Tweet>> result) {
+                setTweets(result.data);
                 if (cb != null) {
-                    cb.success(tweets);
+                    cb.success(result);
                 }
             }
 
             @Override
-            public void failure(TwitterException error) {
+            public void failure(TwitterException exception) {
                 // purposefully not logging the failure to lookup the Tweets
                 if (cb != null) {
-                    cb.failure(error);
+                    cb.failure(exception);
                 }
             }
         };
         TweetUi.getInstance().getTweetRepository().loadTweets(tweetIds, repoCallback);
+    }
+
+    /**
+     * Fetches the requested Tweet ids and sets the collection of Tweets in the adapter. Calls
+     * the given callback's success or failure.
+     * @param tweetIds Tweet ids
+     * @param loadCallback callback
+     * @deprecated Use setTweetIds(List<Long> tweetIds, Callback<List<Tweet> cb) instead.
+     */
+    @Deprecated
+    public void setTweetIds(final List<Long> tweetIds,
+            final LoadCallback<List<Tweet>> loadCallback) {
+        final Callback<List<Tweet>> cb = new TweetUtils.CallbackAdapter<>(loadCallback);
+        setTweetIds(tweetIds, cb);
     }
 }

@@ -20,6 +20,8 @@ package com.twitter.sdk.android.tweetui;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
 
@@ -27,7 +29,6 @@ import java.util.List;
 import java.util.Locale;
 
 import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.Logger;
 
 /**
  * Convenience methods for loading Tweets from the API without requiring a user
@@ -46,9 +47,16 @@ public final class TweetUtils {
      * @param tweetId Tweet id
      * @param cb callback
      */
-    public static void loadTweet(final long tweetId, final LoadCallback<Tweet> cb) {
-        TweetUi.getInstance().getTweetRepository()
-                .loadTweet(tweetId, new LoggingCallback(tweetId, cb, Fabric.getLogger()));
+    public static void loadTweet(final long tweetId, final Callback<Tweet> cb) {
+        TweetUi.getInstance().getTweetRepository().loadTweet(tweetId,
+                new com.twitter.sdk.android.tweetui.LoggingCallback<Tweet>(cb, Fabric.getLogger()) {
+                    @Override
+                    public void success(Result<Tweet> result) {
+                        if (cb != null) {
+                            cb.success(result);
+                        }
+                    }
+                });
     }
 
     /**
@@ -56,10 +64,56 @@ public final class TweetUtils {
      * @param tweetIds List of Tweet ids
      * @param cb callback
      */
+    public static void loadTweets(final List<Long> tweetIds, final Callback<List<Tweet>> cb) {
+        TweetUi.getInstance().getTweetRepository().loadTweets(tweetIds,
+                new com.twitter.sdk.android.tweetui.LoggingCallback<List<Tweet>>(cb,
+                        Fabric.getLogger()) {
+                    @Override
+                    public void success(Result<List<Tweet>> result) {
+                        if (cb != null) {
+                            cb.success(result);
+                        }
+                    }
+                });
+    }
+
+    /**
+     * Loads a single Tweet by id.
+     * @param tweetId Tweet id
+     * @param loadCallback callback
+     * @deprecated Use loadTweet(long tweetId, Callback<Tweet>> cb) instead.
+     */
+    @Deprecated
+    public static void loadTweet(final long tweetId, final LoadCallback<Tweet> loadCallback) {
+        final Callback<Tweet> cb = new CallbackAdapter<>(loadCallback);
+        loadTweet(tweetId, new LoggingCallback<Tweet>(cb, Fabric.getLogger()) {
+            @Override
+            public void success(Result<Tweet> result) {
+                if (cb != null) {
+                    cb.success(result);
+                }
+            }
+        });
+    }
+
+    /**
+     * Loads a List of Tweets by id. Returns Tweets in the order requested.
+     * @param tweetIds List of Tweet ids
+     * @param loadCallback callback
+     * @deprecated Use loadTweets(List<Long> tweetIds, Callback<List<Tweet>>> cb) instead.
+     */
+    @Deprecated
     public static void loadTweets(final List<Long> tweetIds,
-                                  final LoadCallback<List<Tweet>> cb) {
-        // purposefully not adding a callback for logging the failure to lookup the Tweets
-        TweetUi.getInstance().getTweetRepository().loadTweets(tweetIds, cb);
+                                  final LoadCallback<List<Tweet>> loadCallback) {
+        final Callback<List<Tweet>> cb = new CallbackAdapter<>(loadCallback);
+        loadTweets(tweetIds, new LoggingCallback<List<Tweet>>(cb, Fabric.getLogger()) {
+            @Override
+            public void success(Result<List<Tweet>> result) {
+                if (cb != null) {
+                    cb.success(result);
+                }
+            }
+        });
     }
 
     /**
@@ -113,33 +167,24 @@ public final class TweetUtils {
     }
 
     /**
-     * Callback that logs error messages to the debug logger. Otherwise acts as a pass through to
-     * the developer specified callback.
-     * @deprecated Use tweet-ui LoggingCallback instead.
+     * Shim to convert deprecated LoadCallback to Callback.
      */
-    @Deprecated
-    static class LoggingCallback implements LoadCallback<Tweet> {
-        // TODO: Remove class when LoadCallback is removed.
-        private final LoadCallback<Tweet> cb;
-        private final long tweetId;
-        private final Logger logger;
+    public static class CallbackAdapter<T> extends Callback<T> {
+        private LoadCallback<T> cb;
 
-        LoggingCallback(long tweetId, LoadCallback<Tweet> cb, Logger logger) {
-            this.tweetId = tweetId;
+        CallbackAdapter(LoadCallback<T> cb) {
             this.cb = cb;
-            this.logger = logger;
         }
 
         @Override
-        public void success(Tweet loadedItem) {
+        public void success(Result<T> result) {
             if (cb != null) {
-                cb.success(loadedItem);
+                cb.success(result.data);
             }
         }
 
         @Override
         public void failure(TwitterException exception) {
-            logger.d(TAG, String.format(LOAD_TWEET_DEBUG, tweetId));
             if (cb != null) {
                 cb.failure(exception);
             }

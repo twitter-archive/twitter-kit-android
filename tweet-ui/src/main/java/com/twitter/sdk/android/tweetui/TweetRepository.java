@@ -27,6 +27,7 @@ import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.internal.GuestCallback;
 import com.twitter.sdk.android.core.models.Tweet;
 
 import java.util.List;
@@ -78,6 +79,25 @@ class TweetRepository {
         return formattedTweetText;
     }
 
+    protected void updateCache(final Tweet tweet) {
+        tweetCache.put(tweet.id, tweet);
+    }
+
+    /**
+     * Callable on the main thread.
+     * @param tweet Tweet to deliver to the client in a Result
+     * @param cb the developer callback
+     */
+    private void deliverTweet(final Tweet tweet, final Callback<Tweet> cb) {
+        if (cb == null) return;
+        mainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                cb.success(new Result<>(tweet, null));
+            }
+        });
+    }
+
     void favorite(final long tweetId, final Callback<Tweet> cb) {
         userAuthQueue.addRequest(new LoggingCallback<TwitterApiClient>(cb, Fabric.getLogger()) {
             @Override
@@ -115,13 +135,13 @@ class TweetRepository {
     }
 
     /**
-     * Queues and loads a Tweet from the API statuses/show endpoint. Queue ensures a guest or app
-     * auth token is obtained before performing the request. Adds the the Tweet from the response
-     * to the cache and provides the Tweet to the repository callback success method.
+     * Queues and loads a Tweet from the API statuses/show endpoint. Queue ensures a client with
+     * at least guest auth is obtained before performing the request. Adds the the Tweet from the
+     * response to the cache and provides the Tweet to the callback success method.
      * @param tweetId Tweet id
-     * @param cb repository callback
+     * @param cb callback
      */
-    void loadTweet(final long tweetId, final LoadCallback<Tweet> cb) {
+    void loadTweet(final long tweetId, final Callback<Tweet> cb) {
         final Tweet cachedTweet = tweetCache.get(tweetId);
 
         if (cachedTweet != null) {
@@ -133,7 +153,7 @@ class TweetRepository {
             @Override
             public void success(Result<TwitterApiClient> result) {
                 result.data.getStatusesService().show(tweetId, null, null, null,
-                        new TweetApiCallback(cb));
+                        new SingleTweetCallback(cb));
             }
 
             @Override
@@ -147,19 +167,19 @@ class TweetRepository {
     }
 
     /**
-     * Queues and loads multiple Tweets from the API lookup endpoint. Queue ensures a guest or app
-     * auth token is obtained before performing the request. Orders the Tweets from the response
-     * and provides them to the repository callback success method.
+     * Queues and loads multiple Tweets from the API lookup endpoint. Queue ensures a client with
+     * at least guest auth is obtained before performing the request. Orders the Tweets from the
+     * response and provides them to the callback success method.
      * @param tweetIds list of Tweet ids
-     * @param cb repository callback
+     * @param cb callback
      */
-    void loadTweets(final List<Long> tweetIds, final LoadCallback<List<Tweet>> cb) {
+    void loadTweets(final List<Long> tweetIds, final Callback<List<Tweet>> cb) {
         guestAuthQueue.addRequest(new Callback<TwitterApiClient>() {
             @Override
             public void success(Result<TwitterApiClient> result) {
                 final String commaSepIds = TextUtils.join(",", tweetIds);
                 result.data.getStatusesService().lookup(commaSepIds, null, null, null,
-                        new TweetsApiCallback(tweetIds, cb));
+                        new MultiTweetsCallback(tweetIds, cb));
             }
 
             @Override
@@ -172,49 +192,34 @@ class TweetRepository {
         });
     }
 
-    protected void updateCache(final Tweet tweet) {
-        tweetCache.put(tweet.id, tweet);
-    }
-
-    /*
-     * callable on main thread, but not necessary
+    /**
+     * Callback updates the single Tweet cache before passing to the given callback on success.
+     * Handles guest auth expired or failing tokens on failure.
      */
-    private void deliverTweet(final Tweet tweet, final LoadCallback<Tweet> cb) {
-        if (cb == null) return;
-        mainHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                cb.success(tweet);
-            }
-        });
-    }
+    class SingleTweetCallback extends GuestCallback<Tweet> {
 
-    class TweetApiCallback extends ApiCallback<Tweet> {
-
-        TweetApiCallback(LoadCallback<Tweet> cb) {
+        SingleTweetCallback(Callback<Tweet> cb) {
             super(cb);
         }
 
         @Override
         public void success(Result<Tweet> result) {
-            /*
-             * The tweet at this point is parsed directly from the api, we need to fix up the
-             * text and entities now so it will display correctly. The mutations caused by
-             * TweetUtils.format are preserved through serializing since we call toJson on the tweet
-             * object itself and store the result.
-             */
             final Tweet tweet = result.data;
             updateCache(tweet);
             if (cb != null) {
-                cb.success(tweet);
+                cb.success(new Result<>(tweet, result.response));
             }
         }
     }
 
-    class TweetsApiCallback extends ApiCallback<List<Tweet>> {
+    /**
+     * Callback handles sorting Tweets before passing to the given callback on success. Handles
+     * guest auto expired or failing tokens on failure.
+     */
+    class MultiTweetsCallback extends GuestCallback<List<Tweet>> {
         final List<Long> tweetIds;
 
-        TweetsApiCallback(List<Long> tweetIds, LoadCallback<List<Tweet>> cb) {
+        MultiTweetsCallback(List<Long> tweetIds, Callback<List<Tweet>> cb) {
             super(cb);
             this.tweetIds = tweetIds;
         }
@@ -223,7 +228,7 @@ class TweetRepository {
         public void success(Result<List<Tweet>> result) {
             if (cb != null) {
                 final List<Tweet> sorted = Utils.orderTweets(tweetIds, result.data);
-                cb.success(sorted);
+                cb.success(new Result<>(sorted, result.response));
             }
         }
     }

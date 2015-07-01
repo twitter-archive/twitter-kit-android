@@ -4,6 +4,9 @@
 
 ## Unreleased
 
+* (DH) Change TweetUtils loadTweet(s) to take a TwitterCore Callback. Deprecate those taking a LoadCallback.
+* (DH) Change TweetViewFetchAdapter setTweetIds to take a TwitterCore Callback. Deprecate the method taking a LoadCallback.
+
 ## v1.3.0
 
 * (EF) Updated TweetView so images display full width on API < 17

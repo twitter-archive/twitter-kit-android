@@ -17,16 +17,20 @@
 
 package com.twitter.sdk.android.tweetui;
 
-import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.models.Tweet;
 
-/**
- * Callback for making an API request through a load utility. Logic in
- * callbacks is executed on the main thread.
- * @param <T> type of requested item (e.g. Tweet, List<Tweet>)
- * @deprecated Use com.twitter.sdk.android.core.Callback instead.
- */
-@Deprecated
-public interface LoadCallback<T> {
-    void success(T loadedItem);
-    void failure(TwitterException exception);
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
+public class TweetRepositoryTest extends TweetUiTestCase {
+
+    public void testSingleTweetCallback_callsUpdateCache() {
+        final TestTweetRepository mockRepo = mock(TestTweetRepository.class);
+        final TestTweetRepository.SingleTweetCallback callback
+                = mockRepo.new SingleTweetCallback(null);
+        callback.success(null, null);
+        verify(mockRepo, times(1)).updateCache(any(Tweet.class));
+    }
 }

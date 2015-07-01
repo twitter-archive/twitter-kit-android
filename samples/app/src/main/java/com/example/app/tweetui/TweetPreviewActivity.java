@@ -31,10 +31,11 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.app.R;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.tweetui.CompactTweetView;
-import com.twitter.sdk.android.tweetui.LoadCallback;
 import com.twitter.sdk.android.tweetui.TweetUtils;
 import com.twitter.sdk.android.tweetui.TweetView;
 
@@ -100,23 +101,26 @@ public class TweetPreviewActivity extends TweetUiActivity {
          */
         private void loadTweet(long tweetId, final ViewGroup container, final int style) {
 
-            final LoadCallback<Tweet> singleTweetCallback = new LoadCallback<Tweet>() {
+            final Callback<Tweet> singleTweetCallback = new Callback<Tweet>() {
+
                 @Override
-                public void success(Tweet tweet) {
+                public void success(Result<Tweet> result) {
                     final Context context = getActivity();
                     if (context == null) return;
 
+                    final Tweet tweet = result.data;
                     final CompactTweetView cv = new CompactTweetView(context, tweet, style);
                     container.addView(cv);
 
                     final View spacer = new View(context);
-                        final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0,
+                    final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0,
                             (int) context.getResources().getDimension(R.dimen.demo_tweet_space));
-                        spacer.setLayoutParams(params);
-                        container.addView(spacer);
+                    spacer.setLayoutParams(params);
+                    container.addView(spacer);
 
                     final TweetView tv = new TweetView(context, tweet, style);
                     container.addView(tv);
+
                 }
 
                 @Override
