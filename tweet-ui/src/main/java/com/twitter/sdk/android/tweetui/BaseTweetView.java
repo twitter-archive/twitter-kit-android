@@ -98,6 +98,7 @@ public abstract class BaseTweetView extends LinearLayout {
     TextView timestampView;
     ImageView twitterLogoView;
     TextView retweetedByView;
+    TweetActionBarView tweetActionBarView;
 
     // color values
     int containerBgColor;
@@ -109,6 +110,7 @@ public abstract class BaseTweetView extends LinearLayout {
     int photoErrorResId;
     int birdLogoResId;
     int retweetIconResId;
+    boolean tweetActionsEnabled;
     // styled drawables for images
     ColorDrawable mediaBg;
 
@@ -274,6 +276,8 @@ public abstract class BaseTweetView extends LinearLayout {
         actionColor = a.getColor(
                 R.styleable.tw__TweetView_tw__action_color,
                 getResources().getColor(R.color.tw__tweet_action_color));
+        tweetActionsEnabled =
+                a.getBoolean(R.styleable.tw__TweetView_tw__tweet_actions_enabled, false);
 
         // Calculated colors
         final boolean isLightBg = ColorUtils.isLightColor(containerBgColor);
@@ -367,6 +371,7 @@ public abstract class BaseTweetView extends LinearLayout {
         timestampView = (TextView) findViewById(R.id.tw__tweet_timestamp);
         twitterLogoView = (ImageView) findViewById(R.id.tw__twitter_logo);
         retweetedByView = (TextView) findViewById(R.id.tw__tweet_retweeted_by);
+        tweetActionBarView = (TweetActionBarView) findViewById(R.id.tw__tweet_action_bar);
     }
 
     /*
@@ -423,6 +428,7 @@ public abstract class BaseTweetView extends LinearLayout {
         setTweetPhoto(displayTweet);
         setText(displayTweet);
         setContentDescription(displayTweet);
+        setTweetActions(displayTweet);
         showRetweetedBy(tweet);
 
         // set permalink if tweet id and screen name are available
@@ -781,6 +787,13 @@ public abstract class BaseTweetView extends LinearLayout {
         setContentDescription(getResources().getString(R.string.tw__tweet_content_description,
                 Utils.stringOrEmpty(displayTweet.user.name), Utils.stringOrEmpty(tweetText),
                 Utils.stringOrEmpty(timestamp)));
+    }
+
+    void setTweetActions(Tweet displayTweet) {
+        if (tweetActionsEnabled) {
+            tweetActionBarView.setVisibility(View.VISIBLE);
+            tweetActionBarView.setTweet(displayTweet);
+        }
     }
 
     protected LinkClickListener getLinkClickListener() {

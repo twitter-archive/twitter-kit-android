@@ -138,6 +138,20 @@ public abstract class BaseTweetViewXmlTest extends FabricAndroidTestCase {
         assertEquals(TestFixtures.EMPTY_STRING, view.contentView.getText().toString());
     }
 
+    public void testInitWithTweetActionsDisabled() {
+        final BaseTweetView view = getView();
+        assertFalse(view.tweetActionsEnabled);
+    }
+
+    public void testInitWithTweetActionsEnabled() {
+        final ViewGroup group = new LinearLayout((getContext()));
+        final View view = LayoutInflater.from(getContext()).inflate(
+                R.layout.activity_tweet_actions_enabled, group, true);
+
+        final BaseTweetView tweetView = (BaseTweetView) view.findViewById(R.id.tweet_view);
+        assertTrue(tweetView.tweetActionsEnabled);
+    }
+
     // asserts that a BaseTweetView with an invalid tweet id throws an exception
     public void testInitWithInvalidTweetId() {
         final ViewGroup group = new LinearLayout((getContext()));

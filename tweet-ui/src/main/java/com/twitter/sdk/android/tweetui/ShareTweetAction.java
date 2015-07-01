@@ -21,17 +21,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.view.View;
-import android.widget.Button;
 
 import com.twitter.sdk.android.core.IntentUtils;
 import com.twitter.sdk.android.core.models.Tweet;
 
 import io.fabric.sdk.android.Fabric;
 
-class OnShareButtonClickListener implements Button.OnClickListener {
+class ShareTweetAction implements View.OnClickListener {
     final Tweet tweet;
 
-    OnShareButtonClickListener(Tweet tweet) {
+    ShareTweetAction(Tweet tweet) {
         super();
         this.tweet = tweet;
     }

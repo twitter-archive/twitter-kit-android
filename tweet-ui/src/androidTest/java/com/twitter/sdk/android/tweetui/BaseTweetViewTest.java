@@ -348,6 +348,18 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
         assertEquals(R.drawable.tw__ic_retweet_dark, view.retweetIconResId);
     }
 
+    public void testTweetActionsEnabled() {
+        final BaseTweetView view = createView(context, TestFixtures.TEST_RETWEET,
+                R.style.tw__TweetActionsEnabled);
+        assertTrue(view.tweetActionsEnabled);
+    }
+
+    public void testTweetActionsDisabled() {
+        final BaseTweetView view = createView(context, TestFixtures.TEST_RETWEET,
+                R.style.tw__TweetActionsDisabled);
+        assertFalse(view.tweetActionsEnabled);
+    }
+
     public void testGetAspectRatio_withNullMediaEntity() {
         final BaseTweetView view = createView(context, TestFixtures.TEST_TWEET);
 

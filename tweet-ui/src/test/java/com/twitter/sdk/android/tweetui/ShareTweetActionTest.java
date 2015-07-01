@@ -40,7 +40,7 @@ import static org.mockito.Mockito.*;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, emulateSdk = 21)
-public class OnShareButtonClickListenerTest {
+public class ShareTweetActionTest {
 
     private static final String REQUIRED_SEND_ACTION = Intent.ACTION_SEND;
     private static final String REQUIRED_MIME_TYPE = "text/plain";
@@ -50,18 +50,18 @@ public class OnShareButtonClickListenerTest {
             = "Check out @" + TestFixtures.TEST_SCREEN_NAME + "'s Tweet: https://twitter.com/" +
             TestFixtures.TEST_SCREEN_NAME + "/status/" + TestFixtures.TEST_TWEET.id;
 
-    private OnShareButtonClickListener listener;
+    private ShareTweetAction listener;
     private Resources resources;
 
     @Before
     public void setUp() throws Exception {
-        listener = new OnShareButtonClickListener(TestFixtures.TEST_TWEET);
+        listener = new ShareTweetAction(TestFixtures.TEST_TWEET);
         resources = RuntimeEnvironment.application.getResources();
     }
 
     @Test
     public void testOnClick_nullTweet() {
-        final OnShareButtonClickListener listener = new OnShareButtonClickListener(null);
+        final ShareTweetAction listener = new ShareTweetAction(null);
         final Context context = mock(Context.class);
         listener.onClick(context, resources);
         verify(context, times(0)).startActivity(any(Intent.class));
@@ -69,8 +69,7 @@ public class OnShareButtonClickListenerTest {
 
     @Test
     public void testOnClick_nullTweetUser() {
-        final OnShareButtonClickListener listener = new OnShareButtonClickListener(
-                new TweetBuilder().build());
+        final ShareTweetAction listener = new ShareTweetAction(new TweetBuilder().build());
         final Context context = mock(Context.class);
         listener.onClick(context, resources);
         verify(context, times(0)).startActivity(any(Intent.class));

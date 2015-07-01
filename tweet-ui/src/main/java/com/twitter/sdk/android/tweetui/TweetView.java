@@ -88,7 +88,7 @@ public class TweetView extends BaseTweetView {
     private void setShareButtonVisibility(Tweet tweet) {
         if (TweetUtils.isTweetResolvable(tweet)) {
             setShareButtonVisible();
-            shareButton.setOnClickListener(new OnShareButtonClickListener(tweet));
+            shareButton.setOnClickListener(new ShareTweetAction(tweet));
         } else {
             setShareButtonGone();
             shareButton.setOnClickListener(null);

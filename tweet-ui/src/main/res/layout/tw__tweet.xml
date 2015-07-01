@@ -73,7 +73,7 @@
         android:layout_alignBottom="@id/tw__tweet_author_avatar"
         android:layout_toRightOf="@id/tw__tweet_author_avatar"
         android:layout_toEndOf="@id/tw__tweet_author_avatar"
-        tools:text="@jack"/>
+        tools:text="\@jack"/>
 
     <TextView
         android:id="@+id/tw__tweet_timestamp"
@@ -99,5 +99,11 @@
         android:layout_below="@id/tw__tweet_text"
         android:visibility="gone"
         tools:visibility="visible"/>
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tw__tweet_share"
+        layout="@layout/tw__action_bar" />
 
 </RelativeLayout>

@@ -22,6 +22,7 @@
         <attr name="tw__container_bg_color" format="color"/>
         <attr name="tw__primary_text_color" format="color"/>
         <attr name="tw__action_color" format="color"/>
+        <attr name="tw__tweet_actions_enabled" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="tw__AspectRatioImageView">

@@ -51,7 +51,7 @@
         <TextView
             android:id="@+id/tw__tweet_author_screen_name"
             style="@style/tw__TweetScreenName.Compact"
-            tools:text="@jack"/>
+            tools:text="\@jack"/>
 
         <TextView
             android:id="@+id/tw__tweet_timestamp"
@@ -83,5 +83,13 @@
         android:layout_toRightOf="@id/tw__tweet_author_avatar"
         android:layout_toEndOf="@id/tw__tweet_author_avatar"
         tools:text="just setting up my twttr"/>
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tw__tweet_text"
+        android:layout_toRightOf="@id/tw__tweet_author_avatar"
+        android:layout_toEndOf="@id/tw__tweet_author_avatar"
+        layout="@layout/tw__action_bar" />
 
 </RelativeLayout>

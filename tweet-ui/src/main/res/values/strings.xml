@@ -24,7 +24,9 @@
     <!--Retweeted By string-->
     <string name="tw__retweeted_by_format">Retweeted by %1$s</string>
 
-    <!--Share text-->
+    <!--Tweet action strings-->
+    <string name="tw__favorite_tweet">Favorite Tweet</string>
+    <string name="tw__favorited_tweet">Favorited Tweet</string>
     <string name="tw__share_tweet">Share Tweet</string>
     <string name="tw__share_subject_format">Tweet from %1$s (@%2$s)</string>
     <string name="tw__share_content_format">Check out @%1$s\'s Tweet: https://twitter.com/%1$s/status/%2$s</string>
