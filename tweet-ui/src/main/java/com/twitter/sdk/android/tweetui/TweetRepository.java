@@ -133,7 +133,7 @@ class TweetRepository {
                 Fabric.getLogger()) {
             @Override
             public void success(Result<TwitterApiClient> result) {
-                result.data.getStatusesService().unretweet(tweetId, false, cb);
+//                result.data.getStatusesService().unretweet(tweetId, false, cb);
             }
         });
     }
