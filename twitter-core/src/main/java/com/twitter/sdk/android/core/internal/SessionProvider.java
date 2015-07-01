@@ -15,7 +15,7 @@
  *
  */
 
-package com.twitter.sdk.android.tweetui.internal;
+package com.twitter.sdk.android.core.internal;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Session;

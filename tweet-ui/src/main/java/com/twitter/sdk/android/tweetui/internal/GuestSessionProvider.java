@@ -22,6 +22,7 @@ import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
+import com.twitter.sdk.android.core.internal.SessionProvider;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 

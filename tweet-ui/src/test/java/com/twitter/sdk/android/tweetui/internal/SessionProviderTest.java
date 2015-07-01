@@ -18,7 +18,7 @@
 package com.twitter.sdk.android.tweetui.internal;
 
 import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.internal.SessionProvider;
 import com.twitter.sdk.android.core.AppSession;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
@@ -41,7 +41,6 @@ import static org.mockito.Mockito.*;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, emulateSdk = 21)
 public class SessionProviderTest {
-    private TwitterCore mockTwitterCore;
     private List<SessionManager<? extends Session>> sessionManagers;
     private SessionManager<TwitterSession> mockTwitterSessionManager;
     private SessionManager<AppSession> mockAppSessionManager;
@@ -50,7 +49,6 @@ public class SessionProviderTest {
     @Before
     public void setUp() throws Exception {
         sessionManagers = new ArrayList<>();
-        mockTwitterCore = mock(TwitterCore.class);
         mockTwitterSessionManager = mock(SessionManager.class);
         mockAppSessionManager = mock(SessionManager.class);
         sessionManagers.add(mockTwitterSessionManager);

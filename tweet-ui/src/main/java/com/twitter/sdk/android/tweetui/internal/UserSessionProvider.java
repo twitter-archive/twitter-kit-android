@@ -21,6 +21,7 @@ package com.twitter.sdk.android.tweetui.internal;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
+import com.twitter.sdk.android.core.internal.SessionProvider;
 import com.twitter.sdk.android.core.TwitterApiException;
 
 import java.util.List;

@@ -56,8 +56,8 @@ public class TweetUi extends Kit<Boolean> {
 
     private final AtomicReference<Gson> gsonRef;
     private TweetRepository tweetRepository;
-    private AuthRequestQueue userAuthQueue;
-    private AuthRequestQueue guestAuthQueue;
+    private TweetUiAuthRequestQueue userAuthQueue;
+    private TweetUiAuthRequestQueue guestAuthQueue;
     private Picasso imageLoader;
 
     // Singleton class, should only be created using getInstance()
@@ -91,13 +91,13 @@ public class TweetUi extends Kit<Boolean> {
         userSessionManagers = new ArrayList<>(1);
         userSessionManagers.add(twitterCore.getSessionManager());
         userSessionProvider = new UserSessionProvider(userSessionManagers);
-        userAuthQueue = new AuthRequestQueue(twitterCore, userSessionProvider);
+        userAuthQueue = new TweetUiAuthRequestQueue(twitterCore, userSessionProvider);
 
         guestSessionManagers = new ArrayList<>(2);
         guestSessionManagers.add(twitterCore.getSessionManager());
         guestSessionManagers.add(twitterCore.getAppSessionManager());
         guestSessionProvider = new GuestSessionProvider(twitterCore, guestSessionManagers);
-        guestAuthQueue = new AuthRequestQueue(twitterCore, guestSessionProvider);
+        guestAuthQueue = new TweetUiAuthRequestQueue(twitterCore, guestSessionProvider);
 
         tweetRepository = new TweetRepository(getFabric().getMainHandler(), userAuthQueue,
                 guestAuthQueue);
@@ -171,7 +171,7 @@ public class TweetUi extends Kit<Boolean> {
         return tweetRepository;
     }
 
-    AuthRequestQueue getGuestAuthQueue() {
+    TweetUiAuthRequestQueue getGuestAuthQueue() {
         return guestAuthQueue;
     }
 

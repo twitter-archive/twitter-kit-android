@@ -20,8 +20,8 @@ package com.twitter.sdk.android.tweetui;
 import android.os.Handler;
 
 public class TestTweetRepository extends TweetRepository {
-    TestTweetRepository(Handler mainHandler, AuthRequestQueue userAuthQueue,
-            AuthRequestQueue guestAuthQueue) {
+    TestTweetRepository(Handler mainHandler, TweetUiAuthRequestQueue userAuthQueue,
+            TweetUiAuthRequestQueue guestAuthQueue) {
         super(mainHandler, userAuthQueue, guestAuthQueue);
     }
 }

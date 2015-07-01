@@ -42,15 +42,15 @@ class TweetRepository {
     private static final int DEFAULT_CACHE_SIZE = 20;
 
     private final Handler mainHandler;
-    private final AuthRequestQueue guestAuthQueue;
-    private final AuthRequestQueue userAuthQueue;
+    private final TweetUiAuthRequestQueue guestAuthQueue;
+    private final TweetUiAuthRequestQueue userAuthQueue;
 
     // leave this package accessible for testing
     final LruCache<Long, Tweet> tweetCache;
     final LruCache<Long, FormattedTweetText> formatCache;
 
-    TweetRepository(Handler mainHandler, AuthRequestQueue userAuthQueue,
-            AuthRequestQueue guestAuthQueue) {
+    TweetRepository(Handler mainHandler, TweetUiAuthRequestQueue userAuthQueue,
+            TweetUiAuthRequestQueue guestAuthQueue) {
         this.mainHandler = mainHandler;
         this.userAuthQueue = userAuthQueue;
         this.guestAuthQueue = guestAuthQueue;
@@ -99,7 +99,8 @@ class TweetRepository {
     }
 
     void favorite(final long tweetId, final Callback<Tweet> cb) {
-        userAuthQueue.addRequest(new LoggingCallback<TwitterApiClient>(cb, Fabric.getLogger()) {
+        userAuthQueue.addClientRequest(new LoggingCallback<TwitterApiClient>(cb,
+                Fabric.getLogger()) {
             @Override
             public void success(Result<TwitterApiClient> result) {
                 result.data.getFavoriteService().create(tweetId, true, cb);
@@ -108,7 +109,8 @@ class TweetRepository {
     }
 
     void unfavorite(final long tweetId, final Callback<Tweet> cb) {
-        userAuthQueue.addRequest(new LoggingCallback<TwitterApiClient>(cb, Fabric.getLogger()) {
+        userAuthQueue.addClientRequest(new LoggingCallback<TwitterApiClient>(cb,
+                Fabric.getLogger()) {
             @Override
             public void success(Result<TwitterApiClient> result) {
                 result.data.getFavoriteService().destroy(tweetId, true, cb);
@@ -117,7 +119,8 @@ class TweetRepository {
     }
 
     void retweet(final long tweetId, final Callback<Tweet> cb) {
-        userAuthQueue.addRequest(new LoggingCallback<TwitterApiClient>(cb, Fabric.getLogger()) {
+        userAuthQueue.addClientRequest(new LoggingCallback<TwitterApiClient>(cb,
+                Fabric.getLogger()) {
             @Override
             public void success(Result<TwitterApiClient> result) {
                 result.data.getStatusesService().retweet(tweetId, false, cb);
@@ -126,7 +129,8 @@ class TweetRepository {
     }
 
     void unretweet(final long tweetId, final Callback<Tweet> cb) {
-        userAuthQueue.addRequest(new LoggingCallback<TwitterApiClient>(cb, Fabric.getLogger()) {
+        userAuthQueue.addClientRequest(new LoggingCallback<TwitterApiClient>(cb,
+                Fabric.getLogger()) {
             @Override
             public void success(Result<TwitterApiClient> result) {
                 result.data.getStatusesService().unretweet(tweetId, false, cb);
@@ -149,7 +153,7 @@ class TweetRepository {
             return;
         }
 
-        guestAuthQueue.addRequest(new Callback<TwitterApiClient>() {
+        guestAuthQueue.addClientRequest(new Callback<TwitterApiClient>() {
             @Override
             public void success(Result<TwitterApiClient> result) {
                 result.data.getStatusesService().show(tweetId, null, null, null,
@@ -174,7 +178,8 @@ class TweetRepository {
      * @param cb callback
      */
     void loadTweets(final List<Long> tweetIds, final Callback<List<Tweet>> cb) {
-        guestAuthQueue.addRequest(new Callback<TwitterApiClient>() {
+        guestAuthQueue.addClientRequest(new Callback<TwitterApiClient>() {
+
             @Override
             public void success(Result<TwitterApiClient> result) {
                 final String commaSepIds = TextUtils.join(",", tweetIds);

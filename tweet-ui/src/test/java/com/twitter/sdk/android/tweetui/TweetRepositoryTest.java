@@ -38,15 +38,15 @@ import static org.mockito.Mockito.*;
 public class TweetRepositoryTest {
     private static final Long anyId = 1L;
     private static final List<Long> anyIds = new ArrayList<Long>();
-    private AuthRequestQueue mockUserAuthQueue;
-    private AuthRequestQueue mockGuestAuthQueue;
+    private TweetUiAuthRequestQueue mockUserAuthQueue;
+    private TweetUiAuthRequestQueue mockGuestAuthQueue;
     private TweetRepository tweetRepository;
 
     @Before
     public void setUp() throws Exception {
         anyIds.add(anyId);
-        mockUserAuthQueue = mock(AuthRequestQueue.class);
-        mockGuestAuthQueue = mock(AuthRequestQueue.class);
+        mockUserAuthQueue = mock(TweetUiAuthRequestQueue.class);
+        mockGuestAuthQueue = mock(TweetUiAuthRequestQueue.class);
         tweetRepository = new TweetRepository(mock(Handler.class), mockUserAuthQueue,
                 mockGuestAuthQueue);
     }
@@ -54,28 +54,28 @@ public class TweetRepositoryTest {
     @Test
     public void testFavoriteDelegation() {
         tweetRepository.favorite(anyId, mock(Callback.class));
-        verify(mockUserAuthQueue, times(1)).addRequest(any(Callback.class));
+        verify(mockUserAuthQueue, times(1)).addClientRequest(any(Callback.class));
         verifyZeroInteractions(mockGuestAuthQueue);
     }
 
     @Test
     public void testUnfavoriteDelegation() {
         tweetRepository.unfavorite(anyId, mock(Callback.class));
-        verify(mockUserAuthQueue, times(1)).addRequest(any(Callback.class));
+        verify(mockUserAuthQueue, times(1)).addClientRequest(any(Callback.class));
         verifyZeroInteractions(mockGuestAuthQueue);
     }
 
     @Test
     public void testRetweetDelegation() {
         tweetRepository.retweet(anyId, mock(Callback.class));
-        verify(mockUserAuthQueue, times(1)).addRequest(any(Callback.class));
+        verify(mockUserAuthQueue, times(1)).addClientRequest(any(Callback.class));
         verifyZeroInteractions(mockGuestAuthQueue);
     }
 
     @Test
     public void testUnretweetDelegation() {
         tweetRepository.unretweet(anyId, mock(Callback.class));
-        verify(mockUserAuthQueue, times(1)).addRequest(any(Callback.class));
+        verify(mockUserAuthQueue, times(1)).addClientRequest(any(Callback.class));
         verifyZeroInteractions(mockGuestAuthQueue);
     }
 
@@ -83,13 +83,13 @@ public class TweetRepositoryTest {
     public void testLoadTweetDelegation() {
         tweetRepository.loadTweet(anyId, mock(Callback.class));
         verifyZeroInteractions(mockUserAuthQueue);
-        verify(mockGuestAuthQueue, times(1)).addRequest(any(Callback.class));
+        verify(mockGuestAuthQueue, times(1)).addClientRequest(any(Callback.class));
     }
 
     @Test
     public void testLoadTweetsDelegation() {
         tweetRepository.loadTweets(anyIds, mock(Callback.class));
         verifyZeroInteractions(mockUserAuthQueue);
-        verify(mockGuestAuthQueue, times(1)).addRequest(any(Callback.class));
+        verify(mockGuestAuthQueue, times(1)).addClientRequest(any(Callback.class));
     }
 }

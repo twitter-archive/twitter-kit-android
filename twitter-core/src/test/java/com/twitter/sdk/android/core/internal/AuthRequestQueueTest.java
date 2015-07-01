@@ -15,20 +15,18 @@
  *
  */
 
-package com.twitter.sdk.android.tweetui;
+package com.twitter.sdk.android.core.internal;
 
 import com.twitter.sdk.android.core.AppSession;
+import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.Session;
-import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterAuthException;
 import com.twitter.sdk.android.core.TwitterAuthToken;
-import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.internal.oauth.GuestAuthToken;
-import com.twitter.sdk.android.tweetui.internal.SessionProvider;
 import com.twitter.sdk.android.core.internal.oauth.OAuth2Token;
 
 import org.junit.Before;
@@ -43,30 +41,28 @@ import static org.mockito.Mockito.*;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, emulateSdk = 21)
 public class AuthRequestQueueTest {
-    private TwitterCore mockTwitterCoreKit;
     private SessionProvider mockSessionProvider;
     private GuestAuthToken mockGuestAuthToken;
     private OAuth2Token mockAppAuthToken;
-    private Callback<TwitterApiClient> mockRequest;
-    private TwitterApiClient mockTwitterApiClient;
+    private Callback<Session> mockRequest;
+    private Session mockSession;
 
     @Before
     public void setUp() throws Exception {
-        mockTwitterCoreKit = mock(TwitterCore.class);
         mockSessionProvider = mock(SessionProvider.class);
         doNothing().when(mockSessionProvider).requestAuth(any(Callback.class));
 
         mockGuestAuthToken = mock(GuestAuthToken.class);
         mockAppAuthToken = mock(OAuth2Token.class);
         mockRequest = mock(Callback.class);
-        mockTwitterApiClient = mock(TwitterApiClient.class);
+        mockSession = mock(Session.class);
     }
 
     // constructs an AuthRequestQueue with mocks, whose session provider returns the given
     // active session
     private AuthRequestQueue setupQueue(Session session) {
         when(mockSessionProvider.getActiveSession()).thenReturn(session);
-        return new AuthRequestQueue(mockTwitterCoreKit, mockSessionProvider);
+        return new AuthRequestQueue(mockSessionProvider);
     }
 
     @Test
@@ -142,7 +138,7 @@ public class AuthRequestQueueTest {
         final AppSession appSession = mock(AppSession.class);
         when(appSession.getAuthToken()).thenReturn(mockGuestAuthToken);
         final AuthRequestQueue authRequestQueue = setupQueue(appSession);
-        authRequestQueue.flushQueueOnSuccess(mockTwitterApiClient);
+        authRequestQueue.flushQueueOnSuccess(mockSession);
         authRequestQueue.addRequest(mockRequest);
         // asserts that we skip the queue and add it straight to the net
         assertEquals(0, authRequestQueue.queue.size());
@@ -158,7 +154,7 @@ public class AuthRequestQueueTest {
         authRequestQueue.addRequest(mockRequest);
         authRequestQueue.addRequest(mockRequest);
         assertEquals(2, authRequestQueue.queue.size());
-        authRequestQueue.flushQueueOnSuccess(mockTwitterApiClient);
+        authRequestQueue.flushQueueOnSuccess(mockSession);
         assertEquals(0, authRequestQueue.queue.size());
     }
 
@@ -166,7 +162,7 @@ public class AuthRequestQueueTest {
     public void testFlushQueueOnSuccess_setsAwaitingSessionToFalse() {
         final AuthRequestQueue authRequestQueue = setupQueue(null);
         authRequestQueue.awaitingSession.set(true);
-        authRequestQueue.flushQueueOnSuccess(mockTwitterApiClient);
+        authRequestQueue.flushQueueOnSuccess(mockSession);
         assertFalse(authRequestQueue.awaitingSession.get());
     }
 

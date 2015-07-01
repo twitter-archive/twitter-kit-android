@@ -96,7 +96,7 @@ abstract class BaseTimeline {
      * Adds the request to the guest AuthRequestQueue where guest auth will be setup.
      */
     void addRequest(final Callback<TwitterApiClient> cb) {
-        tweetUi.getGuestAuthQueue().addRequest(cb);
+        tweetUi.getGuestAuthQueue().addClientRequest(cb);
     }
 
     /**

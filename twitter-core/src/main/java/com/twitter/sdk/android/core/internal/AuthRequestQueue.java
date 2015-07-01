@@ -15,38 +15,33 @@
  *
  */
 
-package com.twitter.sdk.android.tweetui;
+package com.twitter.sdk.android.core.internal;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.Session;
-import com.twitter.sdk.android.core.TwitterApiClient;
-import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.tweetui.internal.SessionProvider;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /*
- * * Queues requests until a TwitterApiClient with a session is ready. Gets an active session from
- * the sessionProvider or requests sessionProvider perform authentication.
+ * Queues requests until a session is ready. Gets an active session from the sessionProvider or
+ * requests sessionProvider perform authentication.
  *
  * In order to solve concurrent access problems we have put synchronized around the public methods
  * in order to lock queue access so that we can avoid orphaning requests in the queue
  */
-class AuthRequestQueue {
-    final Queue<Callback<TwitterApiClient>> queue;
+public class AuthRequestQueue {
+    final Queue<Callback<Session>> queue;
     // We use this to flag to mark that a session is either being restored from file or
     // requested from the server
     final AtomicBoolean awaitingSession;
 
-    private final TwitterCore twitterCore;
     private final SessionProvider sessionProvider;
 
-    AuthRequestQueue(TwitterCore twitterCore, SessionProvider sessionProvider) {
-        this.twitterCore = twitterCore;
+    public AuthRequestQueue(SessionProvider sessionProvider) {
         this.sessionProvider = sessionProvider;
         queue = new ConcurrentLinkedQueue<>();
         awaitingSession = new AtomicBoolean(true);
@@ -64,14 +59,14 @@ class AuthRequestQueue {
      *    We set the request flag to be active so that we don't end up kicking off duplicate
      *    requests.
      */
-    protected synchronized boolean addRequest(Callback<TwitterApiClient> callback) {
+    public synchronized boolean addRequest(Callback<Session> callback) {
         if (callback == null) return false;
 
         // awaitingSession will be true until session restoration completes in the background.
         if (!awaitingSession.get()) {
             final Session session = getValidSession();
             if (session != null) {
-                callback.success(new Result<>(twitterCore.getApiClient(session), null));
+                callback.success(new Result<>(session, null));
             } else {
                 queue.add(callback);
                 awaitingSession.set(true);
@@ -90,9 +85,9 @@ class AuthRequestQueue {
      * 3. No valid session and nothing awaiting in the queue. We only need to remove the flag,
      * first request will trigger AuthRequest.
      */
-    synchronized void sessionRestored(Session session) {
+    public synchronized void sessionRestored(Session session) {
         if (session != null) {
-            flushQueueOnSuccess(twitterCore.getApiClient(session));
+            flushQueueOnSuccess(session);
         } else if (queue.size() > 0) {
             requestAuth();
         } else {
@@ -105,7 +100,7 @@ class AuthRequestQueue {
         sessionProvider.requestAuth(new Callback<Session>() {
             @Override
             public void success(Result<Session> result) {
-                flushQueueOnSuccess(twitterCore.getApiClient(result.data));
+                flushQueueOnSuccess(result.data);
             }
 
             @Override
@@ -116,15 +111,14 @@ class AuthRequestQueue {
     }
 
     /*
-     * This is called only once we have a TwitterApiClient with a session so requests can be
-     * performed.
+     * Clears the request queue using the given session.
      */
-    synchronized void flushQueueOnSuccess(TwitterApiClient apiClient) {
+    synchronized void flushQueueOnSuccess(Session session) {
         awaitingSession.set(false);
 
         while (!queue.isEmpty()) {
-            final Callback<TwitterApiClient> request = queue.poll();
-            request.success(new Result<>(apiClient, null));
+            final Callback<Session> request = queue.poll();
+            request.success(new Result<>(session, null));
         }
     }
 
