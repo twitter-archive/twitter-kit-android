@@ -203,7 +203,7 @@ public class CollectionTimeline extends BaseTimeline implements Timeline<Tweet> 
         }
 
         /**
-         * Sets the number of Tweets returned per request for the UserTimeline.
+         * Sets the number of Tweets returned per request for the CollectionTimeline.
          * @param maxItemsPerRequest The number of tweets to return per request, up to a maximum of
          *                           200.
          */

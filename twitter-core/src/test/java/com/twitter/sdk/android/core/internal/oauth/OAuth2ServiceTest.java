@@ -49,7 +49,7 @@ public class OAuth2ServiceTest  {
 
     /**
      * Example consumer key and consumer secret values provided by:
-     * https://dev.twitter.com/docs/auth/application-only-auth
+     * https://dev.twitter.com/oauth/application-only
      */
     private static final String CONSUMER_KEY = "xvz1evFS4wEEPTGEFPHBog";
     private static final String CONSUMER_SECRET = "L8qq9PZyRg6ieKGEKhZolGC0vJWLw8iEJ88DRdyOg";

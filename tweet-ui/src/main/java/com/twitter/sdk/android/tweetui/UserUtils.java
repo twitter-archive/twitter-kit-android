@@ -25,7 +25,7 @@ import com.twitter.sdk.android.core.models.User;
 final class UserUtils {
     private UserUtils() {}
 
-    // see https://dev.twitter.com/docs/user-profile-images-and-banners
+    // see https://dev.twitter.com/overview/general/user-profile-images-and-banners
     // see also: https://confluence.twitter.biz/display/PLATFORM/Image+Types+and+Sizes
     enum AvatarSize {
         NORMAL("_normal"),

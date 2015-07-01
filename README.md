@@ -2,7 +2,7 @@
 
 Twitter Kit is a multi-module gradle project containing several Twitter SDKs including TweetComposer, TwitterCore, and TweetUi. It is built on the Fabric platform and uses many shared components.
 
-Using TwitterKit from source in production applications is not officially supported by Fabric. Please utilize the available binaries.
+Using Twitter Kit from source in production applications is not officially supported by Fabric. Please utilize the available binaries.
 
 ## Download
 

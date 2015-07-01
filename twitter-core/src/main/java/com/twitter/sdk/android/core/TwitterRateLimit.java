@@ -24,7 +24,7 @@ import retrofit.client.Header;
 /**
  * Represents the rate limit data returned on the headers of a request
  *
- * @see <a href="https://dev.twitter.com/docs/rate-limiting/1.1">Rate Limiting</a>
+ * @see <a href="https://dev.twitter.com/rest/public/rate-limiting">Rate Limiting</a>
  */
 class TwitterRateLimit  {
 

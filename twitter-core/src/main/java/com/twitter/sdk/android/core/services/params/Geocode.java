@@ -26,7 +26,7 @@ package com.twitter.sdk.android.core.services.params;
  *
  * Example Values: 37.781157,-122.398720,1mi
  *
- * <a href="https://dev.twitter.com/docs/api/1.1/get/search">GET Search</a>
+ * <a href="https://dev.twitter.com/rest/reference/get/search/tweets">GET search/tweets</a>
  */
 public class Geocode {
 
