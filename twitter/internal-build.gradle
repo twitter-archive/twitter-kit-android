@@ -86,9 +86,7 @@ ext.projectDependencies = [
 
 dependencies {
     projectDependencies.each {
-        debugCompile (project(path: it, configuration: 'debug')) {
-            transitive = false
-        }
+        debugCompile project(path: it, configuration: 'debug')
         releaseCompile kitDependency(path: it, configuration: 'release')
     }
 

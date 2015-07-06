@@ -89,9 +89,7 @@ android {
 
 dependencies {
 
-    debugCompile project(':sdk:fabric:fabric')
-    debugCompile rootProject.fabricTest
-
+    debugCompile project(path: ':sdk:fabric:fabric', configuration: 'debug')
     releaseCompile kitDependency(path:':sdk:fabric:fabric', configuration: 'release')
 
     compile 'com.squareup.retrofit:retrofit:1.6.1'
