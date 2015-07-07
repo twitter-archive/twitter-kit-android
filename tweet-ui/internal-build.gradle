@@ -84,10 +84,17 @@ android {
     }
 }
 
+ext.projectDependencies = [
+        ':sdk:fabric:fabric',
+        ':sdk:twitter:twitter-core'
+]
+
 dependencies {
 
-    debugCompile project(path: ':sdk:twitter:twitter-core', configuration: 'debug')
-    releaseCompile kitDependency(path: ':sdk:twitter:twitter-core', configuration: 'release')
+    projectDependencies.each {
+        debugCompile project(path: it, configuration: 'debug')
+        releaseCompile kitDependency(path: it, configuration: 'release')
+    }
 
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.support:support-v4:21.0.0'
