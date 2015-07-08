@@ -31,7 +31,6 @@ import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.tweetui.CompactTweetView;
-import com.twitter.sdk.android.tweetui.LoadCallback;
 import com.twitter.sdk.android.tweetui.TweetUtils;
 import com.twitter.sdk.android.tweetui.TweetView;
 
@@ -98,7 +97,7 @@ public class TweetActivity extends TweetUiActivity {
                     Log.e(TAG, "loadTweet failure", exception);
                 }
             };
-//            TweetUtils.loadTweet(tweetId, singleTweetCallback);
+            TweetUtils.loadTweet(tweetId, singleTweetCallback);
         }
 
         /**
@@ -107,23 +106,23 @@ public class TweetActivity extends TweetUiActivity {
          */
         private void loadTweets(final List<Long> tweetIds, final ViewGroup container,
                                 final List<Integer> viewIds) {
-//            TweetUtils.loadTweets(tweetIds, new Callback<List<Tweet>>() {
-//                @Override
-//                public void success(Result<List<Tweet>> result) {
-//                    final Context context = getActivity();
-//                    if (context == null) return;
-//                    for (int i = 0; i < result.data.size(); i++) {
-//                        final View view = new CompactTweetView(context, result.data.get(i));
-//                        view.setId(viewIds.get(i));
-//                        container.addView(view);
-//                    }
-//                }
-//
-//                @Override
-//                public void failure(TwitterException exception) {
-//                    Log.e(TAG, "loadTweets failure " + tweetIds, exception);
-//                }
-//            });
+            TweetUtils.loadTweets(tweetIds, new Callback<List<Tweet>>() {
+                @Override
+                public void success(Result<List<Tweet>> result) {
+                    final Context context = getActivity();
+                    if (context == null) return;
+                    for (int i = 0; i < result.data.size(); i++) {
+                        final View view = new CompactTweetView(context, result.data.get(i));
+                        view.setId(viewIds.get(i));
+                        container.addView(view);
+                    }
+                }
+
+                @Override
+                public void failure(TwitterException exception) {
+                    Log.e(TAG, "loadTweets failure " + tweetIds, exception);
+                }
+            });
         }
     }
 }

@@ -133,7 +133,7 @@ public class TweetPreviewActivity extends TweetUiActivity {
                     Log.e(TAG, "loadTweet failure", exception);
                 }
             };
-//            TweetUtils.loadTweet(tweetId, singleTweetCallback);
+            TweetUtils.loadTweet(tweetId, singleTweetCallback);
         }
     }
 }

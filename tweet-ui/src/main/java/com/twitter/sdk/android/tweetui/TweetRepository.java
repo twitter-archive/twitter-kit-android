@@ -21,8 +21,6 @@ import android.os.Handler;
 import android.support.v4.util.LruCache;
 import android.text.TextUtils;
 
-import io.fabric.sdk.android.Fabric;
-
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterApiClient;
@@ -31,6 +29,8 @@ import com.twitter.sdk.android.core.internal.GuestCallback;
 import com.twitter.sdk.android.core.models.Tweet;
 
 import java.util.List;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Encapsulates Tweet API access. Tweet loads are read through a thread safe LruCache.
@@ -133,7 +133,7 @@ class TweetRepository {
                 Fabric.getLogger()) {
             @Override
             public void success(Result<TwitterApiClient> result) {
-//                result.data.getStatusesService().unretweet(tweetId, false, cb);
+                result.data.getStatusesService().unretweet(tweetId, false, cb);
             }
         });
     }
