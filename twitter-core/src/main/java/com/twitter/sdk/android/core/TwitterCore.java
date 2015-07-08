@@ -24,6 +24,7 @@ import io.fabric.sdk.android.Kit;
 import io.fabric.sdk.android.services.network.NetworkUtils;
 import io.fabric.sdk.android.services.persistence.PreferenceStoreImpl;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
+import com.twitter.sdk.android.core.internal.MigrationHelper;
 import com.twitter.sdk.android.core.internal.SessionMonitor;
 import com.twitter.sdk.android.core.internal.TwitterApi;
 import com.twitter.sdk.android.core.internal.oauth.OAuth2Service;
@@ -46,6 +47,7 @@ public class TwitterCore extends Kit<Boolean> {
     static final String PREF_KEY_TWITTER_SESSION = "twittersession";
     static final String PREF_KEY_ACTIVE_APP_SESSION = "active_appsession";
     static final String PREF_KEY_APP_SESSION = "appsession";
+    static final String SESSION_PREF_FILE_NAME = "session_store";
 
     SessionManager<TwitterSession> twitterSessionManager;
     SessionManager<AppSession> appSessionManager;
@@ -110,7 +112,12 @@ public class TwitterCore extends Kit<Boolean> {
 
     @Override
     protected boolean onPreExecute() {
-        twitterSessionManager = new PersistedSessionManager<>(new PreferenceStoreImpl(this),
+        final MigrationHelper migrationHelper = new MigrationHelper();
+        migrationHelper.migrateSessionStore(getContext(), getIdentifier(),
+                getIdentifier() + ":" + SESSION_PREF_FILE_NAME + ".xml");
+
+        twitterSessionManager = new PersistedSessionManager<>(
+                new PreferenceStoreImpl(getContext(), SESSION_PREF_FILE_NAME),
                 new TwitterSession.Serializer(), PREF_KEY_ACTIVE_TWITTER_SESSION,
                 PREF_KEY_TWITTER_SESSION);
 
@@ -118,8 +125,9 @@ public class TwitterCore extends Kit<Boolean> {
                 getFabric().getExecutorService());
 
         appSessionManager = new PersistedSessionManager<>(
-                        new PreferenceStoreImpl(this), new AppSession.Serializer(),
-                        PREF_KEY_ACTIVE_APP_SESSION, PREF_KEY_APP_SESSION);
+                new PreferenceStoreImpl(getContext(), SESSION_PREF_FILE_NAME),
+                new AppSession.Serializer(), PREF_KEY_ACTIVE_APP_SESSION, PREF_KEY_APP_SESSION);
+
         return true;
     }
 

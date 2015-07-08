@@ -3,6 +3,7 @@
 
 ## Unreleased
 
+* (EF) Fixed critical issue where Twitter sessions are lost when using Proguard.
 * (DH) (internal) Added support for Twitter Single Signon with the Twitter Android Dogfood App
 * (EF) Added unretweet endpoint to StatusesService
 * (DH) Switched CollectionService from the beta collections endpoint to the public collections endpoint.
