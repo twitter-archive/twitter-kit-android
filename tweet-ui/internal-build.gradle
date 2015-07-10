@@ -21,6 +21,7 @@ apply from: rootProject.qualityScript
 apply from: rootProject.sizeScript
 apply from: rootProject.deployScript
 apply plugin: io.fabric.gradle.weaving.FabricPropertiesPlugin
+apply plugin: io.fabric.gradle.weaving.DexMethodCountPlugin
 
 repositories {
     mavenLocal()
@@ -61,6 +62,10 @@ android {
 
     jacoco {
         version = jacocoVersion
+    }
+
+    dexMethodCount {
+        packageFilter = "com.twitter.sdk.android.tweetui"
     }
 
     //Gradle publishes only release by default for multi module projects
