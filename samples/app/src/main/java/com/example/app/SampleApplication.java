@@ -18,11 +18,13 @@
 package com.example.app;
 
 import android.app.Application;
+import android.os.StrictMode;
 import android.util.Log;
 
 import io.fabric.sdk.android.DefaultLogger;
 import io.fabric.sdk.android.Fabric;
 
+import com.squareup.leakcanary.LeakCanary;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 
@@ -32,6 +34,18 @@ public class SampleApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        LeakCanary.install(this);
+
+        Log.d(TAG, "Setting up StrictMode policy checking.");
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                .detectAll()
+                .penaltyLog()
+                .build());
+
+        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                .detectAll()
+                .penaltyLog()
+                .build());
 
         final TwitterAuthConfig authConfig = new TwitterAuthConfig(BuildConfig.CONSUMER_KEY,
                 BuildConfig.CONSUMER_SECRET);
