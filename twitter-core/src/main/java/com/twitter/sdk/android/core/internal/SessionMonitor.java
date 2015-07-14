@@ -20,58 +20,46 @@ package com.twitter.sdk.android.core.internal;
 import android.app.Activity;
 import android.text.format.DateUtils;
 
+import io.fabric.sdk.android.ActivityLifecycleManager;
+import io.fabric.sdk.android.services.common.SystemCurrentTimeProvider;
+
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
-import com.twitter.sdk.android.core.TwitterApiClient;
-import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
-import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
-import com.twitter.sdk.android.core.internal.scribe.TwitterCoreScribeClientHolder;
-import com.twitter.sdk.android.core.services.AccountService;
 
 import java.util.Calendar;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutorService;
-
-import io.fabric.sdk.android.ActivityLifecycleManager;
-import io.fabric.sdk.android.services.common.SystemCurrentTimeProvider;
-import retrofit.RetrofitError;
 
 /**
  * A session monitor for validating sessions.
  * @param <T>
  */
 public class SessionMonitor<T extends Session> {
-    static final String SCRIBE_CLIENT = "android";
-    static final String SCRIBE_PAGE = "credentials";
-    static final String SCRIBE_SECTION = ""; // intentionally blank
-    static final String SCRIBE_COMPONENT = ""; // intentionally blank
-    static final String SCRIBE_ELEMENT = ""; // intentionally blank
-    static final String SCRIBE_ACTION = "impression";
-
     protected final MonitorState monitorState;
 
     private final SystemCurrentTimeProvider time;
-    private final AccountServiceProvider accountServiceProvider;
     private final SessionManager<T> sessionManager;
     private final ExecutorService executorService;
+    private final SessionVerifier sessionVerifier;
 
     /**
      * @param sessionManager A user auth based session manager
      * @param executorService used to
      */
-    public SessionMonitor(SessionManager<T> sessionManager, ExecutorService executorService) {
-        this(sessionManager, new SystemCurrentTimeProvider(), new AccountServiceProvider(),
-                executorService, new MonitorState());
+    public SessionMonitor(SessionManager<T> sessionManager, ExecutorService executorService,
+            SessionVerifier sessionVerifier) {
+        this(sessionManager, new SystemCurrentTimeProvider(),
+                executorService, new MonitorState(), sessionVerifier);
     }
 
     SessionMonitor(SessionManager<T> sessionManager, SystemCurrentTimeProvider time,
-            AccountServiceProvider accountServiceProvider, ExecutorService executorService,
-            MonitorState monitorState) {
+            ExecutorService executorService, MonitorState monitorState, SessionVerifier
+            sessionVerifier) {
         this.time = time;
         this.sessionManager = sessionManager;
-        this.accountServiceProvider = accountServiceProvider;
         this.executorService = executorService;
         this.monitorState = monitorState;
+        this.sessionVerifier = sessionVerifier;
     }
 
     /**
@@ -114,45 +102,9 @@ public class SessionMonitor<T extends Session> {
 
     protected void verifyAll() {
         for (T session : sessionManager.getSessionMap().values()) {
-            verifySession(session);
+            sessionVerifier.verifySession(session);
         }
         monitorState.endVerification(time.getCurrentTimeMillis());
-    }
-
-    /**
-     * Verify session uses the synchronous api to simplify marking when verification is done.
-     * @param session
-     */
-    protected void verifySession(final Session session) {
-        final AccountService accountService = accountServiceProvider.getAccountService(session);
-        try {
-            scribeVerifySession();
-            accountService.verifyCredentials(true, false);
-        } catch (RetrofitError e) {
-            // We ignore failures since we will attempt the verification again the next time
-            // the verification period comes up. This has the potential to lose events, but we
-            // are not aiming towards 100% capture rate.
-        }
-    }
-
-    protected DefaultScribeClient getScribeClient() {
-        return TwitterCoreScribeClientHolder.getScribeClient();
-    }
-
-    protected void scribeVerifySession() {
-        final DefaultScribeClient scribeClient = getScribeClient();
-        if (scribeClient == null) return;
-
-        final EventNamespace ns = new EventNamespace.Builder()
-                .setClient(SCRIBE_CLIENT)
-                .setPage(SCRIBE_PAGE)
-                .setSection(SCRIBE_SECTION)
-                .setComponent(SCRIBE_COMPONENT)
-                .setElement(SCRIBE_ELEMENT)
-                .setAction(SCRIBE_ACTION)
-                .builder();
-
-        scribeClient.scribeSyndicatedSdkImpressionEvents(ns);
     }
 
     /**
@@ -197,16 +149,6 @@ public class SessionMonitor<T extends Session> {
             final int yearB = utcCalendar.get(Calendar.YEAR);
 
             return dayA == dayB && yearA == yearB;
-        }
-    }
-
-    /**
-     * Produces new service instances, this code is a separate class so that we can more easily test
-     * SessionMonitor
-     */
-    protected static class AccountServiceProvider {
-        public AccountService getAccountService(Session session) {
-            return new TwitterApiClient(session).getAccountService();
         }
     }
 }

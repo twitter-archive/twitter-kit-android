@@ -25,9 +25,6 @@ import io.fabric.sdk.android.services.common.SystemCurrentTimeProvider;
 import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
-import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
-import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
-import com.twitter.sdk.android.core.services.AccountService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -40,13 +37,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
-import retrofit.RetrofitError;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyLong;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, emulateSdk = 21)
@@ -55,44 +55,32 @@ public class SessionMonitorTest {
     private static final long TEST_TIME_1200_UTC = 1422014401245L;
     private static final long TEST_TIME_2359_UTC = 1422057541245L;
     private static final long TEST_TIME_0001_UTC = 1422057661245L;
-    private static final String REQUIRED_IMPRESSION_CLIENT = "android";
-    private static final String REQUIRED_IMPRESSION_PAGE = "credentials";
-    private static final String REQUIRED_IMPRESSION_SECTION = "";
-    private static final String REQUIRED_IMPRESSION_COMPONENT = "";
-    private static final String REQUIRED_IMPRESSION_ELEMENT = "";
-    private static final String REQUIRED_IMPRESSION_ACTION = "impression";
 
     private SessionManager<Session> mockSessionManager;
-    private SessionMonitor.AccountServiceProvider mockAccountServiceProvider;
     private SystemCurrentTimeProvider mockSystemCurrentTimeProvider;
-    private AccountService mockAccountService;
     private ExecutorService mockExecutorService;
     private SessionMonitor.MonitorState mockMonitorState;
-    private DefaultScribeClient mockScribeClient;
 
     private SessionMonitor<Session> sessionMonitor;
     private SessionMonitor.MonitorState monitorState;
     private Map<Long, Session> sessionMap;
+    private SessionVerifier mockSessionVerifier;
 
     @Before
     public void setUp() throws Exception {
 
         mockSessionManager = mock(SessionManager.class);
-        mockAccountServiceProvider = mock(SessionMonitor.AccountServiceProvider.class);
         mockSystemCurrentTimeProvider = mock(SystemCurrentTimeProvider.class);
-        mockAccountService = mock(AccountService.class);
         mockExecutorService = mock(ExecutorService.class);
         mockMonitorState = mock(SessionMonitor.MonitorState.class);
-        mockScribeClient = mock(DefaultScribeClient.class);
+        mockSessionVerifier = mock(SessionVerifier.class);
         sessionMonitor = new SessionMonitor<>(mockSessionManager, mockSystemCurrentTimeProvider,
-                mockAccountServiceProvider, mockExecutorService, mockMonitorState);
+                mockExecutorService, mockMonitorState, mockSessionVerifier);
         monitorState = new SessionMonitor.MonitorState();
         final Session testSession = new Session(null, 1L);
         sessionMap = new HashMap<>();
         sessionMap.put(1L, testSession);
 
-        when(mockAccountServiceProvider.getAccountService(any(Session.class)))
-                .thenReturn(mockAccountService);
         when(mockSessionManager.getSessionMap()).thenReturn(sessionMap);
         when(mockSessionManager.getActiveSession()).thenReturn(testSession);
     }
@@ -101,7 +89,8 @@ public class SessionMonitorTest {
     public void testMonitorActivityLifecycle_registersActivityLifecycleCallbacks() {
         final ActivityLifecycleManager mockActivityLifecycleManager =
                 mock(ActivityLifecycleManager.class);
-        sessionMonitor = new SessionMonitor<>(mockSessionManager, mockExecutorService);
+        sessionMonitor = new SessionMonitor<>(mockSessionManager, mockExecutorService,
+                mockSessionVerifier);
 
         sessionMonitor.monitorActivityLifecycle(mockActivityLifecycleManager);
 
@@ -137,7 +126,7 @@ public class SessionMonitorTest {
     public void testVerifyAll_verifiesAllSessions() {
         sessionMap.put(2L, mock(Session.class));
         sessionMonitor.verifyAll();
-        verify(mockAccountService, times(2)).verifyCredentials(true, false);
+        verify(mockSessionVerifier, times(2)).verifySession(any(Session.class));
     }
 
     @Test
@@ -148,73 +137,15 @@ public class SessionMonitorTest {
     }
 
     @Test
-    public void testVerifySession_catchesRetrofitExceptionsAndFinishesVerification() {
-        doThrow(mock(RetrofitError.class)).when(mockAccountService).verifyCredentials(true, false);
-
-        sessionMonitor.verifySession(mock(Session.class));
-
-        verify(mockAccountService).verifyCredentials(true, false);
-        // success, we caught the exception
-    }
-
-    @Test
     public void testVerifySession_callsAccountService() {
-        sessionMonitor.verifySession(mock(Session.class));
-        verify(mockAccountService).verifyCredentials(true, false);
-    }
-
-    @Test
-    public void testVerifySession_scribesImpression() {
-        sessionMonitor = new SessionMonitor<Session>(mockSessionManager,
-                mockSystemCurrentTimeProvider, mockAccountServiceProvider, mockExecutorService,
-                mockMonitorState) {
-            @Override
-            protected DefaultScribeClient getScribeClient() {
-                return mockScribeClient;
-            }
-        };
-        sessionMonitor.verifySession(mock(Session.class));
-        verify(mockScribeClient).scribeSyndicatedSdkImpressionEvents(any(EventNamespace.class));
-    }
-
-    @Test
-    public void testVerifySession_scribeHandlesNullClient() {
-        sessionMonitor = new SessionMonitor<Session>(mockSessionManager,
-                mockSystemCurrentTimeProvider, mockAccountServiceProvider, mockExecutorService,
-                mockMonitorState) {
-            @Override
-            protected DefaultScribeClient getScribeClient() {
-                return null;
-            }
-        };
-        try {
-            sessionMonitor.verifySession(mock(Session.class));
-        } catch (NullPointerException e) {
-            fail("should handle a null scribe client");
-        }
-    }
-
-    @Test
-    public void testScribeVerifySession_eventNamespace() {
-        final ArgumentCaptor<EventNamespace> namespaceCaptor
-                = ArgumentCaptor.forClass(EventNamespace.class);
-        sessionMonitor = new SessionMonitor<Session>(mockSessionManager,
-                mockSystemCurrentTimeProvider, mockAccountServiceProvider, mockExecutorService,
-                mockMonitorState) {
-            @Override
-            protected DefaultScribeClient getScribeClient() {
-                return mockScribeClient;
-            }
-        };
-        sessionMonitor.scribeVerifySession();
-        verify(mockScribeClient).scribeSyndicatedSdkImpressionEvents(namespaceCaptor.capture());
-        final EventNamespace ns = namespaceCaptor.getValue();
-        assertEquals(REQUIRED_IMPRESSION_CLIENT, ns.client);
-        assertEquals(REQUIRED_IMPRESSION_PAGE, ns.page);
-        assertEquals(REQUIRED_IMPRESSION_SECTION, ns.section);
-        assertEquals(REQUIRED_IMPRESSION_COMPONENT, ns.component);
-        assertEquals(REQUIRED_IMPRESSION_ELEMENT, ns.element);
-        assertEquals(REQUIRED_IMPRESSION_ACTION, ns.action);
+        when(mockMonitorState.beginVerification(anyLong())).thenReturn(Boolean.TRUE);
+        sessionMonitor.triggerVerificationIfNecessary();
+        final ArgumentCaptor<Runnable> runnableArgumentCaptor = ArgumentCaptor.forClass(Runnable
+                .class);
+        verify(mockExecutorService).submit(runnableArgumentCaptor.capture());
+        final Runnable tasks = runnableArgumentCaptor.getValue();
+        tasks.run();
+        verify(mockSessionVerifier).verifySession(any(Session.class));
     }
 
     @Test
@@ -230,7 +161,7 @@ public class SessionMonitorTest {
     @Test
     public void testMonitorStateStartVerification_beforeTimeThreshold() {
         final long startTime = TEST_TIME_1200_UTC;
-        final long now =  startTime + 1 * DateUtils.HOUR_IN_MILLIS;
+        final long now =  startTime + DateUtils.HOUR_IN_MILLIS;
 
         monitorState.lastVerification = startTime;
         monitorState.verifying = false;
@@ -250,7 +181,7 @@ public class SessionMonitorTest {
     @Test
     public void testMonitorStateStartVerification_pastTimeThreshold() {
         final long startTime = TEST_TIME_1200_UTC;
-        final long now =  startTime + 8 * DateUtils.HOUR_IN_MILLIS;
+        final long now = startTime + (8 * DateUtils.HOUR_IN_MILLIS);
 
         monitorState.lastVerification = startTime;
         monitorState.verifying = false;

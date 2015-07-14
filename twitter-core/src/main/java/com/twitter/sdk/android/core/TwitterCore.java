@@ -23,10 +23,12 @@ import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.Kit;
 import io.fabric.sdk.android.services.network.NetworkUtils;
 import io.fabric.sdk.android.services.persistence.PreferenceStoreImpl;
+
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.core.internal.MigrationHelper;
 import com.twitter.sdk.android.core.internal.SessionMonitor;
 import com.twitter.sdk.android.core.internal.TwitterApi;
+import com.twitter.sdk.android.core.internal.TwitterSessionVerifier;
 import com.twitter.sdk.android.core.internal.oauth.OAuth2Service;
 import com.twitter.sdk.android.core.internal.scribe.TwitterCoreScribeClientHolder;
 
@@ -122,7 +124,7 @@ public class TwitterCore extends Kit<Boolean> {
                 PREF_KEY_TWITTER_SESSION);
 
         sessionMonitor = new SessionMonitor<>(twitterSessionManager,
-                getFabric().getExecutorService());
+                getFabric().getExecutorService(), new TwitterSessionVerifier());
 
         appSessionManager = new PersistedSessionManager<>(
                 new PreferenceStoreImpl(getContext(), SESSION_PREF_FILE_NAME),
