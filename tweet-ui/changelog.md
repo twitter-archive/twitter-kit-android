@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+## v1.3.1
+
 * (DH) Change TweetUtils loadTweet(s) to take a TwitterCore Callback. Deprecate those taking a LoadCallback.
 * (DH) Change TweetViewFetchAdapter setTweetIds to take a TwitterCore Callback. Deprecate the method taking a LoadCallback.
 
