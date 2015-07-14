@@ -17,12 +17,11 @@
 
 package com.twitter.sdk.android.tweetui.internal;
 
-
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
+import com.twitter.sdk.android.core.TwitterAuthException;
 import com.twitter.sdk.android.core.internal.SessionProvider;
-import com.twitter.sdk.android.core.TwitterApiException;
 
 import java.util.List;
 
@@ -33,11 +32,10 @@ public class UserSessionProvider extends SessionProvider {
     }
 
     /*
-     * Requests a Twitter user login flow.
+     * Do not launch the User Auth flow by default, fail the request to allow developers to launch
+     * the login flow.
      */
     public void requestAuth(Callback<Session> cb) {
-        // treat as a failure to complete the Twitter login flow
-        // TODO launch a Login with Twitter Activity to try to obtain user auth
-        cb.failure((TwitterApiException) null);
+        cb.failure(new TwitterAuthException("Twitter login required."));
     }
 }
