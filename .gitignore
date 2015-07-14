@@ -27,11 +27,11 @@ out
 *.iml
 local.properties
 
-# crashlytics files
+# Crashlytics files
 com_crashlytics_export_strings.xml
-crashlytics_local_developer_strings.xml
 manifest.txt
 crashlytics.keystore.properties
 crashlytics-build.properties
 
+# Fabric files
 fabric.properties

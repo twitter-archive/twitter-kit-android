@@ -18,7 +18,6 @@
 
 <lint>
     <issue id="UnusedResources">
-        <ignore path="src/main/res/values/crashlytics_local_developer_strings.xml"/>
         <ignore path="src/main/res/values/com_crashlytics_export_strings.xml"/>
     </issue>
     <issue id="TypographyDashes">
