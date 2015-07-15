@@ -151,6 +151,7 @@ public abstract class BaseTweetView extends LinearLayout {
         findSubviews();
         applyStyles();
         if (!isTweetUiEnabled()) return;
+        initCallbacks();
         setTweet(tweet);
     }
 
@@ -335,7 +336,17 @@ public abstract class BaseTweetView extends LinearLayout {
         if (!isTweetUiEnabled()) return;
         findSubviews();
         applyStyles();
+        initCallbacks();
         loadTweet();
+    }
+
+    /**
+     * Initialize subview default callbacks.
+     */
+    private void initCallbacks() {
+        // Tweet actions buttons setTweet and clear cache after successful actions.
+        tweetActionBarView.setOnActionCallback(new ResetTweetCallback(this,
+                dependencyProvider.getTweetUi().getTweetRepository(), null));
     }
 
     /**
@@ -412,6 +423,16 @@ public abstract class BaseTweetView extends LinearLayout {
      */
     public Tweet getTweet() {
         return tweet;
+    }
+
+    /**
+     * Sets the callback to call when a Tweet action (favorite, unfavorite) is performed.
+     * @param actionCallback
+     */
+    void setOnActionCallback(Callback<Tweet> actionCallback) {
+        // TODO: expose this as public once actions are exposed
+        tweetActionBarView.setOnActionCallback(new ResetTweetCallback(this,
+                dependencyProvider.getTweetUi().getTweetRepository(), actionCallback));
     }
 
     /**
@@ -793,7 +814,8 @@ public abstract class BaseTweetView extends LinearLayout {
     void setTweetActions(Tweet displayTweet) {
         if (tweetActionsEnabled) {
             tweetActionBarView.setVisibility(View.VISIBLE);
-            tweetActionBarView.setTweet(displayTweet);
+            tweetActionBarView.setupActions(displayTweet,
+                    dependencyProvider.getTweetUi().getTweetRepository());
         }
     }
 

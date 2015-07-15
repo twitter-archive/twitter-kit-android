@@ -19,19 +19,91 @@ package com.twitter.sdk.android.tweetui;
 
 import android.view.View;
 
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterApiException;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.internal.TwitterApiConstants;
 import com.twitter.sdk.android.core.models.Tweet;
 
-class FavoriteTweetAction implements View.OnClickListener {
+/*
+ * FavoriteTweetAction is a click listener for ToggleImageButtons which performs Tweet
+ * favorite/unfavorite actions onClick, updates button state, and calls through to the given
+ * callback.
+ */
+class FavoriteTweetAction extends BaseTweetAction implements View.OnClickListener {
     final Tweet tweet;
+    TweetRepository tweetRepository;
 
-    public FavoriteTweetAction(Tweet tweet) {
-        super();
-
+    public FavoriteTweetAction(Tweet tweet, TweetRepository tweetRepository, Callback<Tweet> cb) {
+        super(cb);
         this.tweet = tweet;
+        this.tweetRepository = tweetRepository;
     }
 
     @Override
     public void onClick(View view) {
-        // TODO: make actual network call to favorite endpoint
+        if (view instanceof ToggleImageButton) {
+            final ToggleImageButton toggleImageButton = (ToggleImageButton) view;
+            if (tweet.favorited) {
+                tweetRepository.unfavorite(tweet.id,
+                        new FavoriteCallback(toggleImageButton, true, getActionCallback()));
+            } else {
+                tweetRepository.favorite(tweet.id,
+                        new FavoriteCallback(toggleImageButton, false, getActionCallback()));
+            }
+        }
+    }
+
+    /*
+     * Toggles favorite button state to handle exceptions. It calls through to the given action
+     * callback.
+     */
+    static class FavoriteCallback extends Callback<Tweet> {
+        ToggleImageButton button;
+        boolean wasFavorited;
+        Callback<Tweet> cb;
+
+        /*
+         * Constructs a new FavoriteCallback.
+         * @param button Favorite ToggleImageButton which should reflect Tweet favorited state
+         * @param wasFavorited whether the Tweet was favorited or not before the click
+         * @param cb the Callback.
+         */
+        FavoriteCallback(ToggleImageButton button, boolean wasFavorited, Callback<Tweet> cb) {
+            this.button = button;
+            this.wasFavorited = wasFavorited;
+            this.cb = cb;
+        }
+
+        @Override
+        public void success(Result<Tweet> result) {
+            button.setToggledOn(result.data.favorited);
+            cb.success(result);
+        }
+
+        @Override
+        public void failure(TwitterException exception) {
+            if (exception instanceof TwitterApiException) {
+                final TwitterApiException apiException = (TwitterApiException) exception;
+                final int errorCode = apiException.getErrorCode();
+
+                switch (errorCode) {
+                    case TwitterApiConstants.Errors.ALREADY_FAVORITED:
+                        // tried to unfavorite an already favorited tweet, toggle on
+                        button.setToggledOn(true);
+                        break;
+                    case TwitterApiConstants.Errors.NOT_FOUND:
+                        // favorite/unfavorite a missing/restricted/deleted tweet, toggle off
+                        button.setToggledOn(false);
+                        break;
+                    default:
+                        button.setToggledOn(wasFavorited);
+                }
+            } else {
+                button.setToggledOn(wasFavorited);
+            }
+            cb.failure(exception);
+        }
     }
 }

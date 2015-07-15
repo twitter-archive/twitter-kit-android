@@ -22,11 +22,13 @@ import android.util.AttributeSet;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.models.Tweet;
 
 public class TweetActionBarView extends LinearLayout {
     ToggleImageButton favoriteButton;
     ImageButton shareButton;
+    Callback<Tweet> actionCallback;
 
     public TweetActionBarView(Context context) {
         this(context, null);
@@ -42,20 +44,34 @@ public class TweetActionBarView extends LinearLayout {
         findSubviews();
     }
 
+    /*
+     * Sets the callback to call when a Tweet Action (favorite, unfavorite) is performed.
+     */
+    void setOnActionCallback(Callback<Tweet> actionCallback) {
+        this.actionCallback = actionCallback;
+    }
+
     void findSubviews() {
         favoriteButton = (ToggleImageButton) findViewById(R.id.tw__tweet_favorite_button);
         shareButton = (ImageButton) findViewById(R.id.tw__tweet_share_button);
     }
 
-    public void setTweet(Tweet tweet) {
-        setFavorite(tweet);
+    /*
+     * Setup action bar buttons with Tweet and action performer.
+     * @param tweet Tweet source for whether an action has been performed (e.g. isFavorited?)
+     * @param tweetRepository repository which can perform favorite and unfavorite actions
+     */
+    void setupActions(Tweet tweet, TweetRepository tweetRepository) {
+        setFavorite(tweet, tweetRepository);
         setShare(tweet);
     }
 
-    void setFavorite(Tweet tweet) {
-        if (tweet != null) {
+    void setFavorite(Tweet tweet, TweetRepository tweetRepository) {
+        if (tweet != null && tweetRepository != null) {
             favoriteButton.setToggledOn(tweet.favorited);
-            favoriteButton.setOnClickListener(new FavoriteTweetAction(tweet));
+            final FavoriteTweetAction favoriteTweetAction = new FavoriteTweetAction(tweet,
+                    tweetRepository, actionCallback);
+            favoriteButton.setOnClickListener(favoriteTweetAction);
         }
     }
 

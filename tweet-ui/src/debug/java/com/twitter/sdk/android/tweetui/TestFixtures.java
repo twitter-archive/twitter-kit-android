@@ -81,14 +81,17 @@ public final class TestFixtures {
     public static final String TEST_PERMALINK_UNKNOWN_USER
             = "https://twitter.com/twitter_unknown/status/1";
 
-    public static final Tweet TEST_TWEET = createTweet(1L, TEST_USER, TEST_STATUS, TEST_TIMESTAMP);
+    public static final Tweet TEST_TWEET = createTweet(1L, TEST_USER, TEST_STATUS, TEST_TIMESTAMP,
+            false);
+    public static final Tweet TEST_FAVORITED_TWEET = createTweet(1L, TEST_USER, TEST_STATUS,
+            TEST_TIMESTAMP, true);
     public static final Tweet TEST_PHOTO_TWEET = createPhotoTweet(2L, TEST_USER, TEST_STATUS,
             TEST_TIMESTAMP, TEST_PHOTO_URL);
     // Empty Tweet has empty string name, username, status, and timestamp fields
     public static final Tweet EMPTY_TWEET = createTweet(-1L, EMPTY_USER, EMPTY_STATUS,
-            EMPTY_TIMESTAMP);
+            EMPTY_TIMESTAMP, false);
     public static final Tweet INVALID_TIMESTAMP_TWEET = createTweet(3L, EMPTY_USER, EMPTY_STATUS,
-            INVALID_TIMESTAMP_INPUT);
+            INVALID_TIMESTAMP_INPUT, false);
     public static final Tweet TEST_RETWEET = createRetweet(4L, TEST_RETWEETER, TEST_TWEET);
 
     public static final List<Long> TWEET_IDS = new ArrayList<>();
@@ -114,15 +117,17 @@ public final class TestFixtures {
     private TestFixtures() {}
 
     public static Tweet createTweet(long id) {
-        return createTweet(id, null, "", "");
+        return createTweet(id, null, "", "", false);
     }
 
-    static Tweet createTweet(long id, User user, String text, String timestamp) {
+    static Tweet createTweet(long id, User user, String text, String timestamp,
+            boolean isFavorited) {
         return new TweetBuilder()
                 .setId(id)
                 .setUser(user)
                 .setText(text)
                 .setCreatedAt(timestamp)
+                .setFavorited(isFavorited)
                 .build();
     }
 

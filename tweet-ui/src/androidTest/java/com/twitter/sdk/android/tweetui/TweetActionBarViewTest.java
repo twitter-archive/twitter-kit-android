@@ -19,18 +19,28 @@ package com.twitter.sdk.android.tweetui;
 
 import android.widget.ImageButton;
 
-import org.mockito.ArgumentCaptor;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.models.Tweet;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
+import org.mockito.ArgumentCaptor;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
-public class TweetActionBarViewTest extends FabricAndroidTestCase {
+public class TweetActionBarViewTest extends TweetUiTestCase {
+
+    public void testSetOnActionCallback() {
+        final TweetActionBarView view = createView();
+        final Callback<Tweet> actionCallback = mock(Callback.class);
+        view.setOnActionCallback(actionCallback);
+        assertEquals(actionCallback, view.actionCallback);
+    }
 
     public void testSetFavorite() {
+        final TweetRepository tweetRepository = TweetUi.getInstance().getTweetRepository();
         final TweetActionBarView view = createView();
-        view.setFavorite(TestFixtures.TEST_TWEET);
+        view.setFavorite(TestFixtures.TEST_TWEET, tweetRepository);
 
         final ArgumentCaptor<FavoriteTweetAction> favoriteCaptor
                 = ArgumentCaptor.forClass(FavoriteTweetAction.class);
@@ -39,6 +49,19 @@ public class TweetActionBarViewTest extends FabricAndroidTestCase {
         final FavoriteTweetAction favoriteAction = favoriteCaptor.getValue();
         assertNotNull(favoriteAction);
         assertEquals(TestFixtures.TEST_TWEET, favoriteAction.tweet);
+        assertEquals(tweetRepository, favoriteAction.tweetRepository);
+    }
+
+    public void testSetFavorite_handlesNullTweet() {
+        final TweetActionBarView view = createView();
+        view.setFavorite(null, tweetUi.getInstance().getTweetRepository());
+        verifyZeroInteractions(view.favoriteButton);
+    }
+
+    public void testSetFavorite_handlesNullTweetRepository() {
+        final TweetActionBarView view = createView();
+        view.setFavorite(TestFixtures.TEST_TWEET, null);
+        verifyZeroInteractions(view.favoriteButton);
     }
 
     public void testSetShare() {
@@ -57,7 +80,6 @@ public class TweetActionBarViewTest extends FabricAndroidTestCase {
         final TweetActionBarView view = new TweetActionBarView(getContext());
         view.favoriteButton = mock(ToggleImageButton.class);
         view.shareButton = mock(ImageButton.class);
-
         return view;
     }
 }
