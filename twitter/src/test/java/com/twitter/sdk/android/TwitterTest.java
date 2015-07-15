@@ -27,7 +27,7 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = com.twitter.sdk.android.tweetcomposer.BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, emulateSdk = 21)
 public class TwitterTest extends AndroidTestCase {
     private static final int KIT_COUNT = 4;
 
