@@ -46,4 +46,5 @@ public class TwitterApiErrorConstants {
     public static final int EXPIRED_LOGIN_VERIFICATION_REQUEST = 235;
     public static final int MISSING_LOGIN_VERIFICATION_REQUEST = 237;
     public static final int DEVICE_REGISTRATION_RATE_EXCEEDED = 299;
+    public static final int PAGE_NOT_EXIST = 34;
 }
