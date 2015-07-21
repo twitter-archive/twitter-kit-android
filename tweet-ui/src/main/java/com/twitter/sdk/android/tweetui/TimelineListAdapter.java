@@ -31,20 +31,22 @@ import com.twitter.sdk.android.tweetui.internal.TimelineDelegate;
  */
 abstract class TimelineListAdapter<T extends Identifiable> extends BaseAdapter {
     protected final Context context;
-    private final TimelineDelegate<T> delegate;
+    protected final TimelineDelegate<T> delegate;
 
     /**
      * Constructs a TimelineListAdapter for the given Timeline.
      * @param context the context for row views.
      * @param timeline a Timeline providing access to timeline data items.
-     * @throws java.lang.IllegalArgumentException if timeline is null
+     * @throws java.lang.IllegalArgumentException if context or timeline is null
      */
     public TimelineListAdapter(Context context, Timeline<T> timeline) {
         this(context, new TimelineDelegate<>(timeline));
     }
 
-    /* for testing */
     TimelineListAdapter(Context context, TimelineDelegate<T> delegate) {
+        if (context == null) {
+            throw new IllegalArgumentException("Context must not be null");
+        }
         this.context = context;
         this.delegate = delegate;
         delegate.refresh(null);

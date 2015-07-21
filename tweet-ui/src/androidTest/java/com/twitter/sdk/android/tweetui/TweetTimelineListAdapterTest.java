@@ -25,12 +25,79 @@ import com.twitter.sdk.android.tweetui.internal.TimelineDelegate;
 
 import java.util.List;
 
+import static org.mockito.Mockito.mock;
+
 public class TweetTimelineListAdapterTest extends TweetUiTestCase {
+    private static final String NULL_CONTEXT_MESSAGE = "Context must not be null";
+    private static final String NULL_TIMELINE_MESSAGE = "Timeline must not be null";
     private TweetTimelineListAdapter listAdapter;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    public void testConstructor() {
+        final TimelineDelegate<Tweet> mockTimelineDelegate = mock(TimelineDelegate.class);
+        listAdapter = new TweetTimelineListAdapter(getContext(), mockTimelineDelegate,
+                null);
+        if (listAdapter.actionCallback instanceof TweetTimelineListAdapter.ReplaceTweetCallback) {
+            final TweetTimelineListAdapter.ReplaceTweetCallback replaceCallback
+                    = (TweetTimelineListAdapter.ReplaceTweetCallback) listAdapter.actionCallback;
+            assertEquals(mockTimelineDelegate, replaceCallback.delegate);
+            assertNull(replaceCallback.cb);
+        } else {
+            fail("Expected default actionCallback to be a ReplaceTweetCallback");
+        }
+    }
+
+    public void testConstructor_withActionCallback() {
+        final TimelineDelegate<Tweet> mockTimelineDelegate = mock(TimelineDelegate.class);
+        final Callback<Tweet> mockCallback = mock(Callback.class);
+        listAdapter = new TweetTimelineListAdapter(getContext(), mockTimelineDelegate,
+                mockCallback);
+        // assert that
+        // - developer callback wrapped in a ReplaceTweetCallback
+        if (listAdapter.actionCallback instanceof TweetTimelineListAdapter.ReplaceTweetCallback) {
+            final TweetTimelineListAdapter.ReplaceTweetCallback replaceCallback
+                    = (TweetTimelineListAdapter.ReplaceTweetCallback) listAdapter.actionCallback;
+            assertEquals(mockTimelineDelegate, replaceCallback.delegate);
+            assertEquals(mockCallback, replaceCallback.cb);
+        } else {
+            fail("Expected actionCallback to be wrapped in ReplaceTweetCallback");
+        }
+    }
+
+    public void testBuilder() {
+        final Timeline<Tweet> mockTimeline = mock(Timeline.class);
+        final Callback<Tweet> mockCallback = mock(Callback.class);
+        listAdapter = new TweetTimelineListAdapter.Builder(getContext())
+                .setTimeline(mockTimeline)
+                .setOnActionCallback(mockCallback)
+                .build();
+        if (listAdapter.actionCallback instanceof TweetTimelineListAdapter.ReplaceTweetCallback) {
+            final TweetTimelineListAdapter.ReplaceTweetCallback replaceCallback
+                    = (TweetTimelineListAdapter.ReplaceTweetCallback) listAdapter.actionCallback;
+            assertEquals(mockCallback, replaceCallback.cb);
+        } else {
+            fail("Expected actionCallback to be wrapped in ReplaceTweetCallback");
+        }
+    }
+
+    public void testBuilder_nullContext() {
+        final Timeline<Tweet> mockTimeline = mock(Timeline.class);
+        try {
+            listAdapter = new TweetTimelineListAdapter.Builder(null).setTimeline(mockTimeline)
+                    .build();
+            fail("Null context should throw exception");
+        } catch (IllegalArgumentException e) {
+            assertEquals(NULL_CONTEXT_MESSAGE, e.getMessage());
+        }
+    }
+
+    public void testBuilder_nullTimeline() {
+        try {
+            listAdapter = new TweetTimelineListAdapter.Builder(getContext()).setTimeline(null)
+                    .build();
+            fail("Null timeline should throw exception");
+        } catch (IllegalArgumentException e) {
+            assertEquals(NULL_TIMELINE_MESSAGE, e.getMessage());
+        }
     }
 
     /**
@@ -40,7 +107,7 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
     public void testGetView_getsCompactTweetView() {
         final Timeline<Tweet> fakeTimeline = new FakeTweetTimeline(10);
         final TimelineDelegate<Tweet> fakeDelegate = new TimelineDelegate<>(fakeTimeline);
-        listAdapter = new TweetTimelineListAdapter(getContext(), fakeDelegate);
+        listAdapter = new TweetTimelineListAdapter(getContext(), fakeDelegate, null);
 
         final View view = listAdapter.getView(0, null, null);
         // assert that
