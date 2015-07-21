@@ -76,6 +76,19 @@ public class TweetViewAdapter<T extends BaseTweetView> extends BaseAdapter {
         return position;
     }
 
+    /**
+     * Sets all Tweets with id matching the given Tweet id to the updated Tweet.
+     * @param tweet the updated Tweet to set in the list
+     */
+    public void setTweetById(Tweet tweet) {
+        for (int i = 0; i < tweets.size(); i++) {
+            if (tweet.getId() == tweets.get(i).getId()) {
+                tweets.set(i, tweet);
+            }
+        }
+        notifyDataSetChanged();
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View rowView = convertView;

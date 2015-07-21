@@ -27,7 +27,8 @@ import com.twitter.sdk.android.core.models.Identifiable;
 import com.twitter.sdk.android.tweetui.Timeline;
 import com.twitter.sdk.android.tweetui.TimelineResult;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * TimelineDelegate manages timeline data items and loads items from a Timeline. This logic is
@@ -42,8 +43,7 @@ public class TimelineDelegate<T extends Identifiable> {
     // Observable for Adapter DataSetObservers (for ListViews)
     final DataSetObservable listAdapterObservable;
     final TimelineStateHolder timelineStateHolder;
-
-    LinkedList<T> itemList;
+    List<T> itemList;
 
     /**
      * Constructs a TimelineDelegate with a timeline for requesting data.
@@ -54,7 +54,7 @@ public class TimelineDelegate<T extends Identifiable> {
         this(timeline, null, null);
     }
 
-    TimelineDelegate(Timeline<T> timeline, DataSetObservable observable, LinkedList<T> items) {
+    TimelineDelegate(Timeline<T> timeline, DataSetObservable observable, List<T> items) {
         if (timeline == null) {
             throw new IllegalArgumentException("Timeline must not be null");
         }
@@ -67,7 +67,7 @@ public class TimelineDelegate<T extends Identifiable> {
         }
 
         if (items == null) {
-            itemList = new LinkedList<>();
+            itemList = new ArrayList<>();
         } else {
             itemList = items;
         }
@@ -131,6 +131,19 @@ public class TimelineDelegate<T extends Identifiable> {
         return item.getId();
     }
 
+    /**
+     * Sets all items in the itemList with the item id to be item. If no items with the same id
+     * are found, no changes are made.
+     * @param item the updated item to set in the itemList
+     */
+    public void setItemById(T item) {
+        for (int i = 0; i < itemList.size(); i++) {
+            if (item.getId() == itemList.get(i).getId()) {
+                itemList.set(i, item);
+            }
+        }
+        notifyDataSetChanged();
+    }
 
     /**
      * Returns true if the itemList size is below the MAX_ITEMS capacity, false otherwise.
@@ -222,7 +235,7 @@ public class TimelineDelegate<T extends Identifiable> {
         @Override
         public void success(Result<TimelineResult<T>> result) {
             if (result.data.items.size() > 0) {
-                final LinkedList<T> receivedItems = new LinkedList<>(result.data.items);
+                final ArrayList<T> receivedItems = new ArrayList<>(result.data.items);
                 receivedItems.addAll(itemList);
                 itemList = receivedItems;
                 notifyDataSetChanged();

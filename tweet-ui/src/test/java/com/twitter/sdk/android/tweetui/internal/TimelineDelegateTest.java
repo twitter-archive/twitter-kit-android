@@ -38,9 +38,9 @@ import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -67,14 +67,13 @@ public class TimelineDelegateTest {
     private TimelineDelegate<TestItem> delegate;
     private Timeline<TestItem> mockTimeline;
     private DataSetObservable mockObservable;
-    private LinkedList<TestItem> testItems = new LinkedList<>();
+    private List<TestItem> testItems = new ArrayList<>();
     // test items for testing prepending and appending to another list
     private List<TestItem> testExtraItems = new ArrayList<>();
     private static Result<TimelineResult<TestItem>> testResult;
 
     @Before
     public void setUp() throws Exception {
-
         mockTimeline = mock(Timeline.class);
         mockObservable = mock(DataSetObservable.class);
         // lists of items ordered from larger id to smaller
@@ -172,6 +171,19 @@ public class TimelineDelegateTest {
     }
 
     @Test
+    public void testSetItemById() {
+        delegate = new TimelineDelegate<>(mockTimeline, mockObservable, testItems);
+        assertEquals(TEST_ITEM_2, delegate.getItem(0));
+        assertEquals(TEST_ITEM_1, delegate.getItem(1));
+        final TestItem differentItemSameId = new TestItem(TEST_ITEM_2.getId());
+        delegate.setItemById(differentItemSameId);
+        assertThat(TEST_ITEM_2, not(delegate.getItem(0)));
+        assertEquals(differentItemSameId, delegate.getItem(0));
+        assertEquals(TEST_ITEM_1, delegate.getItem(1));
+        verify(mockObservable).notifyChanged();
+    }
+
+    @Test
     public void testWithinMaxCapacity() {
         delegate = new TimelineDelegate<>(mockTimeline);
         assertTrue(delegate.withinMaxCapacity());
@@ -182,7 +194,7 @@ public class TimelineDelegateTest {
 
     @Test
     public void testIsLastPosition() {
-        testItems = new LinkedList<>();
+        testItems = new ArrayList<>();
         TestItem.populateList(testItems, NUM_ITEMS);
         delegate = new TimelineDelegate<>(mockTimeline, mockObservable, testItems);
         assertFalse(delegate.isLastPosition(0));
@@ -239,7 +251,7 @@ public class TimelineDelegateTest {
     @Test
     public void testNext_doesNotAddItemsAtBeginningOfTimeline() {
         // when a Timeline successfully returns an empty set of items, there are no next items (yet)
-        LinkedList<TestItem> initialItems = new LinkedList<>();
+        List<TestItem> initialItems = new ArrayList<>();
         final int INITIAL_COUNT = 5;
         initialItems = TestItem.populateList(initialItems, INITIAL_COUNT);
         final Timeline<TestItem> fakeEndTimeline = new FakeItemTimeline(ZERO_ITEMS, ANY_POSITION,
@@ -287,7 +299,7 @@ public class TimelineDelegateTest {
     @Test
     public void testPrevious_doesNotAddItemsAtEndOfTimeline() {
         // when a Timeline successfully returns an empty set of items, its end has been reached
-        LinkedList<TestItem> initialItems = new LinkedList<>();
+        List<TestItem> initialItems = new ArrayList<>();
         final int INITIAL_COUNT = 5;
         initialItems = TestItem.populateList(initialItems, INITIAL_COUNT);
         final Timeline<TestItem> fakeEndTimeline = new FakeItemTimeline(ZERO_ITEMS, ANY_POSITION,

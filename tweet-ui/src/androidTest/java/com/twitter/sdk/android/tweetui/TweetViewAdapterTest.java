@@ -93,4 +93,14 @@ public class TweetViewAdapterTest extends TweetUiTestCase {
             assertEquals(TWEET_IDS[i], foundTweets.get(i).id);
         }
     }
+
+    public void testSetTweetById() {
+        final TweetViewAdapter<CompactTweetView> adapter = new TweetViewAdapter<>(getContext(),
+                tweets);
+        final Tweet tweet = adapter.getItem(0);
+        final Tweet differentTweetSameId = new TweetBuilder().setId(tweet.getId()).build();
+        adapter.setTweetById(differentTweetSameId);
+        assertEquals(tweet.getId(), adapter.getItem(0).getId());
+        assertNotSame(tweet, adapter.getItem(0));
+    }
 }

@@ -23,7 +23,7 @@ import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.tweetui.internal.TimelineDelegate;
 
-import java.util.LinkedList;
+import java.util.List;
 
 public class TweetTimelineListAdapterTest extends TweetUiTestCase {
     private TweetTimelineListAdapter listAdapter;
@@ -64,7 +64,7 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
 
         @Override
         public void next(Long sinceId, Callback<TimelineResult<Tweet>> cb) {
-            final LinkedList<Tweet> tweets = TestFixtures.getTweetLinkedList(numItems);
+            final List<Tweet> tweets = TestFixtures.getTweetList(numItems);
             final TimelineCursor timelineCursor = new TimelineCursor(tweets);
             final TimelineResult<Tweet> timelineResult
                     = new TimelineResult<>(timelineCursor, tweets);
@@ -73,7 +73,7 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
 
         @Override
         public void previous(Long maxId, Callback<TimelineResult<Tweet>> cb) {
-            final LinkedList<Tweet> tweets = TestFixtures.getTweetLinkedList(numItems);
+            final List<Tweet> tweets = TestFixtures.getTweetList(numItems);
             final TimelineCursor timelineCursor = new TimelineCursor(tweets);
             final TimelineResult<Tweet> timelineResult
                     = new TimelineResult<>(timelineCursor, tweets);

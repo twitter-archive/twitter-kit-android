@@ -27,7 +27,6 @@ import com.twitter.sdk.android.core.models.UserBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 public final class TestFixtures {
@@ -170,9 +169,10 @@ public final class TestFixtures {
                 "mediaUrlHttps", null, 0L, "0", type);
     }
 
-    public static LinkedList<Tweet> getTweetLinkedList(long count) {
-        final LinkedList<Tweet> tweets = new LinkedList<>();
+    public static List<Tweet> getTweetList(long count) {
+        final List<Tweet> tweets = new ArrayList<>();
         for (int i = 0; i < count; i++) {
+            // add 1000 just so ids are clearly distinct from position
             tweets.add(TestFixtures.createTweet(1000 + i));
         }
         return tweets;

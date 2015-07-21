@@ -40,8 +40,8 @@ public class TestItem implements Identifiable {
 
     public static <T extends List> T populateList(T items, long count) {
         for (int i = 0; i < count; i++) {
-            // add 100 just so ids are clearly distinct from position
-            items.add(new TestItem(100 + i));
+            // add 1000 just so ids are clearly distinct from position
+            items.add(new TestItem(1000 + i));
         }
         return items;
     }
