@@ -77,17 +77,17 @@ android {
 }
 
 ext.projectDependencies = [
-        ':sdk:twitter:twitter-core',
-        ':sdk:twitter:tweet-ui',
-        ':sdk:twitter:tweet-composer',
-        ':sdk:digits:digits',
-        ':sdk:fabric:fabric'
+        ':sdk:twitter:twitter-core' : 'com.twitter.sdk.android:twitter-core:+@aar',
+        ':sdk:twitter:tweet-ui' : 'com.twitter.sdk.android:tweet-ui:+@aar',
+        ':sdk:twitter:tweet-composer' : 'com.twitter.sdk.android:tweet-composer:+@aar',
+        ':sdk:digits:digits' : 'com.digits.sdk.android:digits:+@aar',
+        ':sdk:fabric:fabric' : 'io.fabric.sdk.android:fabric:+@aar'
 ]
 
 dependencies {
-    projectDependencies.each {
-        debugCompile project(path: it, configuration: 'debug')
-        releaseCompile kitDependency(path: it, configuration: 'release')
+    projectDependencies.each { path, binary ->
+        debugCompile project(path: path, configuration: 'debug')
+        releaseCompile projectOrBinary(path: path, configuration: 'release', binary: binary)
     }
 
     testCompile rootProject.mockito
