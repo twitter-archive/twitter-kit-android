@@ -27,11 +27,12 @@ public class TwitterApiConstants {
     public static class Errors extends Base {
         public static final String ERRORS = "errors";
 
-        public static final int NOT_FOUND = 34;
         // error when app auth token not recognized (such as when expired)
         public static final int APP_AUTH_ERROR_CODE = 89;
         // error when a tweet has already been favorited
         public static final int ALREADY_FAVORITED = 139;
+        // error when a tweet has already been unfavorited
+        public static final int ALREADY_UNFAVORITED = 144;
         // error when guest auth token not recognized (such as when expired)
         public static final int GUEST_AUTH_ERROR_CODE = 239;
 

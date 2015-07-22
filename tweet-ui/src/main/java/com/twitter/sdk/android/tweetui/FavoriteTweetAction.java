@@ -25,6 +25,7 @@ import com.twitter.sdk.android.core.TwitterApiException;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.internal.TwitterApiConstants;
 import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.core.models.TweetBuilder;
 
 /*
  * FavoriteTweetAction is a click listener for ToggleImageButtons which performs Tweet
@@ -47,10 +48,10 @@ class FavoriteTweetAction extends BaseTweetAction implements View.OnClickListene
             final ToggleImageButton toggleImageButton = (ToggleImageButton) view;
             if (tweet.favorited) {
                 tweetRepository.unfavorite(tweet.id,
-                        new FavoriteCallback(toggleImageButton, true, getActionCallback()));
+                        new FavoriteCallback(toggleImageButton, tweet, getActionCallback()));
             } else {
                 tweetRepository.favorite(tweet.id,
-                        new FavoriteCallback(toggleImageButton, false, getActionCallback()));
+                        new FavoriteCallback(toggleImageButton, tweet, getActionCallback()));
             }
         }
     }
@@ -61,7 +62,7 @@ class FavoriteTweetAction extends BaseTweetAction implements View.OnClickListene
      */
     static class FavoriteCallback extends Callback<Tweet> {
         ToggleImageButton button;
-        boolean wasFavorited;
+        Tweet tweet;
         Callback<Tweet> cb;
 
         /*
@@ -70,15 +71,14 @@ class FavoriteTweetAction extends BaseTweetAction implements View.OnClickListene
          * @param wasFavorited whether the Tweet was favorited or not before the click
          * @param cb the Callback.
          */
-        FavoriteCallback(ToggleImageButton button, boolean wasFavorited, Callback<Tweet> cb) {
+        FavoriteCallback(ToggleImageButton button, Tweet tweet, Callback<Tweet> cb) {
             this.button = button;
-            this.wasFavorited = wasFavorited;
+            this.tweet = tweet;
             this.cb = cb;
         }
 
         @Override
         public void success(Result<Tweet> result) {
-            button.setToggledOn(result.data.favorited);
             cb.success(result);
         }
 
@@ -90,19 +90,24 @@ class FavoriteTweetAction extends BaseTweetAction implements View.OnClickListene
 
                 switch (errorCode) {
                     case TwitterApiConstants.Errors.ALREADY_FAVORITED:
-                        // tried to unfavorite an already favorited tweet, toggle on
-                        button.setToggledOn(true);
-                        break;
-                    case TwitterApiConstants.Errors.NOT_FOUND:
-                        // favorite/unfavorite a missing/restricted/deleted tweet, toggle off
-                        button.setToggledOn(false);
-                        break;
+                        final Tweet favorited = new TweetBuilder().copy(tweet).setFavorited(true)
+                                .build();
+                        cb.success(new Result<>(favorited, null));
+                        return;
+                    case TwitterApiConstants.Errors.ALREADY_UNFAVORITED:
+                        final Tweet unfavorited = new TweetBuilder().copy(tweet).setFavorited(false)
+                                .build();
+                        cb.success(new Result<>(unfavorited, null));
+                        return;
                     default:
-                        button.setToggledOn(wasFavorited);
+                        // reset the toggle state back to match the Tweet
+                        button.setToggledOn(tweet.favorited);
+                        cb.failure(exception);
+                        return;
                 }
-            } else {
-                button.setToggledOn(wasFavorited);
             }
+            // reset the toggle state back to match the Tweet
+            button.setToggledOn(tweet.favorited);
             cb.failure(exception);
         }
     }
