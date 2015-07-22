@@ -92,15 +92,10 @@ android {
     }
 }
 
-ext.projectDependencies = [
-        ':sdk:fabric:fabric' : 'io.fabric.sdk.android:fabric:+@aar'
-]
-
 dependencies {
-    projectDependencies.each { path, binary ->
-        debugCompile project(path: path, configuration: 'debug')
-        releaseCompile projectOrBinary(path: path, configuration: 'release', binary: binary)
-    }
+
+    debugCompile project(path: ':sdk:fabric:fabric', configuration: 'debug')
+    releaseCompile kitDependency(path:':sdk:fabric:fabric', configuration: 'release')
 
     compile 'com.squareup.retrofit:retrofit:1.6.1'
     compile 'com.google.code.gson:gson:2.2.4'

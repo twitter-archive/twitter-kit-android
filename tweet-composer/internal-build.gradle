@@ -82,14 +82,14 @@ android {
 }
 
 ext.projectDependencies = [
-        ':sdk:fabric:fabric' : 'io.fabric.sdk.android:fabric:+@aar'
+        ':sdk:fabric:fabric'
 ]
 
 dependencies {
 
-    projectDependencies.each { path, binary ->
-        debugCompile project(path: path, configuration: 'debug')
-        releaseCompile projectOrBinary(path: path, configuration: 'release', binary: binary)
+    projectDependencies.each {
+        debugCompile project(path: it, configuration: 'debug')
+        releaseCompile kitDependency(path: it, configuration: 'release')
     }
 
     testCompile rootProject.mockito
