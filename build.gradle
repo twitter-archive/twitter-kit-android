@@ -46,6 +46,10 @@ ext {
     fabric = 'io.fabric.sdk.android:fabric:1.3.+@aar'
     fabricTest = 'io.fabric.sdk.android:fabric-test:0.0.+@aar'
 
+    leakCanary = 'com.squareup.leakcanary:leakcanary-android:1.3'
+    leakCanaryNoOp = 'com.squareup.leakcanary:leakcanary-android-no-op:1.3'
+    spoon = 'com.squareup.spoon:spoon-client:1.1.10'
+    espresso = 'com.android.support.test.espresso:espresso-core:2.0'
     androidTestingSupport = 'com.android.support.test:testing-support-lib:0.1'
     junit = 'junit:junit:4.12'
     junitAddons = 'junit-addons:junit-addons:1.4'
