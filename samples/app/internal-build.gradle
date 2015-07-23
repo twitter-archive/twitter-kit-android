@@ -79,9 +79,10 @@ android {
 }
 
 dependencies {
-    compile project(':sdk:twitter:twitter')
-    compile rootProject.appCompat
+    debugCompile project(path: ':sdk:twitter:twitter', configuration: 'debug')
+    releaseCompile project(path: ':sdk:twitter:twitter', configuration: 'release')
 
+    compile rootProject.appCompat
     debugCompile rootProject.leakCanary
     releaseCompile rootProject.leakCanaryNoOp
 
