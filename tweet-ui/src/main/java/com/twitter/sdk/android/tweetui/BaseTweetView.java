@@ -427,12 +427,13 @@ public abstract class BaseTweetView extends LinearLayout {
 
     /**
      * Sets the callback to call when a Tweet action (favorite, unfavorite) is performed.
-     * @param actionCallback
+     * @param actionCallback called when a Tweet action is performed.
      */
     void setOnActionCallback(Callback<Tweet> actionCallback) {
         // TODO: expose this as public once actions are exposed
         tweetActionBarView.setOnActionCallback(new ResetTweetCallback(this,
                 dependencyProvider.getTweetUi().getTweetRepository(), actionCallback));
+        tweetActionBarView.setTweet(tweet);
     }
 
     /**
@@ -450,7 +451,7 @@ public abstract class BaseTweetView extends LinearLayout {
         setTweetPhoto(displayTweet);
         setText(displayTweet);
         setContentDescription(displayTweet);
-        setTweetActions(displayTweet);
+        setTweetActions(tweet);
         showRetweetedBy(tweet);
 
         // set permalink if tweet id and screen name are available
@@ -811,10 +812,10 @@ public abstract class BaseTweetView extends LinearLayout {
                 Utils.stringOrEmpty(timestamp)));
     }
 
-    void setTweetActions(Tweet displayTweet) {
+    void setTweetActions(Tweet tweet) {
         if (tweetActionsEnabled) {
             tweetActionBarView.setVisibility(View.VISIBLE);
-            tweetActionBarView.setTweet(displayTweet);
+            tweetActionBarView.setTweet(tweet);
         }
     }
 

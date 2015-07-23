@@ -28,6 +28,7 @@ import io.fabric.sdk.android.FabricTestUtils;
 import io.fabric.sdk.android.KitStub;
 import io.fabric.sdk.android.Logger;
 
+import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.internal.scribe.ScribeEvent;
 import com.twitter.sdk.android.core.internal.scribe.SyndicatedSdkImpressionEvent;
@@ -349,13 +350,40 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
     }
 
     public void testTweetActionsEnabled() {
-        final BaseTweetView view = createView(context, TestFixtures.TEST_RETWEET,
+        final BaseTweetView view = createView(context, TestFixtures.TEST_TWEET,
                 R.style.tw__TweetActionsEnabled);
         assertTrue(view.tweetActionsEnabled);
     }
 
+    public void testSetOnActionCallback_passesCorrectTweetToActionBarView() {
+        final BaseTweetView tweetView = createView(context, TestFixtures.TEST_RETWEET,
+                R.style.tw__TweetActionsEnabled);
+        final TweetActionBarView mockActionBarView = mock(TestTweetActionBarView.class);
+        tweetView.tweetActionBarView = mockActionBarView;
+        doNothing().when(mockActionBarView).setFavorite(any(Tweet.class));
+        final Callback<Tweet> mockCallback = mock(Callback.class);
+        tweetView.setOnActionCallback(mockCallback);
+        // verify that the TweetActionBarView is set with the Tweet, not the inner retweeted Tweet
+        final ArgumentCaptor<Tweet> tweetCaptor = ArgumentCaptor.forClass(Tweet.class);
+        verify(mockActionBarView).setTweet(tweetCaptor.capture());
+        assertEquals(TestFixtures.TEST_RETWEET.getId(), tweetCaptor.getValue().getId());
+    }
+
+    public void testRender_passesCorrectTweetToActionBarView() {
+        final BaseTweetView tweetView = createView(context, TestFixtures.TEST_RETWEET,
+                R.style.tw__TweetActionsEnabled);
+        final TweetActionBarView mockActionBarView = mock(TestTweetActionBarView.class);
+        tweetView.tweetActionBarView = mockActionBarView;
+        doNothing().when(mockActionBarView).setFavorite(any(Tweet.class));
+        tweetView.render();
+        // verify that the TweetActionBarView is set with the Tweet, not the inner retweeted Tweet
+        final ArgumentCaptor<Tweet> tweetCaptor = ArgumentCaptor.forClass(Tweet.class);
+        verify(mockActionBarView).setTweet(tweetCaptor.capture());
+        assertEquals(TestFixtures.TEST_RETWEET.getId(), tweetCaptor.getValue().getId());
+    }
+
     public void testTweetActionsDisabled() {
-        final BaseTweetView view = createView(context, TestFixtures.TEST_RETWEET,
+        final BaseTweetView view = createView(context, TestFixtures.TEST_TWEET,
                 R.style.tw__TweetActionsDisabled);
         assertFalse(view.tweetActionsEnabled);
     }
