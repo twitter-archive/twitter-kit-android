@@ -86,12 +86,6 @@ public class TweetViewTest extends BaseTweetViewTest {
         assertEquals(R.layout.tw__tweet, tweetView.getLayout());
     }
 
-    public void testActionColorDefault_withTweet() {
-        final TweetView view = createView(context, TestFixtures.TEST_TWEET);
-        final int color = getResources().getColor(R.color.tw__tweet_action_color);
-        assertEquals(color, view.shareButton.getCurrentTextColor());
-    }
-
     public void testGetAspectRatio() {
         final BaseTweetView view = createView(context, TestFixtures.TEST_TWEET);
 

@@ -58,24 +58,6 @@ public abstract class BaseTweetViewActivityTest<T extends Activity> extends
         onView(allOf(withId(R.id.tw__tweet_author_verified),
                 isDescendantOfA(withId(R.id.bike_regular_tweet))))
                 .check(matches(not(isDisplayed())));
-        // share tweet button
-        onView(allOf(withId(R.id.tw__tweet_share),
-                isDescendantOfA(withId(R.id.jack_regular_tweet)))).check(matches(
-                withText(R.string.tw__share_tweet)));
-        onView(allOf(withId(R.id.tw__tweet_share),
-                isDescendantOfA(withId(R.id.jack_regular_tweet)))).check(matches(isFocusable()));
-        onView(allOf(withId(R.id.tw__tweet_share),
-                isDescendantOfA(withId(R.id.jack_regular_tweet)))).check(matches(isClickable()));
-        // click share tweet button to open share dialog / share slider (API 21+)
-        onView(allOf(withId(R.id.tw__tweet_share),
-                isDescendantOfA(withId(R.id.jack_regular_tweet)))).perform(click());
-        // espresso can check views in dialog non-default windows, cannot check share slider views
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            // check that share dialog shows Share Tweet heading
-            onView(withText("Share Tweet"))
-                    .inRoot(withDecorView(not(is(getActivity().getWindow().getDecorView()))))
-                    .check(matches(isDisplayed()));
-        }
     }
 
     // CompactTweetView
@@ -92,10 +74,5 @@ public abstract class BaseTweetViewActivityTest<T extends Activity> extends
         onView(allOf(withId(R.id.tw__tweet_author_verified),
                 isDescendantOfA(withId(R.id.jack_compact_tweet))))
                 .check(doesNotExist());
-        // no share tweet button
-        onView(allOf(withId(R.id.tw__tweet_share),
-                isDescendantOfA(withId(R.id.jack_compact_tweet))))
-                .check(doesNotExist());
-
     }
 }

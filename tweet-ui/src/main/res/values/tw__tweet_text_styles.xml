@@ -98,18 +98,6 @@
         <item name="android:importantForAccessibility">no</item>
     </style>
 
-    <style name="tw__TweetShare"
-        tools:ignore="NewApi">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">@dimen/tw__tweet_share_layout_height</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:layout_marginLeft">@dimen/tw__tweet_share_margin_left</item>
-        <item name="android:textSize">@dimen/tw__text_size_large</item>
-        <item name="android:textColor">@color/tw__tweet_action_color</item>
-        <item name="android:paddingBottom">@dimen/tw__tweet_share_padding_bottom</item>
-        <item name="android:textAllCaps">false</item>
-    </style>
     <!--Compact Styles-->
 
     <style name="tw__TweetRetweetedBy.Compact">

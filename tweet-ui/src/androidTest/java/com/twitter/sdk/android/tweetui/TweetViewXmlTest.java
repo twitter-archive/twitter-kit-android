@@ -35,18 +35,4 @@ public class TweetViewXmlTest extends BaseTweetViewXmlTest {
         assertNotNull(view);
         assertEquals(R.layout.tw__tweet, view.getLayout());
     }
-
-    // Styling
-
-    public void testActionColorDefault() {
-        final TweetView view = getView();
-        final int color = getResources().getColor(R.color.tw__tweet_action_color);
-        assertEquals(color, view.shareButton.getCurrentTextColor());
-    }
-
-    public void testActionColorDark() {
-        final TweetView view = getViewDark();
-        final int color = getResources().getColor(R.color.tw__tweet_action_color);
-        assertEquals(color, view.shareButton.getCurrentTextColor());
-    }
 }

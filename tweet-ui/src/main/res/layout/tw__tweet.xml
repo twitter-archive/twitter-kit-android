@@ -92,18 +92,10 @@
         tools:text="just setting up my twttr"
         tools:visibility="visible"/>
 
-    <Button
-        android:id="@+id/tw__tweet_share"
-        style="@style/tw__TweetShare"
-        android:text="@string/tw__share_tweet"
-        android:layout_below="@id/tw__tweet_text"
-        android:visibility="gone"
-        tools:visibility="visible"/>
-
     <include
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tw__tweet_share"
+        android:layout_below="@id/tw__tweet_text"
         layout="@layout/tw__action_bar" />
 
 </RelativeLayout>
