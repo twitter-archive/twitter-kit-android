@@ -40,7 +40,7 @@ public class TweetActionBarViewTest extends TweetUiTestCase {
     public void testSetFavorite() {
         final TweetRepository tweetRepository = TweetUi.getInstance().getTweetRepository();
         final TweetActionBarView view = createView();
-        view.setFavorite(TestFixtures.TEST_TWEET, tweetRepository);
+        view.setFavorite(TestFixtures.TEST_TWEET);
 
         final ArgumentCaptor<FavoriteTweetAction> favoriteCaptor
                 = ArgumentCaptor.forClass(FavoriteTweetAction.class);
@@ -54,13 +54,7 @@ public class TweetActionBarViewTest extends TweetUiTestCase {
 
     public void testSetFavorite_handlesNullTweet() {
         final TweetActionBarView view = createView();
-        view.setFavorite(null, tweetUi.getInstance().getTweetRepository());
-        verifyZeroInteractions(view.favoriteButton);
-    }
-
-    public void testSetFavorite_handlesNullTweetRepository() {
-        final TweetActionBarView view = createView();
-        view.setFavorite(TestFixtures.TEST_TWEET, null);
+        view.setFavorite(null);
         verifyZeroInteractions(view.favoriteButton);
     }
 

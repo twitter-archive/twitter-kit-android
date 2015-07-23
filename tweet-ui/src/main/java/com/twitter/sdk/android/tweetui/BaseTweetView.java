@@ -814,8 +814,7 @@ public abstract class BaseTweetView extends LinearLayout {
     void setTweetActions(Tweet displayTweet) {
         if (tweetActionsEnabled) {
             tweetActionBarView.setVisibility(View.VISIBLE);
-            tweetActionBarView.setupActions(displayTweet,
-                    dependencyProvider.getTweetUi().getTweetRepository());
+            tweetActionBarView.setTweet(displayTweet);
         }
     }
 

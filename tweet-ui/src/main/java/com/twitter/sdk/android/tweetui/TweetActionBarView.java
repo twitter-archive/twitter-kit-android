@@ -26,16 +26,22 @@ import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.models.Tweet;
 
 public class TweetActionBarView extends LinearLayout {
+    final DependencyProvider dependencyProvider;
     ToggleImageButton favoriteButton;
     ImageButton shareButton;
     Callback<Tweet> actionCallback;
 
     public TweetActionBarView(Context context) {
-        this(context, null);
+        this(context, null, new DependencyProvider());
     }
 
     public TweetActionBarView(Context context, AttributeSet attrs) {
+        this(context, attrs, new DependencyProvider());
+    }
+
+    TweetActionBarView(Context context, AttributeSet attrs, DependencyProvider dependencyProvider) {
         super(context, attrs);
+        this.dependencyProvider = dependencyProvider;
     }
 
     @Override
@@ -59,14 +65,14 @@ public class TweetActionBarView extends LinearLayout {
     /*
      * Setup action bar buttons with Tweet and action performer.
      * @param tweet Tweet source for whether an action has been performed (e.g. isFavorited?)
-     * @param tweetRepository repository which can perform favorite and unfavorite actions
      */
-    void setupActions(Tweet tweet, TweetRepository tweetRepository) {
-        setFavorite(tweet, tweetRepository);
+    void setTweet(Tweet tweet) {
+        setFavorite(tweet);
         setShare(tweet);
     }
 
-    void setFavorite(Tweet tweet, TweetRepository tweetRepository) {
+    void setFavorite(Tweet tweet) {
+        final TweetRepository tweetRepository = dependencyProvider.getTweetRepository();
         if (tweet != null && tweetRepository != null) {
             favoriteButton.setToggledOn(tweet.favorited);
             final FavoriteTweetAction favoriteTweetAction = new FavoriteTweetAction(tweet,
@@ -77,5 +83,17 @@ public class TweetActionBarView extends LinearLayout {
 
     void setShare(Tweet tweet) {
         shareButton.setOnClickListener(new ShareTweetAction(tweet));
+    }
+
+    /**
+     * This is a mockable class that extracts our tight coupling with the TweetUi singleton.
+     */
+    static class DependencyProvider {
+        /**
+         * Return TweetRepository
+         */
+        TweetRepository getTweetRepository() {
+            return TweetUi.getInstance().getTweetRepository();
+        }
     }
 }
