@@ -93,9 +93,10 @@
         tools:visibility="visible"/>
 
     <include
+        style="@style/tw__TweetActionButtonBar"
+        layout="@layout/tw__action_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tw__tweet_text"
-        layout="@layout/tw__action_bar" />
+        android:layout_below="@id/tw__tweet_text"/>
 
 </RelativeLayout>

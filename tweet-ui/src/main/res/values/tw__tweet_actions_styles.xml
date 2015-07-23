@@ -17,12 +17,23 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="tw__ActionButton">
+    <style name="tw__TweetActionButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">@dimen/tw__tweet_action_button_padding</item>
     </style>
 
-    <style name="tw__ActionButton.Favorite">
+    <style name="tw__TweetActionButton.Share">
         <item name="android:background">@null</item>
+    </style>
+
+    <style name="tw__TweetActionButtonBar">
+        <item name="android:layout_marginLeft">@dimen/tw__tweet_action_bar_offset_left</item>
+        <item name="android:layout_marginBottom">@dimen/tw__tweet_action_bar_offset_bottom</item>
+    </style>
+
+    <style name="tw__TweetActionButtonBar.Compact">
+        <item name="android:layout_marginLeft">@dimen/tw__compact_tweet_action_bar_offset_left</item>
+        <item name="android:layout_marginBottom">@dimen/tw__tweet_action_bar_offset_bottom</item>
     </style>
 </resources>

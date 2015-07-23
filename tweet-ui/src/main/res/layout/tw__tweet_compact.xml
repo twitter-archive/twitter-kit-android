@@ -85,11 +85,12 @@
         tools:text="just setting up my twttr"/>
 
     <include
+        style="@style/tw__TweetActionButtonBar.Compact"
+        layout="@layout/tw__action_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tw__tweet_text"
-        android:layout_toRightOf="@id/tw__tweet_author_avatar"
         android:layout_toEndOf="@id/tw__tweet_author_avatar"
-        layout="@layout/tw__action_bar" />
+        android:layout_toRightOf="@id/tw__tweet_author_avatar"/>
 
 </RelativeLayout>

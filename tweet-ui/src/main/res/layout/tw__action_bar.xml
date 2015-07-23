@@ -27,14 +27,15 @@
 
     <com.twitter.sdk.android.tweetui.ToggleImageButton
         android:id="@+id/tw__tweet_favorite_button"
-        style="@style/tw__ActionButton"
+        style="@style/tw__TweetActionButton"
         android:src="@drawable/tw__favorite_action"
         twitter:contentDescriptionOff="@string/tw__favorited_tweet"
-        twitter:contentDescriptionOn="@string/tw__favorite_tweet"/>
+        twitter:contentDescriptionOn="@string/tw__favorite_tweet"
+        android:layout_marginRight="@dimen/tw__tweet_action_button_spacing"/>
 
     <ImageButton
         android:id="@+id/tw__tweet_share_button"
-        style="@style/tw__ActionButton.Favorite"
+        style="@style/tw__TweetActionButton.Share"
         android:contentDescription="@string/tw__share_tweet"
         android:src="@drawable/tw__share_action"/>
 

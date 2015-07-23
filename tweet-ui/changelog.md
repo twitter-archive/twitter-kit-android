@@ -3,6 +3,7 @@
 *Non-trivial pull requests should include an entry below. Entries must be suitable for inclusion in public-facing materials such as release notes and blog posts. Keep them short, sweet, and in the past tense. New entries go on top. When merging to deploy, add the version number and date.*
 
 ## Unreleased
+* (EF, DH) Added Tweet actions to Tweet view.
 
 * (DH) Deprecate TweetViewAdapter and TweetViewFetchAdapter. To upgrade:
     * If required, load Tweets by id with TweetUtils.loadTweets(List<Long> ids, Callback<List<Tweet>> cb)

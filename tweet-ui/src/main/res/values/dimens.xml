@@ -51,7 +51,11 @@
     <dimen name="tw__tweet_text_margin_left">20dp</dimen>
     <dimen name="tw__tweet_text_margin_right">20dp</dimen>
     <!--Tweet actions-->
-    <dimen name="tw__tweet_action_layout_margin_top">0dp</dimen>
+    <dimen name="tw__tweet_action_button_padding">12dp</dimen>
+    <dimen name="tw__tweet_action_button_spacing">40dp</dimen>
+    <dimen name="tw__tweet_action_bar_offset_bottom">-8dp</dimen>
+    <dimen name="tw__tweet_action_bar_offset_left">8dp</dimen>
+
     <!--Tweet Media-->
     <item name="tw__tweet_media_aspect_ratio" format="float" type="dimen">1.777777</item>
 
@@ -89,6 +93,8 @@
     <dimen name="tw__compact_tweet_text_margin_top">1dp</dimen>
     <dimen name="tw__compact_tweet_text_margin_left">0dp</dimen>
     <dimen name="tw__compact_tweet_text_margin_right">12dp</dimen>
+    <!--Tweet actions-->
+    <dimen name="tw__compact_tweet_action_bar_offset_left">-12dp</dimen>
 
     <!-- Text sizes -->
     <!--density-independent(micro 10dp, small 12dp, medium 14dp, large 16dp)-->

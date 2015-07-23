@@ -138,7 +138,7 @@ public abstract class BaseTweetView extends LinearLayout {
         findSubviews();
         applyStyles();
         if (!isTweetUiEnabled()) return;
-        initCallbacks();
+        initTweetActions();
         setTweet(tweet);
     }
 
@@ -324,14 +324,16 @@ public abstract class BaseTweetView extends LinearLayout {
         if (!isTweetUiEnabled()) return;
         findSubviews();
         applyStyles();
-        initCallbacks();
+        initTweetActions();
         loadTweet();
     }
 
     /**
-     * Initialize subview default callbacks.
+     * Initialize tweet actions subview
      */
-    private void initCallbacks() {
+    private void initTweetActions() {
+        setTweetActionsEnabled(tweetActionsEnabled);
+
         // Tweet actions buttons setTweet and clear cache after successful actions.
         tweetActionBarView.setOnActionCallback(new ResetTweetCallback(this,
                 dependencyProvider.getTweetUi().getTweetRepository(), null));
@@ -759,9 +761,19 @@ public abstract class BaseTweetView extends LinearLayout {
     }
 
     void setTweetActions(Tweet tweet) {
+        tweetActionBarView.setTweet(tweet);
+    }
+
+    /**
+     * Enable or disable Tweet actions
+     * @param enabled True to enable Tweet actions, false otherwise.
+     */
+    public void setTweetActionsEnabled(boolean enabled) {
+        tweetActionsEnabled = enabled;
         if (tweetActionsEnabled) {
             tweetActionBarView.setVisibility(View.VISIBLE);
-            tweetActionBarView.setTweet(tweet);
+        } else {
+            tweetActionBarView.setVisibility(View.GONE);
         }
     }
 

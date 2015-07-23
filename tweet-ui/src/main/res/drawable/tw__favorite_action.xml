@@ -18,19 +18,8 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:twitter="http://schemas.android.com/apk/res-auto">
     <item twitter:state_toggled_on="true"
-          android:state_pressed="true"
-          android:drawable="@drawable/ic_action_fave_on_pressed"/>
-    <item twitter:state_toggled_on="true"
-          android:state_focused="true"
-          android:drawable="@drawable/ic_action_fave_on_focused" />
-    <item twitter:state_toggled_on="true"
-          android:drawable="@drawable/ic_action_fave_on_default"/>
+          android:drawable="@drawable/ic_tweet_action_inline_favorite_on"/>
 
     <item android:state_enabled="false"
-          android:drawable="@drawable/ic_action_fave_off_disabled"/>
-    <item android:state_pressed="true"
-          android:drawable="@drawable/ic_action_fave_off_pressed"/>
-    <item android:state_focused="true"
-          android:drawable="@drawable/ic_action_fave_off_focused" />
-    <item android:drawable="@drawable/ic_action_fave_off_default"/>
+          android:drawable="@drawable/ic_tweet_action_inline_favorite"/>
 </selector>
