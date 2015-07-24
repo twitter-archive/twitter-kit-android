@@ -86,7 +86,6 @@ ext.projectDependencies = [
 ]
 
 dependencies {
-
     projectDependencies.each { path, binary ->
         debugCompile project(path: path, configuration: 'debug')
         releaseCompile projectOrBinary(path: path, configuration: 'release', binary: binary)

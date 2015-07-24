@@ -102,18 +102,18 @@ dependencies {
         releaseCompile projectOrBinary(path: path, configuration: 'release', binary: binary)
     }
 
-    compile 'com.squareup.retrofit:retrofit:1.6.1'
-    compile 'com.google.code.gson:gson:2.2.4'
+    compile rootProject.retrofit
+    compile rootProject.gson
 
-    //Will use the provided packages if they are available in the app developers workspace.
-    provided 'com.squareup.okhttp:okhttp:2.0.0'
-    provided 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
+    // Will use the provided packages if they are available in the app developers workspace.
+    provided rootProject.okHttp
+    provided rootProject.okHttpUrlConnection
 
-    androidTestCompile ('junit-addons:junit-addons:1.4') {
-        transitive = false
-    }
     androidTestCompile rootProject.mockito
     androidTestCompile rootProject.dexmakerMockito
+    androidTestCompile (rootProject.junitAddons) {
+        transitive = false
+    }
 
     testCompile rootProject.fabricTest
     testCompile rootProject.mockito

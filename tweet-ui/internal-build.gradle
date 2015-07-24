@@ -95,18 +95,17 @@ ext.projectDependencies = [
 ]
 
 dependencies {
-
     projectDependencies.each { path, binary ->
         debugCompile project(path: path, configuration: 'debug')
         releaseCompile projectOrBinary(path: path, configuration: 'release', binary: binary)
     }
 
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.android.support:support-v4:21.0.0'
+    compile rootProject.picasso
+    compile rootProject.supportV4
 
     debugCompile rootProject.mockito
 
-    androidTestCompile 'com.squareup.retrofit:retrofit-mock:1.6.1'
+    androidTestCompile rootProject.retrofitMock
     androidTestCompile rootProject.mockito
     androidTestCompile rootProject.dexmakerMockito
 
