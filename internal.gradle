@@ -1,0 +1,22 @@
+project.ext.applyInternal = { Map arguments ->
+    String plugin = arguments.plugin
+    File scriptFile = arguments.from
+
+    // Apply script
+    if (scriptFile != null && scriptFile.exists()) {
+        project.apply from: scriptFile
+    }
+
+    // Apply plugin
+    if (plugin != null) {
+        try {
+            project.apply plugin: Class.forName(plugin)
+        } catch (ClassNotFoundException e) { }
+    }
+}
+
+project.ext.internal = { Closure closure ->
+    try {
+        closure()
+    } catch (MissingMethodException e) { }
+}

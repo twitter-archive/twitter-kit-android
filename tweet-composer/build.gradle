@@ -17,6 +17,10 @@
 
 apply plugin: 'com.android.library'
 
+applyInternal from: rootProject.qualityScript
+applyInternal plugin: 'io.fabric.gradle.weaving.ArtifactSizePlugin'
+applyInternal plugin: 'io.fabric.gradle.weaving.DexMethodCountPlugin'
+
 android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
@@ -53,6 +57,12 @@ android {
 
     testOptions {
         unitTests.returnDefaultValues = true
+    }
+}
+
+internal {
+    dexMethodCount {
+        packageFilter = "com.twitter.sdk.android.tweetcomposer"
     }
 }
 

@@ -25,7 +25,15 @@ buildscript {
     }
 }
 
+ext {
+    fabricDir = projectDir.parentFile.parentFile
+    qualityScript = new File(fabricDir, 'quality.gradle')
+    internalScript = new File(projectDir, 'internal.gradle')
+}
+
 subprojects {
+    apply from: rootProject.ext.internalScript
+
     repositories {
         mavenCentral()
         maven { url 'https://maven.fabric.io/public' }
@@ -40,7 +48,6 @@ ext {
     compileSdkVersion = 22
     targetSdkVersion = 22
     buildToolsVersion = '22.0.1'
-
     buildNumber = 'dev'
 
     fabric = 'io.fabric.sdk.android:fabric:1.3.+@aar'

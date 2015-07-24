@@ -17,6 +17,10 @@
 
 apply plugin: 'com.android.library'
 
+applyInternal from: rootProject.qualityScript
+applyInternal plugin: 'io.fabric.gradle.weaving.ArtifactSizePlugin'
+applyInternal plugin: 'io.fabric.gradle.weaving.DexMethodCountPlugin'
+
 android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
@@ -74,11 +78,15 @@ android {
     //This will publish all build variants and we can specifically choose them
     defaultPublishConfig 'release'
     publishNonDefault true
+}
 
+internal {
+    dexMethodCount {
+        packageFilter = "com.twitter.sdk.android.core"
+    }
 }
 
 dependencies {
-
     compile rootProject.fabric
     compile rootProject.retrofit
     compile rootProject.gson

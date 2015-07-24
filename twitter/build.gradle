@@ -17,6 +17,9 @@
 
 apply plugin: 'com.android.library'
 
+applyInternal from: rootProject.qualityScript
+applyInternal plugin: 'io.fabric.gradle.weaving.ArtifactSizePlugin'
+
 android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion

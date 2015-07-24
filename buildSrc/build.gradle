@@ -1,0 +1,39 @@
+apply plugin: 'groovy'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.apache.httpcomponents:httpmime:4.3.1'
+    compile 'org.apache.httpcomponents:httpclient:4.3.3'
+    compile 'org.codehaus.groovy.modules.http-builder:http-builder:0.7'
+    compile 'net.java.dev.jets3t:jets3t:0.9.0'
+    compile 'net.java.dev.jets3t:synchronize:0.9.0'
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    testCompile 'junit:junit:4.12'
+    compile gradleApi()
+    compile localGroovy()
+}
+
+//FIXME: We use file references here until we can move all the plugin source code into a jar in our repository
+sourceSets {
+    main {
+        groovy {
+            srcDir '../../../build-plugin/kit-release/src/main/groovy'
+            srcDir '../../../build-plugin/weaving/src/main/groovy'
+        }
+        resources {
+            srcDir '../../../build-plugin/weaving/src/main/resources'
+        }
+    }
+
+    test {
+        groovy {
+            srcDir '../../../build-plugin/weaving/src/test/groovy'
+        }
+        resources {
+            srcDir '../../../build-plugin/weaving/src/test/resources'
+        }
+    }
+}
