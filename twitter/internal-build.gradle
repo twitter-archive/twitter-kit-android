@@ -104,7 +104,7 @@ fabricKitRelease {
     artifactUrl = "https://maven.fabric.io/repo/com/twitter/sdk/android/twitter/${project.version}/twitter-${project.version}.pom"
     releaseNotesUrl = "https://s3.amazonaws.com/kits-crashlytics-com/android/com/twitter/sdk/android/twitter/${project.version}/twitter-${project.version}-release-notes.html"
     createdAt = System.currentTimeMillis()
-    learnMoreUrl = "https://dev.twitter.com/twitter"
+    learnMoreUrl = "http://docs.fabric.io/android/twitter/index.html"
     price {
         plan = "free"
     }
