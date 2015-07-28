@@ -24,6 +24,7 @@ import com.twitter.sdk.android.core.services.AccountService;
 import com.twitter.sdk.android.core.services.CollectionService;
 import com.twitter.sdk.android.core.services.FavoriteService;
 import com.twitter.sdk.android.core.services.ListService;
+import com.twitter.sdk.android.core.services.MediaService;
 import com.twitter.sdk.android.core.services.SearchService;
 import com.twitter.sdk.android.core.services.StatusesService;
 
@@ -45,9 +46,10 @@ import retrofit.converter.GsonConverter;
  * interfaces to {@link com.twitter.sdk.android.core.TwitterApiClient#getService(Class)}
  */
 public class TwitterApiClient {
-
+    private static final String UPLOAD_ENDPOINT = "https://upload.twitter.com";
     final ConcurrentHashMap<Class, Object> services;
-    final RestAdapter adapter;
+    final RestAdapter apiAdapter;
+    final RestAdapter uploadAdapter;
 
     TwitterApiClient(TwitterAuthConfig authConfig,
                      Session session,
@@ -65,9 +67,16 @@ public class TwitterApiClient {
                 .registerTypeAdapterFactory(new SafeMapAdapter())
                 .create();
 
-        adapter = new RestAdapter.Builder()
+        apiAdapter = new RestAdapter.Builder()
                 .setClient(new AuthenticatedClient(authConfig, session, sslSocketFactory))
                 .setEndpoint(twitterApi.getBaseHostUrl())
+                .setConverter(new GsonConverter(gson))
+                .setExecutors(executorService, new MainThreadExecutor())
+                .build();
+
+        uploadAdapter = new RestAdapter.Builder()
+                .setClient(new AuthenticatedClient(authConfig, session, sslSocketFactory))
+                .setEndpoint(UPLOAD_ENDPOINT)
                 .setConverter(new GsonConverter(gson))
                 .setExecutors(executorService, new MainThreadExecutor())
                 .build();
@@ -131,6 +140,14 @@ public class TwitterApiClient {
     }
 
     /**
+     * @return {@link com.twitter.sdk.android.core.services.MediaService} to access Twitter API
+     * upload endpoints.
+     */
+    public MediaService getMediaService() {
+        return getAdapterService(uploadAdapter, MediaService.class);
+    }
+
+    /**
      * Converts Retrofit style interface into instance for API access
      *
      * @param cls Retrofit style interface
@@ -138,6 +155,17 @@ public class TwitterApiClient {
      */
     @SuppressWarnings("unchecked")
     protected <T> T getService(Class<T> cls) {
+        return getAdapterService(apiAdapter, cls);
+    }
+
+    /**
+     * Converts a Retrofit style interfaces into an instance using the given RestAdapter.
+     * @param adapter the retrofit RestAdapter to use to generate a service instance
+     * @param cls Retrofit style service interface
+     * @return instance of cls
+     */
+    @SuppressWarnings("unchecked")
+    <T> T getAdapterService(RestAdapter adapter, Class<T> cls) {
         if (!services.contains(cls)) {
             services.putIfAbsent(cls, adapter.create(cls));
         }
