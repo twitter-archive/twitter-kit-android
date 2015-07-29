@@ -35,11 +35,13 @@ import com.twitter.sdk.android.core.models.TweetBuilder;
 class FavoriteTweetAction extends BaseTweetAction implements View.OnClickListener {
     final Tweet tweet;
     TweetRepository tweetRepository;
+    TweetUi tweetUi;
 
-    public FavoriteTweetAction(Tweet tweet, TweetRepository tweetRepository, Callback<Tweet> cb) {
+    public FavoriteTweetAction(Tweet tweet, TweetUi tweetUi, Callback<Tweet> cb) {
         super(cb);
         this.tweet = tweet;
-        this.tweetRepository = tweetRepository;
+        this.tweetUi = tweetUi;
+        this.tweetRepository = tweetUi.getTweetRepository();
     }
 
     @Override
@@ -47,13 +49,23 @@ class FavoriteTweetAction extends BaseTweetAction implements View.OnClickListene
         if (view instanceof ToggleImageButton) {
             final ToggleImageButton toggleImageButton = (ToggleImageButton) view;
             if (tweet.favorited) {
+                scribeUnFavoriteAction();
                 tweetRepository.unfavorite(tweet.id,
                         new FavoriteCallback(toggleImageButton, tweet, getActionCallback()));
             } else {
+                scribeFavoriteAction();
                 tweetRepository.favorite(tweet.id,
                         new FavoriteCallback(toggleImageButton, tweet, getActionCallback()));
             }
         }
+    }
+
+    void scribeFavoriteAction() {
+        tweetUi.scribe(ScribeConstants.getTfwEventFavoriteNamespace());
+    }
+
+    void scribeUnFavoriteAction() {
+        tweetUi.scribe(ScribeConstants.getTfwEventUnFavoriteNamespace());
     }
 
     /*

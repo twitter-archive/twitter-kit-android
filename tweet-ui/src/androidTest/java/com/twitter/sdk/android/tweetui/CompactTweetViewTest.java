@@ -22,15 +22,12 @@ import android.content.Context;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
-import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.models.Tweet;
 
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 public class CompactTweetViewTest extends BaseTweetViewTest {
-    private static final String REQUIRED_TFW_SCRIBE_COMPONENT = "compact";
-    private static final String REQUIRED_SDK_SCRIBE_SECTION = "compact";
     private static final float DELTA = 0.001f;
 
     @Override
@@ -69,18 +66,6 @@ public class CompactTweetViewTest extends BaseTweetViewTest {
     public void testLayout() {
         final CompactTweetView compactView = createView(context, TestFixtures.TEST_TWEET);
         assertEquals(R.layout.tw__tweet_compact, compactView.getLayout());
-    }
-
-    // Scribing
-
-    @Override
-    void assertSdkScribeSection(EventNamespace ns) {
-        assertEquals(REQUIRED_SDK_SCRIBE_SECTION, ns.section);
-    }
-
-    @Override
-    void assertTfwScribeComponent(EventNamespace ns) {
-        assertEquals(REQUIRED_TFW_SCRIBE_COMPONENT, ns.component);
     }
 
     public void testGetAspectRatio() {

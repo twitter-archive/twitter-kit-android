@@ -72,17 +72,20 @@ public class TweetActionBarView extends LinearLayout {
     }
 
     void setFavorite(Tweet tweet) {
-        final TweetRepository tweetRepository = dependencyProvider.getTweetRepository();
-        if (tweet != null && tweetRepository != null) {
+        final TweetUi tweetUi = dependencyProvider.getTweetUi();
+        if (tweet != null) {
             favoriteButton.setToggledOn(tweet.favorited);
             final FavoriteTweetAction favoriteTweetAction = new FavoriteTweetAction(tweet,
-                    tweetRepository, actionCallback);
+                    tweetUi, actionCallback);
             favoriteButton.setOnClickListener(favoriteTweetAction);
         }
     }
 
     void setShare(Tweet tweet) {
-        shareButton.setOnClickListener(new ShareTweetAction(tweet));
+        final TweetUi tweetUi = dependencyProvider.getTweetUi();
+        if (tweet != null) {
+            shareButton.setOnClickListener(new ShareTweetAction(tweet, tweetUi));
+        }
     }
 
     /**
@@ -92,8 +95,8 @@ public class TweetActionBarView extends LinearLayout {
         /**
          * Return TweetRepository
          */
-        TweetRepository getTweetRepository() {
-            return TweetUi.getInstance().getTweetRepository();
+        TweetUi getTweetUi() {
+            return TweetUi.getInstance();
         }
     }
 }

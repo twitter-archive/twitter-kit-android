@@ -41,9 +41,7 @@ import io.fabric.sdk.android.Fabric;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.IntentUtils;
 import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.internal.scribe.SyndicatedSdkImpressionEvent;
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
@@ -65,20 +63,6 @@ public abstract class BaseTweetView extends LinearLayout {
     static final double MEDIA_BG_DARK_OPACITY = 0.12;
 
     static final long INVALID_ID = -1L;
-
-    // tfw client event specific names
-    private static final String TFW_CLIENT_EVENT_PAGE = "android";
-    private static final String TFW_CLIENT_EVENT_SECTION = "tweet";
-    private static final String TFW_CLIENT_EVENT_ELEMENT = ""; // intentionally blank
-
-    // syndicated sdk impression specific names
-    private static final String SYNDICATED_SDK_IMPRESSION_PAGE = "tweet";
-    private static final String SYNDICATED_SDK_IMPRESSION_COMPONENT = "";
-    private static final String SYNDICATED_SDK_IMPRESSION_ELEMENT = ""; // intentionally blank
-
-    // general names
-    private static final String SCRIBE_CLICK_ACTION = "click";
-    private static final String SCRIBE_IMPRESSION_ACTION = "impression";
 
     // Dependency Provider
     final DependencyProvider dependencyProvider;
@@ -527,57 +511,16 @@ public abstract class BaseTweetView extends LinearLayout {
     }
 
     void scribeImpression() {
-        dependencyProvider.getTweetUi().scribe(getTfwEventImpressionNamespace(),
-                getSyndicatedSdkImpressionNamespace());
-    }
-
-    EventNamespace getTfwEventImpressionNamespace() {
-        return new EventNamespace.Builder()
-                .setClient(SyndicationClientEvent.CLIENT_NAME)
-                .setPage(TFW_CLIENT_EVENT_PAGE)
-                .setSection(TFW_CLIENT_EVENT_SECTION)
-                .setComponent(getViewTypeName())
-                .setElement(TFW_CLIENT_EVENT_ELEMENT)
-                .setAction(SCRIBE_IMPRESSION_ACTION)
-                .builder();
-    }
-
-    EventNamespace getSyndicatedSdkImpressionNamespace() {
-        return new EventNamespace.Builder()
-                .setClient(SyndicatedSdkImpressionEvent.CLIENT_NAME)
-                .setPage(SYNDICATED_SDK_IMPRESSION_PAGE)
-                .setSection(getViewTypeName())
-                .setComponent(SYNDICATED_SDK_IMPRESSION_COMPONENT)
-                .setElement(SYNDICATED_SDK_IMPRESSION_ELEMENT)
-                .setAction(SCRIBE_IMPRESSION_ACTION)
-                .builder();
+        dependencyProvider.getTweetUi().scribe(
+                ScribeConstants
+                        .getTfwEventImpressionNamespace(getViewTypeName(), tweetActionsEnabled),
+                ScribeConstants.getSyndicatedSdkImpressionNamespace(getViewTypeName()));
     }
 
     void scribePermalinkClick() {
         dependencyProvider.getTweetUi()
-                .scribe(getTfwEventClickNamespace(), getSyndicatedSdkClickNamespace());
-    }
-
-    EventNamespace getTfwEventClickNamespace() {
-        return new EventNamespace.Builder()
-                .setClient(SyndicationClientEvent.CLIENT_NAME)
-                .setPage(TFW_CLIENT_EVENT_PAGE)
-                .setSection(TFW_CLIENT_EVENT_SECTION)
-                .setComponent(getViewTypeName())
-                .setElement(TFW_CLIENT_EVENT_ELEMENT)
-                .setAction(SCRIBE_CLICK_ACTION)
-                .builder();
-    }
-
-    EventNamespace getSyndicatedSdkClickNamespace() {
-        return new EventNamespace.Builder()
-                .setClient(SyndicatedSdkImpressionEvent.CLIENT_NAME)
-                .setPage(SYNDICATED_SDK_IMPRESSION_PAGE)
-                .setSection(getViewTypeName())
-                .setComponent(SYNDICATED_SDK_IMPRESSION_COMPONENT)
-                .setElement(SYNDICATED_SDK_IMPRESSION_ELEMENT)
-                .setAction(SCRIBE_CLICK_ACTION)
-                .builder();
+                .scribe(ScribeConstants.getTfwEventClickNamespace(getViewTypeName()),
+                        ScribeConstants.getSyndicatedSdkClickNamespace(getViewTypeName()));
     }
 
     /**

@@ -29,7 +29,6 @@ import io.fabric.sdk.android.KitStub;
 import io.fabric.sdk.android.Logger;
 
 import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.internal.scribe.ScribeEvent;
 import com.twitter.sdk.android.core.internal.scribe.SyndicatedSdkImpressionEvent;
 import com.twitter.sdk.android.core.models.MediaEntity;
@@ -46,8 +45,6 @@ import static org.mockito.Mockito.*;
  * Tests the state of BaseTweetViews created via constructors.
  */
 public abstract class BaseTweetViewTest extends TweetUiTestCase {
-    private static final String REQUIRED_SCRIBE_CLICK_ACTION = "click";
-    private static final String REQUIRED_SCRIBE_IMPRESSION_ACTION = "impression";
     private static final String ANY_ADVERTISING_ID = "ANY_ID";
     private static final String REQUIRED_RETWEETED_BY_TEXT = "Retweeted by Mr Retweets";
     protected static final double DELTA = 0.001f;
@@ -456,42 +453,6 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
         view.scribePermalinkClick();
 
         assertBothScribeTypes();
-    }
-
-    public void testGetTfwImpressionNamespace() {
-        final EventNamespace ns = createView(context, TestFixtures.TEST_TWEET)
-                .getTfwEventImpressionNamespace();
-        TweetAsserts.assertConsistentTfwNamespaceValues(ns);
-        assertTfwScribeComponent(ns);
-        assertEquals(REQUIRED_SCRIBE_IMPRESSION_ACTION, ns.action);
-    }
-
-    abstract void assertTfwScribeComponent(EventNamespace ns);
-
-    public void testGetTfwClickNamespace() {
-        final EventNamespace ns = createView(context, TestFixtures.TEST_TWEET)
-                .getTfwEventClickNamespace();
-        TweetAsserts.assertConsistentTfwNamespaceValues(ns);
-        assertTfwScribeComponent(ns);
-        assertEquals(REQUIRED_SCRIBE_CLICK_ACTION, ns.action);
-    }
-
-    public void testGetSdkImpressionNamespace() {
-        final EventNamespace ns = createView(context, TestFixtures.TEST_TWEET)
-                .getSyndicatedSdkImpressionNamespace();
-        TweetAsserts.assertConsistentSdkNamespaceValues(ns);
-        assertSdkScribeSection(ns);
-        assertEquals(REQUIRED_SCRIBE_IMPRESSION_ACTION, ns.action);
-    }
-
-    abstract void assertSdkScribeSection(EventNamespace ns);
-
-    public void testGetSdkClickNamespace() {
-        final EventNamespace ns = createView(context, TestFixtures.TEST_TWEET)
-                .getSyndicatedSdkClickNamespace();
-        TweetAsserts.assertConsistentSdkNamespaceValues(ns);
-        assertSdkScribeSection(ns);
-        assertEquals(REQUIRED_SCRIBE_CLICK_ACTION, ns.action);
     }
 
     public void testSetErrorImage_handlesNullPicasso() {

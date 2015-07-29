@@ -23,11 +23,13 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 
+import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
@@ -52,27 +54,32 @@ public class ShareTweetActionTest {
 
     private ShareTweetAction listener;
     private Resources resources;
+    private TweetUi mockTweetUi;
 
     @Before
     public void setUp() throws Exception {
-        listener = new ShareTweetAction(TestFixtures.TEST_TWEET);
+        mockTweetUi = mock(TweetUi.class);
+        listener = new ShareTweetAction(TestFixtures.TEST_TWEET, mockTweetUi);
         resources = RuntimeEnvironment.application.getResources();
     }
 
     @Test
     public void testOnClick_nullTweet() {
-        final ShareTweetAction listener = new ShareTweetAction(null);
+        final ShareTweetAction listener = new ShareTweetAction(null, mockTweetUi);
         final Context context = mock(Context.class);
         listener.onClick(context, resources);
         verify(context, times(0)).startActivity(any(Intent.class));
+        verifyNoMoreInteractions(mockTweetUi);
     }
 
     @Test
     public void testOnClick_nullTweetUser() {
-        final ShareTweetAction listener = new ShareTweetAction(new TweetBuilder().build());
+        final ShareTweetAction listener =
+                new ShareTweetAction(new TweetBuilder().build(), mockTweetUi);
         final Context context = mock(Context.class);
         listener.onClick(context, resources);
         verify(context, times(0)).startActivity(any(Intent.class));
+        verifyNoMoreInteractions(mockTweetUi);
     }
 
     @Test
@@ -80,6 +87,17 @@ public class ShareTweetActionTest {
         final Context context = createContextWithPackageManager();
         listener.onClick(context, resources);
         verify(context, times(1)).startActivity(any(Intent.class));
+
+        assertScribe(ScribeConstantsTest.REQUIRED_SCRIBE_SHARE_ACTION);
+    }
+
+    private void assertScribe(String action) {
+        final ArgumentCaptor<EventNamespace> eventCaptor
+                = ArgumentCaptor.forClass(EventNamespace.class);
+        verify(mockTweetUi).scribe(eventCaptor.capture());
+        final EventNamespace capturedClientEvent = eventCaptor.getValue();
+        ScribeConstantsTest.assertConsistentTfwEventNamespaceForActions(capturedClientEvent);
+        assertEquals(action, capturedClientEvent.action);
     }
 
     @Test

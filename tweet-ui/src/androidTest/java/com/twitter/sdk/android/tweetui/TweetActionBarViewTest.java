@@ -70,6 +70,12 @@ public class TweetActionBarViewTest extends TweetUiTestCase {
         assertEquals(TestFixtures.TEST_TWEET, shareAction.tweet);
     }
 
+    public void testSetShare_handlesNullTweet() {
+        final TweetActionBarView view = createView();
+        view.setShare(null);
+        verifyZeroInteractions(view.shareButton);
+    }
+
     private TweetActionBarView createView() {
         final TweetActionBarView view = new TweetActionBarView(getContext());
         view.favoriteButton = mock(ToggleImageButton.class);

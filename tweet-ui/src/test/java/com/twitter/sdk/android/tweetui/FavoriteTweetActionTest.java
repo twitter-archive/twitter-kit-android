@@ -22,8 +22,10 @@ import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterApiException;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.internal.TwitterApiConstants;
+import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.models.Tweet;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -37,14 +39,25 @@ import static org.mockito.Mockito.*;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, emulateSdk = 21)
 public class FavoriteTweetActionTest {
+    TweetUi mockTweetUi;
+    TweetRepository mockTweetRepository;
+    Callback<Tweet> mockCallback;
+
+    @Before
+    public void setUp() throws Exception {
+        mockTweetUi = mock(TweetUi.class);
+        mockTweetRepository = mock(TweetRepository.class);
+        when(mockTweetUi.getTweetRepository()).thenReturn(mockTweetRepository);
+
+        mockCallback = mock(Callback.class);
+    }
 
     @Test
     public void testOnClick_performFavorite() {
-        final TweetRepository mockTweetRepository = mock(TweetRepository.class);
         final ArgumentCaptor<FavoriteTweetAction.FavoriteCallback> favoriteCbCaptor
                 = ArgumentCaptor.forClass(FavoriteTweetAction.FavoriteCallback.class);
         final FavoriteTweetAction favoriteAction = new FavoriteTweetAction(TestFixtures.TEST_TWEET,
-                mockTweetRepository, mock(Callback.class));
+                mockTweetUi, mockCallback);
         final ToggleImageButton mockToggleButton = mock(ToggleImageButton.class);
         // assert that click when tweet is unfavorited
         // - performs a favorite on the correct tweet id
@@ -54,15 +67,16 @@ public class FavoriteTweetActionTest {
                 favoriteCbCaptor.capture());
         assertEquals(mockToggleButton, favoriteCbCaptor.getValue().button);
         assertFalse(favoriteCbCaptor.getValue().tweet.favorited);
+
+        assertScribe(ScribeConstantsTest.REQUIRED_SCRIBE_FAVORITE_ACTION);
     }
 
     @Test
     public void testOnClick_performUnfavorite() {
-        final TweetRepository mockTweetRepository = mock(TweetRepository.class);
         final ArgumentCaptor<FavoriteTweetAction.FavoriteCallback> favoriteCbCaptor
                 = ArgumentCaptor.forClass(FavoriteTweetAction.FavoriteCallback.class);
         final FavoriteTweetAction favoriteAction = new FavoriteTweetAction(
-                TestFixtures.TEST_FAVORITED_TWEET, mockTweetRepository, mock(Callback.class));
+                TestFixtures.TEST_FAVORITED_TWEET, mockTweetUi, mockCallback);
         final ToggleImageButton mockToggleButton = mock(ToggleImageButton.class);
         // assert that click when tweet is favorited
         // - performs an unfavorite on the correct tweet id
@@ -72,13 +86,23 @@ public class FavoriteTweetActionTest {
                 favoriteCbCaptor.capture());
         assertEquals(mockToggleButton, favoriteCbCaptor.getValue().button);
         assertTrue(favoriteCbCaptor.getValue().tweet.favorited);
+
+        assertScribe(ScribeConstantsTest.REQUIRED_SCRIBE_UNFAVORITE_ACTION);
+    }
+
+    private void assertScribe(String action) {
+        final ArgumentCaptor<EventNamespace> eventCaptor
+                = ArgumentCaptor.forClass(EventNamespace.class);
+        verify(mockTweetUi).scribe(eventCaptor.capture());
+        final EventNamespace capturedClientEvent = eventCaptor.getValue();
+        ScribeConstantsTest.assertConsistentTfwEventNamespaceForActions(capturedClientEvent);
+        assertEquals(action, capturedClientEvent.action);
     }
 
     @Test
     public void testFavoriteCallback_successCallsCallback() {
         final ToggleImageButton mockToggleButton = mock(ToggleImageButton.class);
         final Tweet unfavoritedTweet = TestFixtures.TEST_TWEET;
-        final Callback<Tweet> mockCallback = mock(Callback.class);
         final FavoriteTweetAction.FavoriteCallback callback
                 = new FavoriteTweetAction.FavoriteCallback(mockToggleButton, unfavoritedTweet,
                 mockCallback);
@@ -92,7 +116,6 @@ public class FavoriteTweetActionTest {
         final ToggleImageButton mockToggleButton = mock(ToggleImageButton.class);
         // locally unfavorited, but on server the tweet is favorited
         final Tweet tweet = TestFixtures.TEST_TWEET;
-        final Callback<Tweet> mockCallback = mock(Callback.class);
         final FavoriteTweetAction.FavoriteCallback callback
                 = new FavoriteTweetAction.FavoriteCallback(mockToggleButton, tweet,
                 mockCallback);
@@ -115,7 +138,6 @@ public class FavoriteTweetActionTest {
         final ToggleImageButton mockToggleButton = mock(ToggleImageButton.class);
         // locally favorited, but on server the tweet is unfavorited
         final Tweet tweet = TestFixtures.TEST_FAVORITED_TWEET;
-        final Callback<Tweet> mockCallback = mock(Callback.class);
         final FavoriteTweetAction.FavoriteCallback callback
                 = new FavoriteTweetAction.FavoriteCallback(mockToggleButton, tweet,
                 mockCallback);

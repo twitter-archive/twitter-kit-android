@@ -20,13 +20,9 @@ package com.twitter.sdk.android.tweetui;
 import android.content.Context;
 import android.widget.ImageView;
 
-import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.models.Tweet;
 
 public class TweetViewTest extends BaseTweetViewTest {
-    private static final String REQUIRED_TFW_SCRIBE_COMPONENT = "default";
-    private static final String REQUIRED_SDK_SCRIBE_SECTION = "default";
-
     @Override
     TweetView createView(Context context, Tweet tweet) {
         return new TweetView(context, tweet);
@@ -95,16 +91,5 @@ public class TweetViewTest extends BaseTweetViewTest {
                 TestFixtures.createMediaEntityWithSizes(100, 200)), DELTA);
         assertEquals(2, view.getAspectRatio(
                 TestFixtures.createMediaEntityWithSizes(200, 100)), DELTA);
-    }
-
-    // Scribing
-    @Override
-    void assertSdkScribeSection(EventNamespace ns) {
-        assertEquals(REQUIRED_SDK_SCRIBE_SECTION, ns.section);
-    }
-
-    @Override
-    void assertTfwScribeComponent(EventNamespace ns) {
-        assertEquals(REQUIRED_TFW_SCRIBE_COMPONENT, ns.component);
     }
 }

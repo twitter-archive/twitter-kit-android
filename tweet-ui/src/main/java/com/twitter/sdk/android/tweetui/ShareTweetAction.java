@@ -29,10 +29,12 @@ import io.fabric.sdk.android.Fabric;
 
 class ShareTweetAction implements View.OnClickListener {
     final Tweet tweet;
+    final TweetUi tweetUi;
 
-    ShareTweetAction(Tweet tweet) {
+    ShareTweetAction(Tweet tweet, TweetUi tweetUi) {
         super();
         this.tweet = tweet;
+        this.tweetUi = tweetUi;
     }
 
     @Override
@@ -40,8 +42,14 @@ class ShareTweetAction implements View.OnClickListener {
         onClick(v.getContext(), v.getResources());
     }
 
+    void scribeShareAction() {
+        tweetUi.scribe(ScribeConstants.getTfwEventShareNamespace());
+    }
+
     void onClick(Context context, Resources resources) {
         if (tweet == null || tweet.user == null) return;
+
+        scribeShareAction();
 
         final String shareSubject = getShareSubject(resources);
         final String shareContent = getShareContent(resources);
