@@ -222,7 +222,7 @@ public class TimelineDelegate<T extends Identifiable> {
     }
 
     /**
-     * Handles receiving next timeline items. Prepends received items to listItems, update the
+     * Handles receiving next timeline items. Prepends received items to listItems, updates the
      * scrollStateHolder nextCursor, and calls notifyDataSetChanged.
      */
     class NextCallback extends DefaultCallback {

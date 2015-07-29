@@ -30,8 +30,8 @@ public class TimelineCursor {
 
     /**
      * Constructs a TimelineCursor storing position and containsLastItem data.
-     * @param minPosition the minimum position of items received or None
-     * @param maxPosition the maximum position of items received or None
+     * @param minPosition the minimum position of items received or Null
+     * @param maxPosition the maximum position of items received or Null
      */
     public TimelineCursor(Long minPosition, Long maxPosition) {
         this.minPosition = minPosition;

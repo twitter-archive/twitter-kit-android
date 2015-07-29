@@ -4,6 +4,11 @@
 
 ## Unreleased
 
+* (DH) Deprecate TweetViewAdapter and TweetViewFetchAdapter. To upgrade:
+    * If required, load Tweets by id with TweetUtils.loadTweets(List<Long> ids, Callback<List<Tweet>> cb)
+    * Build a FixedTweetTimeline with the set of Tweets to display, pass the timeline to the
+    TweetTimelineListAdapter and set the adapter on your ListView (consistent with other Timelines).
+
 ## v1.3.1
 
 * (DH) Change TweetUtils loadTweet(s) to take a TwitterCore Callback. Deprecate those taking a LoadCallback.

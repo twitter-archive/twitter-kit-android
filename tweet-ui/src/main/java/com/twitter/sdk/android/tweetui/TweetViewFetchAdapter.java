@@ -29,7 +29,10 @@ import java.util.List;
 /**
  * Adapter to provide a collection of TweetViews to AdapterViews (such as ListView) which
  * allows Tweets to be specified by id and handles fetching them from the API.
+ * @deprecated Load Tweets by id with TweetUtils.loadTweets and use a FixedTweetTimeline with the
+ * TweetTimelineListAdapter.
  */
+@Deprecated
 public class TweetViewFetchAdapter<T extends BaseTweetView> extends TweetViewAdapter<T> {
 
     /**

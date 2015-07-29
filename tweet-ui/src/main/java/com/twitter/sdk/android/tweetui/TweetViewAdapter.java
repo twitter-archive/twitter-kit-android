@@ -28,7 +28,9 @@ import java.util.List;
 
 /**
  * Adapter to provide a collection of TweetViews to AdapterViews (such as ListView).
+ * @deprecated Build a FixedTweetTimeline with a set of Tweets and a TweetTimelineListAdapter.
  */
+@Deprecated
 public class TweetViewAdapter<T extends BaseTweetView> extends BaseAdapter {
     protected final Context context;
     protected List<Tweet> tweets;
