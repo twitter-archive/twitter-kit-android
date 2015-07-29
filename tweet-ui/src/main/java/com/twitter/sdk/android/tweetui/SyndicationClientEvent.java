@@ -20,6 +20,10 @@ package com.twitter.sdk.android.tweetui;
 import com.google.gson.annotations.SerializedName;
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.internal.scribe.ScribeEvent;
+import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * SyndicationClientEvent is nearly identical to SyndicatedSdkImpression. This class should be
@@ -48,7 +52,12 @@ class SyndicationClientEvent extends ScribeEvent {
 
     SyndicationClientEvent(EventNamespace eventNamespace, long timestamp, String language,
                            String adId) {
-        super(SCRIBE_CATEGORY, eventNamespace, timestamp);
+        this(eventNamespace, timestamp, language, adId, Collections.<ScribeItem>emptyList());
+    }
+
+    SyndicationClientEvent(EventNamespace eventNamespace, long timestamp, String language,
+            String adId, List<ScribeItem> items) {
+        super(SCRIBE_CATEGORY, eventNamespace, timestamp, items);
         this.language = language;
         externalIds = new ExternalIds(adId);
     }

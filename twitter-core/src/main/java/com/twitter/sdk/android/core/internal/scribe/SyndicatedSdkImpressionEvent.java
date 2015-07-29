@@ -19,6 +19,9 @@ package com.twitter.sdk.android.core.internal.scribe;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * SyndicatedSdkImpressionEvent is nearly identical to SyndicationClientEvent but the events end up
  * in a different folder in hdfs with a different retention policy. This event type primarily exists
@@ -58,7 +61,12 @@ public class SyndicatedSdkImpressionEvent extends ScribeEvent {
 
     public SyndicatedSdkImpressionEvent(EventNamespace eventNamespace, long timestamp,
                 String language, String adId) {
-        super(SCRIBE_CATEGORY, eventNamespace, timestamp);
+        this(eventNamespace, timestamp, language, adId, Collections.<ScribeItem>emptyList());
+    }
+
+    public SyndicatedSdkImpressionEvent(EventNamespace eventNamespace, long timestamp,
+            String language, String adId, List<ScribeItem> items) {
+        super(SCRIBE_CATEGORY, eventNamespace, timestamp, items);
         this.language = language;
         this.externalIds = new ExternalIds(adId);
         this.deviceIdCreatedAt = 0; // see field comment

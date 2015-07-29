@@ -17,11 +17,15 @@
 
 package com.twitter.sdk.android.core.internal.scribe;
 
+import android.text.TextUtils;
+
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import io.fabric.sdk.android.services.events.EventTransform;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 public class ScribeEvent {
     /**
@@ -36,29 +40,38 @@ public class ScribeEvent {
      * Required field.
      */
     @SerializedName("event_namespace")
-    private final EventNamespace eventNamespace;
+    final EventNamespace eventNamespace;
     /**
      * The time in ms since Jan 1, 1970 UTC that the event occurred.
      * Required field.
      */
     @SerializedName("ts")
-    private final String timestamp;
+    final String timestamp;
     /**
      * The format version used to avoid ambiguity if scribe fields or their definitions, are
      * changed.
      * Required field.
      */
     @SerializedName("format_version")
-    private final String formatVersion;
+    final String formatVersion;
 
     @SerializedName("_category_")
-    private final String category;
+    final String category;
+
+    @SerializedName("items")
+    final List<ScribeItem> items;
 
     public ScribeEvent(String category, EventNamespace eventNamespace, long timestamp) {
+        this(category, eventNamespace, timestamp, Collections.<ScribeItem>emptyList());
+    }
+
+    public ScribeEvent(String category, EventNamespace eventNamespace, long timestamp,
+            List<ScribeItem> items) {
         this.category = category;
         this.eventNamespace = eventNamespace;
         this.timestamp = String.valueOf(timestamp);
         this.formatVersion =  CURRENT_FORMAT_VERSION;
+        this.items = Collections.unmodifiableList(items);
     }
 
     @Override
@@ -68,6 +81,7 @@ public class ScribeEvent {
                 .append(", ts=").append(timestamp)
                 .append(", format_version=").append(formatVersion)
                 .append(", _category_=").append(category)
+                .append(", items=").append("[" + TextUtils.join(", ", items) + "]")
                 .toString();
     }
 
@@ -94,6 +108,10 @@ public class ScribeEvent {
             return false;
         }
 
+        if (items != null ? !items.equals(that.items) : that.items != null) {
+            return false;
+        }
+
         return true;
     }
 
@@ -103,6 +121,7 @@ public class ScribeEvent {
         result = 31 * result + (timestamp != null ? timestamp.hashCode() : 0);
         result = 31 * result + (formatVersion != null ? formatVersion.hashCode() : 0);
         result = 31 * result + (category != null ? category.hashCode() : 0);
+        result = 31 * result + (items != null ? items.hashCode() : 0);
         return result;
     }
 

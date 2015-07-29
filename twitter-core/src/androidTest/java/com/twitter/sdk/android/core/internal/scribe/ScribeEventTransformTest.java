@@ -24,11 +24,15 @@ import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 
 public class ScribeEventTransformTest extends FabricAndroidTestCase {
-
+    static final String TEST_MESSAGE = "TEST MESSAGE";
+    static final String TEST_ITEM_TYPE = "\"item_type\":6";
+    static final String TEST_DESCRIPTION = "\"description\":\"TEST MESSAGE\"";
     private ScribeEvent.Transform transform;
-    private ScribeEvent scribeEvent;
+    private EventNamespace eventNamespace;
     private String scribeEventJsonString;
 
     @Override
@@ -36,7 +40,7 @@ public class ScribeEventTransformTest extends FabricAndroidTestCase {
         super.setUp();
         transform = new ScribeEvent.Transform(new GsonBuilder().create());
 
-        final EventNamespace eventNamespace = new EventNamespace.Builder()
+        eventNamespace = new EventNamespace.Builder()
                 .setClient("testclient")
                 .setPage("testpage")
                 .setSection("testsection")
@@ -44,7 +48,6 @@ public class ScribeEventTransformTest extends FabricAndroidTestCase {
                 .setElement("testelement")
                 .setAction("testaction")
                 .builder();
-        scribeEvent = new ScribeEvent("testcategory", eventNamespace, 1404426136717L);
 
         InputStream is = null;
         try {
@@ -56,7 +59,20 @@ public class ScribeEventTransformTest extends FabricAndroidTestCase {
     }
 
     public void testToBytes() throws IOException {
+        final ScribeEvent scribeEvent =
+                new ScribeEvent("testcategory", eventNamespace, 1404426136717L);
         final byte[] bytes = transform.toBytes(scribeEvent);
         assertEquals(scribeEventJsonString, new String(bytes, "UTF-8"));
+    }
+
+    public void testToBytes_withItems() throws IOException {
+        final ScribeItem scribeItem = ScribeItem.fromMessage(TEST_MESSAGE);
+        final List<ScribeItem> itemList = Arrays.asList(scribeItem);
+        final ScribeEvent scribeEvent =
+                new ScribeEvent("testcategory", eventNamespace, 1404426136717L, itemList);
+        final byte[] bytes = transform.toBytes(scribeEvent);
+
+        assertTrue(new String(bytes, "UTF-8").contains(TEST_ITEM_TYPE));
+        assertTrue(new String(bytes, "UTF-8").contains(TEST_DESCRIPTION));
     }
 }
