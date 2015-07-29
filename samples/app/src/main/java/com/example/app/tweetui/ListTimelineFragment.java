@@ -25,6 +25,12 @@ import android.view.ViewGroup;
 
 import com.example.app.R;
 
+import com.example.app.twittercore.TwitterCoreMainActivity;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterAuthException;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.tweetui.TweetTimelineListAdapter;
 import com.twitter.sdk.android.tweetui.TwitterListTimeline;
 
@@ -40,12 +46,28 @@ public class ListTimelineFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // launch the app login activity when a guest user tries to favorite a Tweet
+        final Callback<Tweet> actionCallback = new Callback<Tweet>() {
+            @Override
+            public void success(Result<Tweet> result) {
+                // Intentionally blank
+            }
+            @Override
+            public void failure(TwitterException exception) {
+                if (exception instanceof TwitterAuthException) {
+                    startActivity(TwitterCoreMainActivity.newIntent(getActivity()));
+                }
+            }
+        };
 
         final TwitterListTimeline timeline = new TwitterListTimeline.Builder()
                 .slugWithOwnerScreenName("twitter-bots", "dghubble")
                 .build();
-        final TweetTimelineListAdapter adapter = new TweetTimelineListAdapter(getActivity(),
-                timeline);
+        final TweetTimelineListAdapter adapter = new TweetTimelineListAdapter.Builder(getActivity())
+                .setTimeline(timeline)
+                .setViewStyle(R.style.tw__TweetLightWithActionsStyle)
+                .setOnActionCallback(actionCallback)
+                .build();
         setListAdapter(adapter);
     }
 

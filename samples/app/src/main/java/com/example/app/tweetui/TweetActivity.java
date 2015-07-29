@@ -18,6 +18,7 @@
 package com.example.app.tweetui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -26,10 +27,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.app.R;
+import com.example.app.twittercore.TwitterCoreMainActivity;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterAuthException;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.tweetui.BaseTweetView;
 import com.twitter.sdk.android.tweetui.CompactTweetView;
 import com.twitter.sdk.android.tweetui.TweetUtils;
 import com.twitter.sdk.android.tweetui.TweetView;
@@ -51,6 +55,20 @@ public class TweetActivity extends TweetUiActivity {
     }
 
     public static class TweetsFragment extends Fragment {
+
+        // launch the app login activity when a guest user tries to favorite a Tweet
+        final Callback<Tweet> actionCallback = new Callback<Tweet>() {
+            @Override
+            public void success(Result<Tweet> result) {
+                // Intentionally blank
+            }
+            @Override
+            public void failure(TwitterException exception) {
+                if (exception instanceof TwitterAuthException) {
+                    startActivity(TwitterCoreMainActivity.newIntent(getActivity()));
+                }
+            }
+        };
 
         public static TweetsFragment newInstance() {
             return new TweetsFragment();
@@ -87,9 +105,11 @@ public class TweetActivity extends TweetUiActivity {
                     final Context context = getActivity();
                     if (context == null) return;
                     final Tweet tweet = result.data;
-                    final View view = new TweetView(context, tweet);
-                    view.setId(viewId);
-                    container.addView(view);
+                    final BaseTweetView tv = new TweetView(context, tweet,
+                            R.style.tw__TweetLightWithActionsStyle);
+                    tv.setOnActionCallback(actionCallback);
+                    tv.setId(viewId);
+                    container.addView(tv);
                 }
 
                 @Override
@@ -112,9 +132,11 @@ public class TweetActivity extends TweetUiActivity {
                     final Context context = getActivity();
                     if (context == null) return;
                     for (int i = 0; i < result.data.size(); i++) {
-                        final View view = new CompactTweetView(context, result.data.get(i));
-                        view.setId(viewIds.get(i));
-                        container.addView(view);
+                        final BaseTweetView tv = new CompactTweetView(context, result.data.get(i),
+                                R.style.tw__TweetDarkWithActionsStyle);
+                        tv.setOnActionCallback(actionCallback);
+                        tv.setId(viewIds.get(i));
+                        container.addView(tv);
                     }
                 }
 

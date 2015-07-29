@@ -31,10 +31,11 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
     private static final String NULL_CONTEXT_MESSAGE = "Context must not be null";
     private static final String NULL_TIMELINE_MESSAGE = "Timeline must not be null";
     private TweetTimelineListAdapter listAdapter;
+    private static final int ANY_STYLE = R.style.tw__TweetLightWithActionsStyle;
 
     public void testConstructor() {
         final TimelineDelegate<Tweet> mockTimelineDelegate = mock(TimelineDelegate.class);
-        listAdapter = new TweetTimelineListAdapter(getContext(), mockTimelineDelegate,
+        listAdapter = new TweetTimelineListAdapter(getContext(), mockTimelineDelegate, ANY_STYLE,
                 null);
         if (listAdapter.actionCallback instanceof TweetTimelineListAdapter.ReplaceTweetCallback) {
             final TweetTimelineListAdapter.ReplaceTweetCallback replaceCallback
@@ -49,7 +50,7 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
     public void testConstructor_withActionCallback() {
         final TimelineDelegate<Tweet> mockTimelineDelegate = mock(TimelineDelegate.class);
         final Callback<Tweet> mockCallback = mock(Callback.class);
-        listAdapter = new TweetTimelineListAdapter(getContext(), mockTimelineDelegate,
+        listAdapter = new TweetTimelineListAdapter(getContext(), mockTimelineDelegate, ANY_STYLE,
                 mockCallback);
         // assert that
         // - developer callback wrapped in a ReplaceTweetCallback
@@ -69,7 +70,9 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
         listAdapter = new TweetTimelineListAdapter.Builder(getContext())
                 .setTimeline(mockTimeline)
                 .setOnActionCallback(mockCallback)
+                .setViewStyle(R.style.tw__TweetDarkStyle)
                 .build();
+        assertEquals(R.style.tw__TweetDarkStyle, listAdapter.styleResId);
         if (listAdapter.actionCallback instanceof TweetTimelineListAdapter.ReplaceTweetCallback) {
             final TweetTimelineListAdapter.ReplaceTweetCallback replaceCallback
                     = (TweetTimelineListAdapter.ReplaceTweetCallback) listAdapter.actionCallback;
@@ -107,7 +110,7 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
     public void testGetView_getsCompactTweetView() {
         final Timeline<Tweet> fakeTimeline = new FakeTweetTimeline(10);
         final TimelineDelegate<Tweet> fakeDelegate = new TimelineDelegate<>(fakeTimeline);
-        listAdapter = new TweetTimelineListAdapter(getContext(), fakeDelegate, null);
+        listAdapter = new TweetTimelineListAdapter(getContext(), fakeDelegate, ANY_STYLE, null);
 
         final View view = listAdapter.getView(0, null, null);
         // assert that
@@ -116,6 +119,35 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
         assertEquals(CompactTweetView.class, view.getClass());
         final BaseTweetView tv = (BaseTweetView) view;
         assertEquals(listAdapter.getItemId(0), tv.getTweetId());
+    }
+
+    public void testDefaultViewStyle_viaConstructor() {
+        final Timeline<Tweet> fakeTimeline = new FakeTweetTimeline(10);
+        listAdapter = new TweetTimelineListAdapter(getContext(), fakeTimeline);
+        final View view = listAdapter.getView(0, null, null);
+        final BaseTweetView tv = (BaseTweetView) view;
+        assertEquals(R.style.tw__TweetLightStyle, tv.styleResId);
+    }
+
+    public void testDefaultViewStyle_viaBuilder() {
+        final Timeline<Tweet> fakeTimeline = new FakeTweetTimeline(10);
+        listAdapter = new TweetTimelineListAdapter.Builder(getContext())
+                .setTimeline(fakeTimeline)
+                .build();
+        final View view = listAdapter.getView(0, null, null);
+        final BaseTweetView tv = (BaseTweetView) view;
+        assertEquals(R.style.tw__TweetLightStyle, tv.styleResId);
+    }
+
+    public void testSetViewStyle() {
+        final Timeline<Tweet> fakeTimeline = new FakeTweetTimeline(10);
+        listAdapter = new TweetTimelineListAdapter.Builder(getContext())
+                .setTimeline(fakeTimeline)
+                .setViewStyle(R.style.tw__TweetDarkWithActionsStyle)
+                .build();
+        final View view = listAdapter.getView(0, null, null);
+        final BaseTweetView tv = (BaseTweetView) view;
+        assertEquals(R.style.tw__TweetDarkWithActionsStyle, tv.styleResId);
     }
 
     public static class FakeTweetTimeline implements Timeline<Tweet> {

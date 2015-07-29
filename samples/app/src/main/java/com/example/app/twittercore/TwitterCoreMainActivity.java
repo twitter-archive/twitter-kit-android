@@ -36,6 +36,15 @@ public class TwitterCoreMainActivity extends Activity {
 
     private TwitterLoginButton loginButton;
 
+    /**
+     * Constructs an intent for starting an instance of this activity.
+     * @param packageContext A context from the same package as this activity.
+     * @return Intent for starting an instance of this activity.
+     */
+    public static Intent newIntent(Context packageContext) {
+        return new Intent(packageContext, TwitterCoreMainActivity.class);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

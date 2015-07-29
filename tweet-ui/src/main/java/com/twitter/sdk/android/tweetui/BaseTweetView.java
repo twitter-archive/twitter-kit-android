@@ -72,6 +72,9 @@ public abstract class BaseTweetView extends LinearLayout {
     private Uri permalinkUri;
     Tweet tweet;
 
+    // for testing
+    int styleResId;
+
     // layout views
     RelativeLayout containerView;
     ImageView avatarView;
@@ -202,6 +205,7 @@ public abstract class BaseTweetView extends LinearLayout {
      * argument.
      */
     private void initAttributes(int styleResId) {
+        this.styleResId = styleResId;
         final TypedArray a = getContext().getTheme().obtainStyledAttributes(styleResId,
                 R.styleable.tw__TweetView);
         try {
@@ -413,8 +417,7 @@ public abstract class BaseTweetView extends LinearLayout {
      * Sets the callback to call when a Tweet action (favorite, unfavorite) is performed.
      * @param actionCallback called when a Tweet action is performed.
      */
-    void setOnActionCallback(Callback<Tweet> actionCallback) {
-        // TODO: expose this as public once actions are exposed
+    public void setOnActionCallback(Callback<Tweet> actionCallback) {
         tweetActionBarView.setOnActionCallback(new ResetTweetCallback(this,
                 dependencyProvider.getTweetUi().getTweetRepository(), actionCallback));
         tweetActionBarView.setTweet(tweet);

@@ -32,6 +32,7 @@ import com.twitter.sdk.android.tweetui.internal.TimelineDelegate;
  */
 public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
     protected Callback<Tweet> actionCallback;
+    final protected int styleResId;
 
     /**
      * Constructs a TweetTimelineListAdapter for the given Tweet Timeline.
@@ -40,16 +41,18 @@ public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
      * @throws java.lang.IllegalArgumentException if timeline is null
      */
     public TweetTimelineListAdapter(Context context, Timeline<Tweet> timeline) {
-        this(context, new TimelineDelegate<>(timeline), null);
+        this(context, timeline, R.style.tw__TweetLightStyle, null);
     }
 
-    TweetTimelineListAdapter(Context context, Timeline<Tweet> timeline, Callback<Tweet> cb) {
-        this(context, new TimelineDelegate<>(timeline), cb);
+    TweetTimelineListAdapter(Context context, Timeline<Tweet> timeline, int styleResId,
+            Callback<Tweet> cb) {
+        this(context, new TimelineDelegate<>(timeline), styleResId, cb);
     }
 
-    TweetTimelineListAdapter(Context context, TimelineDelegate<Tweet> delegate,
+    TweetTimelineListAdapter(Context context, TimelineDelegate<Tweet> delegate, int styleResId,
             Callback<Tweet> cb) {
         super(context, delegate);
+        this.styleResId = styleResId;
         this.actionCallback = new ReplaceTweetCallback(delegate, cb);
     }
 
@@ -64,7 +67,7 @@ public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
         View rowView = convertView;
         final Tweet tweet = getItem(position);
         if (rowView == null) {
-            final BaseTweetView tv = new CompactTweetView(context, tweet);
+            final BaseTweetView tv = new CompactTweetView(context, tweet, styleResId);
             tv.setOnActionCallback(actionCallback);
             rowView = tv;
         } else {
@@ -109,6 +112,7 @@ public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
         private Context context;
         private Timeline<Tweet> timeline;
         private Callback<Tweet> actionCallback;
+        private int styleResId = R.style.tw__TweetLightStyle;
 
         /**
          * Constructs a Builder.
@@ -128,6 +132,15 @@ public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
         }
 
         /**
+         * Sets the Tweet view style by resource id.
+         * @param styleResId resource id of the Tweet view style
+         */
+        public Builder setViewStyle(int styleResId) {
+            this.styleResId = styleResId;
+            return this;
+        }
+
+        /**
          * Sets the callback to call when a Tweet action is performed on a Tweet view.
          * @param actionCallback called when a Tweet action is performed.
          */
@@ -141,7 +154,7 @@ public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
          * @return a TweetTimelineListAdpater
          */
         public TweetTimelineListAdapter build() {
-            return new TweetTimelineListAdapter(context, timeline, actionCallback);
+            return new TweetTimelineListAdapter(context, timeline, styleResId, actionCallback);
         }
     }
 }
