@@ -57,10 +57,6 @@ android {
         }
     }
 
-    jacoco {
-        version = jacocoVersion
-    }
-
     //Gradle publishes only release by default for multi module projects
     //This will publish all build variants and we can specifically choose them
     defaultPublishConfig 'release'
