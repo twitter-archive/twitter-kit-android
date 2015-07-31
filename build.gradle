@@ -18,25 +18,46 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.2.3'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
+        classpath 'io.fabric.gradle.weaving:projectOrBinary:0.0.1'
+        classpath 'io.fabric.gradle.release:kit-release:0.0.1'
     }
 }
 
 ext {
+    commonPlugins = new File(projectDir, 'common-plugins.gradle')
+    internalScript = new File(projectDir, 'internal.gradle')
+
     fabricDir = projectDir.parentFile.parentFile
     qualityScript = new File(fabricDir, 'quality.gradle')
-    internalScript = new File(projectDir, 'internal.gradle')
+    deployScript = new File(fabricDir, 'deploy.gradle')
+    kitsForRelease = [
+            ":tweet-composer": false,
+            ":tweet-ui": false,
+            ":twitter": false,
+            ":twitter-core": false
+    ]
 }
 
-subprojects {
-    apply from: rootProject.ext.internalScript
+subprojects { Project subproject ->
+    apply from: rootProject.internalScript
+    apply plugin: 'io.fabric.gradle.weaving.projectOrBinary'
 
     repositories {
         mavenCentral()
         maven { url 'https://maven.fabric.io/public' }
+        mavenLocal()
+    }
+
+    // We need to do this so that by the time any project registers a dependency, that project
+    // already have this property.
+    projectOrBinary {
+        useProject = kitsForRelease.findAll({it.getValue()}).isEmpty() ||
+                kitsForRelease.get(subproject.path)
     }
 }
 
@@ -45,6 +66,7 @@ task wrapper(type: Wrapper) {
 }
 
 ext {
+    enableTestCodeCoverage = true
     compileSdkVersion = 22
     targetSdkVersion = 22
     buildToolsVersion = '22.0.1'

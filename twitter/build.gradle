@@ -15,10 +15,14 @@
  *
  */
 
+apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.library'
 
+apply plugin: 'io.fabric.gradle.release.kit-release'
 applyInternal from: rootProject.qualityScript
+applyInternal from: rootProject.deployScript
 applyInternal plugin: 'io.fabric.gradle.weaving.ArtifactSizePlugin'
+applyInternal plugin: 'io.fabric.gradle.weaving.FabricPropertiesPlugin'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -58,10 +62,16 @@ android {
     }
 }
 
+ext.projectDependencies = [
+        ':twitter-core' : 'com.twitter.sdk.android:twitter-core:+@aar',
+        ':tweet-ui' : 'com.twitter.sdk.android:tweet-ui:+@aar',
+        ':tweet-composer' : 'com.twitter.sdk.android:tweet-composer:+@aar'
+]
+
 dependencies {
-    compile project(':twitter-core')
-    compile project(':tweet-ui')
-    compile project(':tweet-composer')
+    projectDependencies.each { path, binary ->
+        compile projectOrBinary(path: path, binary: binary)
+    }
 
     compile rootProject.digits
     compile rootProject.fabric
@@ -74,3 +84,33 @@ dependencies {
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
 }
+
+internal {
+    fabricKitRelease {
+        apiKey = project.hasProperty('TWITTER_KIT_API_KEY') ? Project.TWITTER_KIT_API_KEY : ""
+        friendlyName = "Twitter"
+        name = "${project.pom_group_id}.${project.pom_artifact_id}"
+        description = "Integrate Log in with Twitter, embed Tweets, and leverage the Twitter API."
+        version = project.version
+        artifactUrl = "https://maven.fabric.io/repo/com/twitter/sdk/android/twitter/${project.version}/twitter-${project.version}.pom"
+        releaseNotesUrl = "https://s3.amazonaws.com/kits-crashlytics-com/android/com/twitter/sdk/android/twitter/${project.version}/twitter-${project.version}-release-notes.html"
+        createdAt = System.currentTimeMillis()
+        learnMoreUrl = "http://docs.fabric.io/android/twitter/index.html"
+        price {
+            plan = "free"
+        }
+        license {
+            name = "Twitter"
+            url = "https://twitter.com/tos"
+        }
+        releaseChannel = "public"
+        minBuild = 0
+        maxBuild = Integer.MAX_VALUE
+        minPlatformVersion {
+            apiVersion "8"
+        }
+    }
+}
+
+project.tasks.getByName('fabricKitRelease').enabled = rootProject.ext.kitsForRelease.get(project.path)
+

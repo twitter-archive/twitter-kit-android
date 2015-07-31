@@ -15,11 +15,11 @@
  *
  */
 
+
+apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.library'
 
-applyInternal from: rootProject.qualityScript
-applyInternal plugin: 'io.fabric.gradle.weaving.ArtifactSizePlugin'
-applyInternal plugin: 'io.fabric.gradle.weaving.DexMethodCountPlugin'
+apply from: rootProject.commonPlugins
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -53,6 +53,8 @@ android {
             buildConfigField "long", "BUILD_TIME", "${System.currentTimeMillis()}L"
             buildConfigField "String", "SCRIBE_ENDPOINT_OVERRIDE", "\"${scribeEndpointOverride}\""
             buildConfigField "String", "SCRIBE_SEQUENCE", "\"${scribeSequence}\""
+
+            testCoverageEnabled enableTestCodeCoverage
         }
 
         release {
@@ -73,11 +75,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
-
-    //Gradle publishes only release by default for multi module projects
-    //This will publish all build variants and we can specifically choose them
-    defaultPublishConfig 'release'
-    publishNonDefault true
 }
 
 internal {

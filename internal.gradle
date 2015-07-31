@@ -3,20 +3,28 @@ project.ext.applyInternal = { Map arguments ->
     File scriptFile = arguments.from
 
     // Apply script
-    if (scriptFile != null && scriptFile.exists()) {
-        project.apply from: scriptFile
+    if (scriptFile != null) {
+        if (scriptFile.exists()) {
+            project.apply from: scriptFile
+        } else {
+            project.logger.info("Unable to apply plugin script: {}", scriptFile.name)
+        }
     }
 
     // Apply plugin
     if (plugin != null) {
         try {
             project.apply plugin: Class.forName(plugin)
-        } catch (ClassNotFoundException e) { }
+        } catch (ClassNotFoundException e) {
+            project.logger.info("Unable to apply plugin class: {}", plugin)
+        }
     }
 }
 
 project.ext.internal = { Closure closure ->
     try {
         closure()
-    } catch (MissingMethodException e) { }
+    } catch (MissingMethodException e) {
+        project.logger.info("Unable to apply closure: {}", e.method)
+    }
 }

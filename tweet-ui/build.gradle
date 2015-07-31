@@ -15,11 +15,10 @@
  *
  */
 
+apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.library'
 
-applyInternal from: rootProject.qualityScript
-applyInternal plugin: 'io.fabric.gradle.weaving.ArtifactSizePlugin'
-applyInternal plugin: 'io.fabric.gradle.weaving.DexMethodCountPlugin'
+apply from: rootProject.commonPlugins
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -38,6 +37,8 @@ android {
             buildConfigField "String", "ARTIFACT_ID", "\"${pom_artifact_id}\""
             buildConfigField "String", "BUILD_NUMBER", "\"${buildNumber}\""
             buildConfigField "long", "BUILD_TIME", "${System.currentTimeMillis()}L"
+
+            testCoverageEnabled enableTestCodeCoverage
         }
         release {
             buildConfigField "String", "GROUP", "\"${pom_group_id}\""
@@ -73,10 +74,16 @@ internal {
     }
 }
 
-dependencies {
-    debugCompile project(path: ':twitter-core', configuration: 'debug')
-    releaseCompile project(path: ':twitter-core', configuration: 'release')
+ext.projectDependencies = [
+        ':twitter-core' : 'com.twitter.sdk.android:twitter-core:+@aar'
+]
 
+dependencies {
+    projectDependencies.each { path, binary ->
+        compile projectOrBinary(path: path, binary: binary)
+    }
+
+    compile rootProject.fabric
     compile rootProject.picasso
     compile rootProject.supportV4
 
