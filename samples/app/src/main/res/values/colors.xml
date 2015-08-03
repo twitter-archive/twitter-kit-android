@@ -1,4 +1,8 @@
 <resources>
+    <color name="app_primary">#2196F3</color>
+    <color name="app_primary_dark">#1976D2</color>
+    <color name="app_accent">#55acee</color>
+
     <color name="twitter_blue">#ff55acee</color>
     <color name="twitter_dark">#ff292f33</color>
     <color name="solid_red">#ff0000</color>

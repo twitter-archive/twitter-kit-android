@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +43,15 @@ import com.twitter.sdk.android.tweetui.TweetView;
 
 public class TweetPreviewActivity extends TweetUiActivity {
     private static final String TAG = "TweetPreviewActivity";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.preview_tweet);
+        }
+    }
 
     @Override
     int getLayout() {

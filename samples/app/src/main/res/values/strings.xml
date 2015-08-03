@@ -18,10 +18,7 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="twitter_app_name"
-            tools:ignore="UnusedResources">TwitterSampleApp</string>
-    <string name="twitter_sample_activity"
-            tools:ignore="UnusedResources">TwitterSampleActivity</string>
-
+            tools:ignore="UnusedResources">Twitter Sample</string>
     <string name="kit_twittercore">Twitter Core</string>
     <string name="kit_tweetcomposer">Tweet Composer</string>
     <string name="kit_tweetui">Tweet Ui</string>
@@ -30,17 +27,18 @@
     <string name="tweet">Tweet</string>
 
     <!-- TweetUi strings -->
-    <string name="button_xml_tweet_activity">XML Tweets</string>
-    <string name="button_tweet_activity">Tweets</string>
-    <string name="button_unqiue_tweet_activity">Unique Tweets</string>
-    <string name="button_tweet_list_activity">Tweet List</string>
-    <string name="button_timeline_activity">Timeline</string>
+    <string name="preview_tweet">Preview</string>
+    <string name="xml_tweets_activity">XML Tweets</string>
+    <string name="tweets_activity">Single Tweets</string>
+    <string name="unqiue_tweets">Unique Tweets</string>
     <string name="button_timelines_activity">Timelines</string>
     <string name="search_timeline_title">Search Timeline</string>
     <string name="user_timeline_title">User Timeline</string>
     <string name="collection_timeline_title">Collection Timeline</string>
     <string name="list_timeline_title">List Timeline</string>
-    <string name="button_tweet_preview_activity">Preview</string>
+    <string name="fixed_timeline">Fixed Timeline</string>
+    <string name="refresh_timeline">Refresh Timeline</string>
+    <string name="refresh_timeline_title">Search: #twitter</string>
     <string name="button_show_light">Light</string>
     <string name="button_show_dark">Dark</string>
     <string name="selector_input_hint">Tweet id</string>

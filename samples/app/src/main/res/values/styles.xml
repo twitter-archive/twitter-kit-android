@@ -1,5 +1,15 @@
 <resources>
 
+    <!--Application theme-->
+    <style name="TwitterSampleTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!--colorPrimary is used for the action bar-->
+        <item name="colorPrimary">@color/app_primary</item>
+        <!--colorPrimaryDark is used for the status bar-->
+        <item name="colorPrimaryDark">@color/app_primary_dark</item>
+        <!--colorAccent is the default color widgets are tinted-->
+        <item name="colorAccent">@color/app_accent</item>
+    </style>
+
     <!--Demos client styling with a style inheriting from our styles-->
     <style name="twitter_InheritedLightTweet" parent="tw__TweetLightStyle">
         <item name="tw__primary_text_color">@color/solid_red</item>

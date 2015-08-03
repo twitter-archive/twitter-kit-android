@@ -17,10 +17,10 @@
 
 package com.example.app.twittercore;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.twitter.sdk.android.core.Callback;
@@ -32,7 +32,7 @@ import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
 import com.example.app.R;
 
-public class TwitterCoreMainActivity extends Activity {
+public class TwitterCoreMainActivity extends AppCompatActivity {
 
     private TwitterLoginButton loginButton;
 

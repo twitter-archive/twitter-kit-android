@@ -29,11 +29,12 @@
         android:name=".SampleApplication"
         android:allowBackup="true"
         android:icon="@drawable/twitter_ic_launcher"
-        android:label="@string/twitter_app_name">
+        android:label="@string/twitter_app_name"
+        android:theme="@style/TwitterSampleTheme">
 
         <activity
             android:name=".TwitterSampleActivity"
-            android:label="@string/twitter_sample_activity">
+            android:label="@string/twitter_app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -65,7 +66,7 @@
             android:name=".tweetui.UniqueTweetActivity"
             android:label="@string/kit_tweetui"/>
         <activity
-            android:name=".tweetui.TweetListActivity"
+            android:name=".tweetui.FixedTimelineActivity"
             android:label="@string/kit_tweetui"/>
         <activity
             android:name=".tweetui.TimelineActivity"

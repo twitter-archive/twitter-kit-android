@@ -19,13 +19,13 @@ package com.example.app.tweetui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
 import com.example.app.R;
 
-public class TweetUiMainActivity extends FragmentActivity {
+public class TweetUiMainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,15 +56,15 @@ public class TweetUiMainActivity extends FragmentActivity {
             }
         });
 
-        final Button tweetListButton = (Button) findViewById(R.id.button_tweet_list_activity);
+        final Button tweetListButton = (Button) findViewById(R.id.button_fixed_timeline_activity);
         tweetListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(TweetUiMainActivity.this, TweetListActivity.class));
+                startActivity(new Intent(TweetUiMainActivity.this, FixedTimelineActivity.class));
             }
         });
 
-        final Button timelineButton = (Button) findViewById(R.id.button_timeline_activity);
+        final Button timelineButton = (Button) findViewById(R.id.button_refresh_timeline_activity);
         timelineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

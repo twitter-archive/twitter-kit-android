@@ -4,12 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView android:id="@id/android:empty"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:gravity="center_horizontal|center_vertical"
-              android:text="@string/timeline_empty"/>
-
     <ListView android:id="@id/android:list"
               android:layout_width="match_parent"
               android:layout_height="0dp"
@@ -17,5 +11,11 @@
               android:divider="@color/divider_gray"
               android:dividerHeight="@dimen/divider_height"
               android:drawSelectorOnTop="false"/>
+
+    <TextView android:id="@id/android:empty"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="center_horizontal|center_vertical"
+              android:text="@string/timeline_empty"/>
 
 </LinearLayout>

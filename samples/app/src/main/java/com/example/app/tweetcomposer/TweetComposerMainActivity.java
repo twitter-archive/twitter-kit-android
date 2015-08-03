@@ -17,8 +17,8 @@
 
 package com.example.app.tweetcomposer;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
@@ -29,7 +29,7 @@ import com.example.app.R;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class TweetComposerMainActivity extends Activity {
+public class TweetComposerMainActivity extends AppCompatActivity {
     private static final String TAG = "TweetComposer";
 
     @Override

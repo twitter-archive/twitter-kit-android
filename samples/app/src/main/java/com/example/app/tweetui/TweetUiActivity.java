@@ -19,11 +19,14 @@ package com.example.app.tweetui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import com.example.app.R;
 
-public abstract class TweetUiActivity extends FragmentActivity {
+/**
+ * TweetUiActivity base activity which supports single fragments and the ActionBar.
+ */
+public abstract class TweetUiActivity extends AppCompatActivity {
 
     abstract int getLayout();
 
@@ -33,13 +36,11 @@ public abstract class TweetUiActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, createFragment())
                     .commit();
         }
-
         setContentView(getLayout());
     }
 }
