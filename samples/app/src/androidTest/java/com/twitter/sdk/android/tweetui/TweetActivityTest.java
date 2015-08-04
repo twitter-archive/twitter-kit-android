@@ -17,6 +17,7 @@
 
 package com.twitter.sdk.android.tweetui;
 
+import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
 
 import com.example.app.R;
@@ -28,8 +29,10 @@ import static android.support.test.espresso.Espresso.registerIdlingResources;
 /**
  * UI/integration tests of Tweet views added to the layout via code (requires network connectivity).
  */
-public class TweetActivityTest extends BaseTweetViewActivityTest<TweetActivity> {
+public class TweetActivityTest extends ActivityInstrumentationTestCase2<TweetActivity> {
     private static final String TAG = "TweetActivityTest";
+    private static final String EXPECTED_TIMESTAMP = "• 03/21/06";
+    private static final String EXPECTED_TEXT = "just setting up my twttr";
     private TweetActivity activity;
 
     public TweetActivityTest() {
@@ -53,15 +56,23 @@ public class TweetActivityTest extends BaseTweetViewActivityTest<TweetActivity> 
         registerIdlingResources(jackRes, jackCompactRes, bikeRes, bikeCompactRes);
     }
 
-    @Override
     public void testTweetView() throws Exception {
-        super.testTweetView();
+        TweetAsserts.assertTweetText(R.id.jack_regular_tweet, EXPECTED_TEXT);
+        TweetAsserts.assertTweetTimestamp(R.id.jack_regular_tweet, EXPECTED_TIMESTAMP);
+        TweetAsserts.assertVerifiedUser(R.id.jack_regular_tweet);
+        TweetAsserts.assertActionsEnabled(R.id.jack_regular_tweet);
+
+        TweetAsserts.assertNonVerifiedUser(R.id.bike_regular_tweet);
+
         Spoon.screenshot(activity, TAG);
     }
 
-    @Override
     public void testCompactTweetView() throws Exception {
-        super.testCompactTweetView();
+        TweetAsserts.assertTweetText(R.id.jack_compact_tweet, EXPECTED_TEXT);
+        TweetAsserts.assertTweetTimestamp(R.id.jack_compact_tweet, EXPECTED_TIMESTAMP);
+        TweetAsserts.assertNoVerifiedBadge(R.id.jack_compact_tweet);
+        TweetAsserts.assertActionsEnabled(R.id.jack_compact_tweet);
+
         Spoon.screenshot(activity, TAG);
     }
 }

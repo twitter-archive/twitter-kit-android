@@ -17,6 +17,8 @@
 
 package com.twitter.sdk.android.tweetui;
 
+import android.test.ActivityInstrumentationTestCase2;
+
 import com.example.app.R;
 import com.example.app.tweetui.XmlTweetActivity;
 import com.squareup.spoon.Spoon;
@@ -26,8 +28,10 @@ import static android.support.test.espresso.Espresso.registerIdlingResources;
 /**
  * UI/integration tests of XML Tweet views (requires network connectivity).
  */
-public class XmlTweetActivityTest extends BaseTweetViewActivityTest<XmlTweetActivity> {
+public class XmlTweetActivityTest extends ActivityInstrumentationTestCase2<XmlTweetActivity> {
     private static final String TAG = "XmlTweetActivityTest";
+    private static final String EXPECTED_TIMESTAMP = "• 03/21/06";
+    private static final String EXPECTED_TEXT = "just setting up my twttr";
     private XmlTweetActivity activity;
     // activity views to test
     TweetView jackTweet;
@@ -73,15 +77,23 @@ public class XmlTweetActivityTest extends BaseTweetViewActivityTest<XmlTweetActi
                 = (CompactTweetView) activity.findViewById(R.id.retweet_simpsons_compact_tweet);
     }
 
-    @Override
     public void testTweetView() throws Exception {
-        super.testTweetView();
+        TweetAsserts.assertTweetText(R.id.jack_regular_tweet, EXPECTED_TEXT);
+        TweetAsserts.assertTweetTimestamp(R.id.jack_regular_tweet, EXPECTED_TIMESTAMP);
+        TweetAsserts.assertVerifiedUser(R.id.jack_regular_tweet);
+        TweetAsserts.assertActionsDisabled(R.id.jack_regular_tweet);
+
+        TweetAsserts.assertNonVerifiedUser(R.id.bike_regular_tweet);
+
         Spoon.screenshot(activity, TAG);
     }
 
-    @Override
     public void testCompactTweetView() throws Exception {
-        super.testCompactTweetView();
+        TweetAsserts.assertTweetText(R.id.jack_compact_tweet, EXPECTED_TEXT);
+        TweetAsserts.assertTweetTimestamp(R.id.jack_compact_tweet, EXPECTED_TIMESTAMP);
+        TweetAsserts.assertNoVerifiedBadge(R.id.jack_compact_tweet);
+        TweetAsserts.assertActionsDisabled(R.id.jack_compact_tweet);
+
         Spoon.screenshot(activity, TAG);
     }
 }
