@@ -3,6 +3,10 @@
 
 ## Unreleased
 
+## v1.4.2
+
+* Made minor changes to support tweet-ui Tweet actions and error states.
+
 ## v1.4.1
 
 * (EF) (internal) Moved AuthRequestQueue to twitter-core.

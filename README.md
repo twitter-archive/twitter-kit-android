@@ -28,7 +28,7 @@ repositories {
 }
 
 dependencies {
-  compile('com.twitter.sdk.android:twitter:1.6.1@aar') {
+  compile('com.twitter.sdk.android:twitter:1.7.0@aar') {
     transitive = true
   }
 }
@@ -86,12 +86,12 @@ Follow [@Fabric](http://twitter.com/fabric) on Twitter for updates.
 
 * [Andre Pinter](https://twitter.com/endform)
 * [Dalton Hubble](https://twitter.com/dghubble)
-* [Lien Mamitsuka](https://twitter.com/lienm)
+* [Eric Frohnhoefer](https://twitter.com/ericfrohnhoefer)
+* [Lien Mamitsuka](https://twitter.com/lientm)
 * [Ty Smith](https://twitter.com/tsmith)
 
 Thanks for assistance and contributions:
 
-* [Eric Frohnhoefer](https://twitter.com/ericfrohnhoefer)
 * [Israel Camacho](https://twitter.com/rallat)
 * [Justin Starry](https://twitter.com/sirstarry)
 * [Yohan Hartanto](https://twitter.com/yohan)
