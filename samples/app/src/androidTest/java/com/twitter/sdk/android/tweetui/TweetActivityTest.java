@@ -24,7 +24,9 @@ import com.example.app.R;
 import com.example.app.tweetui.TweetActivity;
 import com.squareup.spoon.Spoon;
 
-import static android.support.test.espresso.Espresso.registerIdlingResources;
+import static android.support.test.espresso.Espresso.*;
+import static android.support.test.espresso.action.ViewActions.*;
+import static android.support.test.espresso.matcher.ViewMatchers.*;
 
 /**
  * UI/integration tests of Tweet views added to the layout via code (requires network connectivity).
@@ -57,17 +59,20 @@ public class TweetActivityTest extends ActivityInstrumentationTestCase2<TweetAct
     }
 
     public void testTweetView() throws Exception {
+        onView(withId(R.id.jack_regular_tweet)).perform(scrollTo());
         TweetAsserts.assertTweetText(R.id.jack_regular_tweet, EXPECTED_TEXT);
         TweetAsserts.assertTweetTimestamp(R.id.jack_regular_tweet, EXPECTED_TIMESTAMP);
         TweetAsserts.assertVerifiedUser(R.id.jack_regular_tweet);
         TweetAsserts.assertActionsEnabled(R.id.jack_regular_tweet);
 
+        onView(withId(R.id.bike_regular_tweet)).perform(scrollTo());
         TweetAsserts.assertNonVerifiedUser(R.id.bike_regular_tweet);
 
         Spoon.screenshot(activity, TAG);
     }
 
     public void testCompactTweetView() throws Exception {
+        onView(withId(R.id.jack_compact_tweet)).perform(scrollTo());
         TweetAsserts.assertTweetText(R.id.jack_compact_tweet, EXPECTED_TEXT);
         TweetAsserts.assertTweetTimestamp(R.id.jack_compact_tweet, EXPECTED_TIMESTAMP);
         TweetAsserts.assertNoVerifiedBadge(R.id.jack_compact_tweet);
