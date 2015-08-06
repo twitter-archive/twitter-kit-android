@@ -83,6 +83,7 @@ dependencies {
     releaseCompile project(path: ':sdk:twitter:twitter', configuration: 'release')
 
     compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.android.support:design:22.2.0'
     debugCompile rootProject.leakCanary
     releaseCompile rootProject.leakCanaryNoOp
 

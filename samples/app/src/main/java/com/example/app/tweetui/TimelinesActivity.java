@@ -19,18 +19,19 @@ package com.example.app.tweetui;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 
 import com.example.app.R;
 
 /**
  * TimelinesActivity pages between different timeline Fragments.
  */
-public class TimelinesActivity extends FragmentActivity {
+public class TimelinesActivity extends AppCompatActivity {
     private static final int PAGE_SEARCH = 0;
     private static final int PAGE_USER = 1;
     private static final int PAGE_COLLECTION = 2;
@@ -45,6 +46,9 @@ public class TimelinesActivity extends FragmentActivity {
         final FragmentPagerAdapter pagerAdapter = new TimelinePagerAdapter(fm, getResources());
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(pagerAdapter);
+
+        final TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     public static class TimelinePagerAdapter extends FragmentPagerAdapter {
