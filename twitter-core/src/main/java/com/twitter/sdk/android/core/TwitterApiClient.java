@@ -21,7 +21,7 @@ import com.twitter.sdk.android.core.internal.TwitterApi;
 import com.twitter.sdk.android.core.models.SafeListAdapter;
 import com.twitter.sdk.android.core.models.SafeMapAdapter;
 import com.twitter.sdk.android.core.services.AccountService;
-import com.twitter.sdk.android.core.internal.CollectionService;
+import com.twitter.sdk.android.core.services.CollectionService;
 import com.twitter.sdk.android.core.services.FavoriteService;
 import com.twitter.sdk.android.core.services.ListService;
 import com.twitter.sdk.android.core.services.SearchService;
@@ -124,7 +124,7 @@ public class TwitterApiClient {
 
     /**
      * Use CollectionTimeline directly, CollectionService is expected to change.
-     * @return {@link com.twitter.sdk.android.core.internal.CollectionService} to access TwitterApi
+     * @return {@link CollectionService} to access TwitterApi
      */
     public CollectionService getCollectionService() {
         return getService(CollectionService.class);

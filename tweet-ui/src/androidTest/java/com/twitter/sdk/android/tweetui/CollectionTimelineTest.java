@@ -26,7 +26,7 @@ import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.core.internal.TwitterCollection;
 import com.twitter.sdk.android.core.models.User;
 import com.twitter.sdk.android.core.models.UserBuilder;
-import com.twitter.sdk.android.core.internal.CollectionService;
+import com.twitter.sdk.android.core.services.CollectionService;
 
 import java.util.ArrayList;
 import java.util.HashMap;

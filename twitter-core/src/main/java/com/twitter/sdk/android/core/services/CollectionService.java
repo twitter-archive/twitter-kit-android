@@ -15,9 +15,10 @@
  *
  */
 
-package com.twitter.sdk.android.core.internal;
+package com.twitter.sdk.android.core.services;
 
 import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.internal.TwitterCollection;
 
 import retrofit.http.GET;
 import retrofit.http.Query;
