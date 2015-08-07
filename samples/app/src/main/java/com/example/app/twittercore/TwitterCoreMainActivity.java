@@ -20,9 +20,10 @@ package com.example.app.twittercore;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.ActionBar;
 import android.widget.Toast;
 
+import com.example.app.BaseActivity;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
@@ -32,7 +33,7 @@ import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
 import com.example.app.R;
 
-public class TwitterCoreMainActivity extends AppCompatActivity {
+public class TwitterCoreMainActivity extends BaseActivity {
 
     private TwitterLoginButton loginButton;
 
@@ -49,6 +50,10 @@ public class TwitterCoreMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.twittercore_activity_main);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.kit_twittercore);
+        }
 
         // Set up the login button by setting callback to invoke when authorization request
         // completes

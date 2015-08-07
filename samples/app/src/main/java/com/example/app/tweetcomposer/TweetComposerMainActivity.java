@@ -18,10 +18,12 @@
 package com.example.app.tweetcomposer;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import com.example.app.BaseActivity;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import com.example.app.R;
@@ -29,13 +31,17 @@ import com.example.app.R;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class TweetComposerMainActivity extends AppCompatActivity {
+public class TweetComposerMainActivity extends BaseActivity {
     private static final String TAG = "TweetComposer";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tweetcomposer_activity_main);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.kit_tweetcomposer);
+        }
     }
 
     public void onTweet(View view) {

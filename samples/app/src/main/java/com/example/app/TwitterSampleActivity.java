@@ -19,7 +19,6 @@ package com.example.app;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -28,7 +27,7 @@ import com.example.app.tweetcomposer.TweetComposerMainActivity;
 import com.example.app.tweetui.TweetUiMainActivity;
 import com.example.app.twittercore.TwitterCoreMainActivity;
 
-public class TwitterSampleActivity extends AppCompatActivity {
+public class TwitterSampleActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

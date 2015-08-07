@@ -19,14 +19,14 @@ package com.example.app.tweetui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 
+import com.example.app.BaseActivity;
 import com.example.app.R;
 
 /**
- * TweetUiActivity base activity which supports single fragments and the ActionBar.
+ * TweetUiActivity is a BaseActivity which creates a single fragment.
  */
-public abstract class TweetUiActivity extends AppCompatActivity {
+public abstract class TweetUiActivity extends BaseActivity {
 
     abstract int getLayout();
 

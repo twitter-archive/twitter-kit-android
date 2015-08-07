@@ -19,18 +19,23 @@ package com.example.app.tweetui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.app.BaseActivity;
 import com.example.app.R;
 
-public class TweetUiMainActivity extends AppCompatActivity {
+public class TweetUiMainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tweetui_activity_main);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.kit_tweetui);
+        }
 
         final Button xmlTweetButton = (Button) findViewById(R.id.button_xml_tweet_activity);
         xmlTweetButton.setOnClickListener(new View.OnClickListener() {

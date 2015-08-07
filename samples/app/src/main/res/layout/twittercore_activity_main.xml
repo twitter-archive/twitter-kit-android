@@ -5,6 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"/>
+
     <com.twitter.sdk.android.core.identity.TwitterLoginButton
         android:id="@+id/login_button"
         android:layout_width="wrap_content"

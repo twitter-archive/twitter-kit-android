@@ -16,7 +16,7 @@
   ~
   -->
 
-<ScrollView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -24,34 +24,40 @@
     tools:context=".MainActivity"
     tools:ignore="UnusedResources">
 
-    <LinearLayout
-        android:id="@+id/main_layout"
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"/>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <Button
-            android:layout_width="200dp"
+        <LinearLayout
+            android:id="@+id/main_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="onTwitterCore"
-            android:text="@string/kit_twittercore"
-            />
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <Button
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:onClick="onTweetComposer"
-            android:text="@string/kit_tweetcomposer"
-            />
+            <Button
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:onClick="onTwitterCore"
+                android:text="@string/kit_twittercore"/>
 
-        <Button
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:onClick="onTweetUi"
-            android:text="@string/kit_tweetui"
-            />
+            <Button
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:onClick="onTweetComposer"
+                android:text="@string/kit_tweetcomposer"/>
 
-    </LinearLayout>
-</ScrollView>
+            <Button
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:onClick="onTweetUi"
+                android:text="@string/kit_tweetui"/>
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

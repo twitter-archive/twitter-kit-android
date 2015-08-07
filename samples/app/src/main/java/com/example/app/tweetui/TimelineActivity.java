@@ -21,12 +21,12 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.app.BaseActivity;
 import com.example.app.R;
 import com.example.app.twittercore.TwitterCoreMainActivity;
 import com.twitter.sdk.android.core.Callback;
@@ -43,7 +43,7 @@ import java.lang.ref.WeakReference;
 /**
  * TimelineActivity shows a full screen timeline which is useful for screenshots.
  */
-public class TimelineActivity extends AppCompatActivity {
+public class TimelineActivity extends BaseActivity {
 
     final WeakReference<Activity> activityRef = new WeakReference<Activity>(TimelineActivity.this);
 
@@ -51,7 +51,6 @@ public class TimelineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tweetui_swipe_timeline);
-
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(R.string.refresh_timeline_title);
