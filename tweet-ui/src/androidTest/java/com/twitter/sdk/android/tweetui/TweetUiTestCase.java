@@ -28,7 +28,7 @@ import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.TwitterTestUtils;
+import com.twitter.sdk.android.core.TwitterCoreTestUtils;
 import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
 import com.twitter.sdk.android.core.services.StatusesService;
 
@@ -60,7 +60,7 @@ public class TweetUiTestCase extends FabricAndroidTestCase {
         createMocks();
 
         FabricTestUtils.resetFabric();
-        final TwitterCore twitterCore = TwitterTestUtils.createTwitter(
+        final TwitterCore twitterCore = TwitterCoreTestUtils.createTwitterCore(
                 new TwitterAuthConfig("", ""), clients);
         FabricTestUtils.with(getContext(), twitterCore, new TweetUi());
 

@@ -37,7 +37,7 @@ import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.TwitterTestUtils;
+import com.twitter.sdk.android.core.TwitterCoreTestUtils;
 import com.twitter.sdk.android.core.services.StatusesService;
 
 import com.squareup.picasso.Picasso;
@@ -74,7 +74,7 @@ public abstract class BaseTweetViewXmlTest extends FabricAndroidTestCase {
         FabricTestUtils.resetFabric();
 
         final TwitterCore twitterCore =
-                TwitterTestUtils.createTwitter(new TwitterAuthConfig("", ""), clients);
+                TwitterCoreTestUtils.createTwitterCore(new TwitterAuthConfig("", ""), clients);
         FabricTestUtils.with(getContext(), twitterCore, new TweetUi());
 
         tweetUi = TweetUi.getInstance();
