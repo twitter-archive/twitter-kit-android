@@ -30,7 +30,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class BaseTimelineTest {
     private static final String ILLEGAL_TWEET_UI_MESSAGE = "TweetUi instance must not be null";
     private static final Long TEST_ID = 200L;

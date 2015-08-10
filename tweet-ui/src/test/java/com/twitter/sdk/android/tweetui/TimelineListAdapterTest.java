@@ -39,7 +39,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class TimelineListAdapterTest {
     private static final int TEST_POSITION = 10;
     private TimelineListAdapter<TestItem> listAdapter;

@@ -40,7 +40,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class UserEntitiesTest {
 
     @Rule

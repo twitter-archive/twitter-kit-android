@@ -36,7 +36,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class SafeMapAdapterTest  {
     private static final String TEST_JSON_MAP_EMPTY = "{\"map\":{}}";
     private static final String TEST_JSON_MAP_STRING_VALUES

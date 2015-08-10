@@ -43,7 +43,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class AuthHandlerTest  {
     private static final TwitterAuthConfig AUTH_CONFIG
             = new TwitterAuthConfig("consumerKey", "consumerSecret");

@@ -30,7 +30,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class TimelineStateHolderTest {
     private static final Long ANY_POSITION = 1234L;
     private static final Long TEST_MIN_POSITION = 1111L;

@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.*;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class TweetTextUtilsTest {
     private static final String UNESCAPED_TWEET_TEXT = ">Hello there <\"What is a?\" &;";
     private static final String ESCAPED_TWEET_TEXT

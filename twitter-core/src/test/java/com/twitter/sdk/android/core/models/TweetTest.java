@@ -38,7 +38,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class TweetTest {
 
     private static final String EXPECTED_CREATED_AT = "Wed Jun 06 20:07:10 +0000 2012";

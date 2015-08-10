@@ -33,7 +33,7 @@ import java.util.TimeZone;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class TweetDateUtilsTest {
     // this is an arbitrary date, but the relative date assertions are all based off of it
     private static final long NOW_IN_MILLIS = 1395345704198L;

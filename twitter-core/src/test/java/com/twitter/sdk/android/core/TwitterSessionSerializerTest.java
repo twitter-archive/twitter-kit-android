@@ -28,7 +28,7 @@ import static org.junit.Assert.assertNull;
 
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class TwitterSessionSerializerTest  {
     // static unix timestamp so that tests are repeatable and more easily debugged
     private static final long CREATED_AT = 1414450780L;

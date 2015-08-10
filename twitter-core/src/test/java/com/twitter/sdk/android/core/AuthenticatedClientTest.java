@@ -40,7 +40,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class AuthenticatedClientTest  {
     static final String POST_VERB = "POST";
     static final String POST_KEY = "test";

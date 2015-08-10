@@ -45,7 +45,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class TimelineDelegateTest {
     private static final TestItem TEST_ITEM_1 = new TestItem(1111L);
     private static final TestItem TEST_ITEM_2 = new TestItem(2222L);

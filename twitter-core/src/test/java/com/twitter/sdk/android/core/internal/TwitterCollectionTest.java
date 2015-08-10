@@ -38,7 +38,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class TwitterCollectionTest {
     private static final int EXPECTED_NUM_USERS = 2;
     private static final int EXPECTED_NUM_TWEETS = 3;

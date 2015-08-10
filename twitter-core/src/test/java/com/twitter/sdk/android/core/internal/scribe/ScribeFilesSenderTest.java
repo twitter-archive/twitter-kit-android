@@ -66,7 +66,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class ScribeFilesSenderTest {
 
     private static final int NUM_SCRIBE_EVENTS = 9;

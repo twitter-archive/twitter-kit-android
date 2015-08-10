@@ -34,7 +34,7 @@ import retrofit.client.Header;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 @SmallTest
 public class TwitterRateLimitTest  {
 

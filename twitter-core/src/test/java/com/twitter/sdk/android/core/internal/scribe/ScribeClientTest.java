@@ -47,7 +47,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class ScribeClientTest {
 
     private static final long TEST_USER_ID = 12L;

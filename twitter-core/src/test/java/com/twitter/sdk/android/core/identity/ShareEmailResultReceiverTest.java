@@ -37,7 +37,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class ShareEmailResultReceiverTest  {
 
     private static final String TEST_EMAIL_ADDRESS = "test@test.com";

@@ -31,7 +31,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class OAuthWebChromeClientTest  {
 
     OAuthWebChromeClient client;

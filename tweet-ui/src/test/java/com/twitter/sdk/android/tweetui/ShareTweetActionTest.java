@@ -41,7 +41,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class ShareTweetActionTest {
 
     private static final String REQUIRED_SEND_ACTION = Intent.ACTION_SEND;

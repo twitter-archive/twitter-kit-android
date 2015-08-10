@@ -36,7 +36,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class OAuth1aHeadersTest  {
     private static final String VERIFY_CREDENTIALS_URL = "api.digits.com";
     private static final String ANY_AUTH_CREDENTIALS = "auth_credentials";

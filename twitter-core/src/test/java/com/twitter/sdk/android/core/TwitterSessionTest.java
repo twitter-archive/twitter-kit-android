@@ -27,7 +27,7 @@ import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.fail;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class TwitterSessionTest  {
 
     @Test

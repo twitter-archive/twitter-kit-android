@@ -41,7 +41,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class OAuthHandlerTest  {
 
     private static final int REQUEST_CODE = TwitterAuthConfig.DEFAULT_AUTH_REQUEST_CODE;

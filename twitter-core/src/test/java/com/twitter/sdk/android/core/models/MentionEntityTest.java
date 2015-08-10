@@ -32,7 +32,7 @@ import java.io.IOException;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class MentionEntityTest  {
 
     private static final String TEST_JSON = "{\"name\":\"Twitter API\","

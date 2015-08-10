@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import static org.mockito.Mockito.*;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class TweetRepositoryTest {
     private static final Long anyId = 1L;
     private static final List<Long> anyIds = new ArrayList<Long>();

@@ -34,7 +34,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class OAuthSigningTests  {
     private static final String ANY_AUTH_HEADER = "Digits Authority!";
     private static final String VERIFY_CREDENTIALS_URL = "http://digits.com";

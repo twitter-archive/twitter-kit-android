@@ -35,7 +35,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class ResetTweetCallbackTest {
 
     BaseTweetView mockTweetView;

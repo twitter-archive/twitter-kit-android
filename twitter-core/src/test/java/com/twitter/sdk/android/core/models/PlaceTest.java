@@ -39,7 +39,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class PlaceTest {
 
     private static final String EXPECTED_COUNTRY = "United States";

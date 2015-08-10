@@ -33,7 +33,7 @@ import java.util.List;
 import static org.mockito.Mockito.*;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class GuestSessionProviderTest {
     private TwitterCore mockTwitterCore;
     private SessionProvider sessionProvider;

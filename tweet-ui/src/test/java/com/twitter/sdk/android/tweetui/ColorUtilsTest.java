@@ -27,7 +27,7 @@ import org.robolectric.annotation.Config;
 import static org.junit.Assert.*;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 public class ColorUtilsTest {
 
     @Test

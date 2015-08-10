@@ -34,7 +34,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, emulateSdk = 21)
+@Config(constants = BuildConfig.class, sdk = 21)
 @SuppressWarnings("checkstyle:linelength")
 public class OAuth1aParametersTest  {
 
