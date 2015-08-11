@@ -78,8 +78,8 @@ ext {
     digits = 'com.digits.sdk.android:digits:1.7.+@aar'
 
     // Sample App
-    leakCanary = 'com.squareup.leakcanary:leakcanary-android:1.3'
-    leakCanaryNoOp = 'com.squareup.leakcanary:leakcanary-android-no-op:1.3'
+    leakCanary = 'com.squareup.leakcanary:leakcanary-android:1.3.1'
+    leakCanaryNoOp = 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
     appCompat = 'com.android.support:appcompat-v7:21.0.2'
 
     // Tests
@@ -96,9 +96,9 @@ ext {
     // Other
     picasso = 'com.squareup.picasso:picasso:2.5.2'
     supportV4 = 'com.android.support:support-v4:21.0.0'
-    retrofit = 'com.squareup.retrofit:retrofit:1.6.1'
-    retrofitMock = 'com.squareup.retrofit:retrofit-mock:1.6.1'
+    retrofit = 'com.squareup.retrofit:retrofit:1.8.0'
+    retrofitMock = 'com.squareup.retrofit:retrofit-mock:1.8.0'
     gson = 'com.google.code.gson:gson:2.2.4'
-    okHttp = 'com.squareup.okhttp:okhttp:2.0.0'
-    okHttpUrlConnection = 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
+    okHttp = 'com.squareup.okhttp:okhttp:2.3.0'
+    okHttpUrlConnection = 'com.squareup.okhttp:okhttp-urlconnection:2.3.0'
 }
