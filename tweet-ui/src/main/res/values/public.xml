@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--suppress UnusedResources -->
+    <public type="style" name="tw__TweetLightStyle"/>
+    <!--suppress UnusedResources -->
+    <public type="style" name="tw__TweetLightWithActionsStyle"/>
+    <!--suppress UnusedResources -->
+    <public type="style" name="tw__TweetDarkStyle"/>
+    <!--suppress UnusedResources -->
+    <public type="style" name="tw__TweetDarkWithActionsStyle"/>
+</resources>

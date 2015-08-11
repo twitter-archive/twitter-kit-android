@@ -19,12 +19,15 @@ package com.twitter.sdk.android.tweetui;
 
 import com.example.app.R;
 
+import java.lang.SuppressWarnings;
+
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.*;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static org.hamcrest.Matchers.*;
 
 public abstract class TweetAsserts {
+    @SuppressWarnings("PrivateResource")
     public static void assertTweetText(int tweetResId, String expected) throws Exception {
         onView(allOf(withId(R.id.tw__tweet_text),
                 isDescendantOfA(withId(tweetResId))))
@@ -32,6 +35,7 @@ public abstract class TweetAsserts {
                 .check(matches(withText(expected)));
     }
 
+    @SuppressWarnings("PrivateResource")
     public static void assertTweetTimestamp(int tweetResId, String expected) throws Exception {
         onView(allOf(withId(R.id.tw__tweet_timestamp),
                 isDescendantOfA(withId(tweetResId))))
@@ -39,24 +43,28 @@ public abstract class TweetAsserts {
                 .check(matches(withText(expected)));
     }
 
+    @SuppressWarnings("PrivateResource")
     public static void assertVerifiedUser(int tweetResId) {
         onView(allOf(withId(R.id.tw__tweet_author_verified),
                 isDescendantOfA(withId(tweetResId))))
                 .check(matches(isDisplayed()));
     }
 
+    @SuppressWarnings("PrivateResource")
     public static void assertNonVerifiedUser(int tweetResId) {
         onView(allOf(withId(R.id.tw__tweet_author_verified),
                 isDescendantOfA(withId(tweetResId))))
                 .check(matches(not(isDisplayed())));
     }
 
+    @SuppressWarnings("PrivateResource")
     public static void assertNoVerifiedBadge(int tweetResId) {
         onView(allOf(withId(R.id.tw__tweet_author_verified),
                 isDescendantOfA(withId(tweetResId))))
                 .check(doesNotExist());
     }
 
+    @SuppressWarnings("PrivateResource")
     public static void assertActionsEnabled(int tweetResId) {
         // tweet actions enabled
         onView(allOf(withId(R.id.tw__tweet_action_bar),
@@ -78,6 +86,7 @@ public abstract class TweetAsserts {
                 .check(matches(isClickable()));
     }
 
+    @SuppressWarnings("PrivateResource")
     public static void assertActionsDisabled(int tweetResId) {
         onView(allOf(withId(R.id.tw__tweet_action_bar),
                 isDescendantOfA(withId(tweetResId))))
