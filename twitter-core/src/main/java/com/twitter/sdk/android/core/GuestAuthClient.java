@@ -47,7 +47,7 @@ class GuestAuthClient {
         if (appSessionManager == null) {
             throw new IllegalArgumentException("SessionManager must not be null");
         }
-        service.requestGuestOrAppAuthToken(new CallbackWrapper(appSessionManager, callback));
+        service.requestGuestAuthToken(new CallbackWrapper(appSessionManager, callback));
     }
 
     /**

@@ -61,12 +61,10 @@ public class OAuth2Service extends OAuthService {
     }
 
     /**
-     * Requests a guest auth token if possible, otherwise, returns an application-only token.
-     *
+     * Requests a guest auth token.
      * @param callback The callback interface to invoke when when the request completes.
      */
-    public void requestGuestOrAppAuthToken(final Callback<OAuth2Token> callback) {
-        // TODO: Simplify this and add better tests.
+    public void requestGuestAuthToken(final Callback<OAuth2Token> callback) {
         final Callback<OAuth2Token> appAuthCallback = new Callback<OAuth2Token>() {
             @Override
             public void success(Result<OAuth2Token> result) {
@@ -85,11 +83,10 @@ public class OAuth2Service extends OAuthService {
 
                     @Override
                     public void failure(TwitterException error) {
-                        // Failed to get a guest auth token, returning app auth token instead
                         Fabric.getLogger().e(TwitterCore.TAG,
-                                "Your app may be rate limited. Please talk to us "
-                                + "regarding upgrading your consumer key.", error);
-                        callback.success(new Result<>(appAuthToken, null));
+                                "Your app may not allow guest auth. Please talk to us "
+                                        + "regarding upgrading your consumer key.", error);
+                        callback.failure(error);
                     }
                 };
                 requestGuestToken(guestTokenCallback, appAuthToken);

@@ -124,7 +124,7 @@ public class GuestAuthClientTest  {
     }
 
     /**
-     * Fakes an OAuth2Service where network requests for guest or app auth tokens succeed.
+     * Fakes an OAuth2Service where network requests for guest auth tokens succeed.
      */
     class FakeSuccessOAuth2Service extends OAuth2Service {
 
@@ -134,14 +134,14 @@ public class GuestAuthClientTest  {
         }
 
         @Override
-        public void requestGuestOrAppAuthToken(Callback<OAuth2Token> callback) {
+        public void requestGuestAuthToken(Callback<OAuth2Token> callback) {
             final GuestAuthToken guestAuthToken = mock(GuestAuthToken.class);
             callback.success(new Result<OAuth2Token>(guestAuthToken, null));
         }
     }
 
     /**
-     * Fakes an OAuth2Service where network requests for auth tokens fail.
+     * Fakes an OAuth2Service where network requests for guest auth tokens fail.
      */
     class FakeFailureOAuth2Service extends OAuth2Service {
 
@@ -151,7 +151,7 @@ public class GuestAuthClientTest  {
         }
 
         @Override
-        public void requestGuestOrAppAuthToken(Callback<OAuth2Token> callback) {
+        public void requestGuestAuthToken(Callback<OAuth2Token> callback) {
             callback.failure(new TwitterException("fake exception"));
         }
     }

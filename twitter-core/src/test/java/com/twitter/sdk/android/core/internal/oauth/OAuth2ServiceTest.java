@@ -158,7 +158,7 @@ public class OAuth2ServiceTest  {
     }
 
     @Test
-    public void testRequestGuestOrAppAuth_guestAuthSuccess() {
+    public void testRequestGuestAuthToken_guestAuthSuccess() {
 
         service.api = new MockOAuth2Api() {
             @Override
@@ -175,7 +175,7 @@ public class OAuth2ServiceTest  {
             }
         };
 
-        service.requestGuestOrAppAuthToken(new Callback<OAuth2Token>() {
+        service.requestGuestAuthToken(new Callback<OAuth2Token>() {
             @Override
             public void success(Result<OAuth2Token> result) {
                 assertEquals(GUEST_TOKEN, result.data);
@@ -189,7 +189,7 @@ public class OAuth2ServiceTest  {
     }
 
     @Test
-    public void testRequestGuestOrAppAuth_guestFailure() {
+    public void testRequestGuestAuthToken_guestFailure() {
 
         service.api = new MockOAuth2Api() {
             @Override
@@ -206,21 +206,21 @@ public class OAuth2ServiceTest  {
             }
         };
 
-        service.requestGuestOrAppAuthToken(new Callback<OAuth2Token>() {
+        service.requestGuestAuthToken(new Callback<OAuth2Token>() {
             @Override
             public void success(Result<OAuth2Token> result) {
-                assertEquals(APP_TOKEN, result.data);
+                fail();
             }
 
             @Override
             public void failure(TwitterException error) {
-                fail();
+                assertNotNull(error);
             }
         });
     }
 
     @Test
-    public void testRequestGuestOrAppAuth_appAuthFailure() {
+    public void testRequestGuestAuthToken_appAuthFailure() {
 
         service.api = new MockOAuth2Api() {
             @Override
@@ -239,7 +239,7 @@ public class OAuth2ServiceTest  {
             }
         };
 
-        service.requestGuestOrAppAuthToken(new Callback<OAuth2Token>() {
+        service.requestGuestAuthToken(new Callback<OAuth2Token>() {
             @Override
             public void success(Result<OAuth2Token> result) {
                 fail();
