@@ -79,7 +79,7 @@ public class GuestCallback<T> extends Callback<T> {
             final int errorCode = apiException.getErrorCode();
             Fabric.getLogger().e(TwitterCore.TAG, "API call failure.", apiException);
 
-            // clear session if guest auth token or app auth token expired
+            // clear session if guest auth token or app auth token invalid
             if (errorCode == TwitterApiConstants.Errors.APP_AUTH_ERROR_CODE ||
                     errorCode == TwitterApiConstants.Errors.GUEST_AUTH_ERROR_CODE) {
                 if (appSessionManager != null) {

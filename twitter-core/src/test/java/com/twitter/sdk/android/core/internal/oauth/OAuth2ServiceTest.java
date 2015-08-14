@@ -53,7 +53,7 @@ public class OAuth2ServiceTest  {
      */
     private static final String CONSUMER_KEY = "xvz1evFS4wEEPTGEFPHBog";
     private static final String CONSUMER_SECRET = "L8qq9PZyRg6ieKGEKhZolGC0vJWLw8iEJ88DRdyOg";
-    private static final OAuth2Token APP_TOKEN = new OAuth2Token("type", "access");
+    private static final AppAuthToken APP_TOKEN = new AppAuthToken("type", "access");
     private static final GuestAuthToken GUEST_TOKEN = new GuestAuthToken("type", "access", "guest");
     private static final GuestTokenResponse GUEST_RESPONSE = new GuestTokenResponse("guest");
 
@@ -78,7 +78,7 @@ public class OAuth2ServiceTest  {
         @Override
         public void getAppAuthToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
                 @Field(OAuthConstants.PARAM_GRANT_TYPE) String grantType,
-                Callback<OAuth2Token> cb) {
+                Callback<AppAuthToken> cb) {
             // Does nothing
         }
     }
@@ -130,7 +130,7 @@ public class OAuth2ServiceTest  {
             @Override
             public void getAppAuthToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
                                         @Field(OAuthConstants.PARAM_GRANT_TYPE) String grantType,
-                                        Callback<OAuth2Token> cb) {
+                                        Callback<AppAuthToken> cb) {
                 assertEquals("Basic eHZ6MWV2RlM0d0VFUFRHRUZQSEJvZzpMOHFxOVBaeVJnNmllS0dFS2hab2xH" +
                                 "QzB2SldMdzhpRUo4OERSZHlPZw==",
                         auth);
@@ -170,7 +170,7 @@ public class OAuth2ServiceTest  {
             @Override
             public void getAppAuthToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
                                         @Field(OAuthConstants.PARAM_GRANT_TYPE) String grantType,
-                                        Callback<OAuth2Token> cb) {
+                                        Callback<AppAuthToken> cb) {
                 cb.success(new Result<>(APP_TOKEN, null));
             }
         };
@@ -201,7 +201,7 @@ public class OAuth2ServiceTest  {
             @Override
             public void getAppAuthToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
                                         @Field(OAuthConstants.PARAM_GRANT_TYPE) String grantType,
-                                        Callback<OAuth2Token> cb) {
+                                        Callback<AppAuthToken> cb) {
                 cb.success(new Result<>(APP_TOKEN, null));
             }
         };
@@ -234,7 +234,7 @@ public class OAuth2ServiceTest  {
             @Override
             public void getAppAuthToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
                     @Field(OAuthConstants.PARAM_GRANT_TYPE) String grantType,
-                    Callback<OAuth2Token> cb) {
+                    Callback<AppAuthToken> cb) {
                 cb.failure(mock(TwitterException.class));
             }
         };

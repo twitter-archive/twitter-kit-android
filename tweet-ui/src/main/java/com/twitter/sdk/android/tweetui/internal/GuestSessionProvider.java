@@ -18,13 +18,16 @@
 package com.twitter.sdk.android.tweetui.internal;
 
 import com.twitter.sdk.android.core.AppSession;
+import com.twitter.sdk.android.core.AuthToken;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
+import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.internal.SessionProvider;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.internal.oauth.GuestAuthToken;
 
 import java.util.List;
 
@@ -41,6 +44,20 @@ public class GuestSessionProvider extends SessionProvider {
             List<SessionManager<? extends Session>> sessionManagers) {
         super(sessionManagers);
         this.twitterCore = twitterCore;
+    }
+
+    @Override
+    public Session getActiveSession() {
+        final Session session = super.getActiveSession();
+        if (session == null) {
+            return null;
+        }
+        final AuthToken token = session.getAuthToken();
+        // allow only user auth and guest auth tokens, not old app auth tokens
+        if (token instanceof TwitterAuthToken || token instanceof GuestAuthToken) {
+            return session;
+        }
+        return null;
     }
 
     /*

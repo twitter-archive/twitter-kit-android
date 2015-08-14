@@ -3,6 +3,13 @@
 
 ## Unreleased
 
+* Fixed automatic guest auth (TweetUtils methods and Timelines) which allowed application-only
+auth token fallback in some cases.
+    * Automatic guest auth for TweetUtils methods and Timelines persist AppSessions. The AppSession
+    populated by logInGuest could previously return an non-expiring application-only auth token in
+    some cases, causing app auth rate limiting to affect some users.
+    * Changed automatic guest auth queue to disallow and clear application-only auth tokens.
+* Removed logInGuest fallback to application-only auth, new AppSessions consistently use a GuestAuthToken.
 * Fixed bug in TwitterApiException's TwitterRateLimit.getRemainingTime()
 
 ## v1.4.2

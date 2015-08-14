@@ -51,7 +51,7 @@ public class OAuth2Service extends OAuthService {
         @POST("/oauth2/token")
         void getAppAuthToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
                 @Field(OAuthConstants.PARAM_GRANT_TYPE) String grantType,
-                Callback<OAuth2Token> cb);
+                Callback<AppAuthToken> cb);
     }
 
     public OAuth2Service(TwitterCore twitterCore, SSLSocketFactory sslSocketFactory,
@@ -65,9 +65,9 @@ public class OAuth2Service extends OAuthService {
      * @param callback The callback interface to invoke when when the request completes.
      */
     public void requestGuestAuthToken(final Callback<OAuth2Token> callback) {
-        final Callback<OAuth2Token> appAuthCallback = new Callback<OAuth2Token>() {
+        final Callback<AppAuthToken> appAuthCallback = new Callback<AppAuthToken>() {
             @Override
-            public void success(Result<OAuth2Token> result) {
+            public void success(Result<AppAuthToken> result) {
                 final OAuth2Token appAuthToken = result.data;
                 // Got back an app auth token, now request a guest auth token.
                 final Callback<GuestTokenResponse> guestTokenCallback
@@ -78,7 +78,7 @@ public class OAuth2Service extends OAuthService {
                         final GuestAuthToken guestAuthToken = new GuestAuthToken(
                                 appAuthToken.getTokenType(), appAuthToken.getAccessToken(),
                                 result.data.guestToken);
-                            callback.success(new Result<OAuth2Token>(guestAuthToken, null));
+                        callback.success(new Result<OAuth2Token>(guestAuthToken, null));
                     }
 
                     @Override
@@ -108,12 +108,12 @@ public class OAuth2Service extends OAuthService {
      *
      * @param callback The callback interface to invoke when when the request completes.
      */
-    public void requestAppAuthToken(final Callback<OAuth2Token> callback) {
+    public void requestAppAuthToken(final Callback<AppAuthToken> callback) {
         api.getAppAuthToken(getAuthHeader(), OAuthConstants.GRANT_TYPE_CLIENT_CREDENTIALS,
                 callback);
     }
 
-    /*
+    /**
      * Requests a guest token.
      *
      * @param callback The callback interface to invoke when when the request completes.
@@ -121,7 +121,6 @@ public class OAuth2Service extends OAuthService {
      */
     public void requestGuestToken(final Callback<GuestTokenResponse> callback,
             OAuth2Token appAuthToken) {
-
         api.getGuestToken(getAuthorizationHeader(appAuthToken), callback);
     }
 
