@@ -3,6 +3,8 @@
 
 ## Unreleased
 
+* Fixed bug in TwitterApiException's TwitterRateLimit.getRemainingTime()
+
 ## v1.4.2
 
 * Made minor changes to support tweet-ui Tweet actions and error states.

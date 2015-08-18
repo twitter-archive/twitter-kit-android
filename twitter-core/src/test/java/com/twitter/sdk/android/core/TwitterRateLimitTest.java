@@ -17,8 +17,6 @@
 
 package com.twitter.sdk.android.core;
 
-import android.test.suitebuilder.annotation.SmallTest;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,13 +27,14 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.fabric.sdk.android.services.common.CurrentTimeProvider;
 import retrofit.client.Header;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
-@SmallTest
 public class TwitterRateLimitTest  {
 
     public static final String X_RATE_LIMIT_LIMIT = "x-rate-limit-limit";
@@ -79,5 +78,27 @@ public class TwitterRateLimitTest  {
         assertEquals(0, rateLimit.getLimit());
         assertEquals(0, rateLimit.getRemaining());
         assertEquals(0, rateLimit.getReset());
+    }
+
+    @Test
+    public void testRemainingTime_resetInFuture() {
+        final String reset = "1500";
+        headers.add(new Header(X_RATE_LIMIT_RESET, reset));
+        final CurrentTimeProvider mockCurrentTimeProvider
+                = mock(CurrentTimeProvider.class);
+        when(mockCurrentTimeProvider.getCurrentTimeMillis()).thenReturn(1000000L);
+        final TwitterRateLimit rateLimit = new TwitterRateLimit(headers, mockCurrentTimeProvider);
+        assertEquals(500L, rateLimit.getRemainingTime());
+    }
+
+    @Test
+    public void testRemainingTime_resetInPast() {
+        final String reset = "500";
+        headers.add(new Header(X_RATE_LIMIT_RESET, reset));
+        final CurrentTimeProvider mockCurrentTimeProvider
+                = mock(CurrentTimeProvider.class);
+        when(mockCurrentTimeProvider.getCurrentTimeMillis()).thenReturn(1000000L);
+        final TwitterRateLimit rateLimit = new TwitterRateLimit(headers, mockCurrentTimeProvider);
+        assertEquals(0L, rateLimit.getRemainingTime());
     }
 }

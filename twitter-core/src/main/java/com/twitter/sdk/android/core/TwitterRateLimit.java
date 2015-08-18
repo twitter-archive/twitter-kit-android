@@ -19,6 +19,8 @@ package com.twitter.sdk.android.core;
 
 import java.util.List;
 
+import io.fabric.sdk.android.services.common.CurrentTimeProvider;
+import io.fabric.sdk.android.services.common.SystemCurrentTimeProvider;
 import retrofit.client.Header;
 
 /**
@@ -32,23 +34,27 @@ class TwitterRateLimit  {
     private final static String REMAINING_KEY = "x-rate-limit-remaining";
     private final static String RESET_KEY = "x-rate-limit-reset";
 
-    private final long timeStamp;
-    private int limit;
+    private final long epochSeconds;
+    private int requestLimit;
     private int remainingRequest;
-    private long reset;
+    private long resetSeconds;
 
     TwitterRateLimit(final List<Header> headers) {
+        this(headers, new SystemCurrentTimeProvider());
+    }
+
+    TwitterRateLimit(final List<Header> headers, CurrentTimeProvider timeProvider) {
         if (headers == null) {
             throw new IllegalArgumentException("headers must not be null");
         }
-        timeStamp = System.currentTimeMillis();
+        this.epochSeconds = timeProvider.getCurrentTimeMillis() / 1000L;
         for (Header header : headers) {
             if (LIMIT_KEY.equals(header.getName())) {
-               limit = Integer.valueOf(header.getValue());
+                requestLimit = Integer.valueOf(header.getValue());
             } else if (REMAINING_KEY.equals(header.getName())) {
                 remainingRequest = Integer.valueOf(header.getValue());
             } else if (RESET_KEY.equals(header.getName())) {
-                reset = Long.valueOf(header.getValue());
+                resetSeconds = Long.valueOf(header.getValue());
             }
         }
     }
@@ -57,7 +63,7 @@ class TwitterRateLimit  {
      * Returns the rate limit ceiling for that given request
      */
     public int getLimit() {
-        return limit;
+        return requestLimit;
     }
 
     /**
@@ -71,24 +77,24 @@ class TwitterRateLimit  {
      * Returns epoch time that rate limit reset will happen.
      */
     public long getReset() {
-        return reset;
+        return resetSeconds;
     }
 
     /**
      * Returns epoch time that request was made.
      */
     public long getRequestedTime() {
-        return timeStamp;
+        return epochSeconds;
     }
 
     /**
      * Returns epoch time remaining in rate limit window.
      */
     public long getRemainingTime() {
-        if (reset > timeStamp) {
+        if (epochSeconds > resetSeconds) {
             return 0;
         } else {
-            return reset - timeStamp;
+            return resetSeconds - epochSeconds;
         }
     }
 }
