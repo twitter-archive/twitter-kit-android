@@ -3,6 +3,8 @@
 
 ## Unreleased
 
+## v1.4.3
+
 * Fixed automatic guest auth (TweetUtils methods and Timelines) which allowed application-only
 auth token fallback in some cases.
     * Automatic guest auth for TweetUtils methods and Timelines persist AppSessions. The AppSession

@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+## v1.4.1
+
 ## v1.4.0
 
 * Added Tweet actions to Tweet views.
