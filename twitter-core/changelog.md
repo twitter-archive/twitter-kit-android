@@ -3,6 +3,7 @@
 
 ## Unreleased
 
+* Added a StatusService update endpoint which accepts mediaIds.
 * Added MediaService to support media upload.
 
 ## v1.4.3
