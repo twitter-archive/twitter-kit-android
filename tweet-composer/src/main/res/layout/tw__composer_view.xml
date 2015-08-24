@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/tw__composer_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            tools:ignore="ContentDescription"
+            android:id="@+id/tw__composer_close"
+            style="@style/tw__ComposerClose"/>
+
+        <ImageView
+            tools:ignore="ContentDescription"
+            android:id="@+id/tw__twitter_logo"
+            style="@style/tw__TwitterLogo"
+            android:layout_centerInParent="true"/>
+
+        <ImageView
+            tools:ignore="ContentDescription"
+            android:id="@+id/tw__author_avatar"
+            style="@style/tw__ComposerAvatar"
+            tools:background="@color/tw__tweet_media_preview_bg_color"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/tw__edit_tweet"
+        style="@style/tw__EditTweet"
+        android:layout_below="@id/tw__composer_header"
+        android:layout_above="@+id/tw__composer_toolbar_divider"/>
+
+    <LinearLayout
+        android:id="@+id/tw__composer_toolbar"
+        style="@style/tw__ComposerToolbar"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/tw__char_count"
+            style="@style/tw__ComposerCharCount"/>
+
+        <Button
+            android:id="@+id/tw__post_tweet"
+            style="@style/tw__ComposerTweetButton"/>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/tw__composer_toolbar_divider"
+        style="@style/tw__ComposerDivider"
+        android:layout_above="@id/tw__composer_toolbar"/>
+
+</RelativeLayout>

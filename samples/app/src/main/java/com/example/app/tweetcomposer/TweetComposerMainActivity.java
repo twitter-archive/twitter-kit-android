@@ -17,13 +17,15 @@
 
 package com.example.app.tweetcomposer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.example.app.BaseActivity;
+import com.twitter.sdk.android.tweetcomposer.ComposerActivity;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
 import com.example.app.R;
@@ -42,17 +44,29 @@ public class TweetComposerMainActivity extends BaseActivity {
         if (actionBar != null) {
             actionBar.setTitle(R.string.kit_tweetcomposer);
         }
-    }
 
-    public void onTweet(View view) {
-        try {
-            new TweetComposer.Builder(this)
-                    .text("Tweet from Fabric!")
-                    .url(new URL("http://www.twitter.com"))
-                    .show();
+        final Button tweetComposer = (Button) findViewById(R.id.tweet_composer);
+        tweetComposer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    new TweetComposer.Builder(TweetComposerMainActivity.this)
+                            .text("Tweet from Fabric!")
+                            .url(new URL("http://www.twitter.com"))
+                            .show();
 
-        } catch (MalformedURLException e) {
-            Log.e(TAG, "error creating tweet intent", e);
-        }
+                } catch (MalformedURLException e) {
+                    Log.e(TAG, "error creating tweet intent", e);
+                }
+            }
+        });
+
+        final Button organicComposer = (Button) findViewById(R.id.organic_composer);
+        organicComposer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(TweetComposerMainActivity.this, ComposerActivity.class));
+            }
+        });
     }
 }

@@ -24,7 +24,8 @@
     <string name="kit_tweetui">Tweet Ui</string>
 
     <!-- TweetComposer strings -->
-    <string name="tweet">Tweet</string>
+    <string name="twitter_composer">Twitter Composer</string>
+    <string name="twitter_kit_composer">TwitterKit Composer</string>
 
     <!-- TweetUi strings -->
     <string name="preview_tweet">Preview</string>

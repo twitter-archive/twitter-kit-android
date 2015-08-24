@@ -68,6 +68,10 @@ internal {
     }
 }
 
+ext.projectDependencies = [
+        ':twitter-core' : 'com.twitter.sdk.android:twitter-core:+@aar'
+]
+
 dependencies {
     compile rootProject.fabric
 
