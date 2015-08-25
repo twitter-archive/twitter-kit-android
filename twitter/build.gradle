@@ -31,7 +31,7 @@ android {
     defaultConfig {
         versionCode 1
         versionName version
-        minSdkVersion 8
+        minSdkVersion 9
     }
 
     lintOptions {

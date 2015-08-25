@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+* Raised Min SDK version from 8 to 9.
+
 ## v0.8.0
 
 * (DH) Removed tweet-composer dependency on twitter-core.

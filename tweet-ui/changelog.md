@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+* Raised Min SDK version from 8 to 9.
+
 ## v1.4.1
 
 ## v1.4.0
