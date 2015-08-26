@@ -109,6 +109,17 @@ internal {
             apiVersion "8"
         }
     }
+
+    task uploadFabricReleaseNotes(group: 'Release',
+            description: 'Upload Release Notes to S3 bucket kits-crashlytics-com',
+            type: io.fabric.gradle.weaving.FileUploadS3Task) {
+        enabled = rootProject.ext.kitsForRelease.get(project.path)
+        accessKey = System.properties['AWS_ACCESS_KEY_ID']
+        secretKey = System.properties['AWS_SECRET_ACCESS_KEY']
+        bucketName = System.properties['AWS_BUCKET']
+        destination = "android/com/twitter/sdk/android/twitter/${project.version}/twitter-${project.version}-release-notes.html"
+        srcFile = new File("${project.projectDir}/release-notes.html")
+    }
 }
 
 project.tasks.getByName('fabricKitRelease').enabled = rootProject.ext.kitsForRelease.get(project.path)
