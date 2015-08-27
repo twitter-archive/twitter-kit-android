@@ -39,7 +39,8 @@ ext {
             ":tweet-composer": false,
             ":tweet-ui": false,
             ":twitter": false,
-            ":twitter-core": false
+            ":twitter-core": false,
+            ":twitter-unity": false
     ]
 }
 

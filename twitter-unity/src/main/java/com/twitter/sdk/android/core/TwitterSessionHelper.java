@@ -15,9 +15,19 @@
  *
  */
 
-include ':twitter-core'
-include ':tweet-composer'
-include ':tweet-ui'
-include ':twitter'
-include ':twitter-unity'
-include ':samples:app'
+package com.twitter.sdk.android.core;
+
+/**
+ * Helper for serializing/deserializing TwitterSession class
+ */
+public class TwitterSessionHelper {
+    public static String serialize(TwitterSession session) {
+        final TwitterSession.Serializer serializer = new TwitterSession.Serializer();
+        return serializer.serialize(session);
+    }
+
+    public static TwitterSession deserialize(String session) {
+        final TwitterSession.Serializer serializer = new TwitterSession.Serializer();
+        return serializer.deserialize(session);
+    }
+}
