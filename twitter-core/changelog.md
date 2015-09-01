@@ -3,6 +3,8 @@
 
 ## Unreleased
 
+## v1.5.0
+
 * Raised Min SDK version from 8 to 9 to support APIs switching to SHA2 TLS certificates.
 * Added a StatusService update endpoint which accepts mediaIds.
 * Added MediaService to support media upload.
