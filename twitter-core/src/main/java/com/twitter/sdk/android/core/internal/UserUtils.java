@@ -15,19 +15,18 @@
  *
  */
 
-package com.twitter.sdk.android.tweetui;
-
+package com.twitter.sdk.android.core.internal;
 
 import android.text.TextUtils;
 
 import com.twitter.sdk.android.core.models.User;
 
-final class UserUtils {
+public final class UserUtils {
     private UserUtils() {}
 
     // see https://dev.twitter.com/overview/general/user-profile-images-and-banners
     // see also: https://confluence.twitter.biz/display/PLATFORM/Image+Types+and+Sizes
-    enum AvatarSize {
+    public enum AvatarSize {
         NORMAL("_normal"),
         BIGGER("_bigger"),
         MINI("_mini"),
@@ -45,7 +44,7 @@ final class UserUtils {
         }
     }
 
-    static String getProfileImageUrlHttps(User user, AvatarSize size) {
+    public static String getProfileImageUrlHttps(User user, AvatarSize size) {
         if (user != null && user.profileImageUrlHttps != null) {
             final String url = user.profileImageUrlHttps;
             if (size == null || url == null) {
@@ -71,7 +70,7 @@ final class UserUtils {
     /**
      * @return the given screenName, prepended with an "@"
      */
-    static CharSequence formatScreenName(CharSequence screenName) {
+    public static CharSequence formatScreenName(CharSequence screenName) {
         if (TextUtils.isEmpty(screenName)) {
             return "";
         }

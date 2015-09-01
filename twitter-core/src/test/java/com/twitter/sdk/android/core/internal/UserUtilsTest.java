@@ -15,8 +15,9 @@
  *
  */
 
-package com.twitter.sdk.android.tweetui;
+package com.twitter.sdk.android.core.internal;
 
+import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.models.User;
 import com.twitter.sdk.android.core.models.UserBuilder;
 

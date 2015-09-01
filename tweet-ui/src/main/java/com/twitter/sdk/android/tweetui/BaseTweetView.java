@@ -45,6 +45,7 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
+import com.twitter.sdk.android.core.internal.UserUtils;
 import com.twitter.sdk.android.tweetui.internal.util.AspectRatioImageView;
 
 import java.text.DateFormat;
