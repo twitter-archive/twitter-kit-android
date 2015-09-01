@@ -1,6 +1,11 @@
 
 <h2>Twitter</h2>
-<h3>1.7.2</h2>
+<h3>1.8.0</h3>
+- Raised Min SDK version from 8 to 9
+- Added MediaService to support media upload.
+- Added a StatusService update endpoint which accepts mediaIds.
+
+<h3>1.7.2</h3>
 - Fixed bug in guest auth queue which cached application-only auth fallback tokens indefinitely. Change queue to disallow and clear application-only auth tokens.<br>
 - Removed logInGuest fallback to application-only auth so logInGuest consistently provides an AppSession with a GuestAuthToken. Previously, logInGuest provided an AppSession which could fall back to a non-expiring app auth token when guest token requests failed.<br>
 - Fixed bug in TwitterApiException's TwitterRateLimit.getRemainingTime()<br>
@@ -82,6 +87,6 @@
 - OAuth Echo feature.<br/>
 - Renamed "Sign in" button to "Log in with Twitter".<br/>
 - Improved layout preview of tweet views.<br/>
-- Removed Apache 2.0 licenses from pom.xml</br>
+- Removed Apache 2.0 licenses from pom.xml<br/>
 - Bug fixes.
 </p>
