@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="tw__composer_hint">What\'s Happening?</string>
-    <string name="tw__post_tweet">Tweet</string>
-    <string name="tw__max_tweet_chars">140</string>
-</resources>

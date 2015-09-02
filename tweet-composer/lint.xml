@@ -16,11 +16,4 @@
   ~
   -->
 
-<lint>
-    <issue id="IconMissingDensityFolder" severity="ignore">
-        <!-- Suppress lint warning on xxxhdpi, which "is necessary only to provide a launcher icon
-        that can appear larger than usual on an xxhdpi device. You do not need to provide xxxhdpi
-        assets for all your app's images." -->
-        <ignore path="src/main/res/drawable-xxxhdpi"/>
-    </issue>
-</lint>
+<lint/>

@@ -19,8 +19,6 @@ package com.twitter.sdk.android.core.internal;
 
 
 public class TwitterApiConstants {
-    public static final int MAX_TWEET_CHARS = 140;
-
     public static class Base {
         public static final String PARAM_ID = "id";
         public static final String FIELD_ID = "id";
