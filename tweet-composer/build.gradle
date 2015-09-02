@@ -68,7 +68,15 @@ internal {
     }
 }
 
+ext.projectDependencies = [
+        ':twitter-core' : 'com.twitter.sdk.android:twitter-core:+@aar'
+]
+
 dependencies {
+    projectDependencies.each { path, binary ->
+        compile projectOrBinary(path: path, binary: binary)
+    }
+
     compile rootProject.fabric
 
     testCompile rootProject.mockito

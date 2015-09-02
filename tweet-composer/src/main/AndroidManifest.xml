@@ -21,6 +21,10 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
-    <application/>
-
+    <application>
+        <activity
+            android:name=".ComposerActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize|stateVisible"/>
+    </application>
 </manifest>
