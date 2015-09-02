@@ -78,6 +78,7 @@ dependencies {
     }
 
     compile rootProject.fabric
+    compile rootProject.picasso
 
     testCompile rootProject.mockito
     testCompile rootProject.junit

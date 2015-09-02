@@ -25,6 +25,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.app.BaseActivity;
+import com.example.app.twittercore.TwitterCoreMainActivity;
+import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.tweetcomposer.ComposerActivity;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
@@ -65,7 +68,19 @@ public class TweetComposerMainActivity extends BaseActivity {
         organicComposer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(TweetComposerMainActivity.this, ComposerActivity.class));
+                final TwitterSession session = TwitterCore.getInstance().getSessionManager()
+                        .getActiveSession();
+                final Intent intent;
+                if (session == null) {
+                    // session required to compose a Tweet
+                    intent = TwitterCoreMainActivity.newIntent(TweetComposerMainActivity.this);
+                } else {
+                    intent = new ComposerActivity.Builder(TweetComposerMainActivity.this)
+                            .session(session)
+                            .tweetText("Hello World!")
+                            .createIntent();
+                }
+                startActivity(intent);
             }
         });
     }

@@ -19,6 +19,7 @@ package com.twitter.sdk.android.tweetcomposer;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -27,14 +28,26 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+import com.twitter.sdk.android.core.internal.UserUtils;
+import com.twitter.sdk.android.core.models.User;
+
 public class ComposerView extends LinearLayout {
+    ImageView avatarView;
+    ImageView closeView;
     EditText tweetEditView;
     TextView charCountView;
     Button tweetButton;
+    // styled drawables for images
+    ColorDrawable mediaBg;
+    // callbacks
     ComposerController.ComposerCallbacks callbacks;
+
+    private Picasso imageLoader;
 
     public ComposerView(Context context) {
         this(context, null);
@@ -52,6 +65,9 @@ public class ComposerView extends LinearLayout {
     }
 
     private void init(Context context) {
+        imageLoader = Picasso.with(getContext());
+        // TODO: make color vary depending on the style
+        mediaBg = new ColorDrawable(context.getResources().getColor(R.color.tw__light_gray));
         inflate(context, R.layout.tw__composer_view, this);
     }
 
@@ -60,17 +76,24 @@ public class ComposerView extends LinearLayout {
         super.onFinishInflate();
         findSubviews();
 
+        closeView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callbacks.onCloseClick();
+            }
+        });
+
         tweetButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                callbacks.onTweetPost();
+                callbacks.onTweetPost(getTweetText());
             }
         });
 
         tweetEditView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                callbacks.onTweetPost();
+                callbacks.onTweetPost(getTweetText());
                 return true;
             }
         });
@@ -92,6 +115,8 @@ public class ComposerView extends LinearLayout {
     }
 
     void findSubviews() {
+        avatarView = (ImageView) findViewById(R.id.tw__author_avatar);
+        closeView = (ImageView) findViewById(R.id.tw__composer_close);
         tweetEditView = (EditText) findViewById(R.id.tw__edit_tweet);
         charCountView = (TextView) findViewById(R.id.tw__char_count);
         tweetButton = (Button) findViewById(R.id.tw__post_tweet);
@@ -101,12 +126,29 @@ public class ComposerView extends LinearLayout {
         this.callbacks = callbacks;
     }
 
+    /*
+     * Sets the profile photo from the User's profile image url or the placeholder background
+     * color.
+     */
+    void setProfilePhotoView(User user) {
+        final String url = UserUtils.getProfileImageUrlHttps(user,
+                UserUtils.AvatarSize.REASONABLY_SMALL);
+        if (imageLoader != null) {
+            // Passing null url will not trigger any request, but will set the placeholder bg
+            imageLoader.load(url).placeholder(mediaBg).into(avatarView);
+        }
+    }
+
     String getTweetText() {
         return tweetEditView.getText().toString();
     }
 
     void setTweetText(String text) {
         tweetEditView.setText(text);
+    }
+
+    void setCursorAtEnd() {
+        tweetEditView.setSelection(getTweetText().length());
     }
 
     void setCharCount(int remainingCount) {

@@ -23,6 +23,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.text.TextUtils;
+
 import io.fabric.sdk.android.Kit;
 import io.fabric.sdk.android.services.network.UrlUtils;
 
@@ -38,6 +39,21 @@ public class TweetComposer extends Kit<Boolean> {
     private static final String MIME_TYPE_JPEG = "image/jpeg";
     private static final String TWITTER_PACKAGE_NAME = "com.twitter.android";
     private static final String WEB_INTENT = "https://twitter.com/intent/tweet?text=%s&url=%s";
+
+    @Override
+    public String getVersion() {
+        return BuildConfig.VERSION_NAME + "." + BuildConfig.BUILD_NUMBER;
+    }
+
+    @Override
+    protected Boolean doInBackground() {
+        return true;
+    }
+
+    @Override
+    public String getIdentifier() {
+        return BuildConfig.GROUP + ":" + BuildConfig.ARTIFACT_ID;
+    }
 
     /**
      * The TweetComposer Builder will use the installed Twitter instance and fall back to a browser
@@ -175,20 +191,5 @@ public class TweetComposer extends Kit<Boolean> {
             final Intent intent = createIntent();
             context.startActivity(intent);
         }
-    }
-
-    @Override
-    public String getVersion() {
-        return BuildConfig.VERSION_NAME + "." + BuildConfig.BUILD_NUMBER;
-    }
-
-    @Override
-    protected Boolean doInBackground() {
-        return true;
-    }
-
-    @Override
-    public String getIdentifier() {
-        return BuildConfig.GROUP + ":" + BuildConfig.ARTIFACT_ID;
     }
 }

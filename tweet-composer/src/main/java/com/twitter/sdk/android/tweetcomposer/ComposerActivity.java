@@ -18,25 +18,85 @@
 package com.twitter.sdk.android.tweetcomposer;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageView;
+
+import com.twitter.sdk.android.core.TwitterAuthToken;
+import com.twitter.sdk.android.core.TwitterSession;
 
 public class ComposerActivity extends Activity {
+    static final String TAG = "ComposerActivity";
+    static final String EXTRA_TWEET_TEXT = "EXTRA_TWEET_TEXT";
+    static final String EXTRA_USER_TOKEN = "EXTRA_USER_TOKEN";
+    private static final int PLACEHOLDER_ID = -1;
+    private static final String PLACEHOLDER_SCREEN_NAME = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tw__activity_composer);
-        final ComposerView composerView = (ComposerView) findViewById(R.id.tw__composer_view);
-        new ComposerController(composerView);
 
-        final ImageView closeButton = (ImageView) findViewById(R.id.tw__composer_close);
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
+        final Intent intent = getIntent();
+        final String initialText = intent.getStringExtra(EXTRA_TWEET_TEXT);
+        final TwitterAuthToken token = intent.getParcelableExtra(EXTRA_USER_TOKEN);
+        final TwitterSession session = new TwitterSession(token, PLACEHOLDER_ID,
+                PLACEHOLDER_SCREEN_NAME);
+
+        final ComposerView composerView = (ComposerView) findViewById(R.id.tw__composer_view);
+        new ComposerController(composerView, session, initialText, new FinisherImpl());
+    }
+
+    interface Finisher {
+        void finish();
+    }
+
+    // FinisherImpl allows sub-components to finish the host Activity.
+    class FinisherImpl implements Finisher {
+        @Override
+        public void finish() {
+            ComposerActivity.this.finish();
+        }
+    }
+
+    public static class Builder {
+        private final Context context;
+        private TwitterAuthToken token;
+        private String tweetText = "";
+
+        public Builder(Context context) {
+            if (context == null) {
+                throw new IllegalArgumentException("Context must not be null");
             }
-        });
+            this.context = context;
+        }
+
+        public Builder session(TwitterSession session) {
+            if (session == null) {
+                throw new IllegalArgumentException("TwitterSession must not be null");
+            }
+            final TwitterAuthToken token = session.getAuthToken();
+            if (token == null) {
+                throw new IllegalArgumentException("TwitterSession token must not be null");
+            }
+            // session passed via the parcelable auth token
+            this.token = token;
+            return this;
+        }
+
+        public Builder tweetText(String text) {
+            this.tweetText = text;
+            return this;
+        }
+
+        public Intent createIntent() {
+            if (token == null) {
+                throw new IllegalStateException("Must set a TwitterSession");
+            }
+            final Intent intent = new Intent(context, ComposerActivity.class);
+            intent.putExtra(EXTRA_USER_TOKEN, token);
+            intent.putExtra(EXTRA_TWEET_TEXT, tweetText);
+            return intent;
+        }
     }
 }

@@ -87,6 +87,7 @@ dependencies {
         debugCompile project(path: path, configuration: 'debug')
         releaseCompile projectOrBinary(path: path, configuration: 'release', binary: binary)
     }
+    compile rootProject.picasso
 
     testCompile rootProject.mockito
     testCompile rootProject.junit
