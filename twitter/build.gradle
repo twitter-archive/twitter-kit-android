@@ -112,7 +112,7 @@ internal {
 
     task uploadFabricReleaseNotes(group: 'Release',
             description: 'Upload Release Notes to S3 bucket kits-crashlytics-com',
-            type: io.fabric.gradle.weaving.FileUploadS3Task) {
+            type: io.fabric.gradle.release.FileUploadS3Task) {
         enabled = rootProject.ext.kitsForRelease.get(project.path)
         accessKey = System.properties['AWS_ACCESS_KEY_ID']
         secretKey = System.properties['AWS_SECRET_ACCESS_KEY']
