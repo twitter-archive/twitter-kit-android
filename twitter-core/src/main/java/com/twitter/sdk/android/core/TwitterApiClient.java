@@ -165,7 +165,7 @@ public class TwitterApiClient {
      * @return instance of cls
      */
     @SuppressWarnings("unchecked")
-    <T> T getAdapterService(RestAdapter adapter, Class<T> cls) {
+    protected <T> T getAdapterService(RestAdapter adapter, Class<T> cls) {
         if (!services.contains(cls)) {
             services.putIfAbsent(cls, adapter.create(cls));
         }
