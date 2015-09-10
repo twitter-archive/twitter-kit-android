@@ -15,10 +15,12 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <string name="tw__composer_hint">What\'s Happening?</string>
-    <string name="tw__post_tweet">Tweet</string>
-    <string name="tw__max_tweet_chars">140</string>
-    <string name="tw__play_store">Play Store</string>
-    <string name="tw__install">Install</string>
-</resources>
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners
+        android:radius="@dimen/tw__corner_radius_small"/>
+    <stroke
+        android:width="2dp"
+        android:color="@color/tw__light_gray"/>
+</shape>

@@ -26,6 +26,7 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -45,6 +46,7 @@ public class ComposerView extends LinearLayout {
     // styled drawables for images
     ColorDrawable mediaBg;
     // callbacks
+    ViewGroup cardView;
     ComposerController.ComposerCallbacks callbacks;
 
     private Picasso imageLoader;
@@ -109,7 +111,7 @@ public class ComposerView extends LinearLayout {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                callbacks.onTextChanged(tweetEditView.getText().toString());
+                callbacks.onTextChanged(getTweetText());
             }
         });
     }
@@ -120,6 +122,7 @@ public class ComposerView extends LinearLayout {
         tweetEditView = (EditText) findViewById(R.id.tw__edit_tweet);
         charCountView = (TextView) findViewById(R.id.tw__char_count);
         tweetButton = (Button) findViewById(R.id.tw__post_tweet);
+        cardView = (ViewGroup) findViewById(R.id.tw__card_view);
     }
 
     void setCallbacks(ComposerController.ComposerCallbacks callbacks) {
@@ -161,5 +164,10 @@ public class ComposerView extends LinearLayout {
 
     void postTweetEnabled(boolean enabled) {
         tweetButton.setEnabled(enabled);
+    }
+
+    void setCardView(View card) {
+        cardView.addView(card);
+        cardView.setVisibility(View.VISIBLE);
     }
 }

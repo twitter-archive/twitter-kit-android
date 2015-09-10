@@ -18,6 +18,7 @@
 package com.twitter.sdk.android.tweetcomposer;
 
 import android.text.TextUtils;
+import android.view.View;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -37,14 +38,14 @@ class ComposerController {
     ComposerActivity.Finisher finisher;
     final DependencyProvider dependencyProvider;
 
-    ComposerController(final ComposerView composerView, TwitterSession session,
-                       String initialText, ComposerActivity.Finisher finisher) {
-        this(composerView, session, initialText, finisher, new DependencyProvider());
+    ComposerController(final ComposerView composerView, TwitterSession session, String initialText,
+            Card card, ComposerActivity.Finisher finisher) {
+        this(composerView, session, initialText, card, finisher, new DependencyProvider());
     }
 
     // testing purposes
-    ComposerController(final ComposerView composerView, TwitterSession session,
-            String initialText, ComposerActivity.Finisher finisher,
+    ComposerController(final ComposerView composerView, TwitterSession session, String initialText,
+            Card card, ComposerActivity.Finisher finisher,
             DependencyProvider dependencyProvider) {
         this.composerView = composerView;
         this.session = session;
@@ -55,22 +56,31 @@ class ComposerController {
         composerView.setTweetText(initialText);
         composerView.setCursorAtEnd();
         setProfilePhoto();
+        setCardView(card);
     }
 
     void setProfilePhoto() {
         dependencyProvider.getApiClient(session).getAccountService().verifyCredentials(false, true,
-            new Callback<User>() {
-                @Override
-                public void success(Result<User> result) {
-                    composerView.setProfilePhotoView(result.data);
-                }
+                new Callback<User>() {
+                    @Override
+                    public void success(Result<User> result) {
+                        composerView.setProfilePhotoView(result.data);
+                    }
 
-                @Override
-                public void failure(TwitterException exception) {
-                    // show placeholder background color
-                    composerView.setProfilePhotoView(null);
-                }
-            });
+                    @Override
+                    public void failure(TwitterException exception) {
+                        // show placeholder background color
+                        composerView.setProfilePhotoView(null);
+                    }
+                });
+    }
+
+    void setCardView(Card card) {
+        if (card != null) {
+            final CardViewFactory cardViewFactory = dependencyProvider.getCardViewFactory();
+            final View view = cardViewFactory.createCard(composerView.getContext(), card);
+            composerView.setCardView(view);
+        }
     }
 
     public interface ComposerCallbacks {
@@ -151,6 +161,10 @@ class ComposerController {
 
         TwitterApiClient getApiClient(TwitterSession session) {
             return TwitterCore.getInstance().getApiClient(session);
+        }
+
+        CardViewFactory getCardViewFactory() {
+            return new CardViewFactory();
         }
     }
 }

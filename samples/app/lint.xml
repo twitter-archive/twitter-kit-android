@@ -20,6 +20,9 @@
     <issue id="UnusedResources">
         <ignore path="src/main/res/values/com_crashlytics_export_strings.xml"/>
     </issue>
+    <issue id="UnusedResources">
+        <ignore path="src/main/res/raw/fabric_logo_large.png"/>
+    </issue>
     <issue id="TypographyDashes">
         <ignore path="src/main/res/values/com_crashlytics_export_strings.xml"/>
     </issue>

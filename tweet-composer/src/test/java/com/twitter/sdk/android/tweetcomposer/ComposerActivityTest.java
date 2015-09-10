@@ -41,12 +41,14 @@ public class ComposerActivityTest extends AndroidTestCase {
     private Context mockContext;
     private TwitterSession mockSession;
     private TwitterAuthToken mockAuthToken;
+    private Card mockCardData;
 
     @Before
     public void setUp() {
         mockContext = mock(Context.class);
         mockSession = mock(TwitterSession.class);
         mockAuthToken = mock(TwitterAuthToken.class);
+        mockCardData = mock(Card.class);
         when(mockSession.getAuthToken()).thenReturn(mockAuthToken);
     }
 
@@ -112,5 +114,15 @@ public class ComposerActivityTest extends AndroidTestCase {
                 .tweetText(TWEET_TEXT)
                 .createIntent();
         assertEquals(TWEET_TEXT, intent.getStringExtra(ComposerActivity.EXTRA_TWEET_TEXT));
+    }
+
+
+    @Test
+    public void testBuilderCardData() {
+        final Intent intent = new ComposerActivity.Builder(mockContext)
+                .session(mockSession)
+                .card(mockCardData)
+                .createIntent();
+        assertEquals(mockCardData, intent.getSerializableExtra(ComposerActivity.EXTRA_CARD_DATA));
     }
 }

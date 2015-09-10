@@ -86,7 +86,7 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">@color/tw__deep_gray</item>
         <item name="android:text">@string/tw__max_tweet_chars</item>
-        <item name="android:textSize">@dimen/tw__font_size_small</item>
+        <item name="android:textSize">@dimen/tw__composer_font_size_small</item>
         <item name="android:textAlignment">center</item>
     </style>
 
@@ -99,7 +99,7 @@
         <item name="android:textColor">@color/tw__tweet_white</item>
         <item name="android:background">@drawable/tw__btn_composer_tweet</item>
         <item name="android:text">@string/tw__post_tweet</item>
-        <item name="android:textSize">@dimen/tw__font_size_small</item>
+        <item name="android:textSize">@dimen/tw__composer_font_size_small</item>
         <item name="android:textAlignment">center</item>
     </style>
 

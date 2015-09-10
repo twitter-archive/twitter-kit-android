@@ -29,6 +29,7 @@ public class ComposerActivity extends Activity {
     static final String TAG = "ComposerActivity";
     static final String EXTRA_TWEET_TEXT = "EXTRA_TWEET_TEXT";
     static final String EXTRA_USER_TOKEN = "EXTRA_USER_TOKEN";
+    static final String EXTRA_CARD_DATA = "EXTRA_CARD_DATA";
     private static final int PLACEHOLDER_ID = -1;
     private static final String PLACEHOLDER_SCREEN_NAME = "";
 
@@ -42,9 +43,10 @@ public class ComposerActivity extends Activity {
         final TwitterAuthToken token = intent.getParcelableExtra(EXTRA_USER_TOKEN);
         final TwitterSession session = new TwitterSession(token, PLACEHOLDER_ID,
                 PLACEHOLDER_SCREEN_NAME);
+        final Card card = (Card) intent.getSerializableExtra(EXTRA_CARD_DATA);
 
         final ComposerView composerView = (ComposerView) findViewById(R.id.tw__composer_view);
-        new ComposerController(composerView, session, initialText, new FinisherImpl());
+        new ComposerController(composerView, session, initialText, card, new FinisherImpl());
     }
 
     interface Finisher {
@@ -63,6 +65,7 @@ public class ComposerActivity extends Activity {
         private final Context context;
         private TwitterAuthToken token;
         private String tweetText = "";
+        private Card card;
 
         public Builder(Context context) {
             if (context == null) {
@@ -89,6 +92,11 @@ public class ComposerActivity extends Activity {
             return this;
         }
 
+        public Builder card(Card card) {
+            this.card = card;
+            return this;
+        }
+
         public Intent createIntent() {
             if (token == null) {
                 throw new IllegalStateException("Must set a TwitterSession");
@@ -96,6 +104,7 @@ public class ComposerActivity extends Activity {
             final Intent intent = new Intent(context, ComposerActivity.class);
             intent.putExtra(EXTRA_USER_TOKEN, token);
             intent.putExtra(EXTRA_TWEET_TEXT, tweetText);
+            intent.putExtra(EXTRA_CARD_DATA, card);
             return intent;
         }
     }

@@ -55,7 +55,16 @@
     <dimen name="tw__char_count_height">36dp</dimen>
     <dimen name="tw__char_count_margin_right">10dp</dimen>
 
-    <!--common text sixes-->
-    <dimen name="tw__font_size_small">12sp</dimen>
+    <!--text sixes-->
+    <dimen name="tw__composer_font_size_small">14sp</dimen>
+
+    <!--Common card dimens-->
+    <dimen name="tw__card_font_size_small">14sp</dimen>
+    <dimen name="tw__card_font_size_medium">18sp</dimen>
+    <dimen name="tw__card_spacing_small">4dp</dimen>
+    <dimen name="tw__card_spacing_medium">8dp</dimen>
+    <dimen name="tw__card_spacing_large">16dp</dimen>
+    <dimen name="tw__corner_radius_small">4dp</dimen>
+    <dimen name="tw__corner_radius_medium">6dp</dimen>
 
 </resources>
