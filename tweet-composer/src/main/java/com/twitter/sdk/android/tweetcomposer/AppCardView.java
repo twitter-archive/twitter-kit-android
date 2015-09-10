@@ -28,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 public class AppCardView extends LinearLayout {
     ImageView appImageView;
@@ -72,8 +73,13 @@ public class AppCardView extends LinearLayout {
     }
 
     void setImage(Uri uri) {
+        final int radius = getResources().getDimensionPixelSize(R.dimen.tw__corner_radius_medium);
+        final Transformation transformation = new RoundedCornerTransformation.Builder()
+                .setRadii(radius, radius, 0, 0)
+                .build();
         Picasso.with(getContext())
                 .load(uri)
+                .transform(transformation)
                 .fit()
                 .centerCrop()
                 .into(appImageView);
