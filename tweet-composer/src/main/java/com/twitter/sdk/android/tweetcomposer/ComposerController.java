@@ -107,8 +107,8 @@ class ComposerController {
 
         @Override
         public void onTweetPost(String text) {
-            dependencyProvider.getApiClient(session).getStatusesService().update(text,
-                null, null, null, null, null, null, true, null, new Callback<Tweet>() {
+            dependencyProvider.getComposerApiClient(session).getComposerStatusesService()
+                .update(text, null, new Callback<Tweet>() {
                     @Override
                     public void success(Result<Tweet> result) {
                         finisher.finish();
@@ -161,6 +161,10 @@ class ComposerController {
 
         TwitterApiClient getApiClient(TwitterSession session) {
             return TwitterCore.getInstance().getApiClient(session);
+        }
+
+        ComposerApiClient getComposerApiClient(TwitterSession session) {
+            return TweetComposer.getInstance().getApiClient(session);
         }
 
         CardViewFactory getCardViewFactory() {

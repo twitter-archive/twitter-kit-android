@@ -24,21 +24,30 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.twitter.sdk.android.core.Session;
+import com.twitter.sdk.android.core.TwitterSession;
+
+import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.Kit;
 import io.fabric.sdk.android.services.network.UrlUtils;
 
 import java.net.URL;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The TweetComposer Kit provides a lightweight mechanism for creating intents to interact with the installed Twitter app or a browser.
  */
 public class TweetComposer extends Kit<Boolean> {
-
     private static final String MIME_TYPE_PLAIN_TEXT = "text/plain";
     private static final String MIME_TYPE_JPEG = "image/jpeg";
     private static final String TWITTER_PACKAGE_NAME = "com.twitter.android";
     private static final String WEB_INTENT = "https://twitter.com/intent/tweet?text=%s&url=%s";
+    private final ConcurrentHashMap<Session, ComposerApiClient> apiClients;
+
+    public TweetComposer() {
+        this.apiClients = new ConcurrentHashMap<>();
+    }
 
     @Override
     public String getVersion() {
@@ -53,6 +62,25 @@ public class TweetComposer extends Kit<Boolean> {
     @Override
     public String getIdentifier() {
         return BuildConfig.GROUP + ":" + BuildConfig.ARTIFACT_ID;
+    }
+
+    public ComposerApiClient getApiClient(TwitterSession session) {
+        checkInitialized();
+        if (!apiClients.containsKey(session)) {
+            apiClients.putIfAbsent(session, new ComposerApiClient(session));
+        }
+        return apiClients.get(session);
+    }
+
+    public static TweetComposer getInstance() {
+        checkInitialized();
+        return Fabric.getKit(TweetComposer.class);
+    }
+
+    private static void checkInitialized() {
+        if (Fabric.getKit(TweetComposer.class) == null) {
+            throw new IllegalStateException("Must start Twitter Kit with Fabric.with() first");
+        }
     }
 
     /**

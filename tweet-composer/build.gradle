@@ -80,6 +80,7 @@ dependencies {
     compile rootProject.fabric
     compile rootProject.picasso
 
+    testCompile rootProject.fabricTest
     testCompile rootProject.mockito
     testCompile rootProject.junit
     testCompile rootProject.mavenAntTasks

@@ -25,7 +25,6 @@ import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.services.AccountService;
-import com.twitter.sdk.android.core.services.StatusesService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +36,6 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -69,15 +67,20 @@ public class ComposerControllerTest extends AndroidTestCase {
         mockAccountService = mock(AccountService.class);
         mockStatusesService = mock(StatusesService.class);
         when(mockTwitterApiClient.getAccountService()).thenReturn(mockAccountService);
-        when(mockTwitterApiClient.getStatusesService()).thenReturn(mockStatusesService);
 
         mockCardViewFactory = mock(CardViewFactory.class);
         when(mockCardViewFactory.createCard(any(Context.class), any(Card.class)))
                 .thenReturn(mock(View.class));
 
+        final ComposerApiClient mockComposerApiClient = mock(ComposerApiClient.class);
+        mockStatusesService = mock(StatusesService.class);
+        when(mockComposerApiClient.getComposerStatusesService()).thenReturn(mockStatusesService);
+
         mockDependencyProvider = mock(ComposerController.DependencyProvider.class);
         when(mockDependencyProvider.getApiClient(any(TwitterSession.class)))
                 .thenReturn(mockTwitterApiClient);
+        when(mockDependencyProvider.getComposerApiClient(any(TwitterSession.class)))
+                .thenReturn(mockComposerApiClient);
         when(mockDependencyProvider.getCardViewFactory()).thenReturn(mockCardViewFactory);
     }
 
@@ -170,11 +173,9 @@ public class ComposerControllerTest extends AndroidTestCase {
                 = controller.new ComposerCallbacksImpl();
         callbacks.onTweetPost(TWEET_TEXT);
 
-        verify(mockDependencyProvider, times(2)).getApiClient(mockTwitterSession);
-        verify(mockStatusesService).update(eq(TWEET_TEXT), isNull(Long.class),
-                isNull(Boolean.class), isNull(Double.class), isNull(Double.class),
-                isNull(String.class), isNull(Boolean.class), eq(true),
-                isNull(String.class), any(Callback.class));
+        verify(mockDependencyProvider).getApiClient(mockTwitterSession);
+        verify(mockStatusesService).update(eq(TWEET_TEXT), isNull(String.class),
+                any(Callback.class));
     }
 
     @Test

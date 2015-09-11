@@ -19,7 +19,6 @@ package com.twitter.sdk.android.tweetcomposer;
 
 import android.content.Context;
 import android.content.Intent;
-import android.test.AndroidTestCase;
 
 import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterSession;
@@ -30,13 +29,16 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
-public class ComposerActivityTest extends AndroidTestCase {
+public class ComposerActivityTest {
     private static final String TWEET_TEXT = "tweet text";
     private Context mockContext;
     private TwitterSession mockSession;
