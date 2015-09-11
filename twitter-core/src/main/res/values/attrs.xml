@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="tw__AspectRatioImageView">
+        <attr name="tw__image_aspect_ratio" format="float"/>
+        <attr name="tw__image_dimension_to_adjust" format="enum">
+            <enum name="height" value="0"/>
+            <enum name="width" value="1"/>
+        </attr>
+    </declare-styleable>
+</resources>

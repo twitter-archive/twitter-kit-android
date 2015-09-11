@@ -22,7 +22,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.twitter.sdk.android.tweetui.internal.util.AspectRatioImageView
+    <com.twitter.sdk.android.core.internal.util.AspectRatioImageView
         tools:ignore="ContentDescription"
         android:id="@+id/tw__tweet_media"
         style="@style/tw__TweetMedia"/>

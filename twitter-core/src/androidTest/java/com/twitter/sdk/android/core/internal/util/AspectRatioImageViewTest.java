@@ -15,7 +15,7 @@
  *
  */
 
-package com.twitter.sdk.android.tweetui.internal.util;
+package com.twitter.sdk.android.core.internal.util;
 
 import android.test.AndroidTestCase;
 import android.view.LayoutInflater;
@@ -23,7 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.twitter.sdk.android.tweetui.R;
+import com.twitter.sdk.android.core.R;
 
 public class AspectRatioImageViewTest extends AndroidTestCase {
     private static final double TEST_ASPECT_RATIO = 2.0;

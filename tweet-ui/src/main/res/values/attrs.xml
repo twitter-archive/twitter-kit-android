@@ -25,14 +25,6 @@
         <attr name="tw__tweet_actions_enabled" format="boolean" />
     </declare-styleable>
 
-    <declare-styleable name="tw__AspectRatioImageView">
-        <attr name="tw__image_aspect_ratio" format="float"/>
-        <attr name="tw__image_dimension_to_adjust" format="enum">
-            <enum name="height" value="0"/>
-            <enum name="width" value="1"/>
-        </attr>
-    </declare-styleable>
-
     <declare-styleable name="ToggleImageButton">
         <attr name="state_toggled_on" format="boolean"/>
         <attr name="contentDescriptionOn" format="string"/>

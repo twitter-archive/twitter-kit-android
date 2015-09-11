@@ -25,19 +25,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="UnusedResources">
 
-    <com.twitter.sdk.android.tweetui.internal.util.AspectRatioImageView
+    <com.twitter.sdk.android.core.internal.util.AspectRatioImageView
         android:id="@+id/height_adjusted_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/tw__ic_logo_blue"
         twittersdk:tw__image_aspect_ratio="1.6"
         twittersdk:tw__image_dimension_to_adjust="height"/>
 
-    <com.twitter.sdk.android.tweetui.internal.util.AspectRatioImageView
+    <com.twitter.sdk.android.core.internal.util.AspectRatioImageView
         android:id="@+id/width_adjusted_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/tw__ic_logo_blue"
         twittersdk:tw__image_aspect_ratio="1.2"
         twittersdk:tw__image_dimension_to_adjust="width"/>
 
