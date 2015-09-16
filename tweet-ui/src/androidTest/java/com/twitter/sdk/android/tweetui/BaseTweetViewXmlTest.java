@@ -17,79 +17,21 @@
 
 package com.twitter.sdk.android.tweetui;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Build;
-import android.os.Handler;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.FabricAndroidTestCase;
-import io.fabric.sdk.android.FabricTestUtils;
-
-import com.squareup.picasso.RequestCreator;
-import com.twitter.sdk.android.core.Session;
-import com.twitter.sdk.android.core.TwitterApiClient;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
-import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.TwitterCoreTestUtils;
-import com.twitter.sdk.android.core.services.StatusesService;
-
-import com.squareup.picasso.Picasso;
-
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-
-import static org.mockito.Mockito.mock;
-
 /**
  * Tests the state of BaseTweetViews created via XML.
  */
-public abstract class BaseTweetViewXmlTest extends FabricAndroidTestCase {
-
-    private TweetUi tweetUi;
-    protected Context context;
-    private Resources resources;
-
-    // mocks
-    private TweetUiAuthRequestQueue guestAuthQueue;
-    private TweetUiAuthRequestQueue userAuthQueue;
-    private Picasso picasso;
-    private StatusesService statusesService;
-    private Handler mainHandler;
-    private ExecutorService executorService;
-    private TwitterApiClient apiClient;
-    private ConcurrentHashMap<Session, TwitterApiClient> clients;
-
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        createMocks();
-
-        FabricTestUtils.resetFabric();
-
-        final TwitterCore twitterCore =
-                TwitterCoreTestUtils.createTwitterCore(new TwitterAuthConfig("", ""), clients);
-        FabricTestUtils.with(getContext(), twitterCore, new TweetUi());
-
-        tweetUi = TweetUi.getInstance();
-        final TweetRepository tweetRepository = new TweetRepository(mainHandler, userAuthQueue,
-                guestAuthQueue);
-        tweetUi.setTweetRepository(tweetRepository);
-        tweetUi.setImageLoader(picasso);
-
-        context = Fabric.getKit(TweetUi.class).getContext();
-        resources = context.getResources();
-    }
-
+public abstract class BaseTweetViewXmlTest extends TweetUiTestCase {
     @Override
     protected void tearDown() throws Exception {
-        FabricTestUtils.resetFabric();
         scrubClass(BaseTweetViewXmlTest.class);
         super.tearDown();
     }
@@ -101,7 +43,7 @@ public abstract class BaseTweetViewXmlTest extends FabricAndroidTestCase {
     abstract BaseTweetView getViewDark();
 
     public Resources getResources() {
-        return resources;
+        return getContext().getResources();
     }
 
     protected View getInflatedLayout() {
@@ -286,25 +228,5 @@ public abstract class BaseTweetViewXmlTest extends FabricAndroidTestCase {
     public void testRetweetIconDark() {
         final BaseTweetView view = getViewDark();
         assertEquals(R.drawable.tw__ic_retweet_dark, view.retweetIconResId);
-    }
-
-    // Mocks
-
-    private void createMocks() {
-        mainHandler = mock(Handler.class);
-        guestAuthQueue = mock(TestTweetUiAuthRequestQueue.class);
-        userAuthQueue = mock(TestTweetUiAuthRequestQueue.class);
-        picasso = MockUtils.mockPicasso(mock(Picasso.class), mock(RequestCreator.class));
-
-        statusesService = mock(StatusesService.class);
-
-        executorService = mock(ExecutorService.class);
-        MockUtils.mockExecutorService(executorService);
-
-        apiClient = mock(TwitterApiClient.class);
-        MockUtils.mockStatusesServiceClient(apiClient, statusesService);
-
-        clients = mock(ConcurrentHashMap.class);
-        MockUtils.mockClients(clients, apiClient);
     }
 }

@@ -18,9 +18,15 @@
 package com.twitter.sdk.android.tweetui;
 
 import android.os.Handler;
+import android.util.Log;
 
+import io.fabric.sdk.android.DefaultLogger;
+import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.FabricAndroidTestCase;
 import io.fabric.sdk.android.FabricTestUtils;
+import io.fabric.sdk.android.services.concurrency.PriorityThreadPoolExecutor;
+import io.fabric.sdk.android.services.settings.Settings;
+import io.fabric.sdk.android.services.settings.TestSettingsController;
 
 import com.squareup.picasso.RequestCreator;
 import com.twitter.sdk.android.core.AppSession;
@@ -35,7 +41,6 @@ import com.twitter.sdk.android.core.services.StatusesService;
 import com.squareup.picasso.Picasso;
 
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
 
 import static org.mockito.Mockito.mock;
 
@@ -50,7 +55,6 @@ public class TweetUiTestCase extends FabricAndroidTestCase {
     private StatusesService statusesService;
     protected DefaultScribeClient scribeClient;
     protected Handler mainHandler;
-    protected ExecutorService executorService;
     private TwitterApiClient apiClient;
     private ConcurrentHashMap<Session, TwitterApiClient> clients;
 
@@ -62,7 +66,17 @@ public class TweetUiTestCase extends FabricAndroidTestCase {
         FabricTestUtils.resetFabric();
         final TwitterCore twitterCore = TwitterCoreTestUtils.createTwitterCore(
                 new TwitterAuthConfig("", ""), clients);
-        FabricTestUtils.with(getContext(), twitterCore, new TweetUi());
+
+        // Initialize Fabric with mock executor to avoid initializing kits
+        final Fabric fabric = new Fabric.Builder(getContext())
+                .kits(twitterCore, new TweetUi())
+                .logger(new DefaultLogger(Log.DEBUG))
+                .debuggable(true)
+                .threadPoolExecutor(mock(PriorityThreadPoolExecutor.class))
+                .build();
+
+        Settings.getInstance().setSettingsController(new TestSettingsController());
+        Fabric.with(fabric);
 
         tweetUi = TweetUi.getInstance();
         final TweetRepository tweetRepository = new TweetRepository(mainHandler, userAuthQueue,
@@ -86,7 +100,6 @@ public class TweetUiTestCase extends FabricAndroidTestCase {
     }
 
     // Mocks
-
     private void createMocks() {
         mainHandler = mock(Handler.class);
         guestAuthQueue = mock(TestTweetUiAuthRequestQueue.class);
@@ -96,9 +109,6 @@ public class TweetUiTestCase extends FabricAndroidTestCase {
         statusesService = mock(StatusesService.class);
 
         scribeClient = mock(DefaultScribeClient.class);
-
-        executorService = mock(ExecutorService.class);
-        MockUtils.mockExecutorService(executorService);
 
         apiClient = mock(TwitterApiClient.class);
         MockUtils.mockStatusesServiceClient(apiClient, statusesService);
