@@ -21,17 +21,19 @@ import com.twitter.sdk.android.core.internal.TwitterRequestHeaders;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.URI;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.TreeMap;
 
 import javax.net.ssl.SSLSocketFactory;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
 import retrofit.client.Header;
 import retrofit.client.Request;
 import retrofit.client.Response;
@@ -43,8 +45,6 @@ import retrofit.mime.TypedOutput;
  * additionally adds header signing via {@link com.twitter.sdk.android.core.Session}
  */
 public class AuthenticatedClient extends DefaultClient {
-
-    private static final String FAKE_URL = "https://twitter.com"; //Unused, just for parsing body
     private final Session session;
     private final TwitterAuthConfig authConfig;
 
@@ -90,13 +90,45 @@ public class AuthenticatedClient extends DefaultClient {
                 output.writeTo(os);
                 final String val = os.toString("UTF-8");
                 if (val.length() > 0) {
-                    final URI bodyUri = URI.create(FAKE_URL + "/?" + val);
-                    for (NameValuePair pair : URLEncodedUtils.parse(bodyUri, "UTF-8")) {
-                        params.put(pair.getName(), pair.getValue());
-                    }
+                    params.putAll(getParameters(val));
                 }
             }
         }
         return params;
+    }
+
+    /**
+     * Returns a map of parameters from a {@code application/x-www-form-urlencoded} encoded string
+     * @param input {@code application/x-www-form-urlencoded} encoded string
+     * @return map of parameters
+     */
+    protected Map<String, String> getParameters(String input) {
+        final Map<String, String> parameters = new HashMap<>();
+        final Scanner scanner = new Scanner(input).useDelimiter("&");
+
+        while (scanner.hasNext()) {
+            final String[] param = scanner.next().split("=");
+            if (param.length == 0 || param.length > 2) {
+                throw new IllegalArgumentException("bad parameter");
+            }
+
+            final String name = decode(param[0], "UTF-8");
+            String value = "";
+            if (param.length == 2) {
+                value = decode(param[1], "UTF-8");
+            }
+
+            parameters.put(name, value);
+        }
+
+        return Collections.unmodifiableMap(parameters);
+    }
+
+    protected String decode(String value, String encoding) {
+        try {
+            return URLDecoder.decode(value, encoding);
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalArgumentException("bad parameter encoding");
+        }
     }
 }

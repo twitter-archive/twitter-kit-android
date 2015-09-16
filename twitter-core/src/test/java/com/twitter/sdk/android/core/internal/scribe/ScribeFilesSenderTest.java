@@ -29,7 +29,6 @@ import com.twitter.sdk.android.core.TestResources;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 
-import org.apache.http.HttpStatus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.junit.After;
@@ -46,6 +45,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -242,27 +242,27 @@ public class ScribeFilesSenderTest {
 
     @Test
     public void testSend_uploadSucceeds() {
-        setUpMockServiceResponse(newResponse(HttpStatus.SC_OK));
+        setUpMockServiceResponse(newResponse(HttpURLConnection.HTTP_OK));
         assertTrue(filesSender.send(tempFiles));
     }
 
     @Test
     public void testSend_uploadFailsInternalServerError() {
-        setUpMockServiceErrorResponse(newResponse(HttpStatus.SC_INTERNAL_SERVER_ERROR));
+        setUpMockServiceErrorResponse(newResponse(HttpURLConnection.HTTP_INTERNAL_ERROR));
         assertTrue(filesSender.send(tempFiles));
         verify(mockService, times(1)).upload(anyString(), anyString(), anyString());
     }
 
     @Test
     public void testSend_uploadFailsBadRequest() {
-        setUpMockServiceErrorResponse(newResponse(HttpStatus.SC_BAD_REQUEST));
+        setUpMockServiceErrorResponse(newResponse(HttpURLConnection.HTTP_BAD_REQUEST));
         assertTrue(filesSender.send(tempFiles));
         verify(mockService, times(1)).upload(anyString(), anyString(), anyString());
     }
 
     @Test
     public void testSend_uploadFailsForbidden() {
-        setUpMockServiceErrorResponse(newResponse(HttpStatus.SC_FORBIDDEN));
+        setUpMockServiceErrorResponse(newResponse(HttpURLConnection.HTTP_FORBIDDEN));
         assertFalse(filesSender.send(tempFiles));
     }
 

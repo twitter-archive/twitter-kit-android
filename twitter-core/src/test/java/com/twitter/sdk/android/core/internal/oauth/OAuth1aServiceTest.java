@@ -29,7 +29,6 @@ import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.internal.TwitterApi;
 
-import org.apache.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -248,7 +247,7 @@ public class OAuth1aServiceTest {
             Callback<OAuthResponse> authResponseCallback) throws IOException {
         final Callback<Response> callbackWrapper = service.getCallbackWrapper(authResponseCallback);
         final TypedInput mockValue = mock(TypedInput.class);
-        final Response mockResponse = new Response("url", HttpStatus.SC_OK, "reason",
+        final Response mockResponse = new Response("url", HttpURLConnection.HTTP_OK, "reason",
                 new ArrayList<retrofit.client.Header>(), mockValue);
         InputStream inputStream = null;
         try {
@@ -293,7 +292,7 @@ public class OAuth1aServiceTest {
         };
         final Callback<Response> callbackWrapper = service.getCallbackWrapper(callback);
         final TypedInput mockValue = mock(TypedInput.class);
-        final Response mockResponse = new Response("url", HttpStatus.SC_OK, "reason",
+        final Response mockResponse = new Response("url", HttpURLConnection.HTTP_OK, "reason",
                 new ArrayList<retrofit.client.Header>(), mockValue);
         when(mockValue.in()).thenThrow(mock(IOException.class));
         callbackWrapper.success(new Result<>(mockResponse, mockResponse));

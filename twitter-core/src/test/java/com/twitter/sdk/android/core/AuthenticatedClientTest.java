@@ -37,6 +37,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricGradleTestRunner.class)
@@ -44,9 +45,18 @@ import static org.mockito.Mockito.mock;
 public class AuthenticatedClientTest  {
     static final String POST_VERB = "POST";
     static final String POST_KEY = "test";
-    static final String POST_KEY_2 = "test2";
+    static final String POST_KEY_2 = "test2%21";
+    static final String POST_KEY_2_DECODED = "test2!";
     static final String POST_VALUE = "value";
+    static final String POST_VALUE_2 = "value%202%21";
+    static final String POST_VALUE_2_DECODED = "value 2!";
     static final String ANY_URL = "testurl";
+    static final String BAD_CHAR_ENCODING = "UTF-811";
+    static final String BAD_URL_ENCODING = "value %3f";
+    static final String QUERY_NO_VALUE = POST_KEY + "&" + POST_KEY_2;
+    static final String QUERY_WITH_VALUE = POST_KEY + "=" + POST_VALUE + "&" +
+            POST_KEY_2 + "=" + POST_VALUE_2;
+    static final String QUERY_BAD_PARAM = POST_KEY + "=" + POST_VALUE + "=" + POST_VALUE;
     static final Header TEST_HEADER = new Header("test", "test");
 
     private AuthenticatedClient client;
@@ -83,7 +93,7 @@ public class AuthenticatedClientTest  {
         final Request request = new Request(POST_VERB, ANY_URL, null, output);
         final Map<String, String> params = client.getPostParams(request);
 
-        assertEquals(params.get(POST_KEY), POST_VALUE);
+        assertEquals(POST_VALUE, params.get(POST_KEY));
     }
 
     /**
@@ -99,8 +109,8 @@ public class AuthenticatedClientTest  {
         final Request request = new Request(POST_VERB, ANY_URL, null, output);
         final Map<String, String> params = client.getPostParams(request);
 
-        assertEquals(params.get(POST_KEY), POST_VALUE);
-        assertEquals(params.get(POST_KEY_2), POST_VALUE);
+        assertEquals(POST_VALUE, params.get(POST_KEY));
+        assertEquals(POST_VALUE, params.get(POST_KEY_2));
     }
 
     /**
@@ -114,5 +124,45 @@ public class AuthenticatedClientTest  {
 
         final Map<String, String> params = client.getPostParams(request);
         assertTrue(params.isEmpty());
+    }
+
+    @Test
+    public void testGetQueryParameters_emptyValue() throws IOException {
+        final Map<String, String> params = client.getParameters(QUERY_NO_VALUE);
+
+        assertTrue(params.containsKey(POST_KEY));
+        assertEquals("", params.get(POST_KEY));
+        assertTrue(params.containsKey(POST_KEY_2_DECODED));
+        assertEquals("", params.get(POST_KEY_2_DECODED));
+    }
+
+    @Test
+    public void testGetQueryParameters_withValue() throws IOException {
+        final Map<String, String> params = client.getParameters(QUERY_WITH_VALUE);
+
+        assertTrue(params.containsKey(POST_KEY));
+        assertEquals(POST_VALUE, params.get(POST_KEY));
+        assertTrue(params.containsKey(POST_KEY_2_DECODED));
+        assertEquals(POST_VALUE_2_DECODED, params.get(POST_KEY_2_DECODED));
+    }
+
+    @Test
+    public void testGetQueryParameters_withBadParam() throws IOException {
+        try {
+            client.getParameters(QUERY_BAD_PARAM);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            assertEquals("bad parameter", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testDecode_withBadEncoding() throws IOException {
+        try {
+            client.decode(BAD_URL_ENCODING, BAD_CHAR_ENCODING);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            assertEquals("bad parameter encoding", e.getMessage());
+        }
     }
 }

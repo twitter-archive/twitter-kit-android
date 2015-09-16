@@ -29,12 +29,11 @@ import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 
-import org.apache.http.HttpStatus;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
@@ -101,7 +100,7 @@ class ScribeFilesSender implements FilesSender {
                 CommonUtils.logControlled(context, scribeEvents);
 
                 final Response response = upload(scribeEvents);
-                if (response.getStatus() == HttpStatus.SC_OK) {
+                if (response.getStatus() == HttpURLConnection.HTTP_OK) {
                     return true;
                 } else {
                     CommonUtils.logControlledError(context, SEND_FILE_FAILURE_ERROR, null);
@@ -109,8 +108,8 @@ class ScribeFilesSender implements FilesSender {
             } catch (RetrofitError e) {
                 CommonUtils.logControlledError(context, SEND_FILE_FAILURE_ERROR, e);
                 if (e.getResponse() != null &&
-                        (e.getResponse().getStatus() == HttpStatus.SC_INTERNAL_SERVER_ERROR ||
-                         e.getResponse().getStatus() == HttpStatus.SC_BAD_REQUEST)) {
+                        (e.getResponse().getStatus() == HttpURLConnection.HTTP_INTERNAL_ERROR ||
+                         e.getResponse().getStatus() == HttpURLConnection.HTTP_BAD_REQUEST)) {
                     return true;
                 }
             } catch (IOException e) {
