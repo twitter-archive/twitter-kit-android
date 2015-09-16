@@ -99,8 +99,6 @@ dependencies {
     compile rootProject.picasso
     compile rootProject.supportV4
 
-    debugCompile rootProject.mockito
-
     androidTestCompile rootProject.retrofitMock
     androidTestCompile rootProject.mockito
     androidTestCompile rootProject.dexmakerMockito
