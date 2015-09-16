@@ -20,16 +20,8 @@ package com.twitter.sdk.android.tweetui;
 import android.os.Handler;
 import android.util.Log;
 
-import io.fabric.sdk.android.DefaultLogger;
-import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.FabricAndroidTestCase;
-import io.fabric.sdk.android.FabricTestUtils;
-import io.fabric.sdk.android.services.concurrency.PriorityThreadPoolExecutor;
-import io.fabric.sdk.android.services.settings.Settings;
-import io.fabric.sdk.android.services.settings.TestSettingsController;
-
+import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
-import com.twitter.sdk.android.core.AppSession;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -38,9 +30,15 @@ import com.twitter.sdk.android.core.TwitterCoreTestUtils;
 import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
 import com.twitter.sdk.android.core.services.StatusesService;
 
-import com.squareup.picasso.Picasso;
-
 import java.util.concurrent.ConcurrentHashMap;
+
+import io.fabric.sdk.android.DefaultLogger;
+import io.fabric.sdk.android.Fabric;
+import io.fabric.sdk.android.FabricAndroidTestCase;
+import io.fabric.sdk.android.FabricTestUtils;
+import io.fabric.sdk.android.services.concurrency.PriorityThreadPoolExecutor;
+import io.fabric.sdk.android.services.settings.Settings;
+import io.fabric.sdk.android.services.settings.TestSettingsController;
 
 import static org.mockito.Mockito.mock;
 
@@ -67,7 +65,8 @@ public class TweetUiTestCase extends FabricAndroidTestCase {
         final TwitterCore twitterCore = TwitterCoreTestUtils.createTwitterCore(
                 new TwitterAuthConfig("", ""), clients);
 
-        // Initialize Fabric with mock executor to avoid initializing kits
+        // Initialize Fabric with mock executor so that kit#doInBackground() will not be called
+        // during kit initialization.
         final Fabric fabric = new Fabric.Builder(getContext())
                 .kits(twitterCore, new TweetUi())
                 .logger(new DefaultLogger(Log.DEBUG))
@@ -92,14 +91,6 @@ public class TweetUiTestCase extends FabricAndroidTestCase {
         super.tearDown();
     }
 
-    public void testClearSession() {
-        final AppSession session = mock(AppSession.class);
-        TwitterCore.getInstance().getAppSessionManager().setActiveSession(session);
-        TweetUi.getInstance().clearAppSession(session.getId());
-        assertEquals(null, TwitterCore.getInstance().getAppSessionManager().getActiveSession());
-    }
-
-    // Mocks
     private void createMocks() {
         mainHandler = mock(Handler.class);
         guestAuthQueue = mock(TestTweetUiAuthRequestQueue.class);

@@ -22,9 +22,12 @@ import io.fabric.sdk.android.FabricTestUtils;
 import io.fabric.sdk.android.KitStub;
 import io.fabric.sdk.android.services.concurrency.UnmetDependencyException;
 
+import com.twitter.sdk.android.core.AppSession;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
+
+import static org.mockito.Mockito.mock;
 
 public class TweetUiTest extends FabricAndroidTestCase {
 
@@ -102,5 +105,13 @@ public class TweetUiTest extends FabricAndroidTestCase {
         } catch (NullPointerException e) {
             fail("should have gracefully ignored events");
         }
+    }
+
+
+    public void testClearSession() {
+        final AppSession session = mock(AppSession.class);
+        TwitterCore.getInstance().getAppSessionManager().setActiveSession(session);
+        tweetUi.clearAppSession(session.getId());
+        assertEquals(null, TwitterCore.getInstance().getAppSessionManager().getActiveSession());
     }
 }
