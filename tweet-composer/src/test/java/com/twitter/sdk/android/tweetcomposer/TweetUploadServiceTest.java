@@ -37,7 +37,6 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isNull;
@@ -89,13 +88,11 @@ public class TweetUploadServiceTest extends AndroidTestCase {
         intent.putExtra(TweetUploadService.EXTRA_USER_TOKEN, mockToken);
         intent.putExtra(TweetUploadService.EXTRA_TWEET_TEXT, EXPECTED_TWEET_TEXT);
         intent.putExtra(TweetUploadService.EXTRA_TWEET_CARD, mockCard);
-        intent.putExtra(TweetUploadService.EXTRA_TWEET_CALL_TO_ACTION, EXPECTED_CALL_TO_ACTION);
         service.onHandleIntent(intent);
 
         assertEquals(service.twitterSession.getAuthToken(), mockToken);
         assertEquals(service.tweetText, EXPECTED_TWEET_TEXT);
         assertEquals(service.tweetCard, mockCard);
-        assertEquals(service.cardCallToAction, EXPECTED_CALL_TO_ACTION);
         verify(service).uploadTweet(any(TwitterSession.class), eq(EXPECTED_TWEET_TEXT));
     }
 
@@ -108,15 +105,13 @@ public class TweetUploadServiceTest extends AndroidTestCase {
         intent.putExtra(TweetUploadService.EXTRA_USER_TOKEN, mockToken);
         intent.putExtra(TweetUploadService.EXTRA_TWEET_TEXT, EXPECTED_TWEET_TEXT);
         intent.putExtra(TweetUploadService.EXTRA_TWEET_CARD, appCard);
-        intent.putExtra(TweetUploadService.EXTRA_TWEET_CALL_TO_ACTION, EXPECTED_CALL_TO_ACTION);
         service.onHandleIntent(intent);
 
         assertEquals(service.twitterSession.getAuthToken(), mockToken);
         assertEquals(service.tweetText, EXPECTED_TWEET_TEXT);
         assertEquals(service.tweetCard, appCard);
-        assertEquals(service.cardCallToAction, EXPECTED_CALL_TO_ACTION);
         verify(service).uploadAppCardTweet(any(TwitterSession.class), eq(EXPECTED_TWEET_TEXT),
-                eq(appCard), eq(EXPECTED_CALL_TO_ACTION));
+                eq(appCard));
     }
 
     @Test
@@ -125,8 +120,8 @@ public class TweetUploadServiceTest extends AndroidTestCase {
         verify(mockStatusesService).update(eq(EXPECTED_TWEET_TEXT), isNull(String.class),
                 callbackCaptor.capture());
         callbackCaptor.getValue().success(mock(Result.class));
-        verify(service).stopSelf();
         verify(service).sendSuccessBroadcast();
+        verify(service).stopSelf();
     }
 
     @Test
@@ -135,8 +130,8 @@ public class TweetUploadServiceTest extends AndroidTestCase {
         verify(mockStatusesService).update(eq(EXPECTED_TWEET_TEXT), isNull(String.class),
                 callbackCaptor.capture());
         callbackCaptor.getValue().failure(mock(TwitterException.class));
-        verify(service).stopSelf();
         verify(service).sendFailureBroadcast(any(Intent.class));
+        verify(service).stopSelf();
     }
 
     @Test

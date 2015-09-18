@@ -23,22 +23,21 @@ import com.twitter.sdk.android.tweetcomposer.internal.CardData;
  * CardDataFactory methods return CardData models for upload to the CardService.
  */
 class CardDataFactory {
-    private static final String APP_CARD_TYPE = "5613132:promo_image_app"; // TODO: drop dev prefix
+    static final String APP_CARD_TYPE = "5613132:promo_image_app"; // TODO: drop dev prefix
+    static final String APP_CARD_CTA_KEY = "open";
     private static final String MEDIA_SCHEME = "media://";
+
 
     /**
      * @return App Card CardData instance.
      */
-    static CardData createAppCardData(Card card, Long mediaId, String callToAction) {
-        callToAction = callToAction == null ? "" : callToAction;
+    static CardData createAppCardData(Card card, Long mediaId) {
         return new CardData.Builder()
                 .card(APP_CARD_TYPE)
-                .title(APP_CARD_TYPE)
                 .image(getCardMedia(mediaId))
                 .appGooglePlayId(card.packageName)
-                .cardData("{}")             // seems to be required
-                .callToAction(callToAction)
-                .ctaKey("open")
+                .cardData("{}")
+                .ctaKey(APP_CARD_CTA_KEY)
                 .deviceId("123")
                 .build();
     }

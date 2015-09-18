@@ -187,8 +187,6 @@ public class ComposerControllerTest extends AndroidTestCase {
         assertEquals(TWEET_TEXT, intent.getStringExtra(TweetUploadService.EXTRA_TWEET_TEXT));
         assertEquals(mockAuthToken, intent.getParcelableExtra(TweetUploadService.EXTRA_USER_TOKEN));
         assertEquals(mockCard, intent.getSerializableExtra(TweetUploadService.EXTRA_TWEET_CARD));
-        assertEquals(ComposerController.DEFAULT_CALL_TO_ACTION,
-                intent.getStringExtra(TweetUploadService.EXTRA_TWEET_CALL_TO_ACTION));
     }
 
     @Test

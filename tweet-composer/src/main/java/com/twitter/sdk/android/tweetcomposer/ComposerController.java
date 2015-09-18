@@ -112,7 +112,6 @@ class ComposerController {
             intent.putExtra(TweetUploadService.EXTRA_USER_TOKEN, session.getAuthToken());
             intent.putExtra(TweetUploadService.EXTRA_TWEET_TEXT, text);
             intent.putExtra(TweetUploadService.EXTRA_TWEET_CARD, card);
-            intent.putExtra(TweetUploadService.EXTRA_TWEET_CALL_TO_ACTION, DEFAULT_CALL_TO_ACTION);
             composerView.getContext().startService(intent);
             finisher.finish();
         }
