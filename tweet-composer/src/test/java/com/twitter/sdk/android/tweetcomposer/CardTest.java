@@ -29,6 +29,8 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -52,12 +54,19 @@ public class CardTest {
     }
 
     @Test
-    public void createPreviewCard() {
+    public void createAppCard() {
         final Card card = Card.createAppCard(mockContext, TEST_URI);
 
-        assertEquals(card.APP_CARD_TYPE, card.cardType);
+        assertEquals(Card.APP_CARD_TYPE, card.cardType);
         assertEquals(TEST_URI.toString(), card.imageUri);
         assertEquals(TEST_PACKAGE_NAME, card.packageName);
         assertEquals(TEST_APP_NAME, card.appName);
+    }
+
+    @Test
+    public void testIsAppCard() {
+        assertTrue(Card.isAppCard(Card.createAppCard(mockContext, mock(Uri.class))));
+        assertFalse(Card.isAppCard(null));
+        assertFalse((Card.isAppCard(mock(Card.class))));
     }
 }

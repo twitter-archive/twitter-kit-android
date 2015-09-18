@@ -22,8 +22,11 @@ import android.net.Uri;
 
 import java.io.Serializable;
 
+/**
+ * Card is a Twitter Card which may be attached to a Tweet.
+ */
 public class Card implements Serializable {
-    public static final String APP_CARD_TYPE = "promo_image_app";
+    public static final String APP_CARD_TYPE = "APP_CARD";
     final String cardType;
     final String imageUri;
     final String packageName;
@@ -36,10 +39,32 @@ public class Card implements Serializable {
         this.appName = appName;
     }
 
+    /**
+     * Creates a new App Card.
+     * @param context Context from the package which the App card should use.
+     * @param imageUri the Uri of an image to be shown in the Card. See
+     *        <a href="https://dev.twitter.com/rest/public/uploading-media">Uploading Media</a>
+     * @return an App Card. See <a href="https://dev.twitter.com/cards/types/app">Card Types</a>
+     */
     public static Card createAppCard(Context context, Uri imageUri) {
         final String appName = getApplicationName(context);
         final String packageName = getPackageName(context);
         return new Card(APP_CARD_TYPE, imageUri.toString(), appName, packageName);
+    }
+
+    /**
+     * @return the type of the Card.
+     */
+    public String getCardType() {
+        return cardType;
+    }
+
+    /**
+     * @return true if the Card is an App Card.
+     */
+    static boolean isAppCard(Card card) {
+        return card != null && card.getCardType() != null
+                && card.getCardType().equals(APP_CARD_TYPE);
     }
 
     private static String getApplicationName(Context context) {

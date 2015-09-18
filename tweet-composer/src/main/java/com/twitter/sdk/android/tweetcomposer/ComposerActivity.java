@@ -26,7 +26,6 @@ import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterSession;
 
 public class ComposerActivity extends Activity {
-    static final String TAG = "ComposerActivity";
     static final String EXTRA_TWEET_TEXT = "EXTRA_TWEET_TEXT";
     static final String EXTRA_USER_TOKEN = "EXTRA_USER_TOKEN";
     static final String EXTRA_CARD_DATA = "EXTRA_CARD_DATA";

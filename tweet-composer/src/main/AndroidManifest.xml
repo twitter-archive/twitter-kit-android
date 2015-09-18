@@ -26,5 +26,9 @@
             android:name=".ComposerActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize|stateVisible"/>
+        <service
+            android:name=".TweetUploadService"
+            android:enabled="true"
+            android:exported="false"/>
     </application>
 </manifest>

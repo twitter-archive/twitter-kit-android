@@ -20,9 +20,16 @@ package com.twitter.sdk.android.tweetcomposer;
 import android.content.Context;
 import android.view.View;
 
+/**
+ * CardViewFactory returns a View for a Card.
+ */
 class CardViewFactory {
+
+    /**
+     * @return a View for the Card.
+     */
     View createCard(Context context, Card card) {
-        if (card.cardType.equals(card.APP_CARD_TYPE)) {
+        if (card.cardType.equals(Card.APP_CARD_TYPE)) {
             final AppCardView cardView = new AppCardView(context);
             cardView.setCard(card);
             return cardView;

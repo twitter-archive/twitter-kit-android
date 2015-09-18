@@ -17,6 +17,7 @@
 
 package com.twitter.sdk.android.tweetcomposer;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -27,14 +28,13 @@ import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.internal.TwitterApiConstants;
-import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.User;
 
-import io.fabric.sdk.android.Fabric;
-
 class ComposerController {
+    static final String DEFAULT_CALL_TO_ACTION = "Click Now";
     ComposerView composerView;
     TwitterSession session;
+    Card card;
     ComposerActivity.Finisher finisher;
     final DependencyProvider dependencyProvider;
 
@@ -49,6 +49,7 @@ class ComposerController {
             DependencyProvider dependencyProvider) {
         this.composerView = composerView;
         this.session = session;
+        this.card = card;
         this.finisher = finisher;
         this.dependencyProvider = dependencyProvider;
 
@@ -107,19 +108,13 @@ class ComposerController {
 
         @Override
         public void onTweetPost(String text) {
-            dependencyProvider.getComposerApiClient(session).getComposerStatusesService()
-                .update(text, null, new Callback<Tweet>() {
-                    @Override
-                    public void success(Result<Tweet> result) {
-                        finisher.finish();
-                    }
-
-                    @Override
-                    public void failure(TwitterException exception) {
-                        Fabric.getLogger().d(ComposerActivity.TAG, "Post Tweet failed",
-                                exception);
-                    }
-                });
+            final Intent intent = new Intent(composerView.getContext(), TweetUploadService.class);
+            intent.putExtra(TweetUploadService.EXTRA_USER_TOKEN, session.getAuthToken());
+            intent.putExtra(TweetUploadService.EXTRA_TWEET_TEXT, text);
+            intent.putExtra(TweetUploadService.EXTRA_TWEET_CARD, card);
+            intent.putExtra(TweetUploadService.EXTRA_TWEET_CALL_TO_ACTION, DEFAULT_CALL_TO_ACTION);
+            composerView.getContext().startService(intent);
+            finisher.finish();
         }
 
         @Override
@@ -161,10 +156,6 @@ class ComposerController {
 
         TwitterApiClient getApiClient(TwitterSession session) {
             return TwitterCore.getInstance().getApiClient(session);
-        }
-
-        ComposerApiClient getComposerApiClient(TwitterSession session) {
-            return TweetComposer.getInstance().getApiClient(session);
         }
 
         CardViewFactory getCardViewFactory() {

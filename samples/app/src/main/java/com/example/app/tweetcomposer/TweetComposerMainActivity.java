@@ -17,6 +17,7 @@
 
 package com.example.app.tweetcomposer;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,7 +27,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.app.BaseActivity;
-import com.example.app.twittercore.TwitterCoreMainActivity;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.tweetcomposer.Card;
@@ -40,6 +40,8 @@ import java.net.URL;
 
 public class TweetComposerMainActivity extends BaseActivity {
     private static final String TAG = "TweetComposer";
+    private static final String IMAGE_TYPES = "image/*";
+    private static final int IMAGE_PICKER_CODE = 141;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,26 +72,34 @@ public class TweetComposerMainActivity extends BaseActivity {
         organicComposer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final TwitterSession session = TwitterCore.getInstance().getSessionManager()
-                        .getActiveSession();
-                final Intent intent;
-                if (session == null) {
-                    // session required to compose a Tweet
-                    intent = TwitterCoreMainActivity.newIntent(TweetComposerMainActivity.this);
-                } else {
-                    final Uri imageUri = new Uri.Builder()
-                            .scheme("android.resource")
-                            .authority(getPackageName())
-                            .path("/raw/fabric_logo_large")
-                            .build();
-                    intent = new ComposerActivity.Builder(TweetComposerMainActivity.this)
-                            .session(session)
-                            .tweetText("Hello World!")
-                            .card(Card.createAppCard(TweetComposerMainActivity.this, imageUri))
-                            .createIntent();
-                }
-                startActivity(intent);
+                launchPicker();
             }
         });
+    }
+
+    void launchPicker() {
+        final Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType(IMAGE_TYPES);
+        startActivityForResult(Intent.createChooser(intent, "Pick an Image"), IMAGE_PICKER_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == IMAGE_PICKER_CODE && resultCode == Activity.RESULT_OK) {
+            launchComposer("Hello world!", data.getData());
+        }
+    }
+
+    void launchComposer(String text, Uri uri) {
+        final TwitterSession session = TwitterCore.getInstance().getSessionManager()
+                .getActiveSession();
+        final Card card = Card.createAppCard(TweetComposerMainActivity.this, uri);
+        final Intent intent = new ComposerActivity.Builder(TweetComposerMainActivity.this)
+                .session(session)
+                .tweetText(text)
+                .card(card)
+                .createIntent();
+        startActivity(intent);
     }
 }
