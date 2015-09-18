@@ -35,6 +35,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.twitter.sdk.android.core.internal.UserUtils;
+import com.twitter.sdk.android.core.internal.util.ObservableScrollView;
 import com.twitter.sdk.android.core.models.User;
 
 public class ComposerView extends LinearLayout {
@@ -43,6 +44,8 @@ public class ComposerView extends LinearLayout {
     EditText tweetEditView;
     TextView charCountView;
     Button tweetButton;
+    ObservableScrollView scrollView;
+    View divider;
     // styled drawables for images
     ColorDrawable mediaBg;
     // callbacks
@@ -114,6 +117,17 @@ public class ComposerView extends LinearLayout {
                 callbacks.onTextChanged(getTweetText());
             }
         });
+
+        scrollView.setScrollViewListener(new ObservableScrollView.ScrollViewListener() {
+            @Override
+            public void onScrollChanged(int scrollY) {
+                if (scrollY > 0) {
+                    divider.setVisibility(View.VISIBLE);
+                } else {
+                    divider.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
     }
 
     void findSubviews() {
@@ -122,6 +136,8 @@ public class ComposerView extends LinearLayout {
         tweetEditView = (EditText) findViewById(R.id.tw__edit_tweet);
         charCountView = (TextView) findViewById(R.id.tw__char_count);
         tweetButton = (Button) findViewById(R.id.tw__post_tweet);
+        scrollView = (ObservableScrollView) findViewById(R.id.tw__composer_scroll_view);
+        divider = findViewById(R.id.tw__composer_profile_divider);
         cardView = (ViewGroup) findViewById(R.id.tw__card_view);
     }
 
