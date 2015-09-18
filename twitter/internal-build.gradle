@@ -117,6 +117,9 @@ fabricKitRelease {
     minPlatformVersion {
         apiVersion "8"
     }
+    docsUrl = "https://docs.fabric.io/javadocs/twitter-core/${project.version}/index.html"
+    twitterHandle = "@twitterdev"
+    websiteUrl = "https://docs.fabric.io/android/twitter/index.html"
 }
 
 project.tasks.getByName('fabricKitRelease').enabled = rootProject.ext.kitsForRelease.get(project.path)
