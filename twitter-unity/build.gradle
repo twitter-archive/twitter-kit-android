@@ -19,6 +19,7 @@ apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.library'
 
 apply from: rootProject.commonPlugins
+apply plugin: 'io.fabric.gradle.unity'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
