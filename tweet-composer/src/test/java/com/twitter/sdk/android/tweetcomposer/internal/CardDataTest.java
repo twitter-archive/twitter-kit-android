@@ -29,45 +29,64 @@ import org.robolectric.annotation.Config;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class CardDataTest extends AndroidTestCase {
-    private static final String TEST_CARD = "awesome_image_app";
+    private static final String TEST_CARD = "card_type";
+    private static final String TEST_DESCRIPTION = "description";
+    private static final String TEST_SITE = "site";
+    private static final String TEST_COUNTRY = "usa";
+    private static final String TEST_APP_CARD = "awesome_image_app";
     private static final String TEST_IMAGE = "media://12345";
-    private static final String TEST_APP_ID = "com.example.app";
+    private static final String TEST_GOOGLE_PLAY_ID = "com.example.app";
     private static final String TEST_CARD_DATA = "{}";
     private static final String TEST_CALL_TO_ACTION = "Click Now";
     private static final String TEST_DEVICE_ID = "0123456789";
-    private static final String EXPECTED_JSON = "{\"twitter:card\":\"awesome_image_app\"," +
-        "\"twitter:image\":\"media://12345\",\"twitter:app:id:googleplay\":\"com.example.app\"," +
-        "\"twitter:card_data\":\"{}\",\"twitter:text:cta\":\"Click Now\"," +
-        "\"twitter:text:did_value\":\"0123456789\"}";
+    private static final String CARD_JSON = "{\"twitter:card\":\"card_type\"," +
+        "\"twitter:image\":\"media://12345\",\"twitter:site\":\"site\"," +
+        "\"twitter:description\":\"description\",\"twitter:app:country\":\"usa\"}";
+    private static final String APP_CARD_JSON = "{\"twitter:card\":\"awesome_image_app\"," +
+        "\"twitter:image\":\"media://12345\",\"twitter:card_data\":\"{}\"," +
+        "\"twitter:text:cta\":\"Click Now\",\"twitter:text:did_value\":\"0123456789\"," +
+        "\"twitter:app:id:googleplay\":\"com.example.app\"}";
 
     @Test
     public void testBuilder() {
         final CardData data = new CardData.Builder()
                 .card(TEST_CARD)
                 .image(TEST_IMAGE)
-                .appIdGooglePlay(TEST_APP_ID)
+                .appGooglePlayId(TEST_GOOGLE_PLAY_ID)
                 .cardData(TEST_CARD_DATA)
-                .cta(TEST_CALL_TO_ACTION)
+                .callToAction(TEST_CALL_TO_ACTION)
                 .deviceId(TEST_DEVICE_ID)
                 .build();
         assertEquals(TEST_CARD, data.card);
         assertEquals(TEST_IMAGE, data.image);
-        assertEquals(TEST_APP_ID, data.appIdGooglePlay);
+        assertEquals(TEST_GOOGLE_PLAY_ID, data.appGooglePlayId);
         assertEquals(TEST_CARD_DATA, data.cardData);
-        assertEquals(TEST_CALL_TO_ACTION, data.cta);
+        assertEquals(TEST_CALL_TO_ACTION, data.callToAction);
         assertEquals(TEST_DEVICE_ID, data.deviceId);
     }
 
     @Test
-    public void testToString() {
+    public void testCardDataToString() {
         final CardData data = new CardData.Builder()
                 .card(TEST_CARD)
+                .description(TEST_DESCRIPTION)
+                .site(TEST_SITE)
+                .appCountry(TEST_COUNTRY)
                 .image(TEST_IMAGE)
-                .appIdGooglePlay(TEST_APP_ID)
+                .build();
+        assertEquals(CARD_JSON, data.toString());
+    }
+
+    @Test
+    public void testAppCardDataToString() {
+        final CardData data = new CardData.Builder()
+                .card(TEST_APP_CARD)
+                .image(TEST_IMAGE)
+                .appGooglePlayId(TEST_GOOGLE_PLAY_ID)
                 .cardData(TEST_CARD_DATA)
-                .cta(TEST_CALL_TO_ACTION)
+                .callToAction(TEST_CALL_TO_ACTION)
                 .deviceId(TEST_DEVICE_ID)
                 .build();
-        assertEquals(EXPECTED_JSON, data.toString());
+        assertEquals(APP_CARD_JSON, data.toString());
     }
 }

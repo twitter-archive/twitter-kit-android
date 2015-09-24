@@ -20,17 +20,30 @@ package com.twitter.sdk.android.tweetcomposer.internal;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * CardData for upload to the internal Twitter CardService.
+ */
 public class CardData {
     private static Serializer serializer;
 
-    private CardData(String card, String image, String appId, String cardData, String cta,
-                     String deviceId) {
+    private CardData(String card, String image, String site, String description, String cardData,
+                     String callToAction, String deviceId, String appIPhoneId, String appIPadId,
+                     String appGooglePlayId, String appIPhoneUrl, String appIPadUrl,
+                     String appGooglePlayUrl, String appCountry) {
         this.card = card;
         this.image = image;
-        this.appIdGooglePlay = appId;
+        this.site = site;
+        this.description = description;
         this.cardData = cardData;
-        this.cta = cta;
+        this.callToAction = callToAction;
         this.deviceId = deviceId;
+        this.appIPhoneId = appIPhoneId;
+        this.appIPadId = appIPadId;
+        this.appGooglePlayId = appGooglePlayId;
+        this.appIPhoneUrl = appIPhoneUrl;
+        this.appIPadUrl = appIPadUrl;
+        this.appGooglePlayUrl = appGooglePlayUrl;
+        this.appCountry = appCountry;
     }
 
     @SerializedName("twitter:card")
@@ -39,17 +52,41 @@ public class CardData {
     @SerializedName("twitter:image")
     public final String image;
 
-    @SerializedName("twitter:app:id:googleplay")
-    public final String appIdGooglePlay;
+    @SerializedName("twitter:site")
+    public final String site;
+
+    @SerializedName("twitter:description")
+    public final String description;
 
     @SerializedName("twitter:card_data")
     public final String cardData;
 
     @SerializedName("twitter:text:cta")
-    public final String cta;
+    public final String callToAction;
 
     @SerializedName("twitter:text:did_value")
     public final String deviceId;
+
+    @SerializedName("twitter:app:id:iphone")
+    public final String appIPhoneId;
+
+    @SerializedName("twitter:app:id:ipad")
+    public final String appIPadId;
+
+    @SerializedName("twitter:app:id:googleplay")
+    public final String appGooglePlayId;
+
+    @SerializedName("twitter:app:url:iphone")
+    public final String appIPhoneUrl;
+
+    @SerializedName("twitter:app:url:ipad")
+    public final String appIPadUrl;
+
+    @SerializedName("twitter:app:url:googleplay")
+    public final String appGooglePlayUrl;
+
+    @SerializedName("twitter:app:country")
+    public final String appCountry;
 
     Serializer getSerializer() {
         if (serializer == null) {
@@ -79,13 +116,24 @@ public class CardData {
         }
     }
 
+    /**
+     * CardData Builder.
+     */
     public static class Builder {
         private String card;
         private String image;
-        private String appIdGooglePlay;
+        private String site;
+        private String description;
         private String cardData;
-        private String cta;
+        private String callToAction;
         private String deviceId;
+        private String appIPhoneId;
+        private String appIPadId;
+        private String appGooglePlayId;
+        private String appIPhoneUrl;
+        private String appIPadUrl;
+        private String appGooglePlayUrl;
+        private String appCountry;
 
         public Builder card(String card) {
             this.card = card;
@@ -97,8 +145,13 @@ public class CardData {
             return this;
         }
 
-        public Builder appIdGooglePlay(String appId) {
-            this.appIdGooglePlay = appId;
+        public Builder site(String site) {
+            this.site = site;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
             return this;
         }
 
@@ -107,8 +160,8 @@ public class CardData {
             return this;
         }
 
-        public Builder cta(String cta) {
-            this.cta = cta;
+        public Builder callToAction(String callToAction) {
+            this.callToAction = callToAction;
             return this;
         }
 
@@ -117,8 +170,45 @@ public class CardData {
             return this;
         }
 
+        public Builder appIPhoneId(String appIPhoneId) {
+            this.appIPhoneId = appIPhoneId;
+            return this;
+        }
+
+        public Builder appIPadId(String appIPadId) {
+            this.appIPadId = appIPadId;
+            return this;
+        }
+
+        public Builder appGooglePlayId(String appGooglePlayId) {
+            this.appGooglePlayId = appGooglePlayId;
+            return this;
+        }
+
+        public Builder appIPhoneUrl(String appIPhoneUrl) {
+            this.appIPhoneUrl = appIPhoneUrl;
+            return this;
+        }
+
+        public Builder appIPadUrl(String appIPadUrl) {
+            this.appIPadUrl = appIPadUrl;
+            return this;
+        }
+
+        public Builder appGooglePlayUrl(String appGooglePlayUrl) {
+            this.appGooglePlayUrl = appGooglePlayUrl;
+            return this;
+        }
+
+        public Builder appCountry(String appCountry) {
+            this.appCountry = appCountry;
+            return this;
+        }
+
         public CardData build() {
-            return new CardData(card, image, appIdGooglePlay, cardData, cta, deviceId);
+            return new CardData(card, image, site, description, cardData, callToAction, deviceId,
+                    appIPhoneId, appIPadId, appGooglePlayId, appIPhoneUrl, appIPadUrl,
+                    appGooglePlayUrl, appCountry);
         }
     }
 }
