@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.twitter.Validator;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterApiClient;
@@ -122,12 +123,12 @@ class ComposerController {
         }
     }
 
-    static int tweetTextLength(String text) {
+    int tweetTextLength(String text) {
         if (TextUtils.isEmpty(text)) {
             return 0;
         }
-        // TODO use the Twitter validator to factor t.co links into counting.
-        return text.codePointCount(0, text.length());
+
+        return dependencyProvider.getTweetValidator().getTweetLength(text);
     }
 
     static int remainingCharCount(int charCount) {
@@ -152,13 +153,19 @@ class ComposerController {
      * Mockable class that provides ComposerController dependencies.
      */
     static class DependencyProvider {
+        final CardViewFactory cardViewFactory = new CardViewFactory();
+        final Validator tweetValidator = new Validator();
 
         TwitterApiClient getApiClient(TwitterSession session) {
             return TwitterCore.getInstance().getApiClient(session);
         }
 
         CardViewFactory getCardViewFactory() {
-            return new CardViewFactory();
+            return cardViewFactory;
+        }
+
+        Validator getTweetValidator() {
+            return tweetValidator;
         }
     }
 }

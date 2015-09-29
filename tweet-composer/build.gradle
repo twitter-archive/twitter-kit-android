@@ -79,6 +79,7 @@ dependencies {
 
     compile rootProject.fabric
     compile rootProject.picasso
+    compile rootProject.tweetText
 
     testCompile rootProject.fabricTest
     testCompile rootProject.mockito

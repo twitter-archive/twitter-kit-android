@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.test.AndroidTestCase;
 import android.view.View;
 
+import com.twitter.Validator;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterAuthToken;
@@ -83,6 +84,7 @@ public class ComposerControllerTest extends AndroidTestCase {
         when(mockDependencyProvider.getApiClient(any(TwitterSession.class)))
                 .thenReturn(mockTwitterApiClient);
         when(mockDependencyProvider.getCardViewFactory()).thenReturn(mockCardViewFactory);
+        when(mockDependencyProvider.getTweetValidator()).thenReturn(new Validator());
     }
 
     @Test
@@ -106,10 +108,15 @@ public class ComposerControllerTest extends AndroidTestCase {
 
     @Test
     public void testTweetTextLength() {
-        assertEquals(0, ComposerController.tweetTextLength(null));
-        assertEquals(0, ComposerController.tweetTextLength(""));
-        assertEquals(1, ComposerController.tweetTextLength("☃"));
-        assertEquals(5, ComposerController.tweetTextLength("tweet"));
+        controller = new ComposerController(mockComposerView, mockTwitterSession, TWEET_TEXT,
+                mockCard, mockFinisher, mockDependencyProvider);
+
+        assertEquals(0, controller.tweetTextLength(null));
+        assertEquals(0, controller.tweetTextLength(""));
+        assertEquals(1, controller.tweetTextLength("☃"));
+        assertEquals(5, controller.tweetTextLength("tweet"));
+        assertEquals(39, controller.tweetTextLength("tweet with link https://example.com"));
+        assertEquals(23, controller.tweetTextLength("https://example.com/foo/bar/foo"));
     }
 
     @Test

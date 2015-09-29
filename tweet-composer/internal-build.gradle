@@ -88,6 +88,7 @@ dependencies {
         releaseCompile projectOrBinary(path: path, configuration: 'release', binary: binary)
     }
     compile rootProject.picasso
+    compile rootProject.tweetText
 
     testCompile rootProject.fabricTest
     testCompile rootProject.mockito

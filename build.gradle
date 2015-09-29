@@ -104,4 +104,5 @@ ext {
     okHttp = 'com.squareup.okhttp:okhttp:2.3.0'
     okHttpUrlConnection = 'com.squareup.okhttp:okhttp-urlconnection:2.3.0'
     design = 'com.android.support:design:22.2.0'
+    tweetText = 'com.twitter:twitter-text:1.13.0'
 }
