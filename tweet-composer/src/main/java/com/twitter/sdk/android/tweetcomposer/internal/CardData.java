@@ -27,15 +27,18 @@ public class CardData {
     private static Serializer serializer;
 
     private CardData(String card, String image, String site, String description, String cardData,
-                     String callToAction, String deviceId, String appIPhoneId, String appIPadId,
-                     String appGooglePlayId, String appIPhoneUrl, String appIPadUrl,
-                     String appGooglePlayUrl, String appCountry) {
+                     String title, String callToAction, String ctaKey, String deviceId,
+                     String appIPhoneId, String appIPadId, String appGooglePlayId,
+                     String appIPhoneUrl, String appIPadUrl, String appGooglePlayUrl,
+                     String appCountry) {
         this.card = card;
         this.image = image;
         this.site = site;
         this.description = description;
         this.cardData = cardData;
+        this.title = title;
         this.callToAction = callToAction;
+        this.ctaKey = ctaKey;
         this.deviceId = deviceId;
         this.appIPhoneId = appIPhoneId;
         this.appIPadId = appIPadId;
@@ -61,8 +64,14 @@ public class CardData {
     @SerializedName("twitter:card_data")
     public final String cardData;
 
+    @SerializedName("twitter:text:title")
+    public final String title;
+
     @SerializedName("twitter:text:cta")
     public final String callToAction;
+
+    @SerializedName("twitter:cta_key")
+    public final String ctaKey;
 
     @SerializedName("twitter:text:did_value")
     public final String deviceId;
@@ -125,7 +134,9 @@ public class CardData {
         private String site;
         private String description;
         private String cardData;
+        private String title;
         private String callToAction;
+        private String ctaKey;
         private String deviceId;
         private String appIPhoneId;
         private String appIPadId;
@@ -160,8 +171,18 @@ public class CardData {
             return this;
         }
 
+        public Builder title(String title) {
+            this.title = title;
+            return this;
+        }
+
         public Builder callToAction(String callToAction) {
             this.callToAction = callToAction;
+            return this;
+        }
+
+        public Builder ctaKey(String ctaKey) {
+            this.ctaKey = ctaKey;
             return this;
         }
 
@@ -206,9 +227,9 @@ public class CardData {
         }
 
         public CardData build() {
-            return new CardData(card, image, site, description, cardData, callToAction, deviceId,
-                    appIPhoneId, appIPadId, appGooglePlayId, appIPhoneUrl, appIPadUrl,
-                    appGooglePlayUrl, appCountry);
+            return new CardData(card, image, site, description, cardData, title, callToAction,
+                    ctaKey, deviceId, appIPhoneId, appIPadId, appGooglePlayId, appIPhoneUrl,
+                    appIPadUrl, appGooglePlayUrl, appCountry);
         }
     }
 }
