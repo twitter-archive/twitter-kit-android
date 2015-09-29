@@ -25,29 +25,40 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 import com.twitter.sdk.android.core.Session;
+import com.twitter.sdk.android.core.SessionManager;
+import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
 
 import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.Kit;
+import io.fabric.sdk.android.services.concurrency.DependsOn;
 import io.fabric.sdk.android.services.network.UrlUtils;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The TweetComposer Kit provides a lightweight mechanism for creating intents to interact with the installed Twitter app or a browser.
  */
-public class TweetComposer extends Kit<Boolean> {
+@DependsOn(TwitterCore.class)
+public class TweetComposer extends Kit<Void> {
     private static final String MIME_TYPE_PLAIN_TEXT = "text/plain";
     private static final String MIME_TYPE_JPEG = "image/jpeg";
     private static final String TWITTER_PACKAGE_NAME = "com.twitter.android";
     private static final String WEB_INTENT = "https://twitter.com/intent/tweet?text=%s&url=%s";
+    private static final String KIT_SCRIBE_NAME = "TweetComposer";
+
     private final ConcurrentHashMap<Session, ComposerApiClient> apiClients;
     String advertisingId;
+    SessionManager<TwitterSession> sessionManager;
+    private ScribeClient scribeClient;
 
     public TweetComposer() {
         this.apiClients = new ConcurrentHashMap<>();
+        scribeClient = new ScribeClientImpl(null);
     }
 
     @Override
@@ -55,10 +66,21 @@ public class TweetComposer extends Kit<Boolean> {
         return BuildConfig.VERSION_NAME + "." + BuildConfig.BUILD_NUMBER;
     }
 
+    protected boolean onPreExecute() {
+        sessionManager = TwitterCore.getInstance().getSessionManager();
+        return super.onPreExecute();
+    }
+
     @Override
-    protected Boolean doInBackground() {
+    protected Void doInBackground() {
         advertisingId = getIdManager().getAdvertisingId();
-        return true;
+        // Trigger restoration of session
+        sessionManager.getActiveSession();
+        final List<SessionManager<? extends Session>> sessionManagers = new ArrayList<>();
+        sessionManagers.add(sessionManager);
+        scribeClient = new ScribeClientImpl(new DefaultScribeClient(this,
+                KIT_SCRIBE_NAME, sessionManagers, getIdManager()));
+        return null;
     }
 
     @Override
@@ -77,6 +99,10 @@ public class TweetComposer extends Kit<Boolean> {
     public static TweetComposer getInstance() {
         checkInitialized();
         return Fabric.getKit(TweetComposer.class);
+    }
+
+    protected ScribeClient getScribeClient() {
+        return scribeClient;
     }
 
     private static void checkInitialized() {

@@ -58,6 +58,7 @@ public class ComposerControllerTest extends AndroidTestCase {
     private CardViewFactory mockCardViewFactory;
     private Card mockCard;
     private ComposerActivity.Finisher mockFinisher;
+    private ComposerScribeClient mockComposerScribeClient;
     private ComposerController.DependencyProvider mockDependencyProvider;
 
     @Before
@@ -79,12 +80,14 @@ public class ComposerControllerTest extends AndroidTestCase {
         mockCardViewFactory = mock(CardViewFactory.class);
         when(mockCardViewFactory.createCard(any(Context.class), any(Card.class)))
                 .thenReturn(mock(View.class));
+        mockComposerScribeClient = mock(ComposerScribeClient.class);
 
         mockDependencyProvider = mock(ComposerController.DependencyProvider.class);
         when(mockDependencyProvider.getApiClient(any(TwitterSession.class)))
                 .thenReturn(mockTwitterApiClient);
         when(mockDependencyProvider.getCardViewFactory()).thenReturn(mockCardViewFactory);
         when(mockDependencyProvider.getTweetValidator()).thenReturn(new Validator());
+        when(mockDependencyProvider.getScribeClient()).thenReturn(mockComposerScribeClient);
     }
 
     @Test
@@ -97,6 +100,7 @@ public class ComposerControllerTest extends AndroidTestCase {
         // - sets initial Tweet text and cursor position
         // - gets a TwitterApiClient AccountService to set the profile photo
         // - sets card view in composer
+        // - scribes a Tweet Composer impression
         verify(mockComposerView).setCallbacks(any(ComposerController.ComposerCallbacks.class));
         verify(mockComposerView).setTweetText(TWEET_TEXT);
         verify(mockComposerView).setCursorAtEnd();
@@ -104,6 +108,7 @@ public class ComposerControllerTest extends AndroidTestCase {
         verify(mockDependencyProvider).getApiClient(mockTwitterSession);
         verify(mockDependencyProvider).getCardViewFactory();
         verify(mockAccountService).verifyCredentials(eq(false), eq(true), any(Callback.class));
+        verify(mockComposerScribeClient).impression();
     }
 
     @Test
@@ -186,6 +191,7 @@ public class ComposerControllerTest extends AndroidTestCase {
         // assert that
         // - context is used to start the TweetUploadService
         // - intent extras contain the session token and tweet text and card
+        // - scribes a Tweet Composer Tweet Click
         final ArgumentCaptor<Intent> intentCaptor = ArgumentCaptor.forClass(Intent.class);
         verify(mockContext).startService(intentCaptor.capture());
         final Intent intent = intentCaptor.getValue();
@@ -194,6 +200,7 @@ public class ComposerControllerTest extends AndroidTestCase {
         assertEquals(TWEET_TEXT, intent.getStringExtra(TweetUploadService.EXTRA_TWEET_TEXT));
         assertEquals(mockAuthToken, intent.getParcelableExtra(TweetUploadService.EXTRA_USER_TOKEN));
         assertEquals(mockCard, intent.getSerializableExtra(TweetUploadService.EXTRA_TWEET_CARD));
+        verify(mockComposerScribeClient).click(eq(ScribeConstants.SCRIBE_TWEET_ELEMENT));
     }
 
     @Test
@@ -203,6 +210,10 @@ public class ComposerControllerTest extends AndroidTestCase {
         final ComposerController.ComposerCallbacks callbacks
                 = controller.new ComposerCallbacksImpl();
         callbacks.onCloseClick();
+        // assert that
+        // - finshes the activity
+        // - scribes a Tweet Composer Cancel click
         verify(mockFinisher).finish();
+        verify(mockComposerScribeClient).click(eq(ScribeConstants.SCRIBE_CANCEL_ELEMENT));
     }
 }

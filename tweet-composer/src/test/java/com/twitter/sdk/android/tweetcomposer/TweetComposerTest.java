@@ -63,17 +63,6 @@ public class TweetComposerTest extends AndroidTestCase {
         assertEquals(version, composer.getVersion());
     }
 
-    @Test
-    public void testDoInBackground() {
-        try {
-            FabricTestUtils.with(RuntimeEnvironment.application, tweetComposer);
-            assertTrue(tweetComposer.doInBackground());
-        } catch (Exception e) {
-            fail(e.getMessage());
-        }
-    }
-
-    @Test
     public void testGetIdentifier() {
         final TweetComposer composer = new TweetComposer();
         final String identifier = BuildConfig.GROUP + ":" + BuildConfig.ARTIFACT_ID;

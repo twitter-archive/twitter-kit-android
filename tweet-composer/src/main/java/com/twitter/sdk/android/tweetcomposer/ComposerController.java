@@ -32,7 +32,6 @@ import com.twitter.sdk.android.core.internal.TwitterApiConstants;
 import com.twitter.sdk.android.core.models.User;
 
 class ComposerController {
-    static final String DEFAULT_CALL_TO_ACTION = "Click Now";
     ComposerView composerView;
     TwitterSession session;
     Card card;
@@ -59,6 +58,7 @@ class ComposerController {
         composerView.setCursorAtEnd();
         setProfilePhoto();
         setCardView(card);
+        dependencyProvider.getScribeClient().impression();
     }
 
     void setProfilePhoto() {
@@ -109,6 +109,7 @@ class ComposerController {
 
         @Override
         public void onTweetPost(String text) {
+            dependencyProvider.getScribeClient().click(ScribeConstants.SCRIBE_TWEET_ELEMENT);
             final Intent intent = new Intent(composerView.getContext(), TweetUploadService.class);
             intent.putExtra(TweetUploadService.EXTRA_USER_TOKEN, session.getAuthToken());
             intent.putExtra(TweetUploadService.EXTRA_TWEET_TEXT, text);
@@ -119,6 +120,7 @@ class ComposerController {
 
         @Override
         public void onCloseClick() {
+            dependencyProvider.getScribeClient().click(ScribeConstants.SCRIBE_CANCEL_ELEMENT);
             finisher.finish();
         }
     }
@@ -166,6 +168,10 @@ class ComposerController {
 
         Validator getTweetValidator() {
             return tweetValidator;
+        }
+
+        ComposerScribeClient getScribeClient() {
+            return new ComposerScribeClientImpl(TweetComposer.getInstance().getScribeClient());
         }
     }
 }
