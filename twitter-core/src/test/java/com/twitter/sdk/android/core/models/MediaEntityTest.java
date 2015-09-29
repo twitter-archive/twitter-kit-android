@@ -95,7 +95,7 @@ public class MediaEntityTest  {
         assertEquals(TEST_TYPE, entity.type);
     }
 
-    private void assertSizeEquals(MediaEntity.Size expected, MediaEntity.Size actual) {
+    public static void assertSizeEquals(MediaEntity.Size expected, MediaEntity.Size actual) {
         assertEquals(expected.h, actual.h);
         assertEquals(expected.w, actual.w);
         assertEquals(expected.resize, actual.resize);

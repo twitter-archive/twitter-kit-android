@@ -22,6 +22,7 @@ import com.twitter.sdk.android.core.models.SafeListAdapter;
 import com.twitter.sdk.android.core.models.SafeMapAdapter;
 import com.twitter.sdk.android.core.services.AccountService;
 import com.twitter.sdk.android.core.services.CollectionService;
+import com.twitter.sdk.android.core.services.ConfigurationService;
 import com.twitter.sdk.android.core.services.FavoriteService;
 import com.twitter.sdk.android.core.services.ListService;
 import com.twitter.sdk.android.core.services.MediaService;
@@ -137,6 +138,13 @@ public class TwitterApiClient {
      */
     public CollectionService getCollectionService() {
         return getService(CollectionService.class);
+    }
+
+    /**
+     * @return {@link com.twitter.sdk.android.core.services.ConfigurationService} to access TwitterApi
+     */
+    public ConfigurationService getConfigurationService() {
+        return getService(ConfigurationService.class);
     }
 
     /**
