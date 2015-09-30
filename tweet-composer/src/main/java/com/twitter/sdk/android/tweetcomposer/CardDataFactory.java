@@ -31,14 +31,14 @@ class CardDataFactory {
     /**
      * @return App Card CardData instance.
      */
-    static CardData createAppCardData(Card card, Long mediaId) {
+    static CardData createAppCardData(Card card, Long mediaId, String advertisingId) {
         return new CardData.Builder()
                 .card(APP_CARD_TYPE)
                 .image(getCardMedia(mediaId))
                 .appGooglePlayId(card.packageName)
                 .cardData("{}")
                 .ctaKey(APP_CARD_CTA_KEY)
-                .deviceId("123")
+                .deviceId(advertisingId)
                 .build();
     }
 

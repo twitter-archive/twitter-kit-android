@@ -44,6 +44,7 @@ public class TweetComposer extends Kit<Boolean> {
     private static final String TWITTER_PACKAGE_NAME = "com.twitter.android";
     private static final String WEB_INTENT = "https://twitter.com/intent/tweet?text=%s&url=%s";
     private final ConcurrentHashMap<Session, ComposerApiClient> apiClients;
+    String advertisingId;
 
     public TweetComposer() {
         this.apiClients = new ConcurrentHashMap<>();
@@ -56,6 +57,7 @@ public class TweetComposer extends Kit<Boolean> {
 
     @Override
     protected Boolean doInBackground() {
+        advertisingId = getIdManager().getAdvertisingId();
         return true;
     }
 
@@ -81,6 +83,15 @@ public class TweetComposer extends Kit<Boolean> {
         if (Fabric.getKit(TweetComposer.class) == null) {
             throw new IllegalStateException("Must start Twitter Kit with Fabric.with() first");
         }
+    }
+
+    String getAdvertisingId() {
+        /*
+         * The advertising ID may be null if this method is called before doInBackground completes.
+         * It also may be null depending on the users preferences and if Google Play Services has
+         * been installed on the device.
+         */
+        return advertisingId;
     }
 
     /**

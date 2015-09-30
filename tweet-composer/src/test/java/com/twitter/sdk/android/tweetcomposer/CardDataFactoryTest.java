@@ -33,17 +33,32 @@ public class CardDataFactoryTest extends AndroidTestCase {
     private static final String TEST_APP_NAME = "Example App";
     private static final String TEST_PACKAGE_NAME = "com.example.app";
     private static final Long TEST_MEDIA_ID = 123L;
+    private static final String TEST_ADVERTISING_ID = "456";
 
     @Test
     public void testCreateAppCardData() {
         final Card card = new Card(Card.APP_CARD_TYPE, TEST_IMAGE_URI, TEST_APP_NAME,
                 TEST_PACKAGE_NAME);
-        final CardData data = CardDataFactory.createAppCardData(card, TEST_MEDIA_ID);
+        final CardData data = CardDataFactory.createAppCardData(card, TEST_MEDIA_ID,
+                TEST_ADVERTISING_ID);
         assertEquals(CardDataFactory.APP_CARD_TYPE, data.card);
         assertEquals("media://" + TEST_MEDIA_ID, data.image);
         assertEquals(TEST_PACKAGE_NAME, data.appGooglePlayId);
         assertEquals("{}", data.cardData);
         assertEquals(CardDataFactory.APP_CARD_CTA_KEY, data.ctaKey);
-        assertEquals("123", data.deviceId);
+        assertEquals(TEST_ADVERTISING_ID, data.deviceId);
+    }
+
+    @Test
+    public void testCreateAppCardData_nullAdvertisingId() {
+        final Card card = new Card(Card.APP_CARD_TYPE, TEST_IMAGE_URI, TEST_APP_NAME,
+                TEST_PACKAGE_NAME);
+        final CardData data = CardDataFactory.createAppCardData(card, TEST_MEDIA_ID, null);
+        assertEquals(CardDataFactory.APP_CARD_TYPE, data.card);
+        assertEquals("media://" + TEST_MEDIA_ID, data.image);
+        assertEquals(TEST_PACKAGE_NAME, data.appGooglePlayId);
+        assertEquals("{}", data.cardData);
+        assertEquals(CardDataFactory.APP_CARD_CTA_KEY, data.ctaKey);
+        assertEquals(null, data.deviceId);
     }
 }

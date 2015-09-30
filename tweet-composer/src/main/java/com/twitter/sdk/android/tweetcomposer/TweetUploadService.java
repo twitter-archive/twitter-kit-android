@@ -113,7 +113,7 @@ public class TweetUploadService extends IntentService {
             @Override
             public void success(Result<Media> result) {
                 final CardData cardData = CardDataFactory.createAppCardData(card,
-                        result.data.mediaId);
+                        result.data.mediaId, dependencyProvider.getAdvertisingId());
                 client.getCardService().create(cardData, new Callback<CardCreate>() {
                     @Override
                     public void success(Result<CardCreate> result) {
@@ -171,6 +171,10 @@ public class TweetUploadService extends IntentService {
 
         ComposerApiClient getComposerApiClient(TwitterSession session) {
             return TweetComposer.getInstance().getApiClient(session);
+        }
+
+        String getAdvertisingId() {
+            return TweetComposer.getInstance().getAdvertisingId();
         }
     }
 }

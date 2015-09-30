@@ -65,8 +65,12 @@ public class TweetComposerTest extends AndroidTestCase {
 
     @Test
     public void testDoInBackground() {
-        final TweetComposer composer = new TweetComposer();
-        assertTrue(composer.doInBackground());
+        try {
+            FabricTestUtils.with(RuntimeEnvironment.application, tweetComposer);
+            assertTrue(tweetComposer.doInBackground());
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
     }
 
     @Test
