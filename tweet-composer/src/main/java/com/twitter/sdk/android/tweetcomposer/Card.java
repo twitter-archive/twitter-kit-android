@@ -26,7 +26,7 @@ import java.io.Serializable;
  * Card is a Twitter Card which may be attached to a Tweet.
  */
 public class Card implements Serializable {
-    public static final String APP_CARD_TYPE = "APP_CARD";
+    public static final String APP_CARD_TYPE = "promo_image_app";
     final String cardType;
     final String imageUri;
     final String appName;

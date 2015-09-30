@@ -27,32 +27,36 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.TwitterSessionHelper;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
-import com.unity3d.player.UnityPlayer;
 
 /**
  * Activity used to launch Twitter login, receive the result, and publish result to Unity.
  */
 public class LoginActivity extends Activity {
     TwitterAuthClient authClient;
-    String gameObjectName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        gameObjectName = getIntent().getStringExtra(TwitterKit.GAME_OBJECT_NAME);
         authClient = new TwitterAuthClient();
         authClient.authorize(this, new Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> result) {
                 final String session = TwitterSessionHelper.serialize(result.data);
-                UnityPlayer.UnitySendMessage(gameObjectName, "LoginComplete", session);
+                final UnityMessage message = new UnityMessage.Builder()
+                        .setMethod("LoginComplete")
+                        .setData(session)
+                        .build();
+                message.send();
                 finish();
             }
 
             @Override
             public void failure(TwitterException e) {
-                UnityPlayer.UnitySendMessage(gameObjectName, "LoginFailure", "");
+                final UnityMessage message = new UnityMessage.Builder()
+                        .setMethod("LoginFailed")
+                        .build();
+                message.send();
                 finish();
             }
         });

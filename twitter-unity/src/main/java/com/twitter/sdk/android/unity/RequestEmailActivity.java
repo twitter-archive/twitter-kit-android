@@ -27,34 +27,36 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.TwitterSessionHelper;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
-import com.unity3d.player.UnityPlayer;
 
 /**
  * Activity used to launch request email, receive the result, and publish result to Unity.
  */
 public class RequestEmailActivity extends Activity {
     TwitterAuthClient authClient;
-    TwitterSession twitterSession;
-    String gameObjectName;
-    String session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        session = getIntent().getStringExtra(TwitterKit.TWITTER_SESSION);
-        gameObjectName = getIntent().getStringExtra(TwitterKit.GAME_OBJECT_NAME);
-        twitterSession = TwitterSessionHelper.deserialize(session);
+        final String session = getIntent().getStringExtra(TwitterKit.EXTRA_TWITTER_SESSION);
+        final TwitterSession twitterSession = TwitterSessionHelper.deserialize(session);
         new TwitterAuthClient().requestEmail(twitterSession, new Callback<String>() {
             @Override
             public void success(Result<String> result) {
-                UnityPlayer.UnitySendMessage(gameObjectName, "RequestEmailComplete", result.data);
+                final UnityMessage message = new UnityMessage.Builder()
+                        .setMethod("RequestEmailComplete")
+                        .setData(result.data)
+                        .build();
+                message.send();
                 finish();
             }
 
             @Override
             public void failure(TwitterException exception) {
-                UnityPlayer.UnitySendMessage(gameObjectName, "RequestEmailFailure", "");
+                final UnityMessage message = new UnityMessage.Builder()
+                        .setMethod("RequestEmailFailed")
+                        .build();
+                message.send();
                 finish();
             }
         });
