@@ -23,10 +23,9 @@ import com.twitter.sdk.android.tweetcomposer.internal.CardData;
  * CardDataFactory methods return CardData models for upload to the CardService.
  */
 class CardDataFactory {
-    static final String APP_CARD_TYPE = "5613132:promo_image_app"; // TODO: drop dev prefix
+    static final String APP_CARD_TYPE = "promo_image_app";
     static final String APP_CARD_CTA_KEY = "open";
     private static final String MEDIA_SCHEME = "media://";
-
 
     /**
      * @return App Card CardData instance.
