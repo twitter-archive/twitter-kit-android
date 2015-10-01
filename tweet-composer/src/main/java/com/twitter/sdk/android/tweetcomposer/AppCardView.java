@@ -73,7 +73,7 @@ public class AppCardView extends LinearLayout {
     }
 
     void setImage(Uri uri) {
-        final int radius = getResources().getDimensionPixelSize(R.dimen.tw__corner_radius_medium);
+        final int radius = getResources().getDimensionPixelSize(R.dimen.tw__card_radius_medium);
         final Transformation transformation = new RoundedCornerTransformation.Builder()
                 .setRadii(radius, radius, 0, 0)
                 .build();
@@ -89,10 +89,26 @@ public class AppCardView extends LinearLayout {
         appNameView.setText(name);
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        final int maxWidth = getResources().getDimensionPixelSize(R.dimen.tw__card_maximum_width);
+
+        // Adjust width if required
+        final int measuredWidth = MeasureSpec.getSize(widthMeasureSpec);
+        if (maxWidth > 0 && maxWidth < measuredWidth) {
+            final int measureMode = MeasureSpec.getMode(widthMeasureSpec);
+            widthMeasureSpec = MeasureSpec.makeMeasureSpec(maxWidth, measureMode);
+        }
+
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
     void applyTheme() {
-        final int textColor = getResources().getColor(R.color.tw__deep_gray);
-        appNameView.setTextColor(textColor);
-        appStoreNameView.setTextColor(textColor);
-        appInstallButton.setTextColor(textColor);
+        final int primaryTextColor = getResources().getColor(R.color.tw__composer_black);
+        final int secondaryTextColor = getResources().getColor(R.color.tw__composer_deep_gray);
+        final int buttonTextColor = getResources().getColor(R.color.tw__composer_blue_text);
+        appNameView.setTextColor(primaryTextColor);
+        appStoreNameView.setTextColor(secondaryTextColor);
+        appInstallButton.setTextColor(buttonTextColor);
     }
 }

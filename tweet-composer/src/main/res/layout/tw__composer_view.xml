@@ -29,20 +29,24 @@
         <ImageButton
             android:id="@+id/tw__composer_close"
             style="@style/tw__ComposerClose"
+            android:layout_centerVertical="true"
             tools:ignore="ContentDescription"/>
 
         <ImageView
             android:id="@+id/tw__twitter_logo"
-            style="@style/tw__TwitterLogo"
+            android:layout_height="@dimen/tw__composer_logo_height"
+            android:layout_width="@dimen/tw__composer_logo_width"
+            android:src="@drawable/tw__ic_logo_blue"
             android:layout_centerInParent="true"
             tools:ignore="ContentDescription"/>
 
         <ImageView
             android:id="@+id/tw__author_avatar"
             style="@style/tw__ComposerAvatar"
+            android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            tools:background="@color/tw__tweet_media_preview_bg_color"
+            tools:background="@color/tw__composer_light_gray"
             tools:ignore="ContentDescription"/>
     </RelativeLayout>
 

@@ -19,8 +19,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <corners
-        android:radius="@dimen/tw__corner_radius_small"/>
+        android:radius="@dimen/tw__card_radius_small"/>
     <stroke
-        android:width="2dp"
-        android:color="@color/tw__light_gray"/>
+        android:width="1dp"
+        android:color="@color/tw__composer_blue_text"/>
+    <padding android:left="@dimen/tw__card_spacing_large"
+             android:right="@dimen/tw__card_spacing_large"
+             android:top="@dimen/tw__card_spacing_medium"
+             android:bottom="@dimen/tw__card_spacing_medium" />
 </shape>

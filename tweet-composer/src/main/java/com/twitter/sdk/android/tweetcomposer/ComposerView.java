@@ -72,7 +72,8 @@ public class ComposerView extends LinearLayout {
     private void init(Context context) {
         imageLoader = Picasso.with(getContext());
         // TODO: make color vary depending on the style
-        mediaBg = new ColorDrawable(context.getResources().getColor(R.color.tw__light_gray));
+        mediaBg = new ColorDrawable(context.getResources()
+                .getColor(R.color.tw__composer_light_gray));
         inflate(context, R.layout.tw__composer_view, this);
     }
 
