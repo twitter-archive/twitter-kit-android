@@ -19,6 +19,7 @@ package com.twitter.sdk.android.tweetui;
 
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.internal.scribe.SyndicatedSdkImpressionEvent;
+import com.twitter.sdk.android.core.internal.scribe.SyndicationClientEvent;
 
 public class ScribeConstants {
     private ScribeConstants() {}

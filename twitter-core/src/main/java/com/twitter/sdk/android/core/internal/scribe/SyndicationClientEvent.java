@@ -15,24 +15,19 @@
  *
  */
 
-package com.twitter.sdk.android.tweetui;
+package com.twitter.sdk.android.core.internal.scribe;
 
 import com.google.gson.annotations.SerializedName;
-import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
-import com.twitter.sdk.android.core.internal.scribe.ScribeEvent;
-import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
 
 import java.util.Collections;
 import java.util.List;
 
 /**
- * SyndicationClientEvent is nearly identical to SyndicatedSdkImpression. This class should be
- * considered the legacy event and will be eventually deprecated in favor of SyndicatedSdkImpression
- * events. Events of this type will end up in the /logs/tfw_client_event folder in hdfs.
+ * SyndicationClientEvent is nearly identical to SyndicatedSdkImpression. Events of this type will
+ * end up in the /logs/tfw_client_event folder in hdfs.
  */
-class SyndicationClientEvent extends ScribeEvent {
-    static final String CLIENT_NAME = "tfw";
-
+public class SyndicationClientEvent extends ScribeEvent {
+    public static final String CLIENT_NAME = "tfw";
     private static final String SCRIBE_CATEGORY = "tfw_client_event";
 
     /**
@@ -40,7 +35,7 @@ class SyndicationClientEvent extends ScribeEvent {
      * Optional field.
      */
     @SerializedName("language")
-    final String language;
+    public final String language;
 
     /**
      * External Ids can contain other external ids (e.g. Facebook) but in our case we will only
@@ -48,21 +43,21 @@ class SyndicationClientEvent extends ScribeEvent {
      * Optional field.
      */
     @SerializedName("external_ids")
-    final ExternalIds externalIds;
+    public final ExternalIds externalIds;
 
-    SyndicationClientEvent(EventNamespace eventNamespace, long timestamp, String language,
+    public SyndicationClientEvent(EventNamespace eventNamespace, long timestamp, String language,
                            String adId) {
         this(eventNamespace, timestamp, language, adId, Collections.<ScribeItem>emptyList());
     }
 
-    SyndicationClientEvent(EventNamespace eventNamespace, long timestamp, String language,
+    public SyndicationClientEvent(EventNamespace eventNamespace, long timestamp, String language,
             String adId, List<ScribeItem> items) {
         super(SCRIBE_CATEGORY, eventNamespace, timestamp, items);
         this.language = language;
         externalIds = new ExternalIds(adId);
     }
 
-    class ExternalIds {
+    public class ExternalIds {
         /**
          * The advertising id.
          *
@@ -74,9 +69,9 @@ class SyndicationClientEvent extends ScribeEvent {
          * Optional field.
          */
         @SerializedName("6")
-        final String adId;
+        public final String adId;
 
-        ExternalIds(String adId) {
+        public ExternalIds(String adId) {
             this.adId = adId;
         }
     }

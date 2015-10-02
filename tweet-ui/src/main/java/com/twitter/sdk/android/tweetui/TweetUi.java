@@ -30,6 +30,7 @@ import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
+import com.twitter.sdk.android.core.internal.scribe.ScribeEventFactory;
 import com.twitter.sdk.android.tweetui.internal.GuestSessionProvider;
 import com.twitter.sdk.android.tweetui.internal.UserSessionProvider;
 

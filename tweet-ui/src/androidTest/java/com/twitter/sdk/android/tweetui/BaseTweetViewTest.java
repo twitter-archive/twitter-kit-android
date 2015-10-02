@@ -31,6 +31,7 @@ import io.fabric.sdk.android.Logger;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.internal.scribe.ScribeEvent;
 import com.twitter.sdk.android.core.internal.scribe.SyndicatedSdkImpressionEvent;
+import com.twitter.sdk.android.core.internal.scribe.SyndicationClientEvent;
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;

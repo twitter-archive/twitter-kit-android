@@ -15,11 +15,9 @@
  *
  */
 
-package com.twitter.sdk.android.tweetui;
+package com.twitter.sdk.android.core.internal.scribe;
 
-import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
-import com.twitter.sdk.android.core.internal.scribe.ScribeEvent;
-import com.twitter.sdk.android.core.internal.scribe.SyndicatedSdkImpressionEvent;
+import com.twitter.sdk.android.core.BuildConfig;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
