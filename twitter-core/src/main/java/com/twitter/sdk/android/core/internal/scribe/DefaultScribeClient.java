@@ -79,24 +79,6 @@ public class DefaultScribeClient extends ScribeClient {
         this.advertisingId = idManager.getAdvertisingId();
     }
 
-    public void scribeSyndicatedSdkImpressionEvents(EventNamespace... namespaces) {
-        final String language;
-        if (kit.getContext() != null) {
-            language = kit.getContext().getResources().getConfiguration().locale.getLanguage();
-        } else {
-            language = "";
-        }
-        final long timestamp = System.currentTimeMillis();
-
-        /**
-         * The advertising ID may be null depending on the users preferences and if Google Play
-         * Services has been installed on the device.
-         */
-        for (EventNamespace ns : namespaces) {
-            scribe(new SyndicatedSdkImpressionEvent(ns, timestamp, language, advertisingId));
-        }
-    }
-
     public void scribe(EventNamespace... namespaces) {
         final String language;
         if (kit.getContext() != null) {

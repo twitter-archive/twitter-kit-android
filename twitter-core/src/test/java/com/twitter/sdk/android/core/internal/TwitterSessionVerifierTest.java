@@ -78,7 +78,7 @@ public class TwitterSessionVerifierTest {
         verifier.verifySession(session);
 
         verify(mockAccountService).verifyCredentials(true, false);
-        verify(mockScribeClient).scribeSyndicatedSdkImpressionEvents(namespaceCaptor.capture());
+        verify(mockScribeClient).scribe(namespaceCaptor.capture());
         final EventNamespace ns = namespaceCaptor.getValue();
         assertEquals(REQUIRED_IMPRESSION_CLIENT, ns.client);
         assertEquals(REQUIRED_IMPRESSION_PAGE, ns.page);

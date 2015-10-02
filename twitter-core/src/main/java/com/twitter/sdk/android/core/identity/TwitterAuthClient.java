@@ -140,7 +140,7 @@ public class TwitterAuthClient {
                 .setAction(SCRIBE_ACTION)
                 .builder();
 
-        scribeClient.scribeSyndicatedSdkImpressionEvents(ns);
+        scribeClient.scribe(ns);
     }
 
     /**
@@ -202,7 +202,7 @@ public class TwitterAuthClient {
                 .setAction(SCRIBE_ACTION)
                 .builder();
 
-        scribeClient.scribeSyndicatedSdkImpressionEvents(ns);
+        scribeClient.scribe(ns);
     }
 
     Intent newShareEmailIntent(TwitterSession session, Callback<String> callback) {

@@ -187,7 +187,7 @@ public class TwitterAuthClientTest extends FabricAndroidTestCase {
         };
         authClient.authorize(mockActivity, mockCallback);
 
-        verify(mockScribeClient).scribeSyndicatedSdkImpressionEvents(any(EventNamespace.class));
+        verify(mockScribeClient).scribe(any(EventNamespace.class));
     }
 
     public void testAuthorize_scribeHandlesNullClient()
@@ -288,7 +288,7 @@ public class TwitterAuthClientTest extends FabricAndroidTestCase {
 
         authClient.requestEmail(mockSession, mock(Callback.class));
 
-        verify(mockScribeClient).scribeSyndicatedSdkImpressionEvents(any(EventNamespace.class));
+        verify(mockScribeClient).scribe(any(EventNamespace.class));
     }
 
     public void testReqestEmail_scribeHandlesNullClient() {

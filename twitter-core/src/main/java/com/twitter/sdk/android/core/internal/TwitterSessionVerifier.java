@@ -76,7 +76,7 @@ public class TwitterSessionVerifier implements SessionVerifier {
                 .setAction(SCRIBE_ACTION)
                 .builder();
 
-        scribeClient.scribeSyndicatedSdkImpressionEvents(ns);
+        scribeClient.scribe(ns);
     }
 
     /**
