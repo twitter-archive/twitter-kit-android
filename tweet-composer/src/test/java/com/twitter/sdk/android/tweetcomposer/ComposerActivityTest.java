@@ -125,6 +125,6 @@ public class ComposerActivityTest {
                 .session(mockSession)
                 .card(mockCardData)
                 .createIntent();
-        assertEquals(mockCardData, intent.getSerializableExtra(ComposerActivity.EXTRA_CARD_DATA));
+        assertEquals(mockCardData, intent.getSerializableExtra(ComposerActivity.EXTRA_CARD));
     }
 }

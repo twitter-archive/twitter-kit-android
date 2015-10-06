@@ -99,7 +99,7 @@ public class TweetUploadServiceTest extends AndroidTestCase {
     @Test
     public void testOnHandleIntent_withAppCard() {
         final TwitterAuthToken mockToken = mock(TwitterAuthToken.class);
-        final Card appCard = Card.createAppCard(context, mock(Uri.class));
+        final Card appCard = new Card.AppCardBuilder(context).imageUri(mock(Uri.class)).build();
 
         final Intent intent = new Intent(context, TweetUploadService.class);
         intent.putExtra(TweetUploadService.EXTRA_USER_TOKEN, mockToken);

@@ -31,19 +31,23 @@ import org.robolectric.annotation.Config;
 public class CardDataFactoryTest extends AndroidTestCase {
     private static final String TEST_IMAGE_URI = "image_uri";
     private static final String TEST_APP_NAME = "Example App";
-    private static final String TEST_PACKAGE_NAME = "com.example.app";
+    private static final String TEST_IPHONE_ID = "333903271";
+    private static final String TEST_IPAD_ID = "333903271";
+    private static final String TEST_GOOGLE_PLAY_ID = "com.example.app";
     private static final Long TEST_MEDIA_ID = 123L;
     private static final String TEST_ADVERTISING_ID = "456";
 
     @Test
     public void testCreateAppCardData() {
-        final Card card = new Card(Card.APP_CARD_TYPE, TEST_IMAGE_URI, TEST_APP_NAME,
-                TEST_PACKAGE_NAME);
+        final Card card = new Card(Card.APP_CARD_TYPE, TEST_IMAGE_URI,
+                TEST_APP_NAME, TEST_IPHONE_ID, TEST_IPAD_ID, TEST_GOOGLE_PLAY_ID);
         final CardData data = CardDataFactory.createAppCardData(card, TEST_MEDIA_ID,
                 TEST_ADVERTISING_ID);
         assertEquals(CardDataFactory.APP_CARD_TYPE, data.card);
         assertEquals("media://" + TEST_MEDIA_ID, data.image);
-        assertEquals(TEST_PACKAGE_NAME, data.appGooglePlayId);
+        assertEquals(TEST_IPHONE_ID, data.appIPhoneId);
+        assertEquals(TEST_IPAD_ID, data.appIPadId);
+        assertEquals(TEST_GOOGLE_PLAY_ID, data.appGooglePlayId);
         assertEquals("{}", data.cardData);
         assertEquals(CardDataFactory.APP_CARD_CTA_KEY, data.ctaKey);
         assertEquals(TEST_ADVERTISING_ID, data.deviceId);
@@ -51,12 +55,14 @@ public class CardDataFactoryTest extends AndroidTestCase {
 
     @Test
     public void testCreateAppCardData_nullAdvertisingId() {
-        final Card card = new Card(Card.APP_CARD_TYPE, TEST_IMAGE_URI, TEST_APP_NAME,
-                TEST_PACKAGE_NAME);
+        final Card card = new Card(Card.APP_CARD_TYPE, TEST_IMAGE_URI,
+                TEST_APP_NAME, TEST_IPHONE_ID, TEST_IPAD_ID, TEST_GOOGLE_PLAY_ID);
         final CardData data = CardDataFactory.createAppCardData(card, TEST_MEDIA_ID, null);
         assertEquals(CardDataFactory.APP_CARD_TYPE, data.card);
         assertEquals("media://" + TEST_MEDIA_ID, data.image);
-        assertEquals(TEST_PACKAGE_NAME, data.appGooglePlayId);
+        assertEquals(TEST_IPHONE_ID, data.appIPhoneId);
+        assertEquals(TEST_IPAD_ID, data.appIPadId);
+        assertEquals(TEST_GOOGLE_PLAY_ID, data.appGooglePlayId);
         assertEquals("{}", data.cardData);
         assertEquals(CardDataFactory.APP_CARD_CTA_KEY, data.ctaKey);
         assertEquals(null, data.deviceId);

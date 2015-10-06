@@ -28,7 +28,7 @@ import com.twitter.sdk.android.core.TwitterSession;
 public class ComposerActivity extends Activity {
     static final String EXTRA_TWEET_TEXT = "EXTRA_TWEET_TEXT";
     static final String EXTRA_USER_TOKEN = "EXTRA_USER_TOKEN";
-    static final String EXTRA_CARD_DATA = "EXTRA_CARD_DATA";
+    static final String EXTRA_CARD = "EXTRA_CARD";
     private static final int PLACEHOLDER_ID = -1;
     private static final String PLACEHOLDER_SCREEN_NAME = "";
 
@@ -42,7 +42,7 @@ public class ComposerActivity extends Activity {
         final TwitterAuthToken token = intent.getParcelableExtra(EXTRA_USER_TOKEN);
         final TwitterSession session = new TwitterSession(token, PLACEHOLDER_ID,
                 PLACEHOLDER_SCREEN_NAME);
-        final Card card = (Card) intent.getSerializableExtra(EXTRA_CARD_DATA);
+        final Card card = (Card) intent.getSerializableExtra(EXTRA_CARD);
 
         final ComposerView composerView = (ComposerView) findViewById(R.id.tw__composer_view);
         new ComposerController(composerView, session, initialText, card, new FinisherImpl());
@@ -103,7 +103,7 @@ public class ComposerActivity extends Activity {
             final Intent intent = new Intent(context, ComposerActivity.class);
             intent.putExtra(EXTRA_USER_TOKEN, token);
             intent.putExtra(EXTRA_TWEET_TEXT, tweetText);
-            intent.putExtra(EXTRA_CARD_DATA, card);
+            intent.putExtra(EXTRA_CARD, card);
             return intent;
         }
     }

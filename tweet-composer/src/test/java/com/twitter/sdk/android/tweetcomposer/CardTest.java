@@ -28,6 +28,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
+import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -39,7 +40,10 @@ import static org.mockito.Mockito.when;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class CardTest {
     private static final String TEST_PACKAGE_NAME = "TEST.PACKAGE.NAME";
+    private static final String TEST_ALT_PACKAGE_NAME = "TEST.ALT.PACKAGE.NAME";
     private static final String TEST_APP_NAME = "TEST_APP_NAME";
+    private static final String TEST_IPHONE_ID = "333903271";
+    private static final String TEST_IPAD_ID = "333903271";
     private static final Uri TEST_URI = Uri.EMPTY;
     private Context mockContext;
 
@@ -53,20 +57,49 @@ public class CardTest {
         when(mockContext.getPackageName()).thenReturn(TEST_PACKAGE_NAME);
     }
 
-    @Test
-    public void createAppCard() {
-        final Card card = Card.createAppCard(mockContext, TEST_URI);
-
-        assertEquals(Card.APP_CARD_TYPE, card.cardType);
-        assertEquals(TEST_URI.toString(), card.imageUri);
-        assertEquals(TEST_PACKAGE_NAME, card.packageName);
-        assertEquals(TEST_APP_NAME, card.appName);
-    }
 
     @Test
     public void testIsAppCard() {
-        assertTrue(Card.isAppCard(Card.createAppCard(mockContext, mock(Uri.class))));
+        assertTrue(Card.isAppCard(new Card.AppCardBuilder(mockContext).imageUri(mock(Uri.class))
+                .build()));
         assertFalse(Card.isAppCard(null));
         assertFalse((Card.isAppCard(mock(Card.class))));
+    }
+
+    @Test
+    public void testAppCardBuilder() {
+        final Card card = new Card.AppCardBuilder(mockContext)
+                .imageUri(TEST_URI)
+                .iPhoneId(TEST_IPHONE_ID)
+                .iPadId(TEST_IPAD_ID)
+                .build();
+        assertEquals(Card.APP_CARD_TYPE, card.cardType);
+        assertEquals(TEST_PACKAGE_NAME, card.appGooglePlayId);
+        assertEquals(TEST_APP_NAME, card.appName);
+        assertEquals(TEST_URI.toString(), card.imageUri);
+        assertEquals(TEST_IPHONE_ID, card.appIPhoneId);
+        assertEquals(TEST_IPAD_ID, card.appIPadId);
+    }
+
+    @Test
+    public void testAppCardBuilder_overrideGooglePlayId() {
+        final Card card = new Card.AppCardBuilder(mockContext)
+                .imageUri(TEST_URI)
+                .googlePlayId(TEST_ALT_PACKAGE_NAME)
+                .build();
+        assertEquals(Card.APP_CARD_TYPE, card.cardType);
+        assertEquals(TEST_ALT_PACKAGE_NAME, card.appGooglePlayId);
+        assertEquals(TEST_APP_NAME, card.appName);
+        assertEquals(TEST_URI.toString(), card.imageUri);
+    }
+
+    @Test
+    public void testAppCardBuilder_missingImageUri() {
+        try {
+            new Card.AppCardBuilder(mockContext).build();
+            fail("expected IllegalStateException");
+        } catch (IllegalStateException e) {
+            assertEquals("App Card requires a non-null imageUri", e.getMessage());
+        }
     }
 }

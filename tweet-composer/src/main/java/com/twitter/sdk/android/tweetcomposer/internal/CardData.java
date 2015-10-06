@@ -116,7 +116,6 @@ public class CardData {
         private String site;
         private String description;
         private String cardData;
-        private String title;
         private String callToAction;
         private String ctaKey;
         private String deviceId;

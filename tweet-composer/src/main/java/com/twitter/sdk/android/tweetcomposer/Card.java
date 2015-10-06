@@ -29,27 +29,19 @@ public class Card implements Serializable {
     public static final String APP_CARD_TYPE = "APP_CARD";
     final String cardType;
     final String imageUri;
-    final String packageName;
     final String appName;
+    final String appIPadId;
+    final String appIPhoneId;
+    final String appGooglePlayId;
 
-    Card(String cardType, String imageUri, String appName, String packageName) {
+    Card(String cardType, String imageUri, String appName, String appIPhoneId, String appIPadId,
+         String appGooglePlayId) {
         this.cardType = cardType;
         this.imageUri = imageUri;
-        this.packageName = packageName;
         this.appName = appName;
-    }
-
-    /**
-     * Creates a new App Card.
-     * @param context Context from the package which the App card should use.
-     * @param imageUri the Uri of an image to be shown in the Card. See
-     *        <a href="https://dev.twitter.com/rest/public/uploading-media">Uploading Media</a>
-     * @return an App Card. See <a href="https://dev.twitter.com/cards/types/app">Card Types</a>
-     */
-    public static Card createAppCard(Context context, Uri imageUri) {
-        final String appName = getApplicationName(context);
-        final String packageName = getPackageName(context);
-        return new Card(APP_CARD_TYPE, imageUri.toString(), appName, packageName);
+        this.appIPadId = appIPadId;
+        this.appIPhoneId = appIPhoneId;
+        this.appGooglePlayId = appGooglePlayId;
     }
 
     /**
@@ -65,6 +57,83 @@ public class Card implements Serializable {
     static boolean isAppCard(Card card) {
         return card != null && card.getCardType() != null
                 && card.getCardType().equals(APP_CARD_TYPE);
+    }
+
+    /**
+     * App Card Builder.
+     */
+    public static class AppCardBuilder {
+        private String appName;
+        private Uri imageUri;
+        private String appIPhoneId;
+        private String appIPadId;
+        private String appGooglePlayId;
+
+        /**
+         * Constructs an AppCardBuilder with the Context package's Google Play id.
+         *
+         * @param context in the package of the Google Play application included in App Cards.
+         */
+        public AppCardBuilder(Context context) {
+            appName = getApplicationName(context);
+            appGooglePlayId = getPackageName(context);
+        }
+
+        /**
+         * Sets the App Card image Uri of an image to show in the Card.
+         * @param imageUri a Uri to a local media document or file. For image requirements, see
+         * <a href="https://dev.twitter.com/rest/public/uploading-media">Uploading Media</a>
+         */
+        public AppCardBuilder imageUri(Uri imageUri) {
+            this.imageUri = imageUri;
+            return this;
+        }
+
+        /**
+         * Sets the Apple App Store id for the promoted iOS app shown on iOS displays.
+         * @param appIPhoneId Apple App Store id (e.g. Twitter App is 333903271). The id must
+         * correspond to a published iPhone app for Card Tweets to link correctly.
+         */
+        public AppCardBuilder iPhoneId(String appIPhoneId) {
+            this.appIPhoneId = appIPhoneId;
+            return this;
+        }
+
+        /**
+         * Sets the Apple App Store id for the promoted iPad app shown on iOS displays.
+         * @param appIPadId Apple App Store id (e.g. Twitter App is 333903271). The id must
+         * correspond to a published iPad app for Card Tweets to link correctly.
+         */
+        public AppCardBuilder iPadId(String appIPadId) {
+            this.appIPadId = appIPadId;
+            return this;
+        }
+
+        /**
+         * Sets the Google Play Store package name of the promoted Android app shown on Android
+         * displays. Overrides the default package name which is determined from the Builder
+         * context.
+         *
+         * @param appGooglePlayId Google Play Store package (e.g. "com.twitter.android"). The
+         * package must correspond to a published app on Google Play for Card Tweets to link
+         * correctly.
+         */
+        public AppCardBuilder googlePlayId(String appGooglePlayId) {
+            this.appGooglePlayId = appGooglePlayId;
+            return this;
+        }
+
+        /**
+         * Builds a new App Card for the ComposerActivity.
+         * @return an App Card. See <a href="https://dev.twitter.com/cards/types/app">Card Types</a>
+         */
+        public Card build() {
+            if (imageUri == null) {
+                throw new IllegalStateException("App Card requires a non-null imageUri");
+            }
+            return new Card(APP_CARD_TYPE, imageUri.toString(), appName, appIPhoneId, appIPadId,
+                    appGooglePlayId);
+        }
     }
 
     private static String getApplicationName(Context context) {

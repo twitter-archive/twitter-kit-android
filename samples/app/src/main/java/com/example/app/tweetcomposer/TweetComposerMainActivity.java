@@ -94,7 +94,12 @@ public class TweetComposerMainActivity extends BaseActivity {
     void launchComposer(String text, Uri uri) {
         final TwitterSession session = TwitterCore.getInstance().getSessionManager()
                 .getActiveSession();
-        final Card card = Card.createAppCard(TweetComposerMainActivity.this, uri);
+        final Card card = new Card.AppCardBuilder(TweetComposerMainActivity.this)
+                .imageUri(uri)
+                .iPhoneId("333903271")
+                .iPadId("333903271")
+                .googlePlayId("com.twitter.android")
+                .build();
         final Intent intent = new ComposerActivity.Builder(TweetComposerMainActivity.this)
                 .session(session)
                 .tweetText(text)
