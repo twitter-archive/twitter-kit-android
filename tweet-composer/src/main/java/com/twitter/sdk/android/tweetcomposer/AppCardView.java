@@ -56,7 +56,7 @@ public class AppCardView extends LinearLayout {
         setOrientation(LinearLayout.VERTICAL);
         inflate(context, R.layout.tw__app_card, this);
         findSubviews();
-        applyTheme();
+        setButtonColor();
     }
 
     void findSubviews() {
@@ -103,12 +103,8 @@ public class AppCardView extends LinearLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-    void applyTheme() {
-        final int primaryTextColor = getResources().getColor(R.color.tw__composer_black);
-        final int secondaryTextColor = getResources().getColor(R.color.tw__composer_deep_gray);
+    void setButtonColor() {
         final int buttonTextColor = getResources().getColor(R.color.tw__composer_blue_text);
-        appNameView.setTextColor(primaryTextColor);
-        appStoreNameView.setTextColor(secondaryTextColor);
         appInstallButton.setTextColor(buttonTextColor);
     }
 }

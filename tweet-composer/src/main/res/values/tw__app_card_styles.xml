@@ -30,6 +30,7 @@
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
         <item name="android:textSize">@dimen/tw__card_font_size_medium</item>
+        <item name="android:textColor">?android:attr/textColor</item>
         <item name="android:layout_marginBottom">@dimen/tw__card_spacing_small</item>
     </style>
 
@@ -38,6 +39,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:singleLine">true</item>
         <item name="android:text">@string/tw__play_store</item>
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
         <item name="android:textSize">@dimen/tw__card_font_size_small</item>
     </style>
 

@@ -36,7 +36,7 @@
             android:id="@+id/tw__twitter_logo"
             android:layout_height="@dimen/tw__composer_logo_height"
             android:layout_width="@dimen/tw__composer_logo_width"
-            android:src="@drawable/tw__ic_logo_blue"
+            android:src="?attr/tw__twitter_logo"
             android:layout_centerInParent="true"
             tools:ignore="ContentDescription"/>
 

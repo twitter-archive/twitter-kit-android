@@ -118,6 +118,22 @@ public class ComposerActivityTest {
         assertEquals(TWEET_TEXT, intent.getStringExtra(ComposerActivity.EXTRA_TWEET_TEXT));
     }
 
+    @Test
+    public void testBuilderDarkTheme() {
+        final Intent intent = new ComposerActivity.Builder(mockContext)
+                .session(mockSession)
+                .darkTheme()
+                .createIntent();
+        assertEquals(R.style.ComposerDark, intent.getIntExtra(ComposerActivity.EXTRA_THEME, -1));
+    }
+
+    @Test
+    public void testBuilder_defaultLightTheme() {
+        final Intent intent = new ComposerActivity.Builder(mockContext)
+                .session(mockSession)
+                .createIntent();
+        assertEquals(R.style.ComposerLight, intent.getIntExtra(ComposerActivity.EXTRA_THEME, -1));
+    }
 
     @Test
     public void testBuilderCardData() {

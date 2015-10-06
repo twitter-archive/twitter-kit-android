@@ -29,13 +29,13 @@ public class ComposerActivity extends Activity {
     static final String EXTRA_TWEET_TEXT = "EXTRA_TWEET_TEXT";
     static final String EXTRA_USER_TOKEN = "EXTRA_USER_TOKEN";
     static final String EXTRA_CARD = "EXTRA_CARD";
+    static final String EXTRA_THEME = "EXTRA_THEME";
     private static final int PLACEHOLDER_ID = -1;
     private static final String PLACEHOLDER_SCREEN_NAME = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tw__activity_composer);
 
         final Intent intent = getIntent();
         final String initialText = intent.getStringExtra(EXTRA_TWEET_TEXT);
@@ -43,7 +43,10 @@ public class ComposerActivity extends Activity {
         final TwitterSession session = new TwitterSession(token, PLACEHOLDER_ID,
                 PLACEHOLDER_SCREEN_NAME);
         final Card card = (Card) intent.getSerializableExtra(EXTRA_CARD);
+        final int themeResId = intent.getIntExtra(EXTRA_THEME, R.style.ComposerLight);
 
+        setTheme(themeResId);
+        setContentView(R.layout.tw__activity_composer);
         final ComposerView composerView = (ComposerView) findViewById(R.id.tw__composer_view);
         new ComposerController(composerView, session, initialText, card, new FinisherImpl());
     }
@@ -64,6 +67,7 @@ public class ComposerActivity extends Activity {
         private final Context context;
         private TwitterAuthToken token;
         private String tweetText = "";
+        private int themeResId = R.style.ComposerLight;
         private Card card;
 
         public Builder(Context context) {
@@ -96,6 +100,11 @@ public class ComposerActivity extends Activity {
             return this;
         }
 
+        public Builder darkTheme() {
+            themeResId = R.style.ComposerDark;
+            return this;
+        }
+
         public Intent createIntent() {
             if (token == null) {
                 throw new IllegalStateException("Must set a TwitterSession");
@@ -104,6 +113,7 @@ public class ComposerActivity extends Activity {
             intent.putExtra(EXTRA_USER_TOKEN, token);
             intent.putExtra(EXTRA_TWEET_TEXT, tweetText);
             intent.putExtra(EXTRA_CARD, card);
+            intent.putExtra(EXTRA_THEME, themeResId);
             return intent;
         }
     }
