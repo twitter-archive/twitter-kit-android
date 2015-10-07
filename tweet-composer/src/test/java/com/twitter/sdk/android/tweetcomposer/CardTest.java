@@ -57,7 +57,6 @@ public class CardTest {
         when(mockContext.getPackageName()).thenReturn(TEST_PACKAGE_NAME);
     }
 
-
     @Test
     public void testIsAppCard() {
         assertTrue(Card.isAppCard(new Card.AppCardBuilder(mockContext).imageUri(mock(Uri.class))

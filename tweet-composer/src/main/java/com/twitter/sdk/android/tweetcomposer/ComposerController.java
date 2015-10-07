@@ -58,7 +58,7 @@ class ComposerController {
         composerView.setCursorAtEnd();
         setProfilePhoto();
         setCardView(card);
-        dependencyProvider.getScribeClient().impression();
+        dependencyProvider.getScribeClient().impression(card);
     }
 
     void setProfilePhoto() {
@@ -109,7 +109,7 @@ class ComposerController {
 
         @Override
         public void onTweetPost(String text) {
-            dependencyProvider.getScribeClient().click(ScribeConstants.SCRIBE_TWEET_ELEMENT);
+            dependencyProvider.getScribeClient().click(card, ScribeConstants.SCRIBE_TWEET_ELEMENT);
             final Intent intent = new Intent(composerView.getContext(), TweetUploadService.class);
             intent.putExtra(TweetUploadService.EXTRA_USER_TOKEN, session.getAuthToken());
             intent.putExtra(TweetUploadService.EXTRA_TWEET_TEXT, text);
@@ -120,7 +120,7 @@ class ComposerController {
 
         @Override
         public void onCloseClick() {
-            dependencyProvider.getScribeClient().click(ScribeConstants.SCRIBE_CANCEL_ELEMENT);
+            dependencyProvider.getScribeClient().click(card, ScribeConstants.SCRIBE_CANCEL_ELEMENT);
             finisher.finish();
         }
     }

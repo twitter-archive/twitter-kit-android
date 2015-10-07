@@ -22,14 +22,15 @@ package com.twitter.sdk.android.tweetcomposer;
  */
 interface ComposerScribeClient {
 
+
     /**
-     * Scribe an impression on the component.
+     * Scribes an impression of the Tweet Composer with a Card.
      */
-    void impression();
+    void impression(Card card);
 
 
     /**
-     * Scribe a click on an element.
+     * Scribes a click on the Tweet Composer 'Tweet' or 'Cancel' button element.
      */
-    void click(String element);
+    void click(Card card, String element);
 }

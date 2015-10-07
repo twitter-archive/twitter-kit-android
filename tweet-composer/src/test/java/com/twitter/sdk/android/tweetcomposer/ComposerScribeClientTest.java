@@ -17,13 +17,20 @@
 package com.twitter.sdk.android.tweetcomposer;
 
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
+import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.fail;
@@ -33,19 +40,26 @@ import static org.mockito.Mockito.*;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class ComposerScribeClientTest {
-    private ScribeClient client = mock(ScribeClient.class);
     private ComposerScribeClient composerScribeClient;
+
+    @Mock
+    private ScribeClient mockClient;
+
+    @Captor
     private ArgumentCaptor<EventNamespace> eventNamespaceCaptor;
+
+    @Captor
+    private ArgumentCaptor<List<ScribeItem>> scribeItemsCaptor;
 
     @Before
     public void setUp() throws Exception {
-        composerScribeClient = new ComposerScribeClientImpl(client);
-        eventNamespaceCaptor = ArgumentCaptor.forClass(EventNamespace.class);
+        MockitoAnnotations.initMocks(this);
+        composerScribeClient = new ComposerScribeClientImpl(mockClient);
     }
 
     @Test
     public void testConstructor() throws Exception {
-        composerScribeClient = new ComposerScribeClientImpl(client);
+        composerScribeClient = new ComposerScribeClientImpl(mockClient);
         assertNotNull(composerScribeClient);
     }
 
@@ -61,26 +75,29 @@ public class ComposerScribeClientTest {
 
     @Test
     public void testImpression() throws Exception {
-        composerScribeClient.impression();
-        verify(client).scribe(eventNamespaceCaptor.capture());
+        composerScribeClient.impression(mock(Card.class));
+        verify(mockClient).scribe(eventNamespaceCaptor.capture(), scribeItemsCaptor.capture());
         final EventNamespace eventNamespace = eventNamespaceCaptor.getValue();
         assertEquals(expectedImpression(), eventNamespace);
+        assertEquals(expectedScribeItems(), scribeItemsCaptor.getValue());
     }
 
     @Test
     public void testTweetClick() throws Exception {
-        composerScribeClient.click(ScribeConstants.SCRIBE_TWEET_ELEMENT);
-        verify(client).scribe(eventNamespaceCaptor.capture());
+        composerScribeClient.click(mock(Card.class), ScribeConstants.SCRIBE_TWEET_ELEMENT);
+        verify(mockClient).scribe(eventNamespaceCaptor.capture(), scribeItemsCaptor.capture());
         final EventNamespace eventNamespace = eventNamespaceCaptor.getValue();
         assertEquals(expectedTweetClick(), eventNamespace);
+        assertEquals(expectedScribeItems(), scribeItemsCaptor.getValue());
     }
 
     @Test
     public void testCancelClick() throws Exception {
-        composerScribeClient.click(ScribeConstants.SCRIBE_CANCEL_ELEMENT);
-        verify(client).scribe(eventNamespaceCaptor.capture());
+        composerScribeClient.click(mock(Card.class), ScribeConstants.SCRIBE_CANCEL_ELEMENT);
+        verify(mockClient).scribe(eventNamespaceCaptor.capture(), scribeItemsCaptor.capture());
         final EventNamespace eventNamespace = eventNamespaceCaptor.getValue();
         assertEquals(expectedCancelClick(), eventNamespace);
+        assertEquals(expectedScribeItems(), scribeItemsCaptor.getValue());
     }
 
     private EventNamespace expectedImpression() {
@@ -114,6 +131,12 @@ public class ComposerScribeClientTest {
                 .setElement(ScribeConstants.SCRIBE_CANCEL_ELEMENT)
                 .setAction(ScribeConstants.SCRIBE_CLICK_ACTION)
                 .builder();
+    }
+
+    private List<ScribeItem> expectedScribeItems() {
+        final List<ScribeItem> scribeItems = new ArrayList<>();
+        scribeItems.add(ScribeConstants.newCardScribeItem(mock(Card.class)));
+        return scribeItems;
     }
 }
 

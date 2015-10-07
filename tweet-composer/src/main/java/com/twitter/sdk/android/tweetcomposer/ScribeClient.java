@@ -18,10 +18,13 @@
 package com.twitter.sdk.android.tweetcomposer;
 
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
+import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
+
+import java.util.List;
 
 /**
  * ScribeClient writes tweet-composer scribe events.
  */
 interface ScribeClient {
-    void scribe(EventNamespace eventNamespace);
+    void scribe(EventNamespace eventNamespace, List<ScribeItem> items);
 }

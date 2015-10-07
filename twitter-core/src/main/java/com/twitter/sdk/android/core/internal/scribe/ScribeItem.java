@@ -35,26 +35,34 @@ public class ScribeItem {
      * Optional field.
      */
     @SerializedName("item_type")
-    final Integer itemType;
+    public final Integer itemType;
 
     /**
      * A numerical id associated with the item.
      * Optional field.
      */
     @SerializedName("id")
-    final Long id;
+    public final Long id;
 
     /**
      *  A description of the item.
      *  Optional field.
      */
     @SerializedName("description")
-    final String description;
+    public final String description;
 
-    private ScribeItem(Integer itemType, Long id, String description) {
+    /**
+     * Card event.
+     * source/tree/science/src/thrift/com/twitter/clientapp/gen/client_app.thrift
+     */
+    @SerializedName("card_event")
+    public final CardEvent cardEvent;
+
+    private ScribeItem(Integer itemType, Long id, String description, CardEvent cardEvent) {
         this.itemType = itemType;
         this.id = id;
         this.description = description;
+        this.cardEvent = cardEvent;
     }
 
     public static ScribeItem fromTweet(Tweet tweet) {
@@ -82,23 +90,13 @@ public class ScribeItem {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         final ScribeItem that = (ScribeItem) o;
-
-        if (itemType != null ? !itemType.equals(that.itemType) : that.itemType != null) {
+        if (itemType != null ? !itemType.equals(that.itemType) : that.itemType != null)
             return false;
-        }
-
-        if (id != null ? !id.equals(that.id) : that.id != null) {
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (description != null ? !description.equals(that.description) : that.description != null)
             return false;
-        }
-
-        if (description != null ? !description.equals(that.description) : that.description
-                != null) {
-            return false;
-        }
-
-        return true;
+        return !(cardEvent != null ? !cardEvent.equals(that.cardEvent) : that.cardEvent != null);
     }
 
     @Override
@@ -106,13 +104,40 @@ public class ScribeItem {
         int result = itemType != null ? itemType.hashCode() : 0;
         result = 31 * result + (id != null ? id.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (cardEvent != null ? cardEvent.hashCode() : 0);
         return result;
     }
 
-    static class Builder {
+    /**
+     * Card event.
+     */
+    public static class CardEvent {
+        public CardEvent(int cardType) {
+            promotionCardType = cardType;
+        }
+
+        @SerializedName("promotion_card_type")
+        final int promotionCardType;
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            final CardEvent cardEvent = (CardEvent) o;
+            return promotionCardType == cardEvent.promotionCardType;
+        }
+
+        @Override
+        public int hashCode() {
+            return promotionCardType;
+        }
+    }
+
+    public static class Builder {
         private Integer itemType;
         private Long id;
         private String description;
+        private CardEvent cardEvent;
 
         public Builder setItemType(int itemType) {
             this.itemType = itemType;
@@ -129,8 +154,13 @@ public class ScribeItem {
             return this;
         }
 
-        ScribeItem build() {
-            return new ScribeItem(itemType, id, description);
+        public Builder setCardEvent(CardEvent cardEvent) {
+            this.cardEvent = cardEvent;
+            return this;
+        }
+
+        public ScribeItem build() {
+            return new ScribeItem(itemType, id, description, cardEvent);
         }
     }
 }

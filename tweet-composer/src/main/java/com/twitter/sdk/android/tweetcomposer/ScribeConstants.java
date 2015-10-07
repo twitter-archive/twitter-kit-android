@@ -18,6 +18,7 @@
 package com.twitter.sdk.android.tweetcomposer;
 
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
+import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
 
 class ScribeConstants {
     // namespaces with client "tfw" become SyndicationClientEvent scribes to /logs/tfw_client_event
@@ -34,8 +35,21 @@ class ScribeConstants {
     static final String SCRIBE_IMPRESSION_ACTION = "impression";
     static final String SCRIBE_CLICK_ACTION = "click";
 
+    static final int SCRIBE_PROMO_APP_CARD_TYPE = 8;
+
     static final EventNamespace.Builder ComposerEventBuilder = new EventNamespace.Builder()
             .setClient(SCRIBE_TFW_CLIENT)
             .setPage(SCRIBE_PAGE)
             .setSection(SCRIBE_SECTION);
+
+    /**
+     * Factory for a ScribeItem with a CardEvent.
+     */
+    static ScribeItem newCardScribeItem(Card card) {
+        // promo app card is currently the only type of Card
+       return new ScribeItem.Builder()
+                .setItemType(ScribeItem.TYPE_TWEET)
+                .setCardEvent(new ScribeItem.CardEvent(SCRIBE_PROMO_APP_CARD_TYPE))
+                .build();
+    }
 }

@@ -29,6 +29,7 @@ import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterSession;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -80,6 +81,12 @@ public class DefaultScribeClient extends ScribeClient {
     }
 
     public void scribe(EventNamespace... namespaces) {
+        for (EventNamespace ns : namespaces) {
+            scribe(ns, Collections.<ScribeItem>emptyList());
+        }
+    }
+
+    public void scribe(EventNamespace namespace, List<ScribeItem> items) {
         final String language;
         if (kit.getContext() != null) {
             language = kit.getContext().getResources().getConfiguration().locale.getLanguage();
@@ -92,9 +99,8 @@ public class DefaultScribeClient extends ScribeClient {
          * It also may be null depending on the users preferences and if Google Play Services has
          * been installed on the device.
          */
-        for (EventNamespace ns : namespaces) {
-            scribe(ScribeEventFactory.newScribeEvent(ns, timestamp, language, advertisingId));
-        }
+        scribe(ScribeEventFactory.newScribeEvent(namespace, timestamp, language, advertisingId,
+                items));
     }
 
     public void scribe(ScribeEvent event) {
