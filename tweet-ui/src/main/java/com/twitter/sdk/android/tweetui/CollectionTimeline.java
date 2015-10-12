@@ -25,7 +25,7 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.core.models.User;
-import com.twitter.sdk.android.core.internal.GuestCallback;
+import com.twitter.sdk.android.core.GuestCallback;
 
 import java.util.ArrayList;
 import java.util.Collections;

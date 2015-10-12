@@ -25,7 +25,7 @@ import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.internal.GuestCallback;
+import com.twitter.sdk.android.core.GuestCallback;
 import com.twitter.sdk.android.core.models.Tweet;
 
 import java.util.List;

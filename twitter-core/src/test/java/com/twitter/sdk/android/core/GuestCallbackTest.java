@@ -15,16 +15,9 @@
  *
  */
 
-package com.twitter.sdk.android.core.internal;
+package com.twitter.sdk.android.core;
 
-import com.twitter.sdk.android.core.AppSession;
-import com.twitter.sdk.android.core.BuildConfig;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.SessionManager;
-import com.twitter.sdk.android.core.TwitterApiException;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.internal.TwitterApiConstants;
 import com.twitter.sdk.android.core.models.Tweet;
 
 import junit.framework.Assert;
