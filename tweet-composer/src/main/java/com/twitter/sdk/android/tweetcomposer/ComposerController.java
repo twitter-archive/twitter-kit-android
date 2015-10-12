@@ -38,14 +38,14 @@ class ComposerController {
     ComposerActivity.Finisher finisher;
     final DependencyProvider dependencyProvider;
 
-    ComposerController(final ComposerView composerView, TwitterSession session, String initialText,
-            Card card, ComposerActivity.Finisher finisher) {
-        this(composerView, session, initialText, card, finisher, new DependencyProvider());
+    ComposerController(final ComposerView composerView, TwitterSession session, Card card,
+                       ComposerActivity.Finisher finisher) {
+        this(composerView, session, card, finisher, new DependencyProvider());
     }
 
     // testing purposes
-    ComposerController(final ComposerView composerView, TwitterSession session, String initialText,
-            Card card, ComposerActivity.Finisher finisher,
+    ComposerController(final ComposerView composerView, TwitterSession session, Card card,
+                       ComposerActivity.Finisher finisher,
             DependencyProvider dependencyProvider) {
         this.composerView = composerView;
         this.session = session;
@@ -54,7 +54,6 @@ class ComposerController {
         this.dependencyProvider = dependencyProvider;
 
         composerView.setCallbacks(new ComposerCallbacksImpl());
-        composerView.setTweetText(initialText);
         composerView.setCursorAtEnd();
         setProfilePhoto();
         setCardView(card);

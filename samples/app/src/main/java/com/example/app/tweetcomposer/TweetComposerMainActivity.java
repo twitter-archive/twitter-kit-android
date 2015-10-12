@@ -102,7 +102,6 @@ public class TweetComposerMainActivity extends BaseActivity {
                 .build();
         final Intent intent = new ComposerActivity.Builder(TweetComposerMainActivity.this)
                 .session(session)
-                .tweetText(text)
                 .card(card)
                 .createIntent();
         startActivity(intent);

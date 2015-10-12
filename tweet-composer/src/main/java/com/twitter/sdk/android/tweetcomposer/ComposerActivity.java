@@ -26,7 +26,6 @@ import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterSession;
 
 public class ComposerActivity extends Activity {
-    static final String EXTRA_TWEET_TEXT = "EXTRA_TWEET_TEXT";
     static final String EXTRA_USER_TOKEN = "EXTRA_USER_TOKEN";
     static final String EXTRA_CARD = "EXTRA_CARD";
     static final String EXTRA_THEME = "EXTRA_THEME";
@@ -38,7 +37,6 @@ public class ComposerActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         final Intent intent = getIntent();
-        final String initialText = intent.getStringExtra(EXTRA_TWEET_TEXT);
         final TwitterAuthToken token = intent.getParcelableExtra(EXTRA_USER_TOKEN);
         final TwitterSession session = new TwitterSession(token, PLACEHOLDER_ID,
                 PLACEHOLDER_SCREEN_NAME);
@@ -48,7 +46,7 @@ public class ComposerActivity extends Activity {
         setTheme(themeResId);
         setContentView(R.layout.tw__activity_composer);
         final ComposerView composerView = (ComposerView) findViewById(R.id.tw__composer_view);
-        new ComposerController(composerView, session, initialText, card, new FinisherImpl());
+        new ComposerController(composerView, session, card, new FinisherImpl());
     }
 
     interface Finisher {
@@ -66,7 +64,6 @@ public class ComposerActivity extends Activity {
     public static class Builder {
         private final Context context;
         private TwitterAuthToken token;
-        private String tweetText = "";
         private int themeResId = R.style.ComposerLight;
         private Card card;
 
@@ -90,11 +87,6 @@ public class ComposerActivity extends Activity {
             return this;
         }
 
-        public Builder tweetText(String text) {
-            this.tweetText = text;
-            return this;
-        }
-
         public Builder card(Card card) {
             this.card = card;
             return this;
@@ -111,7 +103,6 @@ public class ComposerActivity extends Activity {
             }
             final Intent intent = new Intent(context, ComposerActivity.class);
             intent.putExtra(EXTRA_USER_TOKEN, token);
-            intent.putExtra(EXTRA_TWEET_TEXT, tweetText);
             intent.putExtra(EXTRA_CARD, card);
             intent.putExtra(EXTRA_THEME, themeResId);
             return intent;

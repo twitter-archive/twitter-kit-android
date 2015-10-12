@@ -110,15 +110,6 @@ public class ComposerActivityTest {
     }
 
     @Test
-    public void testBuilderTweetText() {
-        final Intent intent = new ComposerActivity.Builder(mockContext)
-                .session(mockSession)
-                .tweetText(TWEET_TEXT)
-                .createIntent();
-        assertEquals(TWEET_TEXT, intent.getStringExtra(ComposerActivity.EXTRA_TWEET_TEXT));
-    }
-
-    @Test
     public void testBuilderDarkTheme() {
         final Intent intent = new ComposerActivity.Builder(mockContext)
                 .session(mockSession)
