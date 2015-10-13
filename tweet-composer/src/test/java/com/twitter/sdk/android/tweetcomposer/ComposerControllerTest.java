@@ -101,6 +101,7 @@ public class ComposerControllerTest extends AndroidTestCase {
         // - sets card view in composer
         // - scribes a Tweet Composer impression
         verify(mockComposerView).setCallbacks(any(ComposerController.ComposerCallbacks.class));
+        verify(mockComposerView).setTweetText("");
         verify(mockComposerView).setCursorAtEnd();
         verify(mockComposerView).setCardView(any(View.class));
         verify(mockDependencyProvider).getApiClient(mockTwitterSession);

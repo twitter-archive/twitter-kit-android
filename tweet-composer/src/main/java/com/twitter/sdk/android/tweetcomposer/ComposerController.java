@@ -54,6 +54,7 @@ class ComposerController {
         this.dependencyProvider = dependencyProvider;
 
         composerView.setCallbacks(new ComposerCallbacksImpl());
+        composerView.setTweetText("");
         composerView.setCursorAtEnd();
         setProfilePhoto();
         setCardView(card);
