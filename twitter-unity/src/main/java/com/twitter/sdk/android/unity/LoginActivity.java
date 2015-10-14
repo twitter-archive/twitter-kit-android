@@ -52,9 +52,12 @@ public class LoginActivity extends Activity {
             }
 
             @Override
-            public void failure(TwitterException e) {
+            public void failure(TwitterException ex) {
+                final String error = new ApiError.Serializer()
+                        .serialize(new ApiError(0, ex.getMessage()));
                 final UnityMessage message = new UnityMessage.Builder()
                         .setMethod("LoginFailed")
+                        .setData(error)
                         .build();
                 message.send();
                 finish();

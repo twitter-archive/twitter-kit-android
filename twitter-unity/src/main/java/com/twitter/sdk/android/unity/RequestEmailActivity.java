@@ -52,9 +52,12 @@ public class RequestEmailActivity extends Activity {
             }
 
             @Override
-            public void failure(TwitterException exception) {
+            public void failure(TwitterException ex) {
+                final String error = new ApiError.Serializer()
+                        .serialize(new ApiError(0, ex.getMessage()));
                 final UnityMessage message = new UnityMessage.Builder()
                         .setMethod("RequestEmailFailed")
+                        .setData(error)
                         .build();
                 message.send();
                 finish();
