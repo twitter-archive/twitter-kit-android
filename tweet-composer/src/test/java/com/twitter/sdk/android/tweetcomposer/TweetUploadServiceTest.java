@@ -27,6 +27,8 @@ import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.core.services.MediaService;
 
 import org.junit.Before;
@@ -38,6 +40,7 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.mock;
@@ -49,7 +52,6 @@ import static org.mockito.Mockito.when;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class TweetUploadServiceTest extends AndroidTestCase {
     private static final String EXPECTED_TWEET_TEXT = "tweet text";
-    private static final String EXPECTED_CALL_TO_ACTION = "Click Now";
 
     private Context context;
     private ComposerApiClient mockComposerApiClient;
@@ -119,8 +121,9 @@ public class TweetUploadServiceTest extends AndroidTestCase {
         service.uploadTweet(mock(TwitterSession.class), EXPECTED_TWEET_TEXT);
         verify(mockStatusesService).update(eq(EXPECTED_TWEET_TEXT), isNull(String.class),
                 callbackCaptor.capture());
-        callbackCaptor.getValue().success(mock(Result.class));
-        verify(service).sendSuccessBroadcast();
+        final Tweet tweet =  new TweetBuilder().setId(123L).build();
+        callbackCaptor.getValue().success(new Result<>(tweet, null));
+        verify(service).sendSuccessBroadcast(eq(123L));
         verify(service).stopSelf();
     }
 
@@ -137,7 +140,7 @@ public class TweetUploadServiceTest extends AndroidTestCase {
     @Test
     public void testSendSuccessBroadcast() {
         final ArgumentCaptor<Intent> intentCaptor = ArgumentCaptor.forClass(Intent.class);
-        service.sendSuccessBroadcast();
+        service.sendSuccessBroadcast(anyLong());
         verify(service).sendBroadcast(intentCaptor.capture());
         assertEquals(TweetUploadService.UPLOAD_SUCCESS, intentCaptor.getValue().getAction());
     }
@@ -150,6 +153,6 @@ public class TweetUploadServiceTest extends AndroidTestCase {
         verify(service).sendBroadcast(intentCaptor.capture());
         assertEquals(TweetUploadService.UPLOAD_FAILURE, intentCaptor.getValue().getAction());
         assertEquals(mockIntent,
-                intentCaptor.getValue().getParcelableExtra(TweetUploadService.EXTRA_FAILED_INTENT));
+                intentCaptor.getValue().getParcelableExtra(TweetUploadService.EXTRA_RETRY_INTENT));
     }
 }

@@ -78,5 +78,21 @@
             android:name=".tweetui.TweetPreviewActivity"
             android:label="@string/kit_tweetui"/>
 
+        <receiver
+            android:name=".tweetcomposer.TweetSuccessReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.twitter.sdk.android.tweetcomposer.UPLOAD_SUCCESS"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".tweetcomposer.TweetFailureReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.twitter.sdk.android.tweetcomposer.UPLOAD_FAILURE"/>
+            </intent-filter>
+        </receiver>
+
     </application>
 </manifest>

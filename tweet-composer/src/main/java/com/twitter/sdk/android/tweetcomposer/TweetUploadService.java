@@ -41,11 +41,13 @@ public class TweetUploadService extends IntentService {
             = "com.twitter.sdk.android.tweetcomposer.UPLOAD_SUCCESS";
     public static final String UPLOAD_FAILURE
             = "com.twitter.sdk.android.tweetcomposer.UPLOAD_FAILURE";
+    public static final String EXTRA_TWEET_ID = "EXTRA_TWEET_ID";
+    public static final String EXTRA_RETRY_INTENT = "EXTRA_RETRY_INTENT";
+
+    static final String TAG = "TweetUploadService";
     static final String EXTRA_USER_TOKEN = "EXTRA_USER_TOKEN";
     static final String EXTRA_TWEET_TEXT = "EXTRA_TWEET_TEXT";
     static final String EXTRA_TWEET_CARD = "EXTRA_TWEET_CARD";
-    static final String EXTRA_FAILED_INTENT = "EXTRA_FAILED_INTENT";
-    private static final String TAG = "TweetUploadService";
     private static final int PLACEHOLDER_ID = -1;
     private static final String PLACEHOLDER_SCREEN_NAME = "";
     DependencyProvider dependencyProvider;
@@ -85,7 +87,7 @@ public class TweetUploadService extends IntentService {
         client.getComposerStatusesService().update(text, null, new Callback<Tweet>() {
             @Override
             public void success(Result<Tweet> result) {
-                sendSuccessBroadcast();
+                sendSuccessBroadcast(result.data.getId());
                 stopSelf();
             }
 
@@ -122,7 +124,7 @@ public class TweetUploadService extends IntentService {
                                 new Callback<Tweet>() {
                                     @Override
                                     public void success(Result<Tweet> result) {
-                                        sendSuccessBroadcast();
+                                        sendSuccessBroadcast(result.data.getId());
                                         stopSelf();
                                     }
 
@@ -153,14 +155,15 @@ public class TweetUploadService extends IntentService {
         stopSelf();
     }
 
-    void sendSuccessBroadcast() {
+    void sendSuccessBroadcast(long tweetId) {
         final Intent intent = new Intent(UPLOAD_SUCCESS);
+        intent.putExtra(EXTRA_TWEET_ID, tweetId);
         sendBroadcast(intent);
     }
 
     void sendFailureBroadcast(Intent original) {
         final Intent intent = new Intent(UPLOAD_FAILURE);
-        intent.putExtra(EXTRA_FAILED_INTENT, original);
+        intent.putExtra(EXTRA_RETRY_INTENT, original);
         sendBroadcast(intent);
     }
 
