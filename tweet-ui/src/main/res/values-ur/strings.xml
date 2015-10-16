@@ -18,5 +18,10 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__loading_tweet">ٹویٹ لوڈ ہو رہی ہے</string>
     <string name="tw__retweeted_by_format">%1$s کی ریٹویٹ کردہ</string>
+    <string name="tw__share_content_format">‎\@%1$s کی ٹویٹ دیکھیں: https://twitter.com/%1$s/status/%2$s</string>
+    <string name="tw__share_subject_format">%1$s (‎\@%2$s) کی ٹویٹ</string>
+    <string name="tw__share_tweet">ٹویٹ شیئر کریں</string>
+    <string name="tw__tweet_content_description">%1$s۔ %2$s۔ %3$s۔</string>
 </resources>

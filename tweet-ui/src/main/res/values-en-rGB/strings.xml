@@ -22,5 +22,6 @@
     <string name="tw__retweeted_by_format">Retweeted by %1$s</string>
     <string name="tw__share_content_format">Check out \@%1$s\'s Tweet: https://twitter.com/%1$s/status/%2$s</string>
     <string name="tw__share_subject_format">Tweet from %1$s (\@%2$s)</string>
+    <string name="tw__share_tweet">Share Tweet</string>
     <string name="tw__tweet_content_description">%1$s. %2$s. %3$s.</string>
 </resources>

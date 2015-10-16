@@ -19,7 +19,7 @@
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="tw__loading_tweet">Đang tải Tweet</string>
-    <string name="tw__retweeted_by_format">Được Tweet lại bởi %1$s</string>
+    <string name="tw__retweeted_by_format">Đã Tweet lại bởi %1$s</string>
     <string name="tw__share_content_format">Hãy xem Tweet của \@%1$s: https://twitter.com/%1$s/status/%2$s</string>
     <string name="tw__share_subject_format">Tweet từ %1$s (\@%2$s)</string>
     <string name="tw__share_tweet">Chia sẻ Tweet</string>

@@ -19,12 +19,12 @@
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <plurals name="tw__time_hours">
-        <item quantity="one">1 год.</item>
-        <item quantity="other">%d год.</item>
+        <item quantity="one">1 год</item>
+        <item quantity="other">%d год</item>
     </plurals>
     <plurals name="tw__time_mins">
-        <item quantity="one">1 хв.</item>
-        <item quantity="other">%d хв.</item>
+        <item quantity="one">1 хв</item>
+        <item quantity="other">%d хв</item>
     </plurals>
     <plurals name="tw__time_secs">
         <item quantity="one">1 с</item>
