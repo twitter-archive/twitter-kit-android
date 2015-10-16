@@ -3,5 +3,8 @@
 
 ## Unreleased
 
-* Added support for "Login with Twitter"
-* Added support for request email
+## v0.1.0
+
+* Added support for "Login with Twitter".
+* Added support for request email.
+* Added support for composer with app install card.

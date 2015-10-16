@@ -3,6 +3,9 @@
 
 ## Unreleased
 
+## v1.6.0
+* Removed usage of deprecated Apache HTTP Client constants.
+
 ## v1.5.0
 
 * Raised Min SDK version from 8 to 9 to support APIs switching to SHA2 TLS certificates.

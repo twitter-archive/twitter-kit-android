@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+## v1.0.0
+
+* Added composer with support for app install cards.
+
 ## v0.9.0
 
 * Raised Min SDK version from 8 to 9.
