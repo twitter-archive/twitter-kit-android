@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+* Change favorite actions to likes (hearts).
+
 ## v1.6.0
 
 ## v1.5.0

@@ -78,7 +78,7 @@ public abstract class TweetAsserts {
                 .check(matches(isFocusable()))
                 .check(matches(isClickable()));
         // favorite tweet button
-        onView(allOf(withId(R.id.tw__tweet_favorite_button),
+        onView(allOf(withId(R.id.tw__tweet_like_button),
                 isDescendantOfA(withId(tweetResId))))
                 .check(matches(isDisplayed()))
                 .check(matches(hasContentDescription()))

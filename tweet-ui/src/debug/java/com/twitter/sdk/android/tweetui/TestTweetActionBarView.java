@@ -33,7 +33,7 @@ public class TestTweetActionBarView extends TweetActionBarView {
     }
 
     @Override
-    public void setFavorite(Tweet tweet) {
-        super.setFavorite(tweet);
+    public void setLike(Tweet tweet) {
+        super.setLike(tweet);
     }
 }

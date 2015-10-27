@@ -358,7 +358,7 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
                 R.style.tw__TweetActionsEnabled);
         final TweetActionBarView mockActionBarView = mock(TestTweetActionBarView.class);
         tweetView.tweetActionBarView = mockActionBarView;
-        doNothing().when(mockActionBarView).setFavorite(any(Tweet.class));
+        doNothing().when(mockActionBarView).setLike(any(Tweet.class));
         final Callback<Tweet> mockCallback = mock(Callback.class);
         tweetView.setOnActionCallback(mockCallback);
         // verify that the TweetActionBarView is set with the Tweet, not the inner retweeted Tweet
@@ -372,7 +372,7 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
                 R.style.tw__TweetActionsEnabled);
         final TweetActionBarView mockActionBarView = mock(TestTweetActionBarView.class);
         tweetView.tweetActionBarView = mockActionBarView;
-        doNothing().when(mockActionBarView).setFavorite(any(Tweet.class));
+        doNothing().when(mockActionBarView).setLike(any(Tweet.class));
         tweetView.render();
         // verify that the TweetActionBarView is set with the Tweet, not the inner retweeted Tweet
         final ArgumentCaptor<Tweet> tweetCaptor = ArgumentCaptor.forClass(Tweet.class);

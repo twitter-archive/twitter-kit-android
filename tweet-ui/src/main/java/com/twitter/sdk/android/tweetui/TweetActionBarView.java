@@ -27,7 +27,7 @@ import com.twitter.sdk.android.core.models.Tweet;
 
 public class TweetActionBarView extends LinearLayout {
     final DependencyProvider dependencyProvider;
-    ToggleImageButton favoriteButton;
+    ToggleImageButton likeButton;
     ImageButton shareButton;
     Callback<Tweet> actionCallback;
 
@@ -58,7 +58,7 @@ public class TweetActionBarView extends LinearLayout {
     }
 
     void findSubviews() {
-        favoriteButton = (ToggleImageButton) findViewById(R.id.tw__tweet_favorite_button);
+        likeButton = (ToggleImageButton) findViewById(R.id.tw__tweet_like_button);
         shareButton = (ImageButton) findViewById(R.id.tw__tweet_share_button);
     }
 
@@ -67,17 +67,17 @@ public class TweetActionBarView extends LinearLayout {
      * @param tweet Tweet source for whether an action has been performed (e.g. isFavorited?)
      */
     void setTweet(Tweet tweet) {
-        setFavorite(tweet);
+        setLike(tweet);
         setShare(tweet);
     }
 
-    void setFavorite(Tweet tweet) {
+    void setLike(Tweet tweet) {
         final TweetUi tweetUi = dependencyProvider.getTweetUi();
         if (tweet != null) {
-            favoriteButton.setToggledOn(tweet.favorited);
-            final FavoriteTweetAction favoriteTweetAction = new FavoriteTweetAction(tweet,
+            likeButton.setToggledOn(tweet.favorited);
+            final LikeTweetAction likeTweetAction = new LikeTweetAction(tweet,
                     tweetUi, actionCallback);
-            favoriteButton.setOnClickListener(favoriteTweetAction);
+            likeButton.setOnClickListener(likeTweetAction);
         }
     }
 

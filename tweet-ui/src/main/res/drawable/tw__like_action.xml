@@ -18,8 +18,8 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:twitter="http://schemas.android.com/apk/res-auto">
     <item twitter:state_toggled_on="true"
-          android:drawable="@drawable/ic_tweet_action_inline_favorite_on"/>
+          android:drawable="@drawable/tw__ic_inline_heart_on"/>
 
     <item android:state_enabled="false"
-          android:drawable="@drawable/ic_tweet_action_inline_favorite"/>
+          android:drawable="@drawable/tw__ic_inline_heart"/>
 </selector>

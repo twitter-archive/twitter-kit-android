@@ -37,25 +37,25 @@ public class TweetActionBarViewTest extends TweetUiTestCase {
         assertEquals(actionCallback, view.actionCallback);
     }
 
-    public void testSetFavorite() {
+    public void testSetLike() {
         final TweetRepository tweetRepository = TweetUi.getInstance().getTweetRepository();
         final TweetActionBarView view = createView();
-        view.setFavorite(TestFixtures.TEST_TWEET);
+        view.setLike(TestFixtures.TEST_TWEET);
 
-        final ArgumentCaptor<FavoriteTweetAction> favoriteCaptor
-                = ArgumentCaptor.forClass(FavoriteTweetAction.class);
-        verify(view.favoriteButton).setToggledOn(TestFixtures.TEST_TWEET.favorited);
-        verify(view.favoriteButton).setOnClickListener(favoriteCaptor.capture());
-        final FavoriteTweetAction favoriteAction = favoriteCaptor.getValue();
-        assertNotNull(favoriteAction);
-        assertEquals(TestFixtures.TEST_TWEET, favoriteAction.tweet);
-        assertEquals(tweetRepository, favoriteAction.tweetRepository);
+        final ArgumentCaptor<LikeTweetAction> likeCaptor
+                = ArgumentCaptor.forClass(LikeTweetAction.class);
+        verify(view.likeButton).setToggledOn(TestFixtures.TEST_TWEET.favorited);
+        verify(view.likeButton).setOnClickListener(likeCaptor.capture());
+        final LikeTweetAction likeAction = likeCaptor.getValue();
+        assertNotNull(likeAction);
+        assertEquals(TestFixtures.TEST_TWEET, likeAction.tweet);
+        assertEquals(tweetRepository, likeAction.tweetRepository);
     }
 
-    public void testSetFavorite_handlesNullTweet() {
+    public void testSetLike_handlesNullTweet() {
         final TweetActionBarView view = createView();
-        view.setFavorite(null);
-        verifyZeroInteractions(view.favoriteButton);
+        view.setLike(null);
+        verifyZeroInteractions(view.likeButton);
     }
 
     public void testSetShare() {
@@ -78,7 +78,7 @@ public class TweetActionBarViewTest extends TweetUiTestCase {
 
     private TweetActionBarView createView() {
         final TweetActionBarView view = new TweetActionBarView(getContext());
-        view.favoriteButton = mock(ToggleImageButton.class);
+        view.likeButton = mock(ToggleImageButton.class);
         view.shareButton = mock(ImageButton.class);
         return view;
     }

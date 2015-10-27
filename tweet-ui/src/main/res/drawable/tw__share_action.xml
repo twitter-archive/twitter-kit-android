@@ -16,5 +16,5 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/ic_tweet_action_inline_share" />
+    <item android:drawable="@drawable/tw__ic_inline_share"/>
 </selector>

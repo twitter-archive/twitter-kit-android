@@ -28,16 +28,16 @@ import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 
 /*
- * FavoriteTweetAction is a click listener for ToggleImageButtons which performs Tweet
+ * LikeTweetAction is a click listener for ToggleImageButtons which performs Twitter API
  * favorite/unfavorite actions onClick, updates button state, and calls through to the given
  * callback.
  */
-class FavoriteTweetAction extends BaseTweetAction implements View.OnClickListener {
+class LikeTweetAction extends BaseTweetAction implements View.OnClickListener {
     final Tweet tweet;
     TweetRepository tweetRepository;
     TweetUi tweetUi;
 
-    public FavoriteTweetAction(Tweet tweet, TweetUi tweetUi, Callback<Tweet> cb) {
+    public LikeTweetAction(Tweet tweet, TweetUi tweetUi, Callback<Tweet> cb) {
         super(cb);
         this.tweet = tweet;
         this.tweetUi = tweetUi;
@@ -51,11 +51,11 @@ class FavoriteTweetAction extends BaseTweetAction implements View.OnClickListene
             if (tweet.favorited) {
                 scribeUnFavoriteAction();
                 tweetRepository.unfavorite(tweet.id,
-                        new FavoriteCallback(toggleImageButton, tweet, getActionCallback()));
+                        new LikeCallback(toggleImageButton, tweet, getActionCallback()));
             } else {
                 scribeFavoriteAction();
                 tweetRepository.favorite(tweet.id,
-                        new FavoriteCallback(toggleImageButton, tweet, getActionCallback()));
+                        new LikeCallback(toggleImageButton, tweet, getActionCallback()));
             }
         }
     }
@@ -69,10 +69,10 @@ class FavoriteTweetAction extends BaseTweetAction implements View.OnClickListene
     }
 
     /*
-     * Toggles favorite button state to handle exceptions. It calls through to the given action
-     * callback.
+     * Toggles like button state to handle favorite/unfavorite API exceptions. It calls through to
+     * the given action callback.
      */
-    static class FavoriteCallback extends Callback<Tweet> {
+    static class LikeCallback extends Callback<Tweet> {
         ToggleImageButton button;
         Tweet tweet;
         Callback<Tweet> cb;
@@ -83,7 +83,7 @@ class FavoriteTweetAction extends BaseTweetAction implements View.OnClickListene
          * @param wasFavorited whether the Tweet was favorited or not before the click
          * @param cb the Callback.
          */
-        FavoriteCallback(ToggleImageButton button, Tweet tweet, Callback<Tweet> cb) {
+        LikeCallback(ToggleImageButton button, Tweet tweet, Callback<Tweet> cb) {
             this.button = button;
             this.tweet = tweet;
             this.cb = cb;
