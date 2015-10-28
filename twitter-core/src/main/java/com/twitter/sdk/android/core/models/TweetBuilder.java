@@ -24,6 +24,7 @@ public class TweetBuilder {
     private String createdAt;
     private Object currentUserRetweet;
     private TweetEntities entities;
+    private TweetEntities extendedEtities;
     private Integer favoriteCount;
     private boolean favorited;
     private String filterLevel;
@@ -66,6 +67,11 @@ public class TweetBuilder {
 
     public TweetBuilder setEntities(TweetEntities entities) {
         this.entities = entities;
+        return this;
+    }
+
+    public TweetBuilder setExtendedEntities(TweetEntities extendedEtities) {
+        this.extendedEtities = extendedEtities;
         return this;
     }
 
@@ -194,6 +200,7 @@ public class TweetBuilder {
         this.createdAt = tweet.createdAt;
         this.currentUserRetweet = tweet.currentUserRetweet;
         this.entities = tweet.entities;
+        this.extendedEtities = tweet.extendedEtities;
         this.favoriteCount = tweet.favoriteCount;
         this.favorited = tweet.favorited;
         this.filterLevel = tweet.filterLevel;
@@ -222,7 +229,7 @@ public class TweetBuilder {
     }
 
     public Tweet build() {
-        return new Tweet(coordinates, createdAt, currentUserRetweet, entities,
+        return new Tweet(coordinates, createdAt, currentUserRetweet, entities, extendedEtities,
                 favoriteCount, favorited, filterLevel, id, idStr, inReplyToScreenName,
                 inReplyToStatusId, inReplyToStatusIdStr, inReplyToUserId, inReplyToUserIdStr,
                 lang, place, possiblySensitive, scopes, retweetCount, retweeted,

@@ -144,7 +144,7 @@ public class TweetTextLinkifierTest {
                 "http://t.co/V3hLRdFdeN final text";
 
         final MediaEntity mediaEntity = new MediaEntity("http://t.co/PFHCdlr4i0", null,
-                "pic.twitter.com/abc", 27, 49, 0L, null, null, null, null, 0L, null, "photo");
+                "pic.twitter.com/abc", 27, 49, 0L, null, null, null, null, 0L, null, "photo", null);
 
         final UrlEntity urlEntity = new UrlEntity("http://t.co/PFHCdlr4i0", null, "example.com", 50,
                 72);

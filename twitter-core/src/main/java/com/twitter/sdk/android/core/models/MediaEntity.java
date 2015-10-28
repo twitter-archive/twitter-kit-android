@@ -83,9 +83,28 @@ public class MediaEntity extends UrlEntity {
     @SerializedName("type")
     public final String type;
 
+    /**
+     * An object showing details for the video file. This field is present only when there is a
+     * video in the payload.
+     */
+    @SerializedName("video_info")
+    public final VideoInfo videoInfo;
+
+    /**
+     * @deprecated use {@link MediaEntity#MediaEntity(String, String, String, int, int, long,
+     * String, String, String, Sizes, long, String, String, VideoInfo)} instead
+     */
+    @Deprecated
     public MediaEntity(String url, String expandedUrl, String displayUrl, int start, int end,
             long id, String idStr, String mediaUrl, String mediaUrlHttps, Sizes sizes,
             long sourceStatusId, String sourceStatusIdStr, String type) {
+        this(url, expandedUrl, displayUrl, start, end, id, idStr, mediaUrl, mediaUrlHttps, sizes,
+                sourceStatusId, sourceStatusIdStr, type, null);
+    }
+
+    public MediaEntity(String url, String expandedUrl, String displayUrl, int start, int end,
+            long id, String idStr, String mediaUrl, String mediaUrlHttps, Sizes sizes,
+            long sourceStatusId, String sourceStatusIdStr, String type, VideoInfo videoInfo) {
         super(url, expandedUrl, displayUrl, start, end);
         this.id = id;
         this.idStr = idStr;
@@ -95,6 +114,7 @@ public class MediaEntity extends UrlEntity {
         this.sourceStatusId = sourceStatusId;
         this.sourceStatusIdStr = sourceStatusIdStr;
         this.type = type;
+        this.videoInfo = videoInfo;
     }
 
     public static class Sizes {

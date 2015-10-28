@@ -1,0 +1,57 @@
+{
+  "display_url": "pic.twitter.com/lvYVFjAbzz",
+  "expanded_url": "http://twitter.com/jbulava/status/606528031289655296/video/1",
+  "id": 606527664086781952,
+  "id_str": "606527664086781952",
+  "indices": [
+    117,
+    139
+  ],
+  "media_url": "http://pbs.twimg.com/ext_tw_video_thumb/606527664086781952/pu/img/mInvoINHjLcN8Mvk.jpg",
+  "media_url_https": "https://pbs.twimg.com/ext_tw_video_thumb/606527664086781952/pu/img/mInvoINHjLcN8Mvk.jpg",
+  "source_status_id": 205282515685081088,
+  "source_status_id_str": "205282515685081088",
+  "sizes": {
+    "large": {
+      "h": 576,
+      "resize": "fit",
+      "w": 1024
+    },
+    "medium": {
+      "h": 338,
+      "resize": "fit",
+      "w": 600
+    },
+    "small": {
+      "h": 191,
+      "resize": "fit",
+      "w": 340
+    },
+    "thumb": {
+      "h": 150,
+      "resize": "crop",
+      "w": 150
+    }
+  },
+  "type": "video",
+  "url": "http://t.co/lvYVFjAbzz",
+  "video_info": {
+    "aspect_ratio": [
+      16,
+      9
+    ],
+    "duration_millis": 30024,
+    "variants": [
+      {
+        "bitrate": 832000,
+        "content_type": "video/mp4",
+        "url": "https://video.twimg.com/ext_tw_video/606527664086781952/pu/vid/640x360/jdAs88NgP4N3Iqtu.mp4"
+      },
+      {
+        "bitrate": 832000,
+        "content_type": "video/webm",
+        "url": "https://video.twimg.com/ext_tw_video/606527664086781952/pu/vid/640x360/jdAs88NgP4N3Iqtu.webm"
+      }
+    ]
+  }
+}

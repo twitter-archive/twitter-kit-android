@@ -52,11 +52,16 @@ public class Tweet implements Identifiable {
     public final Object currentUserRetweet;
 
     /**
-     * Entities which have been parsed out of the text of the Tweet. Additionally see Entities in
-     * Twitter Objects.
+     * Entities which have been parsed out of the text of the Tweet.
      */
     @SerializedName("entities")
     public final TweetEntities entities;
+
+    /**
+     * Additional entities such as multi photos, animated gifs and video.
+     */
+    @SerializedName("extended_entities")
+    public final TweetEntities extendedEtities;
 
     /**
      * Nullable. Indicates approximately how many times this Tweet has been “favorited” by Twitter
@@ -241,18 +246,38 @@ public class Tweet implements Identifiable {
     @SerializedName("withheld_scope")
     public final String withheldScope;
 
+    /**
+     * @deprecated use {@link TweetBuilder} instead.
+     */
+    @Deprecated
     public Tweet(Coordinates coordinates, String createdAt, Object currentUserRetweet,
-            TweetEntities entities, Integer favoriteCount, boolean favorited, String filterLevel,
-            long id, String idStr, String inReplyToScreenName, long inReplyToStatusId,
-            String inReplyToStatusIdStr, long inReplyToUserId, String inReplyToUserIdStr,
-            String lang, Place place, boolean possiblySensitive, Object scopes, int retweetCount,
-            boolean retweeted, Tweet retweetedStatus, String source, String text, boolean truncated,
-            User user, boolean withheldCopyright, List<String> withheldInCountries,
-            String withheldScope) {
+            TweetEntities entities, Integer favoriteCount,
+            boolean favorited, String filterLevel, long id, String idStr,
+            String inReplyToScreenName, long inReplyToStatusId, String inReplyToStatusIdStr,
+            long inReplyToUserId, String inReplyToUserIdStr, String lang, Place place,
+            boolean possiblySensitive, Object scopes, int retweetCount, boolean retweeted,
+            Tweet retweetedStatus, String source, String text, boolean truncated, User user,
+            boolean withheldCopyright, List<String> withheldInCountries, String withheldScope) {
+        this(coordinates, createdAt, currentUserRetweet, entities, null, favoriteCount,
+                favorited, filterLevel, id, idStr, inReplyToScreenName, inReplyToStatusId,
+                inReplyToStatusIdStr, inReplyToUserId, inReplyToUserIdStr, lang, place,
+                possiblySensitive, scopes, retweetCount, retweeted, retweetedStatus, source,
+                text, truncated, user, withheldCopyright, withheldInCountries, withheldScope);
+    }
+
+    public Tweet(Coordinates coordinates, String createdAt, Object currentUserRetweet,
+            TweetEntities entities, TweetEntities extendedEtities, Integer favoriteCount,
+            boolean favorited, String filterLevel, long id, String idStr,
+            String inReplyToScreenName, long inReplyToStatusId, String inReplyToStatusIdStr,
+            long inReplyToUserId, String inReplyToUserIdStr, String lang, Place place,
+            boolean possiblySensitive, Object scopes, int retweetCount, boolean retweeted,
+            Tweet retweetedStatus, String source, String text, boolean truncated, User user,
+            boolean withheldCopyright, List<String> withheldInCountries, String withheldScope) {
         this.coordinates = coordinates;
         this.createdAt = createdAt;
         this.currentUserRetweet = currentUserRetweet;
         this.entities = entities;
+        this.extendedEtities = extendedEtities;
         this.favoriteCount = favoriteCount;
         this.favorited = favorited;
         this.filterLevel = filterLevel;

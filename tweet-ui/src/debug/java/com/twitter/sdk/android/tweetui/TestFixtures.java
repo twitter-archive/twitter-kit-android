@@ -133,7 +133,7 @@ public final class TestFixtures {
     static Tweet createPhotoTweet(long id, User user, String text, String timestamp,
             String photoUrlHttps) {
         final MediaEntity photoEntity = new MediaEntity(null, null, null, 0, 0, 0L, null, null,
-                photoUrlHttps, createMediaEntitySizes(100, 100), 0L, null, "photo");
+                photoUrlHttps, createMediaEntitySizes(100, 100), 0L, null, "photo", null);
         final ArrayList<MediaEntity> mediaEntities = new ArrayList<>();
         mediaEntities.add(photoEntity);
         final TweetEntities entities = new TweetEntities(null, null, mediaEntities, null);
@@ -166,7 +166,7 @@ public final class TestFixtures {
 
     public static MediaEntity newMediaEntity(int start, int end, String type) {
         return new MediaEntity("url", "expandedUrl", "displayUrl", start, end, 0L, "0", "mediaUrl",
-                "mediaUrlHttps", null, 0L, "0", type);
+                "mediaUrlHttps", null, 0L, "0", type, null);
     }
 
     public static List<Tweet> getTweetList(long count) {
@@ -184,7 +184,7 @@ public final class TestFixtures {
 
     public static MediaEntity createMediaEntityWithSizes(MediaEntity.Sizes sizes) {
         return new MediaEntity(null, null, null, 0, 0, 0L, null, null, "photo", sizes, 0L, null,
-                null);
+                null, null);
     }
 
     public static MediaEntity.Sizes createMediaEntitySizes(int width, int height) {
