@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+## v1.0.1
+
+* Renamed drawables to avoid name collisions.
+
 ## v1.0.0
 
 * Added composer with support for app install cards.
