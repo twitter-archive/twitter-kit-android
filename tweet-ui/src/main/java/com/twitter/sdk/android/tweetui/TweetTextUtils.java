@@ -21,7 +21,6 @@ import android.text.TextUtils;
 
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.Tweet;
-import com.twitter.sdk.android.core.models.TweetEntities;
 import com.twitter.sdk.android.core.models.UrlEntity;
 import com.twitter.sdk.android.tweetui.internal.util.HtmlEntities;
 
@@ -29,8 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 final class TweetTextUtils {
-    private static final String PHOTO_TYPE = "photo";
-
     private TweetTextUtils() {}
 
     /**
@@ -192,37 +189,5 @@ final class TweetTextUtils {
             entity.start = entity.start + offset;
             entity.end = entity.end + offset;
         }
-    }
-
-    /**
-     * This method gets the last photo entity out of the tweet, this is the photo to display inline
-     *
-     * @param entities The Tweet entities
-     * @return         The last photo entity of
-     */
-    static MediaEntity getLastPhotoEntity(final TweetEntities entities) {
-        if (entities == null) return null;
-
-        final List<MediaEntity> mediaEntityList = entities.media;
-        if (mediaEntityList == null || mediaEntityList.isEmpty()) return null;
-
-        MediaEntity entity;
-        for (int i = mediaEntityList.size() - 1; i >= 0; i--) {
-            entity = mediaEntityList.get(i);
-            if (entity.type != null && entity.type.equals(PHOTO_TYPE)) {
-                return entity;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Returns true if there is a media entity with the type of "photo"
-     *
-     * @param entities The Tweet entities
-     * @return         true if there is a media entity with the type of "photo"
-     */
-    static boolean hasPhotoUrl(TweetEntities entities) {
-        return getLastPhotoEntity(entities) != null;
     }
 }
