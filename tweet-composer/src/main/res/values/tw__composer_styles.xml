@@ -23,7 +23,7 @@
         <item name="android:layout_width">@dimen/tw__composer_close_size</item>
         <item name="android:layout_height">@dimen/tw__composer_close_size</item>
         <item name="android:padding">@dimen/tw__composer_spacing_large</item>
-        <item name="android:src">@drawable/tw__ic_dialog_close</item>
+        <item name="android:src">@drawable/tw__composer_close</item>
         <item name="android:background">@null</item>
         <item name="android:scaleType">fitCenter</item>
     </style>

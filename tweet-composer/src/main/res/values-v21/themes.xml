@@ -20,12 +20,12 @@
         <item name="android:textColor">@color/tw__composer_black</item>
         <item name="android:textColorSecondary">@color/tw__composer_deep_gray</item>
         <item name="android:textColorHint">@color/tw__composer_light_gray</item>
-        <item name="tw__twitter_logo">@drawable/tw__ic_logo_blue</item>
+        <item name="tw__twitter_logo">@drawable/tw__composer_logo_blue</item>
     </style>
     <style name="ComposerDark" parent="@android:style/Theme.Material.NoActionBar" >
         <item name="android:textColor">@color/tw__composer_white</item>
         <item name="android:textColorSecondary">@color/tw__composer_deep_gray</item>
         <item name="android:textColorHint">@color/tw__composer_light_gray</item>
-        <item name="tw__twitter_logo">@drawable/tw__ic_logo_white</item>
+        <item name="tw__twitter_logo">@drawable/tw__composer_logo_white</item>
     </style>
 </resources>
