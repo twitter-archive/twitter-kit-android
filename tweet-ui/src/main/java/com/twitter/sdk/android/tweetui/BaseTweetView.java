@@ -88,6 +88,7 @@ public abstract class BaseTweetView extends LinearLayout {
     ImageView twitterLogoView;
     TextView retweetedByView;
     TweetActionBarView tweetActionBarView;
+    View bottomSeparator;
 
     // color values
     int containerBgColor;
@@ -375,6 +376,7 @@ public abstract class BaseTweetView extends LinearLayout {
         twitterLogoView = (ImageView) findViewById(R.id.tw__twitter_logo);
         retweetedByView = (TextView) findViewById(R.id.tw__tweet_retweeted_by);
         tweetActionBarView = (TweetActionBarView) findViewById(R.id.tw__tweet_action_bar);
+        bottomSeparator = (View) findViewById(R.id.bottom_separator);
     }
 
     /*
@@ -773,8 +775,10 @@ public abstract class BaseTweetView extends LinearLayout {
         tweetActionsEnabled = enabled;
         if (tweetActionsEnabled) {
             tweetActionBarView.setVisibility(View.VISIBLE);
+            bottomSeparator.setVisibility(View.GONE);
         } else {
             tweetActionBarView.setVisibility(View.GONE);
+            bottomSeparator.setVisibility(View.VISIBLE);
         }
     }
 

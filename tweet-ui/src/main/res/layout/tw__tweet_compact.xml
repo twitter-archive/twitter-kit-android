@@ -93,4 +93,10 @@
         android:layout_toEndOf="@id/tw__tweet_author_avatar"
         android:layout_toRightOf="@id/tw__tweet_author_avatar"/>
 
+    <View
+        android:id="@+id/bottom_separator"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tw__compact_tweet_container_bottom_separator"
+        android:layout_below="@id/tw__tweet_text"/>
+
 </RelativeLayout>

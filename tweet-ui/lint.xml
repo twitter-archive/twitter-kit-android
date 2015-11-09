@@ -32,4 +32,9 @@
     should be communicated to developers since they require downloading new libs from the manager-->
     <issue id="GradleDependency" severity="ignore" />
     <issue id="WrongRegion" severity="ignore" />
+    <issue id="IconDensities" severity="ignore">
+        <ignore path="src/main/res/drawable-mdpi/tw__heart_animation_detail_60fps*"/>
+        <ignore path="src/main/res/drawable-hdpi/tw__heart_animation_detail_60fps*"/>
+        <ignore path="src/main/res/drawable-xxhdpi/tw__heart_animation_detail_60fps*"/>
+    </issue>
 </lint>

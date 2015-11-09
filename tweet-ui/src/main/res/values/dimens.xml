@@ -23,7 +23,7 @@
     <!--Container-->
     <dimen name="tw__tweet_container_width">1dp</dimen>
     <dimen name="tw__tweet_container_padding_top">0dp</dimen>
-    <dimen name="tw__tweet_container_padding_bottom">18dp</dimen>
+    <dimen name="tw__tweet_container_bottom_separator">18dp</dimen>
     <!--Retweeted By line-->
     <dimen name="tw__tweet_retweeted_by_margin_top">10dp</dimen>
     <dimen name="tw__tweet_retweeted_by_margin_bottom">-10dp</dimen>
@@ -51,10 +51,12 @@
     <dimen name="tw__tweet_text_margin_left">20dp</dimen>
     <dimen name="tw__tweet_text_margin_right">20dp</dimen>
     <!--Tweet actions-->
-    <dimen name="tw__tweet_action_button_padding">12dp</dimen>
     <dimen name="tw__tweet_action_button_spacing">40dp</dimen>
-    <dimen name="tw__tweet_action_bar_offset_bottom">-8dp</dimen>
+    <dimen name="tw__tweet_action_bar_offset_bottom">-2dp</dimen>
     <dimen name="tw__tweet_action_bar_offset_left">8dp</dimen>
+    <dimen name="tw__tweet_action_button_margin_top">-4dp</dimen>
+    <dimen name="tw__tweet_action_heart_size">43dp</dimen>
+    <dimen name="tw__tweet_action_share_padding">14dp</dimen>
 
     <!--Tweet Media-->
     <item name="tw__tweet_media_aspect_ratio" format="float" type="dimen">1.777777</item>
@@ -63,7 +65,7 @@
 
     <!--Container-->
     <dimen name="tw__compact_tweet_container_padding_top">10.5dp</dimen>
-    <dimen name="tw__compact_tweet_container_padding_bottom">13dp</dimen>
+    <dimen name="tw__compact_tweet_container_bottom_separator">13dp</dimen>
     <!--Retweeted By line-->
     <dimen name="tw__compact_tweet_retweeted_by_margin_left">-25dp</dimen>
     <dimen name="tw__compact_tweet_retweeted_by_margin_top">0dp</dimen>
