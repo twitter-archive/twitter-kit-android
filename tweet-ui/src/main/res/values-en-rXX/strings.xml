@@ -18,6 +18,8 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__like_tweet">[Lïíkéê Twéêéêt]</string>
+    <string name="tw__liked_tweet">[Undöø Lïíkéê]</string>
     <string name="tw__loading_tweet">[Löøåädïíng Twéêéêt]</string>
     <string name="tw__retweeted_by_format">[Réêtwéêéêtéêd by %1$s]</string>
     <string name="tw__share_content_format">[Chéêck öøüt \@%1$s\'s Twéêéêt: https://twïíttéêr.cöøm/%1$s/ståätüs/%2$s]</string>

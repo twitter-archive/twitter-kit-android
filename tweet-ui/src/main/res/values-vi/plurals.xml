@@ -19,15 +19,15 @@
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <plurals name="tw__time_hours">
-        <item quantity="one">1 giờ</item>
-        <item quantity="other">%d giờ</item>
+        <item quantity="one">1giờ</item>
+        <item quantity="other">%dgiờ</item>
     </plurals>
     <plurals name="tw__time_mins">
-        <item quantity="one">1 phút</item>
-        <item quantity="other">%d phút</item>
+        <item quantity="one">1phút</item>
+        <item quantity="other">%dphút</item>
     </plurals>
     <plurals name="tw__time_secs">
-        <item quantity="one">1 giây</item>
-        <item quantity="other">%d giây</item>
+        <item quantity="one">1giây</item>
+        <item quantity="other">%dgiây</item>
     </plurals>
 </resources>

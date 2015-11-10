@@ -18,6 +18,8 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__like_tweet">پسندیدن توییت</string>
+    <string name="tw__liked_tweet">لغو پسندیدن</string>
     <string name="tw__loading_tweet">بارگیری توییت</string>
     <string name="tw__retweeted_by_format">بازتوییت‌شده توسط %1$s</string>
     <string name="tw__share_content_format">توییت ‎\@%1$s را بر‌رسی کنید: https://twitter.com/%1$s/status/%2$s</string>

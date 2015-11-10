@@ -22,5 +22,5 @@
     <string name="tw__login_btn_txt">Bejelentkezés Twitter-fiókkal</string>
     <string name="tw__not_now_btn_txt">Most nem</string>
     <string name="tw__share_email_desc">Frissítéseket és egyéb információkat kaphatsz %1$s felhasználótól, ha engedélyezed, hogy hozzáférhessen a Twitter-fiókodhoz kapcsolódó e-mail címedhez \@%2$s</string>
-    <string name="tw__share_email_title">Oszd meg e-mail címedet</string>
+    <string name="tw__share_email_title">Oszd meg az e-mail címedet</string>
 </resources>

@@ -20,14 +20,14 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <plurals name="tw__time_hours">
         <item quantity="one">1ชม.</item>
-        <item quantity="other">%dชม.</item>
+        <item quantity="other">%d ชม.</item>
     </plurals>
     <plurals name="tw__time_mins">
-        <item quantity="one">1นาที</item>
-        <item quantity="other">%dนาที</item>
+        <item quantity="one">1 นาที</item>
+        <item quantity="other">%d นาที</item>
     </plurals>
     <plurals name="tw__time_secs">
         <item quantity="one">1วิ</item>
-        <item quantity="other">%dวิ</item>
+        <item quantity="other">%d วิ</item>
     </plurals>
 </resources>

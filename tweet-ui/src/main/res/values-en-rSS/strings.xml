@@ -18,6 +18,8 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__like_tweet">[[141901]] Like Tweet</string>
+    <string name="tw__liked_tweet">[[141902]] Undo Like</string>
     <string name="tw__loading_tweet">[[60974]] Loading Tweet</string>
     <string name="tw__retweeted_by_format">[[99301]] Retweeted by %1$s</string>
     <string name="tw__share_content_format">[[60977]] Check out \@%1$s\'s Tweet: https://twitter.com/%1$s/status/%2$s</string>
