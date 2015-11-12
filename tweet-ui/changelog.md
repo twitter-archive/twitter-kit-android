@@ -4,7 +4,10 @@
 
 ## Unreleased
 
-* Change favorite actions to likes (hearts).
+## v1.7.0
+
+* Added heart animations on Android API 21+
+* Changed favorite stars to "likes" hearts.
 
 ## v1.6.0
 

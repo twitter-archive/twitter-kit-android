@@ -3,6 +3,10 @@
 
 ## Unreleased
 
+## v1.6.1
+
+* Updated translations.
+
 ## v1.6.0
 * Removed usage of deprecated Apache HTTP Client constants.
 
