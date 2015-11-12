@@ -643,9 +643,9 @@ public abstract class BaseTweetView extends LinearLayout {
     final void setTweetPhoto(Tweet displayTweet) {
         clearMediaBackground();
 
-        if (displayTweet != null && TweetEntityUtils.hasPhotoUrl(displayTweet.entities)) {
+        if (displayTweet != null && TweetMediaUtils.hasPhoto(displayTweet)) {
             final MediaEntity photoEntity
-                    = TweetEntityUtils.getLastPhotoEntity(displayTweet.entities);
+                    = TweetMediaUtils.getPhotoEntity(displayTweet);
             // set the image view to visible before setting via picasso placeholders into so
             // measurements are done correctly, fixes a bug where the placeholder was a small square
             // in the corner of the view
@@ -735,7 +735,7 @@ public abstract class BaseTweetView extends LinearLayout {
 
         if (formattedText == null) return null;
 
-        final boolean stripPhotoEntity = TweetEntityUtils.hasPhotoUrl(displayTweet.entities);
+        final boolean stripPhotoEntity = TweetMediaUtils.hasPhoto(displayTweet);
 
         return TweetTextLinkifier.linkifyUrls(formattedText, getLinkClickListener(),
                 stripPhotoEntity, actionColor);
