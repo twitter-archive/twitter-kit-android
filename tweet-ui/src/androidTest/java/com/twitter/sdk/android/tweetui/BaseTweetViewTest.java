@@ -270,7 +270,7 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
                     R.color.tw__tweet_light_container_bg_color);
             final int color = ColorUtils.calculateOpacityTransform(
                     BaseTweetView.MEDIA_BG_LIGHT_OPACITY, Color.BLACK, containerColor);
-            assertEquals(color, TestUtils.getDrawableColor(view.mediaPhotoView));
+            assertEquals(color, TestUtils.getDrawableColor(view.mediaView));
         }
     }
 
@@ -325,7 +325,7 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
                     R.color.tw__tweet_dark_container_bg_color);
             final int color = ColorUtils.calculateOpacityTransform(
                     BaseTweetView.MEDIA_BG_DARK_OPACITY, Color.WHITE, containerColor);
-            assertEquals(color, TestUtils.getDrawableColor(view.mediaPhotoView));
+            assertEquals(color, TestUtils.getDrawableColor(view.mediaView));
         }
     }
 
@@ -461,14 +461,14 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
         }
     }
 
-    public void testSetTweetPhoto_handlesNullPicasso() {
+    public void testSetTweetMedia_handlesNullPicasso() {
         when(mockDependencyProvider.getImageLoader()).thenReturn(null);
 
         final BaseTweetView tweetView = createViewWithMocks(context, TestFixtures.TEST_TWEET,
                 R.style.tw__TweetDarkStyle, mockDependencyProvider);
 
         try {
-            tweetView.setTweetPhoto(mock(MediaEntity.class));
+            tweetView.setTweetMedia(mock(MediaEntity.class));
         } catch (NullPointerException e) {
             fail("Should have handled null error image");
         }

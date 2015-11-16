@@ -41,7 +41,7 @@ public class CollectionTimelineFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         final CollectionTimeline collectionTimeline = new CollectionTimeline.Builder()
-                .id(393773266801659904L).build();
+                .id(659110687482839040L).build();
         final TweetTimelineListAdapter adapter = new TweetTimelineListAdapter(getActivity(),
                 collectionTimeline);
         setListAdapter(adapter);

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (C) 2015 Twitter, Inc.
   ~
@@ -12,20 +13,13 @@
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
-  ~
   -->
 
-<manifest
-    package="com.twitter.sdk.android.tweetui"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<resources>
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-
-    <application>
-        <activity
-            android:name=".PlayerActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@style/PlayerTheme"/>
-    </application>
-
-</manifest>
+    <style name="PlayerTheme" parent="@android:style/Theme.Holo">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+</resources>

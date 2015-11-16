@@ -164,7 +164,7 @@ public abstract class BaseTweetViewXmlTest extends TweetUiTestCase {
                     R.color.tw__tweet_light_container_bg_color);
             final int color = ColorUtils.calculateOpacityTransform(
                     BaseTweetView.MEDIA_BG_LIGHT_OPACITY, Color.BLACK, containerColor);
-            assertEquals(color, TestUtils.getDrawableColor(view.mediaPhotoView));
+            assertEquals(color, TestUtils.getDrawableColor(view.mediaView));
         }
     }
 
@@ -216,7 +216,7 @@ public abstract class BaseTweetViewXmlTest extends TweetUiTestCase {
                     R.color.tw__tweet_dark_container_bg_color);
             final int color = ColorUtils.calculateOpacityTransform(
                     BaseTweetView.MEDIA_BG_DARK_OPACITY, Color.WHITE, containerColor);
-            assertEquals(color, TestUtils.getDrawableColor(view.mediaPhotoView));
+            assertEquals(color, TestUtils.getDrawableColor(view.mediaView));
         }
     }
 

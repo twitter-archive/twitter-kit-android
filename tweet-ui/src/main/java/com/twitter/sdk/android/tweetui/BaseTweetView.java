@@ -46,7 +46,8 @@ import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.core.internal.UserUtils;
-import com.twitter.sdk.android.core.internal.util.AspectRatioImageView;
+import com.twitter.sdk.android.core.models.VideoInfo;
+import com.twitter.sdk.android.tweetui.internal.TweetMediaView;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -82,7 +83,7 @@ public abstract class BaseTweetView extends LinearLayout {
     TextView fullNameView;
     TextView screenNameView;
     ImageView verifiedCheckView;
-    AspectRatioImageView mediaPhotoView;
+    TweetMediaView mediaView;
     TextView contentView;
     TextView timestampView;
     ImageView twitterLogoView;
@@ -370,7 +371,7 @@ public abstract class BaseTweetView extends LinearLayout {
         fullNameView = (TextView) findViewById(R.id.tw__tweet_author_full_name);
         screenNameView = (TextView) findViewById(R.id.tw__tweet_author_screen_name);
         verifiedCheckView = (ImageView) findViewById(R.id.tw__tweet_author_verified);
-        mediaPhotoView = (AspectRatioImageView) findViewById(R.id.tw__tweet_media);
+        mediaView = (TweetMediaView) findViewById(R.id.tw__tweet_media);
         contentView = (TextView) findViewById(R.id.tw__tweet_text);
         timestampView = (TextView) findViewById(R.id.tw__tweet_timestamp);
         twitterLogoView = (ImageView) findViewById(R.id.tw__twitter_logo);
@@ -440,7 +441,7 @@ public abstract class BaseTweetView extends LinearLayout {
         setName(displayTweet);
         setScreenName(displayTweet);
         setTimestamp(displayTweet);
-        setTweetPhoto(displayTweet);
+        setTweetMedia(displayTweet);
         setText(displayTweet);
         setContentDescription(displayTweet);
         setTweetActions(tweet);
@@ -538,7 +539,7 @@ public abstract class BaseTweetView extends LinearLayout {
     protected void applyStyles() {
         containerView.setBackgroundColor(containerBgColor);
         avatarView.setImageDrawable(mediaBg);
-        mediaPhotoView.setImageDrawable(mediaBg);
+        mediaView.setImageDrawable(mediaBg);
         fullNameView.setTextColor(primaryTextColor);
         screenNameView.setTextColor(secondaryTextColor);
         contentView.setTextColor(primaryTextColor);
@@ -640,23 +641,46 @@ public abstract class BaseTweetView extends LinearLayout {
      * and attempts to load the image. If the load fails, the styled photo error image is set. If
      * the url is not available, sets the Tweet photo visibility to gone.
      */
-    final void setTweetPhoto(Tweet displayTweet) {
-        clearMediaBackground();
+    final void setTweetMedia(Tweet displayTweet) {
+        clearMediaView();
 
-        if (displayTweet != null && TweetMediaUtils.hasPhoto(displayTweet)) {
-            final MediaEntity photoEntity
-                    = TweetMediaUtils.getPhotoEntity(displayTweet);
+        if (displayTweet != null && TweetMediaUtils.hasVideo(displayTweet)) {
+            final MediaEntity photoEntity = TweetMediaUtils.getVideoEntity(displayTweet);
             // set the image view to visible before setting via picasso placeholders into so
             // measurements are done correctly, fixes a bug where the placeholder was a small square
             // in the corner of the view
-            mediaPhotoView.setVisibility(ImageView.VISIBLE);
-            setTweetPhoto(photoEntity);
+            mediaView.setVisibility(ImageView.VISIBLE);
+            mediaView.setOverlayDrawable(getContext().getResources()
+                    .getDrawable(R.drawable.tw__player_overlay));
+            setMediaLauncher(photoEntity);
+            setTweetMedia(photoEntity);
+        } else if (displayTweet != null && TweetMediaUtils.hasPhoto(displayTweet)) {
+            final MediaEntity photoEntity = TweetMediaUtils.getPhotoEntity(displayTweet);
+            // set the image view to visible before setting via picasso placeholders into so
+            // measurements are done correctly, fixes a bug where the placeholder was a small square
+            // in the corner of the view
+            mediaView.setVisibility(ImageView.VISIBLE);
+            setTweetMedia(photoEntity);
         } else {
-            mediaPhotoView.setVisibility(ImageView.GONE);
+            mediaView.setVisibility(ImageView.GONE);
         }
     }
 
-    void setTweetPhoto(MediaEntity photoEntity) {
+    private void setMediaLauncher(final MediaEntity entity) {
+        mediaView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final VideoInfo.Variant variant = TweetMediaUtils.getSupportedVariant(entity);
+                if (variant != null) {
+                    final Intent intent = new Intent(getContext(), PlayerActivity.class);
+                    intent.putExtra(PlayerActivity.VIDEO_URL, variant.url);
+                    IntentUtils.safeStartActivity(getContext(), intent);
+                }
+            }
+        });
+    }
+
+    void setTweetMedia(MediaEntity photoEntity) {
         final Picasso imageLoader = dependencyProvider.getImageLoader();
 
         if (imageLoader == null) return;
@@ -665,13 +689,13 @@ public abstract class BaseTweetView extends LinearLayout {
         // non-zero width or height and resizes the bitmap to the target's width and height.
         // For recycled targets, which already have a width and (stale) height, reset the size
         // target to zero so Picasso fit works correctly.
-        mediaPhotoView.resetSize();
-        mediaPhotoView.setAspectRatio(getAspectRatio(photoEntity));
+        mediaView.resetSize();
+        mediaView.setAspectRatio(getAspectRatio(photoEntity));
         imageLoader.load(photoEntity.mediaUrlHttps)
                 .placeholder(mediaBg)
                 .fit()
                 .centerCrop()
-                .into(mediaPhotoView, new PicassoCallback());
+                .into(mediaView, new PicassoCallback());
     }
 
     protected double getAspectRatio(MediaEntity photoEntity) {
@@ -684,13 +708,17 @@ public abstract class BaseTweetView extends LinearLayout {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    protected void clearMediaBackground() {
+    protected void clearMediaView() {
         // Clear out the background behind any potential error images that we had
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mediaPhotoView.setBackground(null);
+            mediaView.setBackground(null);
         } else {
-            mediaPhotoView.setBackgroundDrawable(null);
+            mediaView.setBackgroundDrawable(null);
         }
+
+        mediaView.setOverlayDrawable(null);
+        mediaView.setOnClickListener(null);
+        mediaView.setClickable(false);
     }
 
     /**
@@ -714,10 +742,10 @@ public abstract class BaseTweetView extends LinearLayout {
         if (imageLoader == null) return;
 
         imageLoader.load(photoErrorResId)
-                .into(mediaPhotoView, new com.squareup.picasso.Callback() {
+                .into(mediaView, new com.squareup.picasso.Callback() {
                     @Override
                     public void onSuccess() {
-                        mediaPhotoView.setBackgroundColor(mediaBgColor);
+                        mediaView.setBackgroundColor(mediaBgColor);
                     }
 
                     @Override
