@@ -24,6 +24,7 @@ import com.twitter.sdk.android.core.models.TweetEntities;
 import com.twitter.sdk.android.core.models.UrlEntity;
 import com.twitter.sdk.android.core.models.User;
 import com.twitter.sdk.android.core.models.UserBuilder;
+import com.twitter.sdk.android.core.models.VideoInfo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -190,5 +191,10 @@ public final class TestFixtures {
     public static MediaEntity.Sizes createMediaEntitySizes(int width, int height) {
         final MediaEntity.Size medium = new MediaEntity.Size(width, height, "fit");
         return new MediaEntity.Sizes(null, null, medium, null);
+    }
+
+    public static MediaEntity createEntityWithVideoInfo(VideoInfo videoInfo) {
+        return new MediaEntity(null, null, null, 0, 0, 0L, null, null, "video", null, 0L, null,
+                null, videoInfo);
     }
 }

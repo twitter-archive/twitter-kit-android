@@ -17,8 +17,11 @@
 
 package com.twitter.sdk.android.tweetui;
 
+import android.os.Build;
+
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.core.models.VideoInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +30,8 @@ final class TweetMediaUtils {
     private static final String PHOTO_TYPE = "photo";
     private static final String VIDEO_TYPE = "video";
     private static final String GIF_TYPE = "animated_gif";
+    private static final String CONTENT_TYPE_MP4 = "video/mp4";
+    private static final String CONTENT_TYPE_WEBM = "video/webm";
 
     private TweetMediaUtils() {
     }
@@ -95,6 +100,27 @@ final class TweetMediaUtils {
 
     static boolean isVideoType(MediaEntity mediaEntity) {
         if (VIDEO_TYPE.equals(mediaEntity.type) || GIF_TYPE.equals(mediaEntity.type)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    static VideoInfo.Variant getSupportedVariant(MediaEntity mediaEntity) {
+        for (VideoInfo.Variant variant : mediaEntity.videoInfo.variants) {
+            if (isVariantSupported(variant)) {
+                return variant;
+            }
+        }
+
+        return null;
+    }
+
+    static boolean isVariantSupported(VideoInfo.Variant variant) {
+        if (CONTENT_TYPE_MP4.equals(variant.contentType)) {
+            return true;
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
+                && CONTENT_TYPE_WEBM.equals(variant.contentType)) {
             return true;
         }
 

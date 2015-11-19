@@ -44,7 +44,7 @@ public class VideoInfo {
     @SerializedName("variants")
     public final List<Variant> variants;
 
-    VideoInfo(List<Integer> aspectRatio, long durationMillis, List<Variant> variants) {
+    public VideoInfo(List<Integer> aspectRatio, long durationMillis, List<Variant> variants) {
         this.aspectRatio = aspectRatio;
         this.durationMillis = durationMillis;
         this.variants = variants;
@@ -60,11 +60,10 @@ public class VideoInfo {
         @SerializedName("url")
         public final String url;
 
-        Variant(long bitrate, String contentType, String url) {
+        public Variant(long bitrate, String contentType, String url) {
             this.bitrate = bitrate;
             this.contentType = contentType;
             this.url = url;
         }
-
     }
 }
