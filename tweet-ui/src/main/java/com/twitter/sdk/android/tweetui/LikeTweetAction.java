@@ -34,13 +34,21 @@ import com.twitter.sdk.android.core.models.TweetBuilder;
  */
 class LikeTweetAction extends BaseTweetAction implements View.OnClickListener {
     final Tweet tweet;
-    TweetRepository tweetRepository;
-    TweetUi tweetUi;
+    final TweetRepository tweetRepository;
+    final TweetUi tweetUi;
+    final TweetScribeClient tweetScribeClient;
 
-    public LikeTweetAction(Tweet tweet, TweetUi tweetUi, Callback<Tweet> cb) {
+    LikeTweetAction(Tweet tweet, TweetUi tweetUi, Callback<Tweet> cb) {
+        this(tweet, tweetUi, cb, new TweetScribeClientImpl(tweetUi));
+    }
+
+    // For testing only
+    LikeTweetAction(Tweet tweet, TweetUi tweetUi, Callback<Tweet> cb,
+            TweetScribeClient tweetScribeClient) {
         super(cb);
         this.tweet = tweet;
         this.tweetUi = tweetUi;
+        this.tweetScribeClient = tweetScribeClient;
         this.tweetRepository = tweetUi.getTweetRepository();
     }
 
@@ -61,11 +69,11 @@ class LikeTweetAction extends BaseTweetAction implements View.OnClickListener {
     }
 
     void scribeFavoriteAction() {
-        tweetUi.scribe(ScribeConstants.getTfwEventFavoriteNamespace());
+        tweetScribeClient.favorite(tweet);
     }
 
     void scribeUnFavoriteAction() {
-        tweetUi.scribe(ScribeConstants.getTfwEventUnFavoriteNamespace());
+        tweetScribeClient.unfavorite(tweet);
     }
 
     /*

@@ -26,100 +26,15 @@ public class ScribeConstants {
 
     // tfw client event specific names
     static final String TFW_CLIENT_EVENT_PAGE = "android";
-    static final String TFW_CLIENT_EVENT_SECTION = "tweet";
-    static final String TFW_CLIENT_EVENT_ELEMENT = ""; // intentionally blank
 
-    // syndicated sdk impression specific names
-    static final String SYNDICATED_SDK_IMPRESSION_PAGE = "tweet";
-    static final String SYNDICATED_SDK_IMPRESSION_COMPONENT = "";
     static final String SYNDICATED_SDK_IMPRESSION_ELEMENT = ""; // intentionally blank
 
     // general names
-    static final String SCRIBE_CLICK_ACTION = "click";
     static final String SCRIBE_IMPRESSION_ACTION = "impression";
-    static final String SCRIBE_FAVORITE_ACTION = "favorite";
-    static final String SCRIBE_UNFAVORITE_ACTION = "unfavorite";
-    static final String SCRIBE_SHARE_ACTION = "share";
-    static final String SCRIBE_ACTIONS_ELEMENT = "actions";
     static final String SCRIBE_INITIAL_ELEMENT = "initial";
     static final String SCRIBE_TIMELINE_SECTION = "timeline";
     static final String SCRIBE_TIMELINE_PAGE = "timeline";
     static final String SCRIBE_INITIAL_COMPONENT = "initial";
-
-    static EventNamespace getTfwEventUnFavoriteNamespace() {
-        return new EventNamespace.Builder()
-                .setClient(SyndicationClientEvent.CLIENT_NAME)
-                .setPage(TFW_CLIENT_EVENT_PAGE)
-                .setSection(TFW_CLIENT_EVENT_SECTION)
-                .setElement(SCRIBE_ACTIONS_ELEMENT)
-                .setAction(SCRIBE_UNFAVORITE_ACTION)
-                .builder();
-    }
-
-    static EventNamespace getTfwEventFavoriteNamespace() {
-        return new EventNamespace.Builder()
-                .setClient(SyndicationClientEvent.CLIENT_NAME)
-                .setPage(TFW_CLIENT_EVENT_PAGE)
-                .setSection(TFW_CLIENT_EVENT_SECTION)
-                .setElement(SCRIBE_ACTIONS_ELEMENT)
-                .setAction(SCRIBE_FAVORITE_ACTION)
-                .builder();
-    }
-
-    static EventNamespace getTfwEventShareNamespace() {
-        return new EventNamespace.Builder()
-                .setClient(SyndicationClientEvent.CLIENT_NAME)
-                .setPage(TFW_CLIENT_EVENT_PAGE)
-                .setSection(TFW_CLIENT_EVENT_SECTION)
-                .setElement(SCRIBE_ACTIONS_ELEMENT)
-                .setAction(SCRIBE_SHARE_ACTION)
-                .builder();
-    }
-
-
-    static EventNamespace getTfwEventClickNamespace(String viewName) {
-        return new EventNamespace.Builder()
-                .setClient(SyndicationClientEvent.CLIENT_NAME)
-                .setPage(TFW_CLIENT_EVENT_PAGE)
-                .setSection(TFW_CLIENT_EVENT_SECTION)
-                .setComponent(viewName)
-                .setElement(TFW_CLIENT_EVENT_ELEMENT)
-                .setAction(SCRIBE_CLICK_ACTION)
-                .builder();
-    }
-
-    static EventNamespace getSyndicatedSdkClickNamespace(String viewName) {
-        return new EventNamespace.Builder()
-                .setClient(SyndicatedSdkImpressionEvent.CLIENT_NAME)
-                .setPage(SYNDICATED_SDK_IMPRESSION_PAGE)
-                .setSection(viewName)
-                .setComponent(SYNDICATED_SDK_IMPRESSION_COMPONENT)
-                .setElement(SYNDICATED_SDK_IMPRESSION_ELEMENT)
-                .setAction(SCRIBE_CLICK_ACTION)
-                .builder();
-    }
-
-    static EventNamespace getTfwEventImpressionNamespace(String viewName, boolean actionEnabled) {
-        return new EventNamespace.Builder()
-                .setClient(SyndicationClientEvent.CLIENT_NAME)
-                .setPage(TFW_CLIENT_EVENT_PAGE)
-                .setSection(TFW_CLIENT_EVENT_SECTION)
-                .setComponent(viewName)
-                .setElement(actionEnabled ? SCRIBE_ACTIONS_ELEMENT : TFW_CLIENT_EVENT_ELEMENT)
-                .setAction(SCRIBE_IMPRESSION_ACTION)
-                .builder();
-    }
-
-    static EventNamespace getSyndicatedSdkImpressionNamespace(String viewName) {
-        return new EventNamespace.Builder()
-                .setClient(SyndicatedSdkImpressionEvent.CLIENT_NAME)
-                .setPage(SYNDICATED_SDK_IMPRESSION_PAGE)
-                .setSection(viewName)
-                .setComponent(SYNDICATED_SDK_IMPRESSION_COMPONENT)
-                .setElement(SYNDICATED_SDK_IMPRESSION_ELEMENT)
-                .setAction(SCRIBE_IMPRESSION_ACTION)
-                .builder();
-    }
 
     static EventNamespace getSyndicatedSdkTimelineNamespace(String timelineType) {
         return new EventNamespace.Builder()

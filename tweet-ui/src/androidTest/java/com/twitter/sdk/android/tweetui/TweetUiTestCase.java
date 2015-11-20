@@ -27,7 +27,6 @@ import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterCoreTestUtils;
-import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
 import com.twitter.sdk.android.core.services.StatusesService;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -51,7 +50,7 @@ public class TweetUiTestCase extends FabricAndroidTestCase {
     protected TweetUiAuthRequestQueue userAuthQueue;
     protected Picasso picasso;
     private StatusesService statusesService;
-    protected DefaultScribeClient scribeClient;
+    protected TweetScribeClient scribeClient;
     protected Handler mainHandler;
     private TwitterApiClient apiClient;
     private ConcurrentHashMap<Session, TwitterApiClient> clients;
@@ -99,7 +98,7 @@ public class TweetUiTestCase extends FabricAndroidTestCase {
 
         statusesService = mock(StatusesService.class);
 
-        scribeClient = mock(DefaultScribeClient.class);
+        scribeClient = mock(TweetScribeClient.class);
 
         apiClient = mock(TwitterApiClient.class);
         MockUtils.mockStatusesServiceClient(apiClient, statusesService);

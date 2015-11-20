@@ -519,16 +519,16 @@ public abstract class BaseTweetView extends LinearLayout {
     }
 
     void scribeImpression() {
-        dependencyProvider.getTweetUi().scribe(
-                ScribeConstants
-                        .getTfwEventImpressionNamespace(getViewTypeName(), tweetActionsEnabled),
-                ScribeConstants.getSyndicatedSdkImpressionNamespace(getViewTypeName()));
+        if (tweet != null) {
+            dependencyProvider.getTweetScribeClient().impression(tweet, getViewTypeName(),
+                    tweetActionsEnabled);
+        }
     }
 
     void scribePermalinkClick() {
-        dependencyProvider.getTweetUi()
-                .scribe(ScribeConstants.getTfwEventClickNamespace(getViewTypeName()),
-                        ScribeConstants.getSyndicatedSdkClickNamespace(getViewTypeName()));
+        if (tweet != null) {
+            dependencyProvider.getTweetScribeClient().click(tweet, getViewTypeName());
+        }
     }
 
     /**
@@ -819,11 +819,20 @@ public abstract class BaseTweetView extends LinearLayout {
      * This is a mockable class that extracts our tight coupling with the TweetUi singleton.
      */
     static class DependencyProvider {
+        TweetScribeClient scribeClient;
+
         /**
          * Can be null in edit mode
          */
         TweetUi getTweetUi() {
             return TweetUi.getInstance();
+        }
+
+        TweetScribeClient getTweetScribeClient() {
+            if (scribeClient == null) {
+                scribeClient = new TweetScribeClientImpl(getTweetUi());
+            }
+            return scribeClient;
         }
 
         /**
@@ -832,10 +841,5 @@ public abstract class BaseTweetView extends LinearLayout {
         Picasso getImageLoader() {
             return TweetUi.getInstance().getImageLoader();
         }
-
-        /*
-         * TODO: Reimplement getTweetRepository, currently unable to implement because of class
-         * visibility issues with mocking on the Dalvik and ART
-         */
     }
 }

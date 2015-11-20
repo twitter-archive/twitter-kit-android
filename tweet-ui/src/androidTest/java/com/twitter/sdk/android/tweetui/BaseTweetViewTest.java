@@ -29,12 +29,8 @@ import io.fabric.sdk.android.KitStub;
 import io.fabric.sdk.android.Logger;
 
 import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.internal.scribe.ScribeEvent;
-import com.twitter.sdk.android.core.internal.scribe.SyndicatedSdkImpressionEvent;
-import com.twitter.sdk.android.core.internal.scribe.SyndicationClientEvent;
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.Tweet;
-import com.twitter.sdk.android.core.models.TweetBuilder;
 
 import org.mockito.ArgumentCaptor;
 
@@ -93,6 +89,7 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
         when(mockDependencyProvider.getImageLoader())
                 .thenReturn(TweetUi.getInstance().getImageLoader());
         when(mockDependencyProvider.getTweetUi()).thenReturn(TweetUi.getInstance());
+        when(mockDependencyProvider.getTweetScribeClient()).thenReturn(scribeClient);
     }
 
     // initialization
@@ -215,9 +212,6 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
     }
 
     // Permalink click
-
-    // TODO: test scribePermalinkClick is called, without exposing scribePermalinkClick as protected
-
     public void testSetTweet_permalink() {
         final BaseTweetView view = createView(context, null);
         view.setTweet(TestFixtures.TEST_TWEET);
@@ -419,41 +413,27 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
     }
 
     // Scribing
-
-    public void testSetTweet_scribesBothEventTypes() {
-        final BaseTweetView view = setUpScribeTest();
-        view.setTweet(TestFixtures.TEST_TWEET);
-        assertBothScribeTypes();
-    }
-
     private BaseTweetView setUpScribeTest() {
-        TweetUi.getInstance().advertisingId = ANY_ADVERTISING_ID;
-        TweetUi.getInstance().scribeClient = scribeClient;
-        final Tweet tweet = new TweetBuilder().build();
-        final BaseTweetView view = createView(context, tweet);
-        reset(scribeClient);
-        return view;
+        return createViewWithMocks(context, null, R.style.tw__TweetDarkStyle,
+                mockDependencyProvider);
     }
 
-    private void assertBothScribeTypes() {
-        final ArgumentCaptor<ScribeEvent> eventCaptor
-                = ArgumentCaptor.forClass(ScribeEvent.class);
-        verify(scribeClient, times(2)).scribe(eventCaptor.capture());
-        final SyndicationClientEvent capturedClientEvent =
-                ((SyndicationClientEvent) eventCaptor.getAllValues().get(0));
-        assertEquals(ANY_ADVERTISING_ID, capturedClientEvent.externalIds.adId);
-
-        final SyndicatedSdkImpressionEvent capturedImpression =
-                ((SyndicatedSdkImpressionEvent) eventCaptor.getAllValues().get(1));
-        assertEquals(ANY_ADVERTISING_ID, capturedImpression.externalIds.adId);
-    }
-
-    public void testScribePermalinkClick_scribesBothEventTypes() {
+    public void testScribeImpression() {
         final BaseTweetView view = setUpScribeTest();
+        view.tweet = TestFixtures.TEST_TWEET;
+
+        view.scribeImpression();
+
+        verify(scribeClient).impression(TestFixtures.TEST_TWEET, view.getViewTypeName(), false);
+    }
+
+    public void testScribePermalinkClick() {
+        final BaseTweetView view = setUpScribeTest();
+        view.tweet = TestFixtures.TEST_TWEET;
 
         view.scribePermalinkClick();
 
-        assertBothScribeTypes();
+        verify(scribeClient).click(TestFixtures.TEST_TWEET, view.getViewTypeName());
     }
 
     public void testSetErrorImage_handlesNullPicasso() {

@@ -30,7 +30,7 @@ import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
-import com.twitter.sdk.android.core.internal.scribe.ScribeEventFactory;
+import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
 import com.twitter.sdk.android.tweetui.internal.GuestSessionProvider;
 import com.twitter.sdk.android.tweetui.internal.UserSessionProvider;
 
@@ -143,18 +143,15 @@ public class TweetUi extends Kit<Boolean> {
     void scribe(EventNamespace... namespaces) {
         if (scribeClient == null) return;
 
-        final String language = getContext().getResources().getConfiguration().locale.getLanguage();
-        final long timestamp = System.currentTimeMillis();
-
-        /*
-         * The advertising ID may be null if this method is called before doInBackground completes.
-         * It also may be null depending on the users preferences and if Google Play Services has
-         * been installed on the device.
-         */
         for (EventNamespace ns : namespaces) {
-            scribeClient.scribe(ScribeEventFactory.newScribeEvent(ns, timestamp, language,
-                    advertisingId));
+            scribeClient.scribe(ns);
         }
+    }
+
+    void scribe(EventNamespace ns, List<ScribeItem> items) {
+        if (scribeClient == null) return;
+
+        scribeClient.scribe(ns, items);
     }
 
     // idempotent init

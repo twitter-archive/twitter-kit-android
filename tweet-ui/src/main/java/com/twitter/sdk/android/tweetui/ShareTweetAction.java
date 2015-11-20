@@ -30,11 +30,18 @@ import io.fabric.sdk.android.Fabric;
 class ShareTweetAction implements View.OnClickListener {
     final Tweet tweet;
     final TweetUi tweetUi;
+    final TweetScribeClient tweetScribeClient;
 
     ShareTweetAction(Tweet tweet, TweetUi tweetUi) {
+        this(tweet, tweetUi, new TweetScribeClientImpl(tweetUi));
+    }
+
+    // For testing only
+    ShareTweetAction(Tweet tweet, TweetUi tweetUi, TweetScribeClient tweetScribeClient) {
         super();
         this.tweet = tweet;
         this.tweetUi = tweetUi;
+        this.tweetScribeClient = tweetScribeClient;
     }
 
     @Override
@@ -43,7 +50,7 @@ class ShareTweetAction implements View.OnClickListener {
     }
 
     void scribeShareAction() {
-        tweetUi.scribe(ScribeConstants.getTfwEventShareNamespace());
+        tweetScribeClient.share(tweet);
     }
 
     void onClick(Context context, Resources resources) {
