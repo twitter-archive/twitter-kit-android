@@ -53,16 +53,25 @@ public class ScribeItem {
 
     /**
      * Card event.
-     * source/tree/science/src/thrift/com/twitter/clientapp/gen/client_app.thrift
+     * Optional field.
      */
     @SerializedName("card_event")
     public final CardEvent cardEvent;
 
-    private ScribeItem(Integer itemType, Long id, String description, CardEvent cardEvent) {
+    /**
+     * Media details.
+     * Optional field.
+     */
+    @SerializedName("media_details")
+    public final MediaDetails mediaDetails;
+
+    private ScribeItem(Integer itemType, Long id, String description, CardEvent cardEvent,
+            MediaDetails mediaDetails) {
         this.itemType = itemType;
         this.id = id;
         this.description = description;
         this.cardEvent = cardEvent;
+        this.mediaDetails = mediaDetails;
     }
 
     public static ScribeItem fromTweet(Tweet tweet) {
@@ -90,13 +99,18 @@ public class ScribeItem {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         final ScribeItem that = (ScribeItem) o;
+
         if (itemType != null ? !itemType.equals(that.itemType) : that.itemType != null)
             return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null)
             return false;
-        return !(cardEvent != null ? !cardEvent.equals(that.cardEvent) : that.cardEvent != null);
+        if (cardEvent != null ? !cardEvent.equals(that.cardEvent) : that.cardEvent != null)
+            return false;
+        return !(mediaDetails != null ? !mediaDetails.equals(that.mediaDetails) : that
+                .mediaDetails != null);
     }
 
     @Override
@@ -105,6 +119,7 @@ public class ScribeItem {
         result = 31 * result + (id != null ? id.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (cardEvent != null ? cardEvent.hashCode() : 0);
+        result = 31 * result + (mediaDetails != null ? mediaDetails.hashCode() : 0);
         return result;
     }
 
@@ -133,11 +148,52 @@ public class ScribeItem {
         }
     }
 
+    /**
+     * Media event.
+     */
+    public static class MediaDetails {
+        public MediaDetails(long contentId, int mediaType, long publisherId) {
+            this.contentId = contentId;
+            this.mediaType = mediaType;
+            this.publisherId = publisherId;
+        }
+
+        @SerializedName("content_id")
+        final long contentId;
+
+        @SerializedName("media_type")
+        final int mediaType;
+
+        @SerializedName("publisher_id")
+        final long publisherId;
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            final MediaDetails that = (MediaDetails) o;
+
+            if (contentId != that.contentId) return false;
+            if (mediaType != that.mediaType) return false;
+            return publisherId == that.publisherId;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = (int) (contentId ^ (contentId >>> 32));
+            result = 31 * result + mediaType;
+            result = 31 * result + (int) (publisherId ^ (publisherId >>> 32));
+            return result;
+        }
+    }
+
     public static class Builder {
         private Integer itemType;
         private Long id;
         private String description;
         private CardEvent cardEvent;
+        private MediaDetails mediaDetails;
 
         public Builder setItemType(int itemType) {
             this.itemType = itemType;
@@ -159,8 +215,13 @@ public class ScribeItem {
             return this;
         }
 
+        public Builder setMediaDetails(MediaDetails mediaDetails) {
+            this.mediaDetails = mediaDetails;
+            return this;
+        }
+
         public ScribeItem build() {
-            return new ScribeItem(itemType, id, description, cardEvent);
+            return new ScribeItem(itemType, id, description, cardEvent, mediaDetails);
         }
     }
 }

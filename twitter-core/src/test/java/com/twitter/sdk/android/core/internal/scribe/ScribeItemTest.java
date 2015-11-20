@@ -36,6 +36,8 @@ import static org.junit.Assert.assertNull;
 public class ScribeItemTest {
     static final long TEST_ID = 123;
     static final String TEST_MESSAGE = "test message";
+    static final ScribeItem.CardEvent TEST_CARD_EVENT = new ScribeItem.CardEvent(1);
+    static final ScribeItem.MediaDetails TEST_MEDIA_DETAILS = new ScribeItem.MediaDetails(1, 2, 3);
 
     @Test
     public void testFromTweet() {
@@ -72,11 +74,15 @@ public class ScribeItemTest {
                 .setId(TEST_ID)
                 .setItemType(ScribeItem.TYPE_MESSAGE)
                 .setDescription(TEST_MESSAGE)
+                .setCardEvent(TEST_CARD_EVENT)
+                .setMediaDetails(TEST_MEDIA_DETAILS)
                 .build();
 
         assertEquals(Long.valueOf(TEST_ID), item.id);
         assertEquals(Integer.valueOf(ScribeItem.TYPE_MESSAGE), item.itemType);
         assertEquals(TEST_MESSAGE, item.description);
+        assertEquals(TEST_CARD_EVENT, item.cardEvent);
+        assertEquals(TEST_MEDIA_DETAILS, item.mediaDetails);
     }
 
     @Test
@@ -86,5 +92,7 @@ public class ScribeItemTest {
         assertNull(item.id);
         assertNull(item.itemType);
         assertNull(item.description);
+        assertNull(item.cardEvent);
+        assertNull(item.mediaDetails);
     }
 }
