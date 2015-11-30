@@ -17,7 +17,7 @@
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <VideoView
+    <com.twitter.sdk.android.tweetui.internal.VideoView
         android:id="@+id/video_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

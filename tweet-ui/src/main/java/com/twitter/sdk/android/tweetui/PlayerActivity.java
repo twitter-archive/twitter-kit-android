@@ -20,7 +20,8 @@ package com.twitter.sdk.android.tweetui;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.widget.VideoView;
+
+import com.twitter.sdk.android.tweetui.internal.VideoView;
 
 public class PlayerActivity extends Activity {
     static final String VIDEO_URL = "VIDEO_URL";

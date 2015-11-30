@@ -20,7 +20,8 @@ package com.twitter.sdk.android.tweetui;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.widget.MediaController;
-import android.widget.VideoView;
+
+import com.twitter.sdk.android.tweetui.internal.VideoView;
 
 import io.fabric.sdk.android.Fabric;
 
