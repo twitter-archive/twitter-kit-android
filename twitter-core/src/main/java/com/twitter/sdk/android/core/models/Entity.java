@@ -19,6 +19,7 @@ package com.twitter.sdk.android.core.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +27,7 @@ import java.util.List;
 /**
  * Provides metadata and additional contextual information about content posted on Twitter
  */
-class Entity {
+class Entity implements Serializable {
     private static final int START_INDEX = 0;
     private static final int END_INDEX = 1;
 

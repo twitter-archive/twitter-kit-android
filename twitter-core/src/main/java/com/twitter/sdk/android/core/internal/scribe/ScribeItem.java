@@ -149,23 +149,28 @@ public class ScribeItem {
     }
 
     /**
-     * Media event.
+     * Media details.
      */
     public static class MediaDetails {
+        public static final int TYPE_CONSUMER = 1;
+        public static final int TYPE_AMPLIFY = 2;
+        public static final int TYPE_ANIMATED_GIF = 3;
+        public static final int TYPE_VINE = 4;
+
+        @SerializedName("content_id")
+        public final long contentId;
+
+        @SerializedName("media_type")
+        public final int mediaType;
+
+        @SerializedName("publisher_id")
+        public final long publisherId;
+
         public MediaDetails(long contentId, int mediaType, long publisherId) {
             this.contentId = contentId;
             this.mediaType = mediaType;
             this.publisherId = publisherId;
         }
-
-        @SerializedName("content_id")
-        final long contentId;
-
-        @SerializedName("media_type")
-        final int mediaType;
-
-        @SerializedName("publisher_id")
-        final long publisherId;
 
         @Override
         public boolean equals(Object o) {

@@ -19,12 +19,13 @@ package com.twitter.sdk.android.core.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Contains information about video.
  */
-public class VideoInfo {
+public class VideoInfo implements Serializable {
     /**
      * The aspect ratio of the video, as a simplified fraction of width and height in a 2-element
      * list. Typical values are [4, 3] or [16, 9].
@@ -50,7 +51,7 @@ public class VideoInfo {
         this.variants = variants;
     }
 
-    public static class Variant {
+    public static class Variant implements Serializable {
         @SerializedName("bitrate")
         public final long bitrate;
 

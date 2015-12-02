@@ -27,9 +27,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 final class TweetMediaUtils {
-    private static final String PHOTO_TYPE = "photo";
-    private static final String VIDEO_TYPE = "video";
-    private static final String GIF_TYPE = "animated_gif";
+    public static final String PHOTO_TYPE = "photo";
+    public static final String VIDEO_TYPE = "video";
+    public static final String GIF_TYPE = "animated_gif";
     private static final String CONTENT_TYPE_MP4 = "video/mp4";
     private static final String CONTENT_TYPE_WEBM = "video/webm";
 

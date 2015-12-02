@@ -645,35 +645,36 @@ public abstract class BaseTweetView extends LinearLayout {
         clearMediaView();
 
         if (displayTweet != null && TweetMediaUtils.hasVideo(displayTweet)) {
-            final MediaEntity photoEntity = TweetMediaUtils.getVideoEntity(displayTweet);
+            final MediaEntity mediaEntity = TweetMediaUtils.getVideoEntity(displayTweet);
             // set the image view to visible before setting via picasso placeholders into so
             // measurements are done correctly, fixes a bug where the placeholder was a small square
             // in the corner of the view
             mediaView.setVisibility(ImageView.VISIBLE);
             mediaView.setOverlayDrawable(getContext().getResources()
                     .getDrawable(R.drawable.tw__player_overlay));
-            setMediaLauncher(photoEntity);
-            setTweetMedia(photoEntity);
+            setMediaLauncher(displayTweet, mediaEntity);
+            setTweetMedia(mediaEntity);
         } else if (displayTweet != null && TweetMediaUtils.hasPhoto(displayTweet)) {
-            final MediaEntity photoEntity = TweetMediaUtils.getPhotoEntity(displayTweet);
+            final MediaEntity mediaEntity = TweetMediaUtils.getPhotoEntity(displayTweet);
             // set the image view to visible before setting via picasso placeholders into so
             // measurements are done correctly, fixes a bug where the placeholder was a small square
             // in the corner of the view
             mediaView.setVisibility(ImageView.VISIBLE);
-            setTweetMedia(photoEntity);
+            setTweetMedia(mediaEntity);
         } else {
             mediaView.setVisibility(ImageView.GONE);
         }
     }
 
-    private void setMediaLauncher(final MediaEntity entity) {
+    private void setMediaLauncher(final Tweet displayTweet, final MediaEntity entity) {
         mediaView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 final VideoInfo.Variant variant = TweetMediaUtils.getSupportedVariant(entity);
                 if (variant != null) {
                     final Intent intent = new Intent(getContext(), PlayerActivity.class);
-                    intent.putExtra(PlayerActivity.VIDEO_URL, variant.url);
+                    intent.putExtra(PlayerActivity.MEDIA_ENTITY, entity);
+                    intent.putExtra(PlayerActivity.TWEET_ID, displayTweet.id);
                     IntentUtils.safeStartActivity(getContext(), intent);
                 }
             }

@@ -19,6 +19,8 @@ package com.twitter.sdk.android.core.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Represents media elements uploaded with the Tweet.
  */
@@ -117,7 +119,7 @@ public class MediaEntity extends UrlEntity {
         this.videoInfo = videoInfo;
     }
 
-    public static class Sizes {
+    public static class Sizes implements Serializable {
         /**
          * Information for a medium-sized version of the media.
          */
@@ -150,7 +152,7 @@ public class MediaEntity extends UrlEntity {
         }
     }
 
-    public static class Size {
+    public static class Size implements Serializable {
         /**
          * Width in pixels of this size.
          */

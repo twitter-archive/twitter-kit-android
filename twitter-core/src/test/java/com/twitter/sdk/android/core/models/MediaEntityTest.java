@@ -30,12 +30,16 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.NotSerializableException;
+import java.io.ObjectOutputStream;
 
 import io.fabric.sdk.android.services.common.CommonUtils;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
@@ -107,6 +111,22 @@ public class MediaEntityTest  {
             assertEquals(TEST_TOTAL_VARIANTS, entity.videoInfo.variants.size());
             assertVariantEquals(TEST_VARIANT_0, entity.videoInfo.variants.get(0));
             assertVariantEquals(TEST_VARIANT_1, entity.videoInfo.variants.get(1));
+        } finally {
+            CommonUtils.closeQuietly(reader);
+        }
+    }
+
+    @Test
+    public void testSerializable() throws Exception {
+        JsonReader reader = null;
+        try {
+            reader = new JsonReader(new InputStreamReader(testResources
+                    .getAsStream("model_media_entity.json")));
+            final MediaEntity entity = gson.fromJson(reader, MediaEntity.class);
+
+            new ObjectOutputStream(new ByteArrayOutputStream()).writeObject(entity);
+        } catch (NotSerializableException ex) {
+            fail("MediaEntity should implement Serializable");
         } finally {
             CommonUtils.closeQuietly(reader);
         }

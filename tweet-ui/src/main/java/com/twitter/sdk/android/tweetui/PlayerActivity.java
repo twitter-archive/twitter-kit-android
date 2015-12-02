@@ -22,9 +22,11 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.twitter.sdk.android.tweetui.internal.VideoView;
+import com.twitter.sdk.android.core.models.MediaEntity;
 
 public class PlayerActivity extends Activity {
-    static final String VIDEO_URL = "VIDEO_URL";
+    static final String MEDIA_ENTITY = "MEDIA_ENTITY";
+    static final String TWEET_ID = "TWEET_ID";
     PlayerController playerController;
 
     @Override
@@ -33,9 +35,14 @@ public class PlayerActivity extends Activity {
         setContentView(R.layout.tw__player_activity);
 
         final VideoView videoView = (VideoView) findViewById(R.id.video_view);
-        final String url = getIntent().getStringExtra(VIDEO_URL);
-        final Uri uri = Uri.parse(url);
+        final long tweetId = getIntent().getLongExtra(TWEET_ID, 0);
+        final MediaEntity entity = (MediaEntity) getIntent().getSerializableExtra(MEDIA_ENTITY);
 
+        final PlayerScribeClient scribeClient = new PlayerScribeClientImpl(TweetUi.getInstance());
+        scribeClient.impression(tweetId, entity);
+
+        final String url = TweetMediaUtils.getSupportedVariant(entity).url;
+        final Uri uri = Uri.parse(url);
         playerController = new PlayerController(videoView);
         playerController.prepare(uri);
     }
