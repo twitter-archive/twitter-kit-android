@@ -18,6 +18,8 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__like_tweet">Вподобати твіт</string>
+    <string name="tw__liked_tweet">Скасувати вподобання</string>
     <string name="tw__loading_tweet">Завантаження твіта</string>
     <string name="tw__retweeted_by_format">Ретвітнуто користувачем(кою) %1$s</string>
     <string name="tw__share_content_format">Перегляньте твіт користувача(ки) \@%1$s: https://twitter.com/%1$s/status/%2$s</string>

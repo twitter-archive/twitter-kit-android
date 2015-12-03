@@ -18,6 +18,8 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__like_tweet">喜欢推文</string>
+    <string name="tw__liked_tweet">取消喜欢</string>
     <string name="tw__loading_tweet">加载推文</string>
     <string name="tw__retweeted_by_format">由 %1$s 转推</string>
     <string name="tw__share_content_format">看看 \@%1$s 的推文：https://twitter.com/%1$s/status/%2$s</string>

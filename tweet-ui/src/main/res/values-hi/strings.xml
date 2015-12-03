@@ -18,6 +18,8 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__like_tweet">ट्वीट पसंद करें</string>
+    <string name="tw__liked_tweet">पसंद पूर्ववत करें</string>
     <string name="tw__loading_tweet">ट्वीट लोड हो रहे हैं</string>
     <string name="tw__retweeted_by_format">%1$s द्वारा रीट्विट</string>
     <string name="tw__share_content_format">\@%1$s के ट्वीट पर नजर डालें: https://twitter.com/%1$s/status/%2$s</string>

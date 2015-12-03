@@ -18,6 +18,8 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__like_tweet">Lajknout Tweet</string>
+    <string name="tw__liked_tweet">Vzít lajk zpět</string>
     <string name="tw__loading_tweet">Načítání tweetu</string>
     <string name="tw__retweeted_by_format">Retweetnul uživatel %1$s</string>
     <string name="tw__share_content_format">Podívejte se na tweet uživatele \@%1$s: https://twitter.com/%1$s/status/%2$s</string>

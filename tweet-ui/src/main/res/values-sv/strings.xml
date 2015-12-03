@@ -19,6 +19,7 @@
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="tw__like_tweet">Gilla Tweet</string>
+    <string name="tw__liked_tweet">Ångra gillamarkeringen</string>
     <string name="tw__loading_tweet">Läser in tweeten</string>
     <string name="tw__retweeted_by_format">Retweetad av %1$s</string>
     <string name="tw__share_content_format">Kolla in \@%1$ss tweet: https://twitter.com/%1$s/status/%2$s</string>

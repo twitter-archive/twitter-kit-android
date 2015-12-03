@@ -18,6 +18,8 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__like_tweet">Curtir Tweet</string>
+    <string name="tw__liked_tweet">Descurtir</string>
     <string name="tw__loading_tweet">Carregando Tweet</string>
     <string name="tw__retweeted_by_format">Retweetado por %1$s</string>
     <string name="tw__share_content_format">Confira o Tweet de \@%1$s: https://twitter.com/%1$s/status/%2$s</string>
