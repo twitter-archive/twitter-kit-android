@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+## v1.0.2
+
 ## v1.0.1
 
 * Renamed drawables to avoid name collisions.

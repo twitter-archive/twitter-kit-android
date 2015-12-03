@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+## v1.8.0
+
+* Added support for video and animated gif playback.
+
 ## v1.7.0
 
 * Added heart animations on Android API 21+
