@@ -304,7 +304,7 @@ public abstract class BaseTweetView extends LinearLayout {
 
     /**
      * Inflate the TweetView using the layout that has been set.
-     * @param context
+     * @param context The Context the view is running in.
      */
     private void inflateView(Context context) {
         final LayoutInflater localInflater = LayoutInflater.from(context);
@@ -377,7 +377,7 @@ public abstract class BaseTweetView extends LinearLayout {
         twitterLogoView = (ImageView) findViewById(R.id.tw__twitter_logo);
         retweetedByView = (TextView) findViewById(R.id.tw__tweet_retweeted_by);
         tweetActionBarView = (TweetActionBarView) findViewById(R.id.tw__tweet_action_bar);
-        bottomSeparator = (View) findViewById(R.id.bottom_separator);
+        bottomSeparator = findViewById(R.id.bottom_separator);
     }
 
     /*
@@ -660,6 +660,7 @@ public abstract class BaseTweetView extends LinearLayout {
             // measurements are done correctly, fixes a bug where the placeholder was a small square
             // in the corner of the view
             mediaView.setVisibility(ImageView.VISIBLE);
+            setPhotoLauncher(displayTweet, mediaEntity);
             setTweetMedia(mediaEntity);
         } else {
             mediaView.setVisibility(ImageView.GONE);
@@ -677,6 +678,18 @@ public abstract class BaseTweetView extends LinearLayout {
                     intent.putExtra(PlayerActivity.TWEET_ID, displayTweet.id);
                     IntentUtils.safeStartActivity(getContext(), intent);
                 }
+            }
+        });
+    }
+
+    private void setPhotoLauncher(final Tweet displayTweet, final MediaEntity entity) {
+        mediaView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Intent intent = new Intent(getContext(), GalleryActivity.class);
+                intent.putExtra(GalleryActivity.MEDIA_ENTITY, entity);
+                intent.putExtra(GalleryActivity.TWEET_ID, displayTweet.id);
+                IntentUtils.safeStartActivity(getContext(), intent);
             }
         });
     }

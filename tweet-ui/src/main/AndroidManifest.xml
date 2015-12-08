@@ -25,7 +25,10 @@
         <activity
             android:name=".PlayerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@style/PlayerTheme"/>
+            android:theme="@style/MediaTheme"/>
+        <activity
+            android:name=".GalleryActivity"
+            android:theme="@style/MediaTheme"/>
     </application>
 
 </manifest>

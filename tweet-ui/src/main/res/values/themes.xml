@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <style name="PlayerTheme" parent="@android:style/Theme" >
+    <style name="MediaTheme" parent="@android:style/Theme" >
         <item name="android:windowBackground">@android:color/black</item>
     </style>
 </resources>

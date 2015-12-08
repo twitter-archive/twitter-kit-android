@@ -17,7 +17,7 @@
 
 <resources>
 
-    <style name="PlayerTheme" parent="@android:style/Theme.Holo">
+    <style name="MediaTheme" parent="@android:style/Theme.Holo">
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/black</item>
