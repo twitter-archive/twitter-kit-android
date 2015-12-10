@@ -140,7 +140,6 @@ public class TwitterCore extends Kit<Boolean> {
         appSessionManager.getActiveSession();
         getSSLSocketFactory();
         initializeScribeClient();
-        sessionMonitor.triggerVerificationIfNecessary();
         // Monitor activity lifecycle after sessions have been restored. Otherwise we would not
         // have any sessions to monitor anyways.
         sessionMonitor.monitorActivityLifecycle(getFabric().getActivityLifecycleManager());
