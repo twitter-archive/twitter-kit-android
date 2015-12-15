@@ -27,4 +27,7 @@
     <color name="tw__tweet_dark_primary_text_color">#e1ffffff</color>
 
     <color name="tw__tweet_media_preview_bg_color">#e5e5e5</color>
+
+    <color name="tw__seekbar_thumb_outer_color">#4dffffff</color>
+    <color name="tw__seekbar_thumb_inner_color">#ffffffff</color>
 </resources>

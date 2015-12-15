@@ -21,4 +21,6 @@
     <!--These strings are in here because we pull translations manually from twitter-cldr-->
     <string name="tw__relative_date_format_short">MMM dd</string>
     <string name="tw__relative_date_format_long">MM/dd/yy</string>
+    <string name="tw__time_format_short">%1$d:%2$02d</string>
+    <string name="tw__time_format_long">%1$d:%2$02d:%3$02d</string>
 </resources>

@@ -113,4 +113,10 @@
     <dimen name="tw__login_btn_left_padding">8dp</dimen>
     <dimen name="tw__login_btn_right_padding">12dp</dimen>
 
+    <dimen name="tw__seekbar_thumb_size">32dp</dimen>
+    <dimen name="tw__seekbar_thumb_outer_padding">7dp</dimen>
+    <dimen name="tw__seekbar_thumb_inner_padding">13dp</dimen>
+    <dimen name="tw__video_control_height">32dp</dimen>
+    <dimen name="tw__video_control_text_size">13sp</dimen>
+
 </resources>

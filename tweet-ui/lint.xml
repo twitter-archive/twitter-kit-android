@@ -37,4 +37,7 @@
         <ignore path="src/main/res/drawable-hdpi/tw__heart_animation_detail_60fps*"/>
         <ignore path="src/main/res/drawable-xxhdpi/tw__heart_animation_detail_60fps*"/>
     </issue>
+    <issue id="HandlerLeak" severity="ignore">
+        <ignore path="src/main/java/com/twitter/sdk/android/tweetui/internal/VideoControlView.java"/>
+    </issue>
 </lint>

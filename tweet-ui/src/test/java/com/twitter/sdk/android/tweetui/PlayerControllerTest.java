@@ -23,6 +23,7 @@ import android.view.View;
 
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.VideoInfo;
+import com.twitter.sdk.android.tweetui.internal.VideoControlView;
 import com.twitter.sdk.android.tweetui.internal.VideoView;
 
 import org.junit.Before;
@@ -48,6 +49,8 @@ public class PlayerControllerTest {
     private static final String TEST_CONTENT_URL = "https://example.com";
     @Mock
     VideoView videoView;
+    @Mock
+    VideoControlView videoControlView;
     @Captor
     private ArgumentCaptor<View.OnClickListener> clickListenerCaptor;
     @Captor
@@ -66,7 +69,8 @@ public class PlayerControllerTest {
         final VideoInfo videoInfo = TestFixtures.createVideoInfoWithVariant(variant);
         final MediaEntity entity = TestFixtures.createEntityWithVideoInfo(videoInfo);
 
-        final PlayerController playerController = spy(new PlayerController(videoView));
+        final PlayerController playerController =
+                spy(new PlayerController(videoView, videoControlView));
         doNothing().when(playerController).setUpMediaControl();
         playerController.prepare(entity);
 
@@ -83,14 +87,16 @@ public class PlayerControllerTest {
 
     @Test
     public void testPrepare_withNullEntity() {
-        final PlayerController playerController = spy(new PlayerController(videoView));
+        final PlayerController playerController =
+                spy(new PlayerController(videoView, videoControlView));
         doNothing().when(playerController).setUpMediaControl();
         playerController.prepare(null);
     }
 
     @Test
     public void testSetUpMediaControl_withLooping() {
-        final PlayerController playerController = spy(new PlayerController(videoView));
+        final PlayerController playerController =
+                spy(new PlayerController(videoView, videoControlView));
         playerController.setUpMediaControl(true);
 
         verify(playerController).setUpLoopControl();
@@ -98,7 +104,8 @@ public class PlayerControllerTest {
 
     @Test
     public void testSetUpMediaControl_withOutLooping() {
-        final PlayerController playerController = spy(new PlayerController(videoView));
+        final PlayerController playerController =
+                spy(new PlayerController(videoView, videoControlView));
         doNothing().when(playerController).setUpMediaControl();
         playerController.setUpMediaControl(false);
 
@@ -107,7 +114,7 @@ public class PlayerControllerTest {
 
     @Test
     public void testSetUpLoopControl() {
-        final PlayerController playerController = new PlayerController(videoView);
+        final PlayerController playerController = new PlayerController(videoView, videoControlView);
         playerController.setUpLoopControl();
 
         verify(videoView).setOnClickListener(clickListenerCaptor.capture());
@@ -124,7 +131,7 @@ public class PlayerControllerTest {
 
     @Test
     public void testCleanup() {
-        final PlayerController playerController = new PlayerController(videoView);
+        final PlayerController playerController = new PlayerController(videoView, videoControlView);
         playerController.cleanup();
 
         verify(videoView).stopPlayback();

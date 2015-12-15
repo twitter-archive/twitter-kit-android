@@ -20,9 +20,9 @@ package com.twitter.sdk.android.tweetui;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.view.View;
-import android.widget.MediaController;
 
 import com.twitter.sdk.android.core.models.MediaEntity;
+import com.twitter.sdk.android.tweetui.internal.VideoControlView;
 import com.twitter.sdk.android.tweetui.internal.VideoView;
 
 import io.fabric.sdk.android.Fabric;
@@ -30,9 +30,11 @@ import io.fabric.sdk.android.Fabric;
 class PlayerController {
     private static final String TAG = "PlayerController";
     final VideoView videoView;
+    final VideoControlView videoControlView;
 
-    PlayerController(VideoView videoView) {
+    PlayerController(VideoView videoView, VideoControlView videoControlView) {
         this.videoView = videoView;
+        this.videoControlView = videoControlView;
     }
 
     void prepare(MediaEntity entity) {
@@ -63,6 +65,7 @@ class PlayerController {
     }
 
     void setUpLoopControl() {
+        videoControlView.setVisibility(View.INVISIBLE);
         videoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,9 +79,7 @@ class PlayerController {
     }
 
     void setUpMediaControl() {
-        final MediaController mediaController = new MediaController(videoView.getContext());
-        mediaController.setAnchorView(videoView);
-        videoView.setMediaController(mediaController);
+        videoView.setMediaController(videoControlView);
     }
 
     void cleanup() {

@@ -20,6 +20,7 @@ package com.twitter.sdk.android.tweetui;
 import android.app.Activity;
 import android.os.Bundle;
 
+import com.twitter.sdk.android.tweetui.internal.VideoControlView;
 import com.twitter.sdk.android.tweetui.internal.VideoView;
 import com.twitter.sdk.android.core.models.MediaEntity;
 
@@ -34,13 +35,15 @@ public class PlayerActivity extends Activity {
         setContentView(R.layout.tw__player_activity);
 
         final VideoView videoView = (VideoView) findViewById(R.id.video_view);
+        final VideoControlView videoControlView =
+                (VideoControlView) findViewById(R.id.video_control_view);
         final long tweetId = getIntent().getLongExtra(TWEET_ID, 0);
         final MediaEntity entity = (MediaEntity) getIntent().getSerializableExtra(MEDIA_ENTITY);
 
         final PlayerScribeClient scribeClient = new PlayerScribeClientImpl(TweetUi.getInstance());
         scribeClient.impression(tweetId, entity);
 
-        playerController = new PlayerController(videoView);
+        playerController = new PlayerController(videoView, videoControlView);
         playerController.prepare(entity);
     }
 

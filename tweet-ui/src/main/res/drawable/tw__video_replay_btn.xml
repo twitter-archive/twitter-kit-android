@@ -15,17 +15,8 @@
   ~
   -->
 
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <com.twitter.sdk.android.tweetui.internal.VideoView
-        android:id="@+id/video_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"/>
-
-    <com.twitter.sdk.android.tweetui.internal.VideoControlView
-        android:id="@+id/video_control_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"/>
-</merge>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true"
+          android:drawable="@drawable/tw__ic_video_replay_pressed"/>
+    <item android:drawable="@drawable/tw__ic_video_replay"/>
+</selector>

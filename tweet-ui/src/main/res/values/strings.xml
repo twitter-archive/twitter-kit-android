@@ -31,4 +31,9 @@
     <string name="tw__share_subject_format">Tweet from %1$s (@%2$s)</string>
     <string name="tw__share_content_format">Check out @%1$s\'s Tweet: https://twitter.com/%1$s/status/%2$s</string>
 
+    <!--Video player accessibility strings-->
+    <string name="tw__play">play</string>
+    <string name="tw__pause">pause</string>
+    <string name="tw__replay">replay</string>
+
 </resources>
