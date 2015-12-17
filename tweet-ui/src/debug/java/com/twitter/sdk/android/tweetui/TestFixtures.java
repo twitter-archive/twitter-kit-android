@@ -197,4 +197,8 @@ public final class TestFixtures {
         return new MediaEntity(null, null, null, 0, 0, 0L, null, null, "video", null, 0L, null,
                 null, videoInfo);
     }
+
+    public static VideoInfo createVideoInfoWithVariant(VideoInfo.Variant variant) {
+        return new VideoInfo(null, 0, Arrays.asList(variant));
+    }
 }

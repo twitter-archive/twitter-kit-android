@@ -18,7 +18,6 @@
 package com.twitter.sdk.android.tweetui;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 
 import com.twitter.sdk.android.tweetui.internal.VideoView;
@@ -41,10 +40,8 @@ public class PlayerActivity extends Activity {
         final PlayerScribeClient scribeClient = new PlayerScribeClientImpl(TweetUi.getInstance());
         scribeClient.impression(tweetId, entity);
 
-        final String url = TweetMediaUtils.getSupportedVariant(entity).url;
-        final Uri uri = Uri.parse(url);
         playerController = new PlayerController(videoView);
-        playerController.prepare(uri);
+        playerController.prepare(entity);
     }
 
     @Override

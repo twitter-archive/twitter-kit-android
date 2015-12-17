@@ -29,7 +29,6 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -253,8 +252,8 @@ public class TweetMediaUtilsTest {
     @Test
     public void testGetSupportedVariant() {
         final VideoInfo.Variant variant = new VideoInfo.Variant(0, TEST_CONTENT_TYPE_MP4, null);
-        final MediaEntity entity =
-                TestFixtures.createEntityWithVideoInfo(createVideoInfoWithVariant(variant));
+        final VideoInfo videoInfo = TestFixtures.createVideoInfoWithVariant(variant);
+        final MediaEntity entity = TestFixtures.createEntityWithVideoInfo(videoInfo);
 
         assertNotNull(TweetMediaUtils.getSupportedVariant(entity));
         assertEquals(variant, TweetMediaUtils.getSupportedVariant(entity));
@@ -263,8 +262,8 @@ public class TweetMediaUtilsTest {
     @Test
     public void testGetSupportedVariant_unsupportedContentType() {
         final VideoInfo.Variant variant = new VideoInfo.Variant(0, TEST_CONTENT_TYPE_DASH, null);
-        final MediaEntity entity =
-                TestFixtures.createEntityWithVideoInfo(createVideoInfoWithVariant(variant));
+        final VideoInfo videoInfo = TestFixtures.createVideoInfoWithVariant(variant);
+        final MediaEntity entity = TestFixtures.createEntityWithVideoInfo(videoInfo);
 
         assertNull(TweetMediaUtils.getSupportedVariant(entity));
     }
@@ -287,9 +286,17 @@ public class TweetMediaUtilsTest {
         assertFalse(TweetMediaUtils.isVariantSupported(variant));
     }
 
-    private VideoInfo createVideoInfoWithVariant(VideoInfo.Variant variant) {
-        final List<VideoInfo.Variant> variants = new ArrayList<>(1);
-        variants.add(variant);
-        return new VideoInfo(null, 0, variants);
+    @Test
+    public void testIsLooping_withVideo() {
+        final MediaEntity entity = TestFixtures.newMediaEntity(TEST_INDICES_START, TEST_INDICES_END,
+                TEST_MEDIA_TYPE_VIDEO);
+        assertFalse(TweetMediaUtils.isLooping(entity));
+    }
+
+    @Test
+    public void testIsLooping_withAnimatedGif() {
+        final MediaEntity entity = TestFixtures.newMediaEntity(TEST_INDICES_START, TEST_INDICES_END,
+                TEST_MEDIA_TYPE_ANIMATED_GIF);
+        assertTrue(TweetMediaUtils.isLooping(entity));
     }
 }

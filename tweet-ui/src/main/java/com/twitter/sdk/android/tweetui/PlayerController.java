@@ -19,8 +19,10 @@ package com.twitter.sdk.android.tweetui;
 
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.view.View;
 import android.widget.MediaController;
 
+import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.tweetui.internal.VideoView;
 
 import io.fabric.sdk.android.Fabric;
@@ -33,24 +35,50 @@ class PlayerController {
         this.videoView = videoView;
     }
 
-    void prepare(Uri uri) {
+    void prepare(MediaEntity entity) {
         try {
-            final MediaController mediaController = new MediaController(videoView.getContext());
-            mediaController.setAnchorView(videoView);
+            final boolean looping = TweetMediaUtils.isLooping(entity);
+            final String url = TweetMediaUtils.getSupportedVariant(entity).url;
+            final Uri uri = Uri.parse(url);
 
-            videoView.setMediaController(mediaController);
-            videoView.setVideoURI(uri);
-
+            setUpMediaControl(looping);
+            videoView.setVideoURI(uri, looping);
+            videoView.requestFocus();
+            videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                public void onPrepared(MediaPlayer mediaPlayer) {
+                    videoView.start();
+                }
+            });
         } catch (Exception e) {
             Fabric.getLogger().e(TAG, "Error occurred during video playback", e);
         }
+    }
 
-        videoView.requestFocus();
-        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            public void onPrepared(MediaPlayer mediaPlayer) {
-                videoView.start();
+    void setUpMediaControl(boolean looping) {
+        if (looping) {
+            setUpLoopControl();
+        } else {
+            setUpMediaControl();
+        }
+    }
+
+    void setUpLoopControl() {
+        videoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (videoView.isPlaying()) {
+                    videoView.pause();
+                } else {
+                    videoView.start();
+                }
             }
         });
+    }
+
+    void setUpMediaControl() {
+        final MediaController mediaController = new MediaController(videoView.getContext());
+        mediaController.setAnchorView(videoView);
+        videoView.setMediaController(mediaController);
     }
 
     void cleanup() {

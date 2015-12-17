@@ -116,6 +116,14 @@ final class TweetMediaUtils {
         return null;
     }
 
+    static boolean isLooping(MediaEntity mediaEntity) {
+        if (GIF_TYPE.equals(mediaEntity.type)) {
+            return true;
+        }
+
+        return false;
+    }
+
     static boolean isVariantSupported(VideoInfo.Variant variant) {
         if (CONTENT_TYPE_MP4.equals(variant.contentType)) {
             return true;

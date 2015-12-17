@@ -95,6 +95,7 @@ public class VideoView extends SurfaceView
     private boolean mCanPause;
     private boolean mCanSeekBack;
     private boolean mCanSeekForward;
+    private boolean mLooping;
 
     public VideoView(Context context) {
         super(context);
@@ -191,8 +192,9 @@ public class VideoView extends SurfaceView
      *
      * @param uri the URI of the video.
      */
-    public void setVideoURI(Uri uri) {
+    public void setVideoURI(Uri uri, boolean looping) {
         mUri = uri;
+        mLooping = looping;
         mSeekWhenPrepared = 0;
         openVideo();
         requestLayout();
@@ -233,6 +235,7 @@ public class VideoView extends SurfaceView
             mCurrentBufferPercentage = 0;
             mMediaPlayer.setDataSource(getContext(), mUri);
             mMediaPlayer.setDisplay(mSurfaceHolder);
+            mMediaPlayer.setLooping(mLooping);
             mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mMediaPlayer.setScreenOnWhilePlaying(true);
             mMediaPlayer.prepareAsync();
@@ -471,7 +474,7 @@ public class VideoView extends SurfaceView
         if (isInPlaybackState() && mMediaController != null) {
             toggleMediaControlsVisiblity();
         }
-        return false;
+        return super.onTouchEvent(ev);
     }
 
     @Override
@@ -479,7 +482,7 @@ public class VideoView extends SurfaceView
         if (isInPlaybackState() && mMediaController != null) {
             toggleMediaControlsVisiblity();
         }
-        return false;
+        return super.onTrackballEvent(ev);
     }
 
     @Override
