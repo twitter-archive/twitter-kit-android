@@ -40,8 +40,8 @@ public class PlayerActivity extends Activity {
         final long tweetId = getIntent().getLongExtra(TWEET_ID, 0);
         final MediaEntity entity = (MediaEntity) getIntent().getSerializableExtra(MEDIA_ENTITY);
 
-        final PlayerScribeClient scribeClient = new PlayerScribeClientImpl(TweetUi.getInstance());
-        scribeClient.impression(tweetId, entity);
+        final VideoScribeClient scribeClient = new VideoScribeClientImpl(TweetUi.getInstance());
+        scribeClient.play(tweetId, entity);
 
         playerController = new PlayerController(videoView, videoControlView);
         playerController.prepare(entity);

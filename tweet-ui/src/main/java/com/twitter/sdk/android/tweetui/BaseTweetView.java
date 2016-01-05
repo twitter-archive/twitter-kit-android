@@ -654,6 +654,8 @@ public abstract class BaseTweetView extends LinearLayout {
                     .getDrawable(R.drawable.tw__player_overlay));
             setMediaLauncher(displayTweet, mediaEntity);
             setTweetMedia(mediaEntity);
+
+            dependencyProvider.getVideoScribeClient().impression(displayTweet.id, mediaEntity);
         } else if (displayTweet != null && TweetMediaUtils.hasPhoto(displayTweet)) {
             final MediaEntity mediaEntity = TweetMediaUtils.getPhotoEntity(displayTweet);
             // set the image view to visible before setting via picasso placeholders into so
@@ -861,7 +863,8 @@ public abstract class BaseTweetView extends LinearLayout {
      * This is a mockable class that extracts our tight coupling with the TweetUi singleton.
      */
     static class DependencyProvider {
-        TweetScribeClient scribeClient;
+        TweetScribeClient tweetScribeClient;
+        VideoScribeClient videoScribeClient;
 
         /**
          * Can be null in edit mode
@@ -871,10 +874,17 @@ public abstract class BaseTweetView extends LinearLayout {
         }
 
         TweetScribeClient getTweetScribeClient() {
-            if (scribeClient == null) {
-                scribeClient = new TweetScribeClientImpl(getTweetUi());
+            if (tweetScribeClient == null) {
+                tweetScribeClient = new TweetScribeClientImpl(getTweetUi());
             }
-            return scribeClient;
+            return tweetScribeClient;
+        }
+
+        VideoScribeClient getVideoScribeClient() {
+            if (videoScribeClient == null) {
+                videoScribeClient = new VideoScribeClientImpl(getTweetUi());
+            }
+            return videoScribeClient;
         }
 
         /**

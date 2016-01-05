@@ -36,7 +36,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.verify;
 
-public class PlayerScribeClientImplTest {
+public class VideoScribeClientImplTest {
     static final long TEST_MEDIA_ID = 123456789L;
     static final String TEST_TYPE_CONSUMER = "video";
     static final int TEST_TYPE_CONSUMER_ID = 1;
@@ -45,8 +45,9 @@ public class PlayerScribeClientImplTest {
     static final String TEST_TFW_CLIENT_EVENT_PAGE = "android";
     static final String TEST_TFW_CLIENT_EVENT_SECTION = "video";
     static final String TEST_SCRIBE_IMPRESSION_ACTION = "impression";
+    static final String TEST_SCRIBE_PLAY_ACTION = "play";
 
-    private PlayerScribeClientImpl scribeClient;
+    private VideoScribeClientImpl scribeClient;
     @Mock
     private TweetUi tweetUi;
     @Captor
@@ -58,7 +59,7 @@ public class PlayerScribeClientImplTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        scribeClient = new PlayerScribeClientImpl(tweetUi);
+        scribeClient = new VideoScribeClientImpl(tweetUi);
     }
 
     @Test
@@ -69,12 +70,23 @@ public class PlayerScribeClientImplTest {
         verify(tweetUi).scribe(namespaceArgumentCaptor.capture(), itemsArgumentCaptor.capture());
 
         final EventNamespace ns = namespaceArgumentCaptor.getValue();
-        assertEquals(SyndicationClientEvent.CLIENT_NAME, ns.client);
-        assertEquals(TEST_TFW_CLIENT_EVENT_PAGE, ns.page);
-        assertEquals(TEST_TFW_CLIENT_EVENT_SECTION, ns.section);
-        assertNull(ns.element);
-        assertNull(ns.component);
+        assertBaseNamespace(ns);
         assertEquals(TEST_SCRIBE_IMPRESSION_ACTION, ns.action);
+
+        final List<ScribeItem> items = itemsArgumentCaptor.getValue();
+        assertItems(items);
+    }
+
+    @Test
+    public void testPlay() {
+        scribeClient.play(TestFixtures.TEST_TWEET_ID,
+                createTestEntity(TEST_TYPE_ANIMATED_GIF));
+
+        verify(tweetUi).scribe(namespaceArgumentCaptor.capture(), itemsArgumentCaptor.capture());
+
+        final EventNamespace ns = namespaceArgumentCaptor.getValue();
+        assertBaseNamespace(ns);
+        assertEquals(TEST_SCRIBE_PLAY_ACTION, ns.action);
 
         final List<ScribeItem> items = itemsArgumentCaptor.getValue();
         assertItems(items);
@@ -110,6 +122,14 @@ public class PlayerScribeClientImplTest {
         assertEquals(TestFixtures.TEST_TWEET_ID, mediaDetails.contentId);
         assertEquals(type, mediaDetails.mediaType);
         assertEquals(TEST_MEDIA_ID, mediaDetails.publisherId);
+    }
+
+    static void assertBaseNamespace(EventNamespace ns) {
+        assertEquals(SyndicationClientEvent.CLIENT_NAME, ns.client);
+        assertEquals(TEST_TFW_CLIENT_EVENT_PAGE, ns.page);
+        assertEquals(TEST_TFW_CLIENT_EVENT_SECTION, ns.section);
+        assertNull(ns.element);
+        assertNull(ns.component);
     }
 
     private MediaEntity createTestEntity(String type) {

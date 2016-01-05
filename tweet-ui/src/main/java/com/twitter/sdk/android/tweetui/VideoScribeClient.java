@@ -19,6 +19,8 @@ package com.twitter.sdk.android.tweetui;
 
 import com.twitter.sdk.android.core.models.MediaEntity;
 
-public interface PlayerScribeClient {
+public interface VideoScribeClient {
     void impression(long tweetId, MediaEntity mediaEntity);
+
+    void play(long tweetId, MediaEntity mediaEntity);
 }

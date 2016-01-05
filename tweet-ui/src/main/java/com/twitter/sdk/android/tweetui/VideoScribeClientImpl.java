@@ -25,14 +25,15 @@ import com.twitter.sdk.android.core.models.MediaEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-class PlayerScribeClientImpl implements PlayerScribeClient {
+class VideoScribeClientImpl implements VideoScribeClient {
     static final String TFW_CLIENT_EVENT_PAGE = "android";
     static final String TFW_CLIENT_EVENT_SECTION = "video";
     static final String SCRIBE_IMPRESSION_ACTION = "impression";
+    static final String SCRIBE_PLAY_ACTION = "play";
 
     final TweetUi tweetUi;
 
-    PlayerScribeClientImpl(TweetUi tweetUi) {
+    VideoScribeClientImpl(TweetUi tweetUi) {
         this.tweetUi = tweetUi;
     }
 
@@ -42,6 +43,14 @@ class PlayerScribeClientImpl implements PlayerScribeClient {
         items.add(createScribeItem(tweetId, mediaEntity));
 
         tweetUi.scribe(getTfwImpressionNamespace(), items);
+    }
+
+    @Override
+    public void play(long tweetId, MediaEntity mediaEntity) {
+        final List<ScribeItem> items = new ArrayList<>();
+        items.add(createScribeItem(tweetId, mediaEntity));
+
+        tweetUi.scribe(getTfwPlayNamespace(), items);
     }
 
     static ScribeItem createScribeItem(long tweetId, MediaEntity mediaEntity) {
@@ -70,6 +79,15 @@ class PlayerScribeClientImpl implements PlayerScribeClient {
                 .setPage(TFW_CLIENT_EVENT_PAGE)
                 .setSection(TFW_CLIENT_EVENT_SECTION)
                 .setAction(SCRIBE_IMPRESSION_ACTION)
+                .builder();
+    }
+
+    static EventNamespace getTfwPlayNamespace() {
+        return new EventNamespace.Builder()
+                .setClient(SyndicationClientEvent.CLIENT_NAME)
+                .setPage(TFW_CLIENT_EVENT_PAGE)
+                .setSection(TFW_CLIENT_EVENT_SECTION)
+                .setAction(SCRIBE_PLAY_ACTION)
                 .builder();
     }
 }
