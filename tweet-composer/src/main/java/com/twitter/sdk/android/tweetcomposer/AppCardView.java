@@ -17,10 +17,8 @@
 
 package com.twitter.sdk.android.tweetcomposer;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.net.Uri;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -46,7 +44,6 @@ public class AppCardView extends LinearLayout {
         init(context);
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public AppCardView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context);

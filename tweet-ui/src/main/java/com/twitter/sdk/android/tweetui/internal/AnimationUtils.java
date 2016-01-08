@@ -19,13 +19,10 @@ package com.twitter.sdk.android.tweetui.internal;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
 
 public class AnimationUtils {
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
     public static ViewPropertyAnimator fadeOut(final View from, int duration) {
         if (from.getVisibility() == View.VISIBLE) {
             from.clearAnimation();
@@ -44,7 +41,6 @@ public class AnimationUtils {
         return null;
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
     public static ViewPropertyAnimator fadeIn(View to, int duration) {
         if (to.getVisibility() != View.VISIBLE) {
             to.setAlpha(0f);

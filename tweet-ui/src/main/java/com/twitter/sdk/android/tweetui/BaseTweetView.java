@@ -206,7 +206,6 @@ public abstract class BaseTweetView extends LinearLayout {
      * @param dependencyProvider the dependency provider
      * @throws IllegalArgumentException if the Tweet id is invalid.
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     BaseTweetView(Context context, AttributeSet attrs, int defStyle,
             DependencyProvider dependencyProvider) {
         super(context, attrs, defStyle);

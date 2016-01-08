@@ -17,9 +17,7 @@
 
 package com.twitter.sdk.android.tweetui;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.util.AttributeSet;
 
 import com.twitter.sdk.android.core.models.MediaEntity;
@@ -48,7 +46,6 @@ public class CompactTweetView extends BaseTweetView {
         super(context, attrs);
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public CompactTweetView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }

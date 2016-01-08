@@ -34,7 +34,7 @@ android {
     defaultConfig {
         versionCode 1
         versionName version
-        minSdkVersion 9
+        minSdkVersion 14
     }
 
     lintOptions {
@@ -118,7 +118,7 @@ fabricKitRelease {
     minBuild = 0
     maxBuild = Integer.MAX_VALUE
     minPlatformVersion {
-        apiVersion "9"
+        apiVersion "14"
     }
     docsUrl = "https://docs.fabric.io/javadocs/twitter-core/${project.version}/index.html"
     twitterHandle = "@twitterdev"

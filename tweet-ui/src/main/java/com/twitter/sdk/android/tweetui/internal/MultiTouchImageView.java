@@ -18,12 +18,10 @@
 package com.twitter.sdk.android.tweetui.internal;
 
 import android.animation.ValueAnimator;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -207,16 +205,6 @@ public class MultiTouchImageView extends ImageView {
     }
 
     void animateScale(float start, float end, final float px, final float py) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            animateScaleHoneyComb(start, end, px, py);
-        } else {
-            setScale(end / getScale(), px, py);
-            setImageMatrix();
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    void animateScaleHoneyComb(float start, float end, final float px, final float py) {
         final ValueAnimator animator = ValueAnimator.ofFloat(start, end);
 
         animator.setDuration(SCALE_ANIMATION_DURATION);

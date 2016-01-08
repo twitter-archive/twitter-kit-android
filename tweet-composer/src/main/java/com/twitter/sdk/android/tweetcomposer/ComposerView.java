@@ -17,10 +17,8 @@
 
 package com.twitter.sdk.android.tweetcomposer;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -65,7 +63,6 @@ public class ComposerView extends LinearLayout {
         init(context);
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public ComposerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context);

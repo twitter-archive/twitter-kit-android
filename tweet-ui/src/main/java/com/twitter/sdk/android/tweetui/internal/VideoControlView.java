@@ -19,7 +19,6 @@ package com.twitter.sdk.android.tweetui.internal;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
@@ -193,20 +192,12 @@ public class VideoControlView extends FrameLayout {
 
     void hide() {
         handler.removeMessages(SHOW_PROGRESS_MSG);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
-            AnimationUtils.fadeOut(this, FADE_DURATION_MS);
-        } else {
-            setVisibility(View.INVISIBLE);
-        }
+        AnimationUtils.fadeOut(this, FADE_DURATION_MS);
     }
 
     void show() {
         handler.sendEmptyMessage(SHOW_PROGRESS_MSG);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
-            AnimationUtils.fadeIn(this, FADE_DURATION_MS);
-        } else {
-            setVisibility(View.VISIBLE);
-        }
+        AnimationUtils.fadeIn(this, FADE_DURATION_MS);
     }
 
     public boolean isShowing() {

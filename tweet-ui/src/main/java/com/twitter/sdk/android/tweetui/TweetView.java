@@ -17,9 +17,7 @@
 
 package com.twitter.sdk.android.tweetui;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
@@ -44,7 +42,6 @@ public class TweetView extends BaseTweetView {
         super(context, attrs);
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public TweetView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
