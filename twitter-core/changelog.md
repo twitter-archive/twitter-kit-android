@@ -3,6 +3,8 @@
 
 ## Unreleased
 
+## v1.6.3
+
 ## v1.6.2
 
 * Added VideoInfo field to MediaEntity to support video and animated gif playback.

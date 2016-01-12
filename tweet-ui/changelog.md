@@ -4,6 +4,11 @@
 
 ## Unreleased
 
+## v1.9.0
+* Added basic photo viewer.
+* Added custom controls for video playback.
+* Enabled looping for animated gifs.
+
 ## v1.8.0
 
 * Added support for video and animated gif playback.
