@@ -82,7 +82,7 @@
         <item name="android:layout_marginLeft">@dimen/tw__tweet_text_margin_left</item>
         <item name="android:layout_marginRight">@dimen/tw__tweet_text_margin_right</item>
         <item name="android:fontFamily">sans-serif-light</item>
-        <item name="android:textSize">@dimen/tw__font_size_large</item>
+        <item name="android:textSize">@dimen/tw__text_size_large</item>
         <item name="android:lineSpacingExtra">2dp</item>
         <item name="android:textColor">@color/tw__tweet_light_primary_text_color</item>
         <item name="android:textColorLink">@color/tw__tweet_action_color</item>
@@ -139,7 +139,7 @@
         <item name="android:layout_marginLeft">@dimen/tw__compact_tweet_text_margin_left</item>
         <item name="android:layout_marginRight">@dimen/tw__compact_tweet_text_margin_right</item>
         <item name="android:fontFamily">sans-serif-light</item>
-        <item name="android:textSize">@dimen/tw__font_size_large</item>
+        <item name="android:textSize">@dimen/tw__text_size_large</item>
     </style>
 
 </resources>

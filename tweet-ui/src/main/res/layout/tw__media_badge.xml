@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (C) 2015 Twitter, Inc.
   ~
@@ -16,9 +15,16 @@
   ~
   -->
 
-<resources>
-    <!--Date Format strings-->
-    <!--These strings are in here because we pull translations manually from twitter-cldr-->
-    <string name="tw__relative_date_format_short">MMM dd</string>
-    <string name="tw__relative_date_format_long">MM/dd/yy</string>
-</resources>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        tools:ignore="ContentDescription"
+        android:id="@+id/tw__gif_badge"
+        style="@style/tw__Badge.Gif"/>
+
+    <TextView
+        android:id="@+id/tw__video_duration"
+        style="@style/tw__Badge.VideoDuration" />
+</merge>

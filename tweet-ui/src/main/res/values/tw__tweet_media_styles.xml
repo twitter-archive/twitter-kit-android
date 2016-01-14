@@ -48,10 +48,43 @@
     <style name="tw__TweetMedia">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:visibility">gone</item>
         <item name="android:focusable">false</item>
         <item name="tw__image_aspect_ratio">@dimen/tw__tweet_media_aspect_ratio</item>
         <item name="tw__image_dimension_to_adjust">height</item>
+    </style>
+
+    <style name="tw__TweetMediaContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="tw__Badge">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="tw__Badge.VideoDuration">
+        <item name="android:background">@drawable/tw__bg_media_badge</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:padding">2dp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/tw__text_size_small</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="tw__Badge.Gif">
+        <item name="android:src">@drawable/tw__gif_badge</item>
+    </style>
+
+    <style name="tw__TweetBadge">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/tw__tweet_media_badge_margin</item>
+        <item name="android:layout_marginBottom">@dimen/tw__tweet_media_badge_margin</item>
+        <item name="android:layout_gravity">bottom|left</item>
     </style>
 
     <!--Compact Styles-->
@@ -73,7 +106,7 @@
         <item name="android:src">@drawable/tw__ic_logo_blue</item>
     </style>
 
-    <style name="tw__TweetMedia.Compact">
+    <style name="tw__TweetMediaContainer.Compact">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">@dimen/tw__compact_tweet_media_margin_top</item>

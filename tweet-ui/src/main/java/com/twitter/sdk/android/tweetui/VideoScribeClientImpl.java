@@ -21,6 +21,7 @@ import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
 import com.twitter.sdk.android.core.internal.scribe.SyndicationClientEvent;
 import com.twitter.sdk.android.core.models.MediaEntity;
+import com.twitter.sdk.android.tweetui.internal.TweetMediaUtils;
 
 import java.util.ArrayList;
 import java.util.List;

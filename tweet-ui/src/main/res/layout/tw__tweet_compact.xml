@@ -68,18 +68,27 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
 
-    <com.twitter.sdk.android.tweetui.internal.TweetMediaView
-        tools:ignore="ContentDescription"
-        android:id="@+id/tw__tweet_media"
-        style="@style/tw__TweetMedia.Compact"
+    <FrameLayout
+        android:id="@+id/tw__tweet_media_container"
+        style="@style/tw__TweetMediaContainer.Compact"
         android:layout_below="@id/tw__author_attribution"
-        android:layout_toRightOf="@id/tw__tweet_author_avatar"
-        android:layout_toEndOf="@id/tw__tweet_author_avatar"/>
+        android:layout_toEndOf="@id/tw__tweet_author_avatar"
+        android:layout_toRightOf="@id/tw__tweet_author_avatar">
+
+        <com.twitter.sdk.android.tweetui.internal.TweetMediaView
+            android:id="@+id/tw__tweet_media"
+            style="@style/tw__TweetMedia"
+            tools:ignore="ContentDescription" />
+
+        <com.twitter.sdk.android.tweetui.internal.MediaBadgeView
+            android:id="@+id/tw__tweet_media_badge"
+            style="@style/tw__TweetBadge" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/tw__tweet_text"
         style="@style/tw__TweetText.Compact"
-        android:layout_below="@id/tw__tweet_media"
+        android:layout_below="@id/tw__tweet_media_container"
         android:layout_toRightOf="@id/tw__tweet_author_avatar"
         android:layout_toEndOf="@id/tw__tweet_author_avatar"
         tools:text="just setting up my twttr"/>

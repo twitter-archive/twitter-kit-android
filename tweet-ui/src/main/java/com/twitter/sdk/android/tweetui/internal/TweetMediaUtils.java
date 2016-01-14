@@ -15,7 +15,7 @@
  *
  */
 
-package com.twitter.sdk.android.tweetui;
+package com.twitter.sdk.android.tweetui.internal;
 
 import android.os.Build;
 
@@ -26,7 +26,7 @@ import com.twitter.sdk.android.core.models.VideoInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-final class TweetMediaUtils {
+final public class TweetMediaUtils {
     public static final String PHOTO_TYPE = "photo";
     public static final String VIDEO_TYPE = "video";
     public static final String GIF_TYPE = "animated_gif";
@@ -42,7 +42,7 @@ final class TweetMediaUtils {
      * @param tweet The Tweet
      * @return The last photo entity of Tweet
      */
-    static MediaEntity getPhotoEntity(Tweet tweet) {
+    static public MediaEntity getPhotoEntity(Tweet tweet) {
         final List<MediaEntity> mediaEntityList = getAllMediaEntities(tweet);
         for (int i = mediaEntityList.size() - 1; i >= 0; i--) {
             final MediaEntity entity = mediaEntityList.get(i);
@@ -59,7 +59,7 @@ final class TweetMediaUtils {
      * @param tweet The Tweet entities
      * @return true if there is a media entity with the type of "photo"
      */
-    static boolean hasPhoto(Tweet tweet) {
+    static public boolean hasPhoto(Tweet tweet) {
         return getPhotoEntity(tweet) != null;
     }
 
@@ -70,7 +70,7 @@ final class TweetMediaUtils {
      * @param tweet The Tweet
      * @return The last photo entity of Tweet
      */
-    static MediaEntity getVideoEntity(Tweet tweet) {
+    static public MediaEntity getVideoEntity(Tweet tweet) {
         for (MediaEntity mediaEntity : getAllMediaEntities(tweet)) {
             if (mediaEntity.type != null && isVideoType(mediaEntity)) {
                 return mediaEntity;
@@ -86,7 +86,7 @@ final class TweetMediaUtils {
      * @param tweet The Tweet entities
      * @return true if there is a media entity with the type of "video" or "animated_gif"
      */
-    static boolean hasVideo(Tweet tweet) {
+    static public boolean hasVideo(Tweet tweet) {
         return getVideoEntity(tweet) != null;
     }
 
@@ -106,7 +106,7 @@ final class TweetMediaUtils {
         return false;
     }
 
-    static VideoInfo.Variant getSupportedVariant(MediaEntity mediaEntity) {
+    static public VideoInfo.Variant getSupportedVariant(MediaEntity mediaEntity) {
         for (VideoInfo.Variant variant : mediaEntity.videoInfo.variants) {
             if (isVariantSupported(variant)) {
                 return variant;
@@ -116,7 +116,7 @@ final class TweetMediaUtils {
         return null;
     }
 
-    static boolean isLooping(MediaEntity mediaEntity) {
+    static public boolean isLooping(MediaEntity mediaEntity) {
         if (GIF_TYPE.equals(mediaEntity.type)) {
             return true;
         }

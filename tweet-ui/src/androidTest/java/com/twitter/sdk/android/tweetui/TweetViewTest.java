@@ -60,19 +60,19 @@ public class TweetViewTest extends BaseTweetViewTest {
     public void testInit() {
         super.testInit();
         final TweetView view = createView(context, TestFixtures.TEST_TWEET);
-        assertEquals(ImageView.GONE, view.mediaView.getVisibility());
+        assertEquals(ImageView.GONE, view.mediaContainerView.getVisibility());
     }
 
     @Override
     public void testInit_withEmptyTweet() {
         super.testInit();
         final TweetView view = createView(context, TestFixtures.TEST_TWEET);
-        assertEquals(ImageView.GONE, view.mediaView.getVisibility());
+        assertEquals(ImageView.GONE, view.mediaContainerView.getVisibility());
     }
 
     public void testInit_withPhotoTweet() {
         final TweetView view = createView(context, TestFixtures.TEST_PHOTO_TWEET);
-        assertEquals(ImageView.VISIBLE, view.mediaView.getVisibility());
+        assertEquals(ImageView.VISIBLE, view.mediaContainerView.getVisibility());
     }
 
     // Layout

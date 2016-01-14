@@ -30,6 +30,7 @@ import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -47,6 +48,8 @@ import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.core.internal.UserUtils;
 import com.twitter.sdk.android.core.models.VideoInfo;
+import com.twitter.sdk.android.tweetui.internal.MediaBadgeView;
+import com.twitter.sdk.android.tweetui.internal.TweetMediaUtils;
 import com.twitter.sdk.android.tweetui.internal.TweetMediaView;
 
 import java.text.DateFormat;
@@ -83,12 +86,14 @@ public abstract class BaseTweetView extends LinearLayout {
     TextView fullNameView;
     TextView screenNameView;
     ImageView verifiedCheckView;
+    FrameLayout mediaContainerView;
     TweetMediaView mediaView;
     TextView contentView;
     TextView timestampView;
     ImageView twitterLogoView;
     TextView retweetedByView;
     TweetActionBarView tweetActionBarView;
+    MediaBadgeView mediaBadgeView;
     View bottomSeparator;
 
     // color values
@@ -371,12 +376,14 @@ public abstract class BaseTweetView extends LinearLayout {
         fullNameView = (TextView) findViewById(R.id.tw__tweet_author_full_name);
         screenNameView = (TextView) findViewById(R.id.tw__tweet_author_screen_name);
         verifiedCheckView = (ImageView) findViewById(R.id.tw__tweet_author_verified);
+        mediaContainerView = (FrameLayout) findViewById(R.id.tw__tweet_media_container);
         mediaView = (TweetMediaView) findViewById(R.id.tw__tweet_media);
         contentView = (TextView) findViewById(R.id.tw__tweet_text);
         timestampView = (TextView) findViewById(R.id.tw__tweet_timestamp);
         twitterLogoView = (ImageView) findViewById(R.id.tw__twitter_logo);
         retweetedByView = (TextView) findViewById(R.id.tw__tweet_retweeted_by);
         tweetActionBarView = (TweetActionBarView) findViewById(R.id.tw__tweet_action_bar);
+        mediaBadgeView = (MediaBadgeView) findViewById(R.id.tw__tweet_media_badge);
         bottomSeparator = findViewById(R.id.bottom_separator);
     }
 
@@ -649,9 +656,10 @@ public abstract class BaseTweetView extends LinearLayout {
             // set the image view to visible before setting via picasso placeholders into so
             // measurements are done correctly, fixes a bug where the placeholder was a small square
             // in the corner of the view
-            mediaView.setVisibility(ImageView.VISIBLE);
+            mediaContainerView.setVisibility(ImageView.VISIBLE);
             mediaView.setOverlayDrawable(getContext().getResources()
                     .getDrawable(R.drawable.tw__player_overlay));
+            mediaBadgeView.setMediaEntity(mediaEntity);
             setMediaLauncher(displayTweet, mediaEntity);
             setTweetMedia(mediaEntity);
 
@@ -661,11 +669,12 @@ public abstract class BaseTweetView extends LinearLayout {
             // set the image view to visible before setting via picasso placeholders into so
             // measurements are done correctly, fixes a bug where the placeholder was a small square
             // in the corner of the view
-            mediaView.setVisibility(ImageView.VISIBLE);
+            mediaContainerView.setVisibility(ImageView.VISIBLE);
+            mediaBadgeView.setMediaEntity(mediaEntity);
             setPhotoLauncher(displayTweet, mediaEntity);
             setTweetMedia(mediaEntity);
         } else {
-            mediaView.setVisibility(ImageView.GONE);
+            mediaContainerView.setVisibility(ImageView.GONE);
         }
     }
 

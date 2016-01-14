@@ -150,11 +150,11 @@ public class VideoControlView extends FrameLayout {
     }
 
     void setDuration(int durationMillis) {
-        duration.setText(formatPlaybackTime(durationMillis));
+        duration.setText(MediaTimeUtils.getPlaybackTime(durationMillis));
     }
 
     void setCurrentTime(int currentTimeMillis) {
-        currentTime.setText(formatPlaybackTime(currentTimeMillis));
+        currentTime.setText(MediaTimeUtils.getPlaybackTime(currentTimeMillis));
     }
 
     void setProgress(int currentTimeMillis, int durationMillis, int bufferPercentage) {
@@ -210,19 +210,6 @@ public class VideoControlView extends FrameLayout {
 
     public boolean isShowing() {
         return getVisibility() == View.VISIBLE;
-    }
-
-    String formatPlaybackTime(long timeMillis) {
-        final int timeSeconds = (int) (timeMillis / 1000);
-        final int seconds = timeSeconds % 60;
-        final int minutes = (timeSeconds / 60) % 60;
-        final int hours = timeSeconds / 3600;
-
-        if (hours > 0) {
-            return getContext().getString(R.string.tw__time_format_long, hours, minutes, seconds);
-        } else {
-            return getContext().getString(R.string.tw__time_format_short, minutes, seconds);
-        }
     }
 
     public interface MediaPlayerControl {

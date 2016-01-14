@@ -198,6 +198,11 @@ public final class TestFixtures {
                 "video", videoInfo);
     }
 
+    public static MediaEntity createEntityWithAnimatedGif(VideoInfo videoInfo) {
+        return new MediaEntity(null, null, null, 0, 0, 0L, null, null, null, null, 0L, null,
+                "animated_gif", videoInfo);
+    }
+
     public static VideoInfo createVideoInfoWithVariant(VideoInfo.Variant variant) {
         return new VideoInfo(null, 0, Arrays.asList(variant));
     }

@@ -31,7 +31,8 @@ public class MultiTouchImageViewTest extends FabricAndroidTestCase {
     static final Bitmap image = Bitmap.createBitmap(50, 50, Bitmap.Config.ARGB_8888);
     MultiTouchImageView view;
 
-    public void setUp() {
+    public void setUp() throws Exception {
+        super.setUp();
         view = new MultiTouchImageView(getContext());
         view.setImageBitmap(image);
         view.layout(0, 0, 100, 100);

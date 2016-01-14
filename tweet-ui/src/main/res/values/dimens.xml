@@ -60,6 +60,8 @@
 
     <!--Tweet Media-->
     <item name="tw__tweet_media_aspect_ratio" format="float" type="dimen">1.777777</item>
+    <dimen name="tw__tweet_media_badge_margin">4dp</dimen>
+    <dimen name="tw__gif_badge_padding">4dp</dimen>
 
     <!--CompactTweetView-->
 
@@ -102,8 +104,7 @@
     <!--density-independent(micro 10dp, small 12dp, medium 14dp, large 16dp)-->
     <dimen name="tw__text_size_large">16dp</dimen>
     <dimen name="tw__text_size_medium">14dp</dimen>
-    <!--scale-independent(micro 10sp, small 12sp, medium 14sp, large 16sp)-->
-    <dimen name="tw__font_size_large">16sp</dimen>
+    <dimen name="tw__text_size_small">12dp</dimen>
 
     <!-- login -->
     <dimen name="tw__login_btn_radius">5dp</dimen>

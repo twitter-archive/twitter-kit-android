@@ -22,6 +22,7 @@ import android.net.Uri;
 import android.view.View;
 
 import com.twitter.sdk.android.core.models.MediaEntity;
+import com.twitter.sdk.android.tweetui.internal.TweetMediaUtils;
 import com.twitter.sdk.android.tweetui.internal.VideoControlView;
 import com.twitter.sdk.android.tweetui.internal.VideoView;
 

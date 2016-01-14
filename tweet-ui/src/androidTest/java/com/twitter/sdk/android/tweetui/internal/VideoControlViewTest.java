@@ -33,7 +33,6 @@ import static org.mockito.Mockito.when;
 public class VideoControlViewTest extends FabricAndroidTestCase {
     static final int SECOND_IN_MS = 1000;
     static final int MINUTE_IN_MS = 60000;
-    static final int HOUR_IN_MS = 3600000;
     static final int TEST_BUFFER_PROGRESS = 32;
     VideoControlView videoControlView;
 
@@ -175,12 +174,5 @@ public class VideoControlViewTest extends FabricAndroidTestCase {
     public void testSetMediaPlayer() {
         videoControlView.setMediaPlayer(mock(VideoControlView.MediaPlayerControl.class));
         assertNotNull(videoControlView.player);
-    }
-
-    public void testFormatPlaybackTime() {
-        assertEquals("0:01", videoControlView.formatPlaybackTime(SECOND_IN_MS));
-        assertEquals("1:01", videoControlView.formatPlaybackTime(MINUTE_IN_MS + SECOND_IN_MS));
-        assertEquals("1:01:01", videoControlView
-                .formatPlaybackTime(HOUR_IN_MS + MINUTE_IN_MS + SECOND_IN_MS));
     }
 }
