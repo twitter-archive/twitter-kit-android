@@ -10,51 +10,49 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!--emoji-->
+        <!--emoji entities-->
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/demo_tweet_space"/>
 
         <com.twitter.sdk.android.tweetui.TweetView
-            android:id="@+id/xml_emoji_and_html_entities_with_url_tweet"
+            android:id="@+id/xml_emoji_url_video_tweet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            twittersdk:tw__tweet_id="494602461928120321"/>
-
-        <!--entities-->
+            twittersdk:tw__tweet_id="656637487117299712"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/demo_tweet_space"/>
 
         <com.twitter.sdk.android.tweetui.CompactTweetView
-            android:id="@+id/xml_every_entity_tweet"
+            android:id="@+id/xml_emoji_url_video_compact_tweet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            twittersdk:tw__tweet_id="448195611393658880"/>
+            twittersdk:tw__tweet_id="656637487117299712"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/demo_tweet_space"/>
 
-        <!--no text-->
+        <!--animated gif-->
 
         <com.twitter.sdk.android.tweetui.TweetView
-            android:id="@+id/xml_photo_only_tweet"
+            android:id="@+id/xml_animated_gif_tweet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            twittersdk:tw__tweet_id="489905840904605696"/>
+            twittersdk:tw__tweet_id="669274925937664001"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/demo_tweet_space"/>
 
         <com.twitter.sdk.android.tweetui.CompactTweetView
-            android:id="@+id/xml_photo_only_tweet_compact"
+            android:id="@+id/xml_animated_gif_compact_tweet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            twittersdk:tw__tweet_id="489905840904605696"/>
+            twittersdk:tw__tweet_id="669274925937664001"/>
 
         <View
             android:layout_width="match_parent"
@@ -63,20 +61,20 @@
         <!--Retweet with photo-->
 
         <com.twitter.sdk.android.tweetui.TweetView
-            android:id="@+id/retweet_simpsons_tweet"
+            android:id="@+id/retweet_with_photo_tweet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            twittersdk:tw__tweet_id="574000939800993792"/>
+            twittersdk:tw__tweet_id="687698492211499010"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/demo_tweet_space"/>
 
         <com.twitter.sdk.android.tweetui.CompactTweetView
-            android:id="@+id/retweet_simpsons_compact_tweet"
+            android:id="@+id/retweet_with_photo_compact_tweet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            twittersdk:tw__tweet_id="574000939800993792"/>
+            twittersdk:tw__tweet_id="687698492211499010"/>
 
         <View
             android:layout_width="match_parent"
@@ -85,20 +83,20 @@
         <!--Retweet without photo-->
 
         <com.twitter.sdk.android.tweetui.TweetView
-            android:id="@+id/retweet_vanity_fair_tweet"
+            android:id="@+id/retweet_without_photo_tweet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            twittersdk:tw__tweet_id="520736867218505728"/>
+            twittersdk:tw__tweet_id="685490103544762369"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/demo_tweet_space"/>
 
         <com.twitter.sdk.android.tweetui.CompactTweetView
-            android:id="@+id/retweet_vanity_fair_tweet_compact"
+            android:id="@+id/retweet_without_photo_compact_tweet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            twittersdk:tw__tweet_id="520736867218505728"/>
+            twittersdk:tw__tweet_id="685490103544762369"/>
 
         <View
             android:layout_width="match_parent"
