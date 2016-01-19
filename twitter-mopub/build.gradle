@@ -1,0 +1,87 @@
+/*
+ * Copyright (C) 2015 Twitter, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
+apply plugin: 'android-sdk-manager'
+apply plugin: 'com.android.library'
+
+apply from: rootProject.commonPlugins
+
+android {
+    compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
+
+    defaultConfig {
+        versionCode 1
+        versionName version
+        minSdkVersion 9
+        consumerProguardFiles 'proguard.txt'
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField "String", "GROUP", "\"${pom_group_id}\""
+            buildConfigField "String", "ARTIFACT_ID", "\"${pom_artifact_id}\""
+            buildConfigField "String", "BUILD_NUMBER", "\"${buildNumber}\""
+            buildConfigField "long", "BUILD_TIME", "${System.currentTimeMillis()}L"
+
+            testCoverageEnabled enableTestCodeCoverage
+        }
+        release {
+            buildConfigField "String", "GROUP", "\"${pom_group_id}\""
+            buildConfigField "String", "ARTIFACT_ID", "\"${pom_artifact_id}\""
+            buildConfigField "String", "BUILD_NUMBER", "\"${buildNumber}\""
+            buildConfigField "long", "BUILD_TIME", "${System.currentTimeMillis()}L"
+        }
+    }
+
+    lintOptions {
+        warningsAsErrors true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    // Forcibly add debug and the generated "R" files onto the test classpath
+    sourceSets {
+        test.java.srcDirs += "build/generated/source/r/debug"
+        test.java.srcDirs += "src/debug"
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+}
+
+internal {
+    dexMethodCount {
+        packageFilter = "com.twitter.sdk.android.mopub"
+    }
+}
+
+ext.projectDependencies = []
+
+dependencies {
+    projectDependencies.each { path, binary ->
+        compile projectOrBinary(path: path, binary: binary)
+    }
+
+    compile (rootProject.mopub) {
+        transitive = true;
+    }
+}

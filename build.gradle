@@ -41,6 +41,7 @@ ext {
     kitsForRelease = [
             ":tweet-composer": false,
             ":tweet-ui": false,
+            ":tweet-mopub": false,
             ":twitter": false,
             ":twitter-core": false,
             ":twitter-unity": false
@@ -52,6 +53,7 @@ subprojects { Project subproject ->
     apply plugin: 'io.fabric.gradle.weaving.projectOrBinary'
 
     repositories {
+        jcenter()
         mavenCentral()
         maven { url 'https://maven.fabric.io/public' }
         mavenLocal()
@@ -80,6 +82,7 @@ ext {
     fabric = 'io.fabric.sdk.android:fabric:1.3.+@aar'
     fabricTest = 'io.fabric.sdk.android:fabric-test:0.0.+@aar'
     digits = 'com.digits.sdk.android:digits:1.7.+@aar'
+    mopub = 'com.mopub:mopub-sdk:4.3.0@aar'
 
     // Sample App
     leakCanary = 'com.squareup.leakcanary:leakcanary-android:1.3.1'

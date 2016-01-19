@@ -1,0 +1,1 @@
+# Proguard config for Twitter MoPub
