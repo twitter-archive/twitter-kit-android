@@ -388,7 +388,7 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
 
     public void testGetAspectRatio_mediaEntityWithNullSizes() {
         final BaseTweetView view = createView(context, TestFixtures.TEST_TWEET);
-        final MediaEntity mediaEntity = TestFixtures.createMediaEntityWithSizes(null);
+        final MediaEntity mediaEntity = TestFixtures.createMediaEntityWithPhoto(null);
 
         assertEquals(BaseTweetView.DEFAULT_ASPECT_RATIO, view.getAspectRatio(mediaEntity));
     }
@@ -396,7 +396,7 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
     public void testGetAspectRatio_mediaEntityWithEmptySizes() {
         final BaseTweetView view = createView(context, TestFixtures.TEST_TWEET);
         final MediaEntity.Sizes sizes = new MediaEntity.Sizes(null, null, null, null);
-        final MediaEntity mediaEntity = TestFixtures.createMediaEntityWithSizes(sizes);
+        final MediaEntity mediaEntity = TestFixtures.createMediaEntityWithPhoto(sizes);
 
         assertEquals(BaseTweetView.DEFAULT_ASPECT_RATIO, view.getAspectRatio(mediaEntity));
     }
@@ -405,11 +405,11 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
         final BaseTweetView view = createView(context, TestFixtures.TEST_TWEET);
 
         assertEquals(BaseTweetView.DEFAULT_ASPECT_RATIO,
-                view.getAspectRatio(TestFixtures.createMediaEntityWithSizes(0, 0)));
+                view.getAspectRatio(TestFixtures.createMediaEntityWithPhoto(0, 0)));
         assertEquals(BaseTweetView.DEFAULT_ASPECT_RATIO,
-                view.getAspectRatio(TestFixtures.createMediaEntityWithSizes(100, 0)));
+                view.getAspectRatio(TestFixtures.createMediaEntityWithPhoto(100, 0)));
         assertEquals(BaseTweetView.DEFAULT_ASPECT_RATIO,
-                view.getAspectRatio(TestFixtures.createMediaEntityWithSizes(0, 100)));
+                view.getAspectRatio(TestFixtures.createMediaEntityWithPhoto(0, 100)));
     }
 
     // Scribing

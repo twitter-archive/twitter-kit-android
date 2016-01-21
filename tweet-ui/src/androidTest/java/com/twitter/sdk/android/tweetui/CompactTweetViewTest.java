@@ -72,25 +72,25 @@ public class CompactTweetViewTest extends BaseTweetViewTest {
         final CompactTweetView compactView = createView(context, TestFixtures.TEST_TWEET);
 
         assertEquals(1.0, compactView.getAspectRatio(
-                TestFixtures.createMediaEntityWithSizes(100, 100)), DELTA);
+                TestFixtures.createMediaEntityWithPhoto(100, 100)), DELTA);
         assertEquals(1.0, compactView.getAspectRatio(
-                TestFixtures.createMediaEntityWithSizes(300, 400)), DELTA);
+                TestFixtures.createMediaEntityWithPhoto(300, 400)), DELTA);
         assertEquals(1.0, compactView.getAspectRatio(
-                TestFixtures.createMediaEntityWithSizes(100, 800)), DELTA);
+                TestFixtures.createMediaEntityWithPhoto(100, 800)), DELTA);
         assertEquals(1.3333, compactView.getAspectRatio(
-                TestFixtures.createMediaEntityWithSizes(400, 300)), DELTA);
+                TestFixtures.createMediaEntityWithPhoto(400, 300)), DELTA);
         assertEquals(1.6666, compactView.getAspectRatio(
-                TestFixtures.createMediaEntityWithSizes(500, 300)), DELTA);
+                TestFixtures.createMediaEntityWithPhoto(500, 300)), DELTA);
         assertEquals(2.0, compactView.getAspectRatio(
-                TestFixtures.createMediaEntityWithSizes(600, 300)), DELTA);
+                TestFixtures.createMediaEntityWithPhoto(600, 300)), DELTA);
         assertEquals(2.3333, compactView.getAspectRatio(
-                TestFixtures.createMediaEntityWithSizes(700, 300)), DELTA);
+                TestFixtures.createMediaEntityWithPhoto(700, 300)), DELTA);
         assertEquals(2.6666, compactView.getAspectRatio(
-                TestFixtures.createMediaEntityWithSizes(800, 300)), DELTA);
+                TestFixtures.createMediaEntityWithPhoto(800, 300)), DELTA);
         assertEquals(3.0, compactView.getAspectRatio(
-                TestFixtures.createMediaEntityWithSizes(900, 300)), DELTA);
+                TestFixtures.createMediaEntityWithPhoto(900, 300)), DELTA);
         assertEquals(3.0, compactView.getAspectRatio(
-                TestFixtures.createMediaEntityWithSizes(1000, 50)), DELTA);
+                TestFixtures.createMediaEntityWithPhoto(1000, 50)), DELTA);
     }
 
     public void testSetTweetPhoto() {

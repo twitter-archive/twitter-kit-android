@@ -179,13 +179,13 @@ public final class TestFixtures {
         return tweets;
     }
 
-    public static MediaEntity createMediaEntityWithSizes(int width, int height) {
-        return createMediaEntityWithSizes(createMediaEntitySizes(width, height));
+    public static MediaEntity createMediaEntityWithPhoto(int width, int height) {
+        return createMediaEntityWithPhoto(createMediaEntitySizes(width, height));
     }
 
-    public static MediaEntity createMediaEntityWithSizes(MediaEntity.Sizes sizes) {
-        return new MediaEntity(null, null, null, 0, 0, 0L, null, null, "photo", sizes, 0L, null,
-                null, null);
+    public static MediaEntity createMediaEntityWithPhoto(MediaEntity.Sizes sizes) {
+        return new MediaEntity(null, null, null, 0, 0, 0L, null, null, null, sizes, 0L, null,
+                "photo", null);
     }
 
     public static MediaEntity.Sizes createMediaEntitySizes(int width, int height) {
@@ -193,9 +193,9 @@ public final class TestFixtures {
         return new MediaEntity.Sizes(null, null, medium, null);
     }
 
-    public static MediaEntity createEntityWithVideoInfo(VideoInfo videoInfo) {
-        return new MediaEntity(null, null, null, 0, 0, 0L, null, null, "video", null, 0L, null,
-                null, videoInfo);
+    public static MediaEntity createEntityWithVideo(VideoInfo videoInfo) {
+        return new MediaEntity(null, null, null, 0, 0, 0L, null, null, null, null, 0L, null,
+                "video", videoInfo);
     }
 
     public static VideoInfo createVideoInfoWithVariant(VideoInfo.Variant variant) {

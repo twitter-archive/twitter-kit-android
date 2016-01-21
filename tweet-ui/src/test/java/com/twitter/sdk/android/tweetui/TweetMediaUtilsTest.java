@@ -253,7 +253,7 @@ public class TweetMediaUtilsTest {
     public void testGetSupportedVariant() {
         final VideoInfo.Variant variant = new VideoInfo.Variant(0, TEST_CONTENT_TYPE_MP4, null);
         final VideoInfo videoInfo = TestFixtures.createVideoInfoWithVariant(variant);
-        final MediaEntity entity = TestFixtures.createEntityWithVideoInfo(videoInfo);
+        final MediaEntity entity = TestFixtures.createEntityWithVideo(videoInfo);
 
         assertNotNull(TweetMediaUtils.getSupportedVariant(entity));
         assertEquals(variant, TweetMediaUtils.getSupportedVariant(entity));
@@ -263,7 +263,7 @@ public class TweetMediaUtilsTest {
     public void testGetSupportedVariant_unsupportedContentType() {
         final VideoInfo.Variant variant = new VideoInfo.Variant(0, TEST_CONTENT_TYPE_DASH, null);
         final VideoInfo videoInfo = TestFixtures.createVideoInfoWithVariant(variant);
-        final MediaEntity entity = TestFixtures.createEntityWithVideoInfo(videoInfo);
+        final MediaEntity entity = TestFixtures.createEntityWithVideo(videoInfo);
 
         assertNull(TweetMediaUtils.getSupportedVariant(entity));
     }

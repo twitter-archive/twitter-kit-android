@@ -67,7 +67,7 @@ public class PlayerControllerTest {
         final VideoInfo.Variant variant =
                 new VideoInfo.Variant(0, TEST_CONTENT_TYPE_MP4, testUri.toString());
         final VideoInfo videoInfo = TestFixtures.createVideoInfoWithVariant(variant);
-        final MediaEntity entity = TestFixtures.createEntityWithVideoInfo(videoInfo);
+        final MediaEntity entity = TestFixtures.createEntityWithVideo(videoInfo);
 
         final PlayerController playerController =
                 spy(new PlayerController(videoView, videoControlView));
