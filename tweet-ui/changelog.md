@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+## v1.9.1
+
 * Added gif or duration badge to media view.
 
 ## v1.9.0
