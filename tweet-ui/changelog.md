@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+* Added gif or duration badge to media view.
+
 ## v1.9.0
 * Added basic photo viewer.
 * Added custom controls for video playback.

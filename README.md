@@ -28,7 +28,7 @@ repositories {
 }
 
 dependencies {
-  compile('com.twitter.sdk.android:twitter:1.12.0@aar') {
+  compile('com.twitter.sdk.android:twitter:1.12.1@aar') {
     transitive = true
   }
 }
