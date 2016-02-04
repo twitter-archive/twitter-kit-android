@@ -21,6 +21,6 @@
     <string name="tw__allow_btn_txt">অনুমতি দিন</string>
     <string name="tw__login_btn_txt">টুইটার দিয়ে লগ ইন করুন</string>
     <string name="tw__not_now_btn_txt">এখন নয়</string>
-    <string name="tw__share_email_desc">আপনি %1$s কে আপনার টুইটার অ্যাকাউন্ট \@%2$s -এ আপনার ইমেইলে প্রবেশাধিকার দিলে তার থেকে আপডেট এবং অন্যান্য তথ্য পেতে পারবেন </string>
+    <string name="tw__share_email_desc">%1$s কে আপনার টুইটার অ্যাকাউন্ট \@%2$s এর সঙ্গে যুক্ত ইমেল ঠিকানা অ্যাক্সেস করতে দিন যাতে কিনা %1$s তা তাদের গোপনীয়তা নীতি অনুসারে ব্যবহার করতে পারে। উদাহরণস্বরূপ, %1$s আপনাকে ওই ঠিকানায় আপডেট ও অন্যান্য তথ্য পাঠাতে পারবে।</string>
     <string name="tw__share_email_title">আপনার ইমেইল ঠিকানা ভাগ করুন</string>
 </resources>

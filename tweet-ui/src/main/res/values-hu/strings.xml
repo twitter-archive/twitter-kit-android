@@ -21,6 +21,9 @@
     <string name="tw__like_tweet">Tweet kedvelése</string>
     <string name="tw__liked_tweet">Tweet kedvelésének visszavonása</string>
     <string name="tw__loading_tweet">Tweet betöltése</string>
+    <string name="tw__pause">szünet</string>
+    <string name="tw__play">lejátszás</string>
+    <string name="tw__replay">lejátszás ismét</string>
     <string name="tw__retweeted_by_format">%1$s retweetelte</string>
     <string name="tw__share_content_format">Nézd meg \@%1$s\ felhasználó tweetjét: https://twitter.com/%1$s/status/%2$s</string>
     <string name="tw__share_subject_format">Tweet %1$s (\@%2$s) felhasználótól</string>

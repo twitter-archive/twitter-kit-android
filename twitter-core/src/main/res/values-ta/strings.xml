@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (C) 2015 Twitter, Inc.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__share_email_desc">%1$s அதன் தனியுரிமைக் கொள்கைக்கு இணங்க உங்கள் Twitter  கணக்கு \@%2$s-ஐப் பயன்படுத்தக் கூடிய வகையில் அந்தக் கணக்குடன் இணைக்கப்பட்டுள்ள மின்னஞ்சல் முகவரியை அணுக %1$s-ஐ அனுமதியுங்கள். எடுத்துக்காட்டாக, %1$s அந்த முகவரியில் புதுப்பிப்புகளையும் பிற தகவல்களையும் அனுப்பலாம்.</string>
+</resources>

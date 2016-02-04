@@ -21,6 +21,9 @@
     <string name="tw__like_tweet">[[141901]] Like Tweet</string>
     <string name="tw__liked_tweet">[[141902]] Undo Like</string>
     <string name="tw__loading_tweet">[[60974]] Loading Tweet</string>
+    <string name="tw__pause">[[147607]] pause</string>
+    <string name="tw__play">[[147606]] play</string>
+    <string name="tw__replay">[[147608]] replay</string>
     <string name="tw__retweeted_by_format">[[99301]] Retweeted by %1$s</string>
     <string name="tw__share_content_format">[[60977]] Check out \@%1$s\'s Tweet: https://twitter.com/%1$s/status/%2$s</string>
     <string name="tw__share_subject_format">[[60978]] Tweet from %1$s (\@%2$s)</string>

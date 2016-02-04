@@ -21,6 +21,6 @@
     <string name="tw__allow_btn_txt">允许</string>
     <string name="tw__login_btn_txt">登录 Twitter</string>
     <string name="tw__not_now_btn_txt">以后再说</string>
-    <string name="tw__share_email_desc">允许%1$s获取你的Twitter 账号\@%2$s电子邮件地址以随时接收更新及其它讯息</string>
+    <string name="tw__share_email_desc">允许 %1$s 访问与你的 Twitter 账号\@%2$s 相关联的电子邮件地址，使得 %1$s 可以使用并符合相关隐私政策。例如 %1$s 能够向你的电子邮件地址发送更新或者其他信息。</string>
     <string name="tw__share_email_title">分享你的电子邮件地址</string>
 </resources>

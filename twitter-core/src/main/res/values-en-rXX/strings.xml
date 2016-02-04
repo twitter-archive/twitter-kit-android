@@ -21,7 +21,6 @@
     <string name="tw__allow_btn_txt">[Allöøw]</string>
     <string name="tw__login_btn_txt">[Löøg ïín wïíth Twïíttéêr]</string>
     <string name="tw__not_now_btn_txt">[Nöøt nöøw]</string>
-    <string name="tw__share_email_desc">[Géêt üpdåätéês åänd öøthéêr ïínföørmåätïíöøn fröøm %1$s whéên yöøü åällöøw\
-        théêm åäccéêss töø yöøür éêmåäïíl öøn yöøür Twïíttéêr åäccöøünt \@%2$s]</string>
+    <string name="tw__share_email_desc">[Allöøw %1$s töø åäccéêss théê éêmåäïíl åäddréêss åässöøcïíåätéêd wïíth yöøür Twïíttéêr åäccöøünt \@%2$s söø thåät %1$s cåän üséê ïít åäccöørdïíng töø ïíts prïívåäcy pöølïícy. Föør éêxåämpléê, %1$s cöøüld séênd yöøü üpdåätéês åänd öøthéêr ïínföørmåätïíöøn åät thåät åäddréêss.]</string>
     <string name="tw__share_email_title">[Shåäréê yöøür éêmåäïíl åäddréêss]</string>
 </resources>

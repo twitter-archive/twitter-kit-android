@@ -21,6 +21,6 @@
     <string name="tw__allow_btn_txt">Benarkan</string>
     <string name="tw__login_btn_txt">Log masuk dengan Twitter</string>
     <string name="tw__not_now_btn_txt">Bukan sekarang</string>
-    <string name="tw__share_email_desc">Dapatkan kemas kini dan maklumat lain daripada %1$s apabila anda memberikan mereka akses kepada e-mel anda pada akaun Twitter anda \@%2$s</string>
+    <string name="tw__share_email_desc">Benarkan %1$s untuk mengakses alamat e-mel yang dikaitkan dengan akaun Twitter  \@%2$s supaya %1$s boleh menggunakannya mengikut dasar privasinya. Sebagai contoh , %1$s boleh menghantar anda maklumat terkini dan maklumat lain di alamat itu.</string>
     <string name="tw__share_email_title">Kongsi alamat e-mel anda</string>
 </resources>

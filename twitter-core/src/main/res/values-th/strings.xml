@@ -21,6 +21,6 @@
     <string name="tw__allow_btn_txt">อนุญาต</string>
     <string name="tw__login_btn_txt">เข้าสู่ระบบด้วยทวิตเตอร์</string>
     <string name="tw__not_now_btn_txt">ไม่ใช่ตอนนี้</string>
-    <string name="tw__share_email_desc">รับการอัพเดทและข้อมูลอื่นๆ ได้จาก %1$s เมื่อคุณให้สิทธิ์ในการเข้าถึงอีเมลของคุณบนบัญชีทวิตเตอร์ \@%2$s</string>
+    <string name="tw__share_email_desc">อนุญาตให้ %1$s เข้าถึงที่อยู่อีเมลที่เชื่อมโยงกับบัญชีทวิตเตอร์ของคุณ \@%2$s เพื่อให้ %1$s สามารถใช้งานตามนโยบายความเป็นส่วนตัว ตัวอย่างเช่น %1$s สามารถส่งการอัพเดตและข้อมูลอื่นๆ ให้คุณได้ตามที่อยู่นั้น</string>
     <string name="tw__share_email_title">แชร์ที่อยู่อีเมลของคุณ</string>
 </resources>

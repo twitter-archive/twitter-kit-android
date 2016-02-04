@@ -21,6 +21,9 @@
     <string name="tw__like_tweet">Tweet Beğen</string>
     <string name="tw__liked_tweet">Beğenmekten Vazgeç</string>
     <string name="tw__loading_tweet">Tweet Yükleniyor</string>
+    <string name="tw__pause">duraklat</string>
+    <string name="tw__play">oynat</string>
+    <string name="tw__replay">tekrar oynat</string>
     <string name="tw__retweeted_by_format">%1$s tarafından Retweetlendi</string>
     <string name="tw__share_content_format">\@%1$s adlı kişinin Tweetini incele: https://twitter.com/%1$s/status/%2$s</string>
     <string name="tw__share_subject_format">Tweet gönderen: %1$s (\@%2$s)</string>

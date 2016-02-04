@@ -21,6 +21,9 @@
     <string name="tw__like_tweet">喜歡推文</string>
     <string name="tw__liked_tweet">取消喜歡</string>
     <string name="tw__loading_tweet">正在載入推文</string>
+    <string name="tw__pause">暫停</string>
+    <string name="tw__play">播放</string>
+    <string name="tw__replay">重播</string>
     <string name="tw__retweeted_by_format">由 %1$s 轉推</string>
     <string name="tw__share_content_format">查看 \@%1$s 的推文：https://twitter.com/%1$s/status/%2$s</string>
     <string name="tw__share_subject_format">來自 %1$s (\@%2$s) 的推文</string>

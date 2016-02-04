@@ -21,6 +21,9 @@
     <string name="tw__like_tweet">Metti Mi Piace al Tweet</string>
     <string name="tw__liked_tweet">Non mi piace più</string>
     <string name="tw__loading_tweet">Caricamento del Tweet in corso</string>
+    <string name="tw__pause">pausa</string>
+    <string name="tw__play">riproduci</string>
+    <string name="tw__replay">replay</string>
     <string name="tw__retweeted_by_format">Ritwittato da %1$s</string>
     <string name="tw__share_content_format">Dai un\'occhiata al Tweet di \@%1$s: https://twitter.com/%1$s/status/%2$s</string>
     <string name="tw__share_subject_format">Tweet da %1$s (\@%2$s)</string>

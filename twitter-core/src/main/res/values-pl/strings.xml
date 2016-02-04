@@ -21,6 +21,6 @@
     <string name="tw__allow_btn_txt">Zezwól</string>
     <string name="tw__login_btn_txt">Zaloguj się przez Twittera</string>
     <string name="tw__not_now_btn_txt">Nie teraz</string>
-    <string name="tw__share_email_desc">Otrzymasz aktualizacje i inne informacje od %1$s, jeśli zezwolisz im na dostęp do Twojego adresu e-mail na swoim koncie na Twitterze \@%2$s</string>
+    <string name="tw__share_email_desc">Zezwól %1$s na dostęp do adresu e-mail powiązanego z Twoim kontem Twittera \@%2$s, dzięki czemu %1$s będzie mógł go używać zgodnie ze swoją Polityką Prywatności. Na przykład, %1$s będzie mógł wysyłać Ci aktualizacje i inne informacje na ten adres.</string>
     <string name="tw__share_email_title">Udostępnij swój adres e-mail</string>
 </resources>

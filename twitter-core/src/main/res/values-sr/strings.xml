@@ -21,5 +21,6 @@
     <string name="tw__allow_btn_txt">Дозволи</string>
     <string name="tw__login_btn_txt">Пријави се преко Твитера</string>
     <string name="tw__not_now_btn_txt">Не сада</string>
+    <string name="tw__share_email_desc">Дозволи %1$s да приступи твојој е-пошти која је повезана са Твитер налогом \@%2$s тако да %1$s то може користити у складу са својом политиком приватности. На пример, %1$s може ти послати ажурирања и друге информације на ту адресу.</string>
     <string name="tw__share_email_title">Подели своју адресу е-поште</string>
 </resources>

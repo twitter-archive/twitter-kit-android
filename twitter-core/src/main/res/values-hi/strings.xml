@@ -21,6 +21,6 @@
     <string name="tw__allow_btn_txt">अनुमति दें</string>
     <string name="tw__login_btn_txt">ट्विटर के साथ लॉगइन करें</string>
     <string name="tw__not_now_btn_txt">अभी नहीं</string>
-    <string name="tw__share_email_desc">%1$s से अपडेट और अन्य जानकारी प्राप्त करें जब आप अपने \@%2$s ट्विटर खाते पर उन्हें आपके ईमेल तक पहुंच ने की अनुमति दें</string>
+    <string name="tw__share_email_desc">%1$s को अपने ट्विटर खाते \@%2$s से संबंधित ईमेल पते का उपयोग करने की अनुमति दें ताकि %1$s उसका गोपनीयता नीति के अनुसार इस्तेमाल कर सके. उदाहरण के लिए, %1$s उस पते पर आपको अपडेट और अन्य जानकारी भेज सकते हैं.</string>
     <string name="tw__share_email_title">अपना ईमेल पता साझा करें</string>
 </resources>

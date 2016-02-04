@@ -21,6 +21,6 @@
     <string name="tw__allow_btn_txt">Consenti</string>
     <string name="tw__login_btn_txt">Accedi con Twitter</string>
     <string name="tw__not_now_btn_txt">Non adesso</string>
-    <string name="tw__share_email_desc">Ricevi aggiornamenti e altre informazioni da %1$s nel momento in cui gli permetti di ottenere la tua email tramite il tuo account Twitter \@%2$s</string>
+    <string name="tw__share_email_desc">Permetti a %1$s di accedere all\'indirizzo email associato al tuo account Twitter \@%2$s in modo che %1$s possa utilizzarlo nel rispetto della sua Informativa sulla Privacy. Ad esempio, %1$s potrebbe inviare a tale indirizzo aggiornamenti e altre informazioni.</string>
     <string name="tw__share_email_title">Condividi il tuo indirizzo email</string>
 </resources>

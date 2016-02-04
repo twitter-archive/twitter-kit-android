@@ -21,6 +21,9 @@
     <string name="tw__like_tweet">Tweet leuk vinden</string>
     <string name="tw__liked_tweet">Niet meer leuk</string>
     <string name="tw__loading_tweet">Tweet laden</string>
+    <string name="tw__pause">pauze</string>
+    <string name="tw__play">afspelen</string>
+    <string name="tw__replay">opnieuw afspelen</string>
     <string name="tw__retweeted_by_format">Geretweet door %1$s</string>
     <string name="tw__share_content_format">Bekijk de Tweet van \@%1$s: https://twitter.com/%1$s/status/%2$s</string>
     <string name="tw__share_subject_format">Tweet van %1$s (\@%2$s)</string>

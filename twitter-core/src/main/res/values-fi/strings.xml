@@ -21,6 +21,6 @@
     <string name="tw__allow_btn_txt">Salli</string>
     <string name="tw__login_btn_txt">Kirjaudu Twitter-tunnuksellasi</string>
     <string name="tw__not_now_btn_txt">Ei nyt</string>
-    <string name="tw__share_email_desc">Saa päivityksiä ja muuta tietoa kohteelta %1$s antamalla pääsy Twitter-tilisi \@%2$s sähköpostiosoitteeseen</string>
+    <string name="tw__share_email_desc">Salli kohteen %1$s käyttää Twitter-tiliisi liitettyä sähköpostiosoitetta \@%2$s, jotta %1$s voi käyttää sitä yksityisyyskäytäntönsä mukaisesti. %1$s voi esimerkiksi lähettää sinulle päivityksiä ja muuta tietoa kyseiseen osoitteeseen.</string>
     <string name="tw__share_email_title">Jaa sähköpostiosoitteesi</string>
 </resources>

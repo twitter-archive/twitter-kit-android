@@ -21,6 +21,9 @@
     <string name="tw__like_tweet">ツイートにいいねする</string>
     <string name="tw__liked_tweet">いいねを取り消す</string>
     <string name="tw__loading_tweet">ツイートを読込中</string>
+    <string name="tw__pause">一時停止</string>
+    <string name="tw__play">再生</string>
+    <string name="tw__replay">リプレイ</string>
     <string name="tw__retweeted_by_format">%1$sさんがリツイート</string>
     <string name="tw__share_content_format">\@%1$sさんのツイートをチェックしましょう　 https://twitter.com/%1$s/status/%2$s</string>
     <string name="tw__share_subject_format">%1$s (\@%2$s)さんからのツイート</string>

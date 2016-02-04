@@ -21,6 +21,6 @@
     <string name="tw__allow_btn_txt">Permitir</string>
     <string name="tw__login_btn_txt">Entrar com o Twitter</string>
     <string name="tw__not_now_btn_txt">Agora não</string>
-    <string name="tw__share_email_desc">Receba atualizações e outras informações de %1$s ao lhe permitir acesso ao seu e-mail em sua conta do Twitter \@%2$s</string>
+    <string name="tw__share_email_desc">Permitir %1$s a acessar o e-mail associado à sua conta no Twitter \@%2$s para que %1$s possa usá-lo de acordo com sua política de privacidade. Por exemplo, %1$s pode enviar atualizações e outras informações nesse endereço.</string>
     <string name="tw__share_email_title">Compartilhar seu endereço de e-mail</string>
 </resources>

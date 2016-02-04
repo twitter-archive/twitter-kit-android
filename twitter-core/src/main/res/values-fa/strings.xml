@@ -21,6 +21,6 @@
     <string name="tw__allow_btn_txt">مجاز</string>
     <string name="tw__login_btn_txt">ورود با توییتر</string>
     <string name="tw__not_now_btn_txt">فعلاً نه</string>
-    <string name="tw__share_email_desc">هنگامی که به آنها اجازه دسترسی به ایمیل خودتان برروی حساب کاربری توییترتان را دادید، به روزرسانی‌ها و دیگر اطلاعات از %1$s را دریافت کنید / ‎\@%2$s</string>
+    <string name="tw__share_email_desc">به %1$s اجازه دسترسی به آدرس ایمیل مرتبط با حساب کاربری توییترتان ‎\@%2$s را بدهید تا %1$s بتواند از آن مطابق با سیاست حریم خصوصی‌اش استفاده کند. برای مثال، %1$s می‌تواند به‌روزرسانی‌ها و اطلاعات دیگر را به همان آدرس برایتان ارسال کند.</string>
     <string name="tw__share_email_title">نشانی ایمیل خود را به اشتراک بگذارید</string>
 </resources>

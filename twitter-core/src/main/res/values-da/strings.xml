@@ -21,6 +21,6 @@
     <string name="tw__allow_btn_txt">Tillad</string>
     <string name="tw__login_btn_txt">Log ind med Twitter</string>
     <string name="tw__not_now_btn_txt">Ikke nu</string>
-    <string name="tw__share_email_desc">Få opdateringer og andre informationer fra %1$s, når du giver dem adgang til din e-mail på din Twitter-konto \@%2$s</string>
+    <string name="tw__share_email_desc">Tillad, at %1$s får adgang til den e-mail-adresse, der er knyttet til din Twitter-konto \@%2$s, så %1$s kan bruge den i overensstemmelse med privatlivspolitikken. %1$s kan f.eks. sende opdateringer og andre oplysninger til adressen.</string>
     <string name="tw__share_email_title">Del din e-mailadresse</string>
 </resources>

@@ -21,7 +21,6 @@
     <string name="tw__allow_btn_txt">[[94023]] Allow</string>
     <string name="tw__login_btn_txt">[[94020]] Log in with Twitter</string>
     <string name="tw__not_now_btn_txt">[[94024]] Not now</string>
-    <string name="tw__share_email_desc">[[94022]] Get updates and other information from %1$s when you allow\
-        them access to your email on your Twitter account \@%2$s</string>
+    <string name="tw__share_email_desc">[[147605]] Allow %1$s to access the email address associated with your Twitter account \@%2$s so that %1$s can use it according to its privacy policy. For example, %1$s could send you updates and other information at that address.</string>
     <string name="tw__share_email_title">[[94021]] Share your email address</string>
 </resources>

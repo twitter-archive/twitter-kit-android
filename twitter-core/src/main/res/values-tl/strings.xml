@@ -21,6 +21,6 @@
     <string name="tw__allow_btn_txt">Payagan</string>
     <string name="tw__login_btn_txt">Mag-log in gamit ang Twitter</string>
     <string name="tw__not_now_btn_txt">Hindi ngayon</string>
-    <string name="tw__share_email_desc">Makakuha ng mga update at iba pang impormasyon mula kay %1$s kapag binigyan mo siya ng access sa email mo sa iyong Twitter account na \@%2$s</string>
+    <string name="tw__share_email_desc">Payagan si %1$s na mag-access ng email address na nakaugnay sa Twitter account mong \@%2$s nang magamit ito ni %1$s ayon sa patakaran sa pagkapribado. Halimbawa, maaaring magpadala sa iyo si %1$s ng mga update at iba pang impormasyon sa address na iyan.</string>
     <string name="tw__share_email_title">Ibahagi ang email address mo</string>
 </resources>

@@ -21,6 +21,9 @@
     <string name="tw__like_tweet">Suka Tweet</string>
     <string name="tw__liked_tweet">Batal Suka</string>
     <string name="tw__loading_tweet">Memuatkan Tweet</string>
+    <string name="tw__pause">jeda</string>
+    <string name="tw__play">main</string>
+    <string name="tw__replay">ulang main</string>
     <string name="tw__retweeted_by_format">Ditweet semula oleh %1$s</string>
     <string name="tw__share_content_format">Semak Tweet \@%1$s\ : https://twitter.com/%1$s/status/%2$s</string>
     <string name="tw__share_subject_format">Tweet daripada %1$s (\@%2$s)</string>

@@ -21,6 +21,9 @@
     <string name="tw__like_tweet">টুইট পছন্দ করুন</string>
     <string name="tw__liked_tweet">পছন্দ ফিরিয়ে নিন</string>
     <string name="tw__loading_tweet">টুইট লোড হচ্ছে</string>
+    <string name="tw__pause">বিরতি</string>
+    <string name="tw__play">প্লে</string>
+    <string name="tw__replay">রিপ্লে</string>
     <string name="tw__retweeted_by_format">%1$s পুনঃটুইট করেছেন</string>
     <string name="tw__share_content_format">\@%1$s -এর টুইট দেখুন: https://twitter.com/%1$s/status/%2$s</string>
     <string name="tw__share_subject_format">%1$s (\@%2$s) থেকে টুইট</string>

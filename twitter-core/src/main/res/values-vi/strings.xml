@@ -21,6 +21,6 @@
     <string name="tw__allow_btn_txt">Cho phép</string>
     <string name="tw__login_btn_txt">Đăng nhập bằng Twitter</string>
     <string name="tw__not_now_btn_txt">Không phải bây giờ</string>
-    <string name="tw__share_email_desc">Nhận các cập nhật và thông tin khác từ %1$s khi bạn cho phép họ truy cập email trên tài khoản Twitter của bạn \@%2$s</string>
+    <string name="tw__share_email_desc">Cho phép %1$s truy cập địa chỉ email gắn liền với tài khoản Twitter của bạn \@%2$s để %1$s có thể sử dụng địa chỉ đó theo chính sách riêng tư của mình. Ví dụ, %1$s có thể gửi cho bạn những cập nhật và thông tin khác theo địa chỉ đó.</string>
     <string name="tw__share_email_title">Chia sẻ địa chỉ email của bạn</string>
 </resources>

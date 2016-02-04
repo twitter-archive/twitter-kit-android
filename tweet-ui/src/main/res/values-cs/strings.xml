@@ -21,6 +21,9 @@
     <string name="tw__like_tweet">Lajknout Tweet</string>
     <string name="tw__liked_tweet">Vzít lajk zpět</string>
     <string name="tw__loading_tweet">Načítání tweetu</string>
+    <string name="tw__pause">pozastavit</string>
+    <string name="tw__play">přehrát</string>
+    <string name="tw__replay">přehrát od začátku</string>
     <string name="tw__retweeted_by_format">Retweetnul uživatel %1$s</string>
     <string name="tw__share_content_format">Podívejte se na tweet uživatele \@%1$s: https://twitter.com/%1$s/status/%2$s</string>
     <string name="tw__share_subject_format">Tweet od uživatele %1$s (\@%2$s)</string>

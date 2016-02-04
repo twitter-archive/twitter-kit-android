@@ -21,6 +21,9 @@
     <string name="tw__like_tweet">إعجاب بالتغريدة</string>
     <string name="tw__liked_tweet">إلغاء الإعجاب</string>
     <string name="tw__loading_tweet">يتم تحميل التغريدة</string>
+    <string name="tw__pause">توقف</string>
+    <string name="tw__play">تشغيل</string>
+    <string name="tw__replay">إعادة التشغيل</string>
     <string name="tw__retweeted_by_format">مُعاد تغريدها بواسطة %1$s</string>
     <string name="tw__share_content_format">اطلع على تغريدة ‎\@%1$s\: https://twitter.com/%1$s/status/%2$s</string>
     <string name="tw__share_subject_format">تغريدة من %1$s (‎\@%2$s)</string>
