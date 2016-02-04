@@ -44,6 +44,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import retrofit.client.Response;
+import retrofit.http.Body;
 import retrofit.http.Header;
 import retrofit.http.Query;
 import retrofit.mime.TypedInput;
@@ -102,7 +103,7 @@ public class OAuth1aServiceTest {
         service.api = new MockOAuth1aService() {
             @Override
             public void getTempToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
-                                     Callback<Response> cb) {
+                                     @Body String dummy, Callback<Response> cb) {
                 assertTrue(auth.contains(OAuthConstants.PARAM_CALLBACK));
             }
         };
@@ -117,7 +118,7 @@ public class OAuth1aServiceTest {
             @Override
             public void getAccessToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
                                        @Query(OAuthConstants.PARAM_VERIFIER) String innerVerifier,
-                                       Callback<Response> cb) {
+                                       @Body String dummy, Callback<Response> cb) {
 
                 assertEquals(verifier, innerVerifier);
                 assertNotNull(auth);
@@ -311,13 +312,13 @@ public class OAuth1aServiceTest {
 
         @Override
         public void getTempToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
-                Callback<Response> cb) {
+                @Body String dummy, Callback<Response> cb) {
             // Does nothing
         }
 
         @Override
         public void getAccessToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
-                @Query(OAuthConstants.PARAM_VERIFIER) String verifier,
+                @Query(OAuthConstants.PARAM_VERIFIER) String verifier, @Body String dummy,
                 Callback<Response> cb) {
             // Does nothing
         }

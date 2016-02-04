@@ -29,6 +29,7 @@ import com.twitter.sdk.android.core.internal.TwitterApi;
 
 import javax.net.ssl.SSLSocketFactory;
 
+import retrofit.http.Body;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.Header;
@@ -44,7 +45,7 @@ public class OAuth2Service extends OAuthService {
     interface OAuth2Api {
         @POST("/1.1/guest/activate.json")
         void getGuestToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
-                Callback<GuestTokenResponse> cb);
+                @Body String dummy, Callback<GuestTokenResponse> cb);
 
         @Headers("Content-Type: application/x-www-form-urlencoded;charset=UTF-8")
         @FormUrlEncoded
@@ -121,7 +122,7 @@ public class OAuth2Service extends OAuthService {
      */
     public void requestGuestToken(final Callback<GuestTokenResponse> callback,
             OAuth2Token appAuthToken) {
-        api.getGuestToken(getAuthorizationHeader(appAuthToken), callback);
+        api.getGuestToken(getAuthorizationHeader(appAuthToken), "", callback);
     }
 
     /**

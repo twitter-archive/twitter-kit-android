@@ -40,6 +40,7 @@ import java.util.TreeMap;
 import javax.net.ssl.SSLSocketFactory;
 
 import retrofit.client.Response;
+import retrofit.http.Body;
 import retrofit.http.Header;
 import retrofit.http.POST;
 import retrofit.http.Query;
@@ -53,11 +54,11 @@ public class OAuth1aService extends OAuthService {
     interface OAuthApi {
         @POST("/oauth/request_token")
         void getTempToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
-                Callback<Response> cb);
+                @Body String dummy, Callback<Response> cb);
 
         @POST("/oauth/access_token")
         void getAccessToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
-                @Query(OAuthConstants.PARAM_VERIFIER) String verifier,
+                @Query(OAuthConstants.PARAM_VERIFIER) String verifier, @Body String dummy,
                 Callback<Response> cb);
     }
 
@@ -83,9 +84,8 @@ public class OAuth1aService extends OAuthService {
         final TwitterAuthConfig config = getTwitterCore().getAuthConfig();
         final String url = getTempTokenUrl();
 
-        api.getTempToken(new OAuth1aHeaders().getAuthorizationHeader(config, null, buildCallbackUrl
-                        (config),
-                "POST", url, null), getCallbackWrapper(callback));
+        api.getTempToken(new OAuth1aHeaders().getAuthorizationHeader(config, null,
+                buildCallbackUrl(config), "POST", url, null), "", getCallbackWrapper(callback));
     }
 
     String getTempTokenUrl() {
@@ -116,11 +116,9 @@ public class OAuth1aService extends OAuthService {
             TwitterAuthToken requestToken, String verifier) {
         final String url = getAccessTokenUrl();
         final String authHeader = new OAuth1aHeaders().getAuthorizationHeader(getTwitterCore()
-                        .getAuthConfig(),
-                requestToken,
-                null, "POST", url, null);
+                        .getAuthConfig(), requestToken, null, "POST", url, null);
 
-        api.getAccessToken(authHeader, verifier, getCallbackWrapper(callback));
+        api.getAccessToken(authHeader, verifier, "", getCallbackWrapper(callback));
     }
 
     String getAccessTokenUrl() {

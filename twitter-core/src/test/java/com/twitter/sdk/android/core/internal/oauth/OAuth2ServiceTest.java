@@ -32,6 +32,7 @@ import org.robolectric.annotation.Config;
 
 import java.lang.reflect.Method;
 
+import retrofit.http.Body;
 import retrofit.http.Field;
 import retrofit.http.Header;
 import retrofit.http.Headers;
@@ -71,7 +72,7 @@ public class OAuth2ServiceTest  {
 
         @Override
         public void getGuestToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
-                Callback<GuestTokenResponse> cb) {
+                @Body String dummy, Callback<GuestTokenResponse> cb) {
             // Does nothing
         }
 
@@ -86,7 +87,7 @@ public class OAuth2ServiceTest  {
     @Test
     public void testGetGuestToken_url() throws NoSuchMethodException {
         final Method method = OAuth2Service.OAuth2Api.class
-                .getDeclaredMethod("getGuestToken", String.class, Callback.class);
+                .getDeclaredMethod("getGuestToken", String.class, String.class, Callback.class);
         final POST post = method.getAnnotation(POST.class);
         assertEquals("/1.1/guest/activate.json", post.value());
     }
@@ -149,7 +150,7 @@ public class OAuth2ServiceTest  {
         service.api = new MockOAuth2Api() {
             @Override
             public void getGuestToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
-                                          Callback<GuestTokenResponse> cb) {
+                    @Body String dummy, Callback<GuestTokenResponse> cb) {
                 assertEquals(bearerAuth, auth);
             }
         };
@@ -163,7 +164,7 @@ public class OAuth2ServiceTest  {
         service.api = new MockOAuth2Api() {
             @Override
             public void getGuestToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
-                                          Callback<GuestTokenResponse> cb) {
+                    @Body String dummy, Callback<GuestTokenResponse> cb) {
                 cb.success(new Result<>(GUEST_RESPONSE, null));
             }
 
@@ -194,7 +195,7 @@ public class OAuth2ServiceTest  {
         service.api = new MockOAuth2Api() {
             @Override
             public void getGuestToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
-                                          Callback<GuestTokenResponse> cb) {
+                    @Body String dummy, Callback<GuestTokenResponse> cb) {
                 cb.failure(mock(TwitterException.class));
             }
 
@@ -225,7 +226,7 @@ public class OAuth2ServiceTest  {
         service.api = new MockOAuth2Api() {
             @Override
             public void getGuestToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
-                    Callback<GuestTokenResponse> cb) {
+                    @Body String dummy, Callback<GuestTokenResponse> cb) {
                 // We should never get here, since app auth failure would prevent us from making the
                 // guest token request.
                 fail();
