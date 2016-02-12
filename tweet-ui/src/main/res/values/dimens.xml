@@ -101,19 +101,12 @@
     <dimen name="tw__compact_tweet_action_bar_offset_left">-12dp</dimen>
 
     <!-- Text sizes -->
-    <!--density-independent(micro 10dp, small 12dp, medium 14dp, large 16dp)-->
-    <dimen name="tw__text_size_large">16dp</dimen>
-    <dimen name="tw__text_size_medium">14dp</dimen>
-    <dimen name="tw__text_size_small">12dp</dimen>
+    <!--density-independent(micro 10sp, small 12sp, medium 14sp, large 16sp)-->
+    <dimen name="tw__text_size_large">16sp</dimen>
+    <dimen name="tw__text_size_medium">14sp</dimen>
+    <dimen name="tw__text_size_small">12sp</dimen>
 
-    <!-- login -->
-    <dimen name="tw__login_btn_radius">5dp</dimen>
-    <dimen name="tw__login_btn_text_size">14sp</dimen>
-    <dimen name="tw__login_btn_height">32dp</dimen>
-    <dimen name="tw__login_btn_drawable_padding">4dp</dimen>
-    <dimen name="tw__login_btn_left_padding">8dp</dimen>
-    <dimen name="tw__login_btn_right_padding">12dp</dimen>
-
+    <!-- Video controls -->
     <dimen name="tw__seekbar_thumb_size">32dp</dimen>
     <dimen name="tw__seekbar_thumb_outer_padding">7dp</dimen>
     <dimen name="tw__seekbar_thumb_inner_padding">13dp</dimen>
