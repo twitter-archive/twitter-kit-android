@@ -23,13 +23,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.app.BuildConfig;
 import com.example.app.R;
 import com.example.app.twittercore.TwitterCoreMainActivity;
+import com.mopub.nativeads.MoPubAdAdapter;
+import com.mopub.nativeads.RequestParameters;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterAuthException;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.mopub.TwitterStaticNativeAdRenderer;
 import com.twitter.sdk.android.tweetui.TweetTimelineListAdapter;
 import com.twitter.sdk.android.tweetui.UserTimeline;
 
@@ -66,7 +70,14 @@ public class UserTimelineFragment extends ListFragment {
                 .setViewStyle(R.style.tw__TweetLightWithActionsStyle)
                 .setOnActionCallback(actionCallback)
                 .build();
-        setListAdapter(adapter);
+
+        final RequestParameters params = new RequestParameters.Builder().build();
+        final MoPubAdAdapter wrapped = new MoPubAdAdapter(getActivity(), adapter);
+        TwitterStaticNativeAdRenderer adRenderer = new TwitterStaticNativeAdRenderer();
+        wrapped.registerAdRenderer(adRenderer);
+        wrapped.loadAds(BuildConfig.MOPUB_AD_UNIT_ID, params);
+
+        setListAdapter(wrapped);
     }
 
     @Override

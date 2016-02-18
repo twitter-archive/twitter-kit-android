@@ -29,6 +29,7 @@ apply plugin: 'spoon'
 
 repositories {
     mavenCentral()
+    jcenter()
     maven { url 'https://maven.fabric.io/public' }
 }
 
@@ -49,10 +50,12 @@ android {
         debug {
             buildConfigField "String", "CONSUMER_KEY", "\"${props.getProperty("twitterConsumerKey")}\""
             buildConfigField "String", "CONSUMER_SECRET", "\"${props.getProperty("twitterConsumerSecret")}\""
+            buildConfigField "String", "MOPUB_AD_UNIT_ID", "\"${props.getProperty("mopubAdUnitId")}\""
         }
         release {
             buildConfigField "String", "CONSUMER_KEY", "\"${props.getProperty("twitterConsumerKey")}\""
             buildConfigField "String", "CONSUMER_SECRET", "\"${props.getProperty("twitterConsumerSecret")}\""
+            buildConfigField "String", "MOPUB_AD_UNIT_ID", "\"${props.getProperty("mopubAdUnitId")}\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt')
         }
@@ -80,7 +83,9 @@ android {
 
 dependencies {
     debugCompile project(path: ':sdk:twitter:twitter', configuration: 'debug')
+    debugCompile project(path: ':sdk:twitter:twitter-mopub', configuration: 'debug')
     releaseCompile project(path: ':sdk:twitter:twitter', configuration: 'release')
+    releaseCompile project(path: ':sdk:twitter:twitter-mopub', configuration: 'release')
 
     compile rootProject.appCompat
     compile rootProject.design
