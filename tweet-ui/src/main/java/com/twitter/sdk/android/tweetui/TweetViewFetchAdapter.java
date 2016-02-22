@@ -104,7 +104,7 @@ public class TweetViewFetchAdapter<T extends BaseTweetView> extends TweetViewAda
      * the given callback's success or failure.
      * @param tweetIds Tweet ids
      * @param loadCallback callback
-     * @deprecated Use setTweetIds(List<Long> tweetIds, Callback<List<Tweet> cb) instead.
+     * @deprecated Use {@link #setTweetIds(List, Callback)} instead.
      */
     @Deprecated
     public void setTweetIds(final List<Long> tweetIds,

@@ -42,7 +42,7 @@ public class MediaEntity extends UrlEntity {
      * A http:// URL pointing directly to the uploaded media file.
      *
      * For media in direct messages, media_url is the same https URL as media_url_https and must be
-     * accessed via an authenticated twitter.com session or by signing a request with the user’s
+     * accessed via an authenticated twitter.com session or by signing a request with the user's
      * access token using OAuth 1.0A. It is not possible to directly embed these images in a web
      * page.
      */
@@ -53,7 +53,7 @@ public class MediaEntity extends UrlEntity {
      * A https:// URL pointing directly to the uploaded media file, for embedding on https pages.
      *
      * For media in direct messages, media_url_https must be accessed via an authenticated
-     * twitter.com session or by signing a request with the user’s access token using OAuth 1.0A.
+     * twitter.com session or by signing a request with the user's access token using OAuth 1.0A.
      * It is not possible to directly embed these images in a web page.
      */
     @SerializedName("media_url_https")

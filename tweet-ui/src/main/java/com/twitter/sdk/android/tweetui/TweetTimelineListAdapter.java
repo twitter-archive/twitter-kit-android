@@ -37,7 +37,7 @@ public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
     /**
      * Constructs a TweetTimelineListAdapter for the given Tweet Timeline.
      * @param context the context for row views.
-     * @param timeline a Timeline<Tweet> providing access to Tweet data items.
+     * @param timeline a Timeline&lt;Tweet&gt; providing access to Tweet data items.
      * @throws java.lang.IllegalArgumentException if timeline is null
      */
     public TweetTimelineListAdapter(Context context, Timeline<Tweet> timeline) {

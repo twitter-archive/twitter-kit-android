@@ -53,7 +53,7 @@ public class Place {
     public final String countryCode;
 
     /**
-     * Full human-readable representation of the place’s name.
+     * Full human-readable representation of the place's name.
      */
     @SerializedName("full_name")
     public final String fullName;
@@ -65,7 +65,7 @@ public class Place {
     public final String id;
 
     /**
-     * Short human-readable representation of the place’s name.
+     * Short human-readable representation of the place's name.
      */
     @SerializedName("name")
     public final String name;
@@ -107,7 +107,7 @@ public class Place {
         public final List<List<List<Double>>> coordinates;
 
         /**
-         * The type of data encoded in the coordinates property. This will be “Polygon” for bounding
+         * The type of data encoded in the coordinates property. This will be "Polygon" for bounding
          * boxes.
          */
         @SerializedName("type")

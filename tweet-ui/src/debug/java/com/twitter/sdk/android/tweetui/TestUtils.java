@@ -48,7 +48,7 @@ public final class TestUtils {
 
 
     /**
-     * Gets the color of the ImageView's ColorDrawable or 0 for API < 11.
+     * Gets the color of the ImageView's ColorDrawable or 0 for API &lt; 11.
      * @param imageView an ImageView with a ColorDrawable
      * @return int color of the ImageView
      */

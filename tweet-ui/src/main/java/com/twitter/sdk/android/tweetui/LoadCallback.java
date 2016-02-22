@@ -22,7 +22,7 @@ import com.twitter.sdk.android.core.TwitterException;
 /**
  * Callback for making an API request through a load utility. Logic in
  * callbacks is executed on the main thread.
- * @param <T> type of requested item (e.g. Tweet, List<Tweet>)
+ * @param <T> type of requested item (e.g. Tweet, List&lt;Tweet&gt;)
  * @deprecated Use com.twitter.sdk.android.core.Callback instead.
  */
 @Deprecated

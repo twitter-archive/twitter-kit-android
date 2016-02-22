@@ -34,9 +34,9 @@ public interface CollectionService {
      * exist in the collection outside of what was in range of the current request.
      * @param id The identifier of the Collection to return results for (e.g. "custom-5394878324")
      * @param count Specifies the number of Tweets to try and retrieve, up to a maximum of 200 per
-     *              distinct request. The value of count is best thought of as an “up to” parameter;
+     *              distinct request. The value of count is best thought of as an "up to" parameter;
      *              receiving less results than the specified count does not necessarily mean there
-     *              aren’t remaining results to fetch.
+     *              aren't remaining results to fetch.
      * @param maxPosition Returns results with a position value less than or equal to the specified
      *                    position.
      * @param minPosition Returns results with a position greater than the specified position.

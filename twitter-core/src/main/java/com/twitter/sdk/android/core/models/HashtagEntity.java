@@ -25,7 +25,7 @@ import com.google.gson.annotations.SerializedName;
 public class HashtagEntity extends Entity {
 
     /**
-     * Name of the hashtag, minus the leading ‘#’ character.
+     * Name of the hashtag, minus the leading '#' character.
      */
     @SerializedName("text")
     public final String text;

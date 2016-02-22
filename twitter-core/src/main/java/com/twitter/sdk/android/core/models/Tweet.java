@@ -23,7 +23,7 @@ import java.util.List;
 
 /**
  * A Tweet is the basic atomic building block of all things Twitter. Tweets, also known more
- * generically as “status updates.” Tweets can be embedded, replied to, favorited, unfavorited and
+ * generically as "status updates." Tweets can be embedded, replied to, favorited, unfavorited and
  * deleted.
  */
 public class Tweet implements Identifiable {
@@ -46,7 +46,7 @@ public class Tweet implements Identifiable {
 
     /**
      * Perspectival. Only surfaces on methods supporting the include_my_retweet parameter, when set
-     * to true. Details the Tweet ID of the user’s own retweet (if existent) of this Tweet.
+     * to true. Details the Tweet ID of the user's own retweet (if existent) of this Tweet.
      */
     @SerializedName("current_user_retweet")
     public final Object currentUserRetweet;
@@ -64,7 +64,7 @@ public class Tweet implements Identifiable {
     public final TweetEntities extendedEtities;
 
     /**
-     * Nullable. Indicates approximately how many times this Tweet has been “favorited” by Twitter
+     * Nullable. Indicates approximately how many times this Tweet has been "favorited" by Twitter
      * users.
      */
     @SerializedName("favorite_count")
@@ -103,28 +103,28 @@ public class Tweet implements Identifiable {
 
     /**
      * Nullable. If the represented Tweet is a reply, this field will contain the screen name of
-     * the original Tweet’s author.
+     * the original Tweet's author.
      */
     @SerializedName("in_reply_to_screen_name")
     public final String inReplyToScreenName;
 
     /**
      * Nullable. If the represented Tweet is a reply, this field will contain the integer
-     * representation of the original Tweet’s ID.
+     * representation of the original Tweet's ID.
      */
     @SerializedName("in_reply_to_status_id")
     public final long inReplyToStatusId;
 
     /**
      * Nullable. If the represented Tweet is a reply, this field will contain the string
-     * representation of the original Tweet’s ID.
+     * representation of the original Tweet's ID.
      */
     @SerializedName("in_reply_to_status_id_str")
     public final String inReplyToStatusIdStr;
 
     /**
      * Nullable. If the represented Tweet is a reply, this field will contain the integer
-     * representation of the original Tweet’s author ID. This will not necessarily always be the
+     * representation of the original Tweet's author ID. This will not necessarily always be the
      * user directly mentioned in the Tweet.
      */
     @SerializedName("in_reply_to_user_id")
@@ -132,7 +132,7 @@ public class Tweet implements Identifiable {
 
     /**
      * Nullable. If the represented Tweet is a reply, this field will contain the string
-     * representation of the original Tweet’s author ID. This will not necessarily always be the
+     * representation of the original Tweet's author ID. This will not necessarily always be the
      * user directly mentioned in the Tweet.
      */
     @SerializedName("in_reply_to_user_id_str")
@@ -140,7 +140,7 @@ public class Tweet implements Identifiable {
 
     /**
      * Nullable. When present, indicates a BCP 47 language identifier corresponding to the
-     * machine-detected language of the Tweet text, or “und” if no language could be detected.
+     * machine-detected language of the Tweet text, or "und" if no language could be detected.
      */
     @SerializedName("lang")
     public final String lang;
@@ -154,7 +154,7 @@ public class Tweet implements Identifiable {
 
     /**
      * Nullable. This field only surfaces when a tweet contains a link. The meaning of the field
-     * doesn’t pertain to the tweet content itself, but instead it is an indicator that the URL
+     * doesn't pertain to the tweet content itself, but instead it is an indicator that the URL
      * contained in the tweet may contain content or media identified as sensitive content.
      */
     @SerializedName("possibly_sensitive")
@@ -162,14 +162,14 @@ public class Tweet implements Identifiable {
 
     /**
      * A set of key-value pairs indicating the intended contextual delivery of the containing Tweet.
-     * Currently used by Twitter’s Promoted Products.
+     * Currently used by Twitter's Promoted Products.
      */
     @SerializedName("scopes")
     public final Object scopes;
 
     /**
      * Number of times this Tweet has been retweeted. This field is no longer capped at 99 and will
-     * not turn into a String for “100+”
+     * not turn into a String for "100+"
      */
     @SerializedName("retweet_count")
     public final int retweetCount;
@@ -225,7 +225,7 @@ public class Tweet implements Identifiable {
     public final User user;
 
     /**
-     * When present and set to “true”, it indicates that this piece of content has been withheld due
+     * When present and set to "true", it indicates that this piece of content has been withheld due
      * to a DMCA complaint.
      */
     @SerializedName("withheld_copyright")
@@ -234,14 +234,14 @@ public class Tweet implements Identifiable {
     /**
      * When present, indicates a list of uppercase two-letter country codes this content is withheld
      * from. Twitter supports the following non-country values for this field:
-     * “XX” - Content is withheld in all countries
-     * “XY” - Content is withheld due to a DMCA request.
+     * "XX" - Content is withheld in all countries
+     * "XY" - Content is withheld due to a DMCA request.
      */
     @SerializedName("withheld_in_countries")
     public final List<String> withheldInCountries;
 
     /**
-     * When present, indicates whether the content being withheld is the “status” or a “user.”
+     * When present, indicates whether the content being withheld is the "status" or a "user."
      */
     @SerializedName("withheld_scope")
     public final String withheldScope;

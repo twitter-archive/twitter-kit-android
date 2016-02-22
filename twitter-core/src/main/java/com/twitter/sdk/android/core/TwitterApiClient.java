@@ -89,7 +89,7 @@ public class TwitterApiClient {
      *
      * @param session Session to be used to create the API calls.
      *
-     * @throws @{link java.lang.IllegalArgumentException} if TwitterSession argument is null
+     * @throws java.lang.IllegalArgumentException if TwitterSession argument is null
      */
     public TwitterApiClient(Session session) {
         this(TwitterCore.getInstance().getAuthConfig(), session, new TwitterApi(),

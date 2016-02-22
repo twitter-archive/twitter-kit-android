@@ -81,7 +81,7 @@ public final class TweetUtils {
      * Loads a single Tweet by id.
      * @param tweetId Tweet id
      * @param loadCallback callback
-     * @deprecated Use loadTweet(long tweetId, Callback<Tweet>> cb) instead.
+     * @deprecated Use {@link #loadTweet(long, Callback)} instead.
      */
     @Deprecated
     public static void loadTweet(final long tweetId, final LoadCallback<Tweet> loadCallback) {
@@ -100,7 +100,7 @@ public final class TweetUtils {
      * Loads a List of Tweets by id. Returns Tweets in the order requested.
      * @param tweetIds List of Tweet ids
      * @param loadCallback callback
-     * @deprecated Use loadTweets(List<Long> tweetIds, Callback<List<Tweet>>> cb) instead.
+     * @deprecated Use {@link #loadTweet(long, Callback)} instead.
      */
     @Deprecated
     public static void loadTweets(final List<Long> tweetIds,

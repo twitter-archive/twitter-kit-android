@@ -24,7 +24,7 @@ import io.fabric.sdk.android.Fabric;
 /**
  * GuestCallback is a wrapper callback which clears the AppSession on app or guest auth token
  * errors. GuestCallback should be used when making requests using guest auth.
- * @param <T> success result type (e.g. Tweet, List<Tweet>, etc.)
+ * @param <T> success result type (e.g. Tweet, List&lt;Tweet&gt;, etc.)
  */
 public class GuestCallback<T> extends Callback<T> {
     protected SessionManager<AppSession> appSessionManager;

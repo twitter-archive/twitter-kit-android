@@ -54,7 +54,7 @@ public class TwitterAuthConfig implements Parcelable {
      * @param consumerKey    The consumer key.
      * @param consumerSecret The consumer secret.
      *
-     * @throws {@link java.lang.IllegalArgumentException} if consumer key or consumer secret is null.
+     * @throws java.lang.IllegalArgumentException if consumer key or consumer secret is null.
      */
     public TwitterAuthConfig(String consumerKey, String consumerSecret) {
         if (consumerKey == null || consumerSecret == null) {

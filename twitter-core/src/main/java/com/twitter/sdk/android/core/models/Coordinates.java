@@ -31,14 +31,14 @@ public class Coordinates {
     public static final int INDEX_LATITUDE = 1;
 
     /**
-     * The longitude and latitude of the Tweet’s location, as an collection in the form of
+     * The longitude and latitude of the Tweet's location, as an collection in the form of
      * [longitude, latitude].
      */
     @SerializedName("coordinates")
     public final List<Double> coordinates;
 
     /**
-     * The type of data encoded in the coordinates property. This will be “Point” for Tweet
+     * The type of data encoded in the coordinates property. This will be "Point" for Tweet
      * coordinates fields.
      */
     @SerializedName("type")

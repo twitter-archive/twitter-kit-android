@@ -238,6 +238,7 @@ public interface StatusesService {
      * GET statuses / show / :id is used to retrieve a single Tweet object.
      * <p>
      * There are a few things to note when using this method.
+     * <ul>
      * <li>You must be following a protected user to be able to see their most recent tweets. If you
      * don't follow a protected user their status will be removed.</li>
      * <li>The order of Tweet IDs may not match the order of tweets in the returned array.</li>
@@ -247,6 +248,7 @@ public interface StatusesService {
      * <li>If none of your lookup criteria matches valid Tweet IDs an empty array will be returned
      * for map=false.</li>
      * <li>You are strongly encouraged to use a POST for larger requests.</li>
+     * </ul>
      *
      * @param id (required) The comma separated ids of the desired Tweets as a string.
      * @param includeEntities (optional) The entities node will be disincluded when set to false.

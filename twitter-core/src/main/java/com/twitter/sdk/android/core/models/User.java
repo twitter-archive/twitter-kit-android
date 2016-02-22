@@ -30,7 +30,7 @@ public class User implements Serializable, Identifiable {
     public static final long INVALID_ID = -1L;
 
     /**
-     * Indicates that the user has an account with “contributor mode” enabled, allowing for Tweets
+     * Indicates that the user has an account with "contributor mode" enabled, allowing for Tweets
      * issued by the user to be co-authored by another account. Rarely true.
      */
     @SerializedName("contributors_enabled")
@@ -77,7 +77,7 @@ public class User implements Serializable, Identifiable {
     public final UserEntities entities;
 
     /**
-     * The number of tweets this user has favorited in the account’s lifetime. British spelling used
+     * The number of tweets this user has favorited in the account's lifetime. British spelling used
      * in the field name for historical reasons.
      */
     @SerializedName("favourites_count")
@@ -92,14 +92,14 @@ public class User implements Serializable, Identifiable {
 
     /**
      * The number of followers this account currently has. Under certain conditions of duress, this
-     * field will temporarily indicate “0.”
+     * field will temporarily indicate "0."
      */
     @SerializedName("followers_count")
     public final int followersCount;
 
     /**
-     * The number of users this account is following (AKA their “followings”). Under certain
-     * conditions of duress, this field will temporarily indicate “0.”
+     * The number of users this account is following (AKA their "followings"). Under certain
+     * conditions of duress, this field will temporarily indicate "0."
      */
     @SerializedName("friends_count")
     public final int friendsCount;
@@ -130,13 +130,13 @@ public class User implements Serializable, Identifiable {
     public final String idStr;
 
     /**
-     * When true, indicates that the user is a participant in Twitter’s translator community.
+     * When true, indicates that the user is a participant in Twitter's translator community.
      */
     @SerializedName("is_translator")
     public final boolean isTranslator;
 
     /**
-     * The BCP 47 code for the user’s self-declared user interface language. May or may not have
+     * The BCP 47 code for the user's self-declared user interface language. May or may not have
      * anything to do with the content of their Tweets.
      */
     @SerializedName("lang")
@@ -149,14 +149,14 @@ public class User implements Serializable, Identifiable {
     public final int listedCount;
 
     /**
-     * Nullable. The user-defined location for this account’s profile. Not necessarily a location
+     * Nullable. The user-defined location for this account's profile. Not necessarily a location
      * nor parseable. This field will occasionally be fuzzily interpreted by the Search service.
      */
     @SerializedName("location")
     public final String location;
 
     /**
-     * The name of the user, as they’ve defined it. Not necessarily a person’s name. Typically
+     * The name of the user, as they've defined it. Not necessarily a person's name. Typically
      * capped at 20 characters, but subject to change.
      */
     @SerializedName("name")
@@ -181,14 +181,14 @@ public class User implements Serializable, Identifiable {
     public final String profileBackgroundImageUrlHttps;
 
     /**
-     * When true, indicates that the user’s profile_background_image_url should be tiled when
+     * When true, indicates that the user's profile_background_image_url should be tiled when
      * displayed.
      */
     @SerializedName("profile_background_tile")
     public final boolean profileBackgroundTile;
 
     /**
-     * The HTTPS-based URL pointing to the standard web representation of the user’s uploaded
+     * The HTTPS-based URL pointing to the standard web representation of the user's uploaded
      * profile banner. By adding a final path element of the URL, you can obtain different image
      * sizes optimized for specific displays. In the future, an API method will be provided to serve
      * these URLs so that you need not modify the original URL. For size variations, please see
@@ -198,13 +198,13 @@ public class User implements Serializable, Identifiable {
     public final String profileBannerUrl;
 
     /**
-     * A HTTP-based URL pointing to the user’s avatar image. See User Profile Images and Banners.
+     * A HTTP-based URL pointing to the user's avatar image. See User Profile Images and Banners.
      */
     @SerializedName("profile_image_url")
     public final String profileImageUrl;
 
     /**
-     * A HTTPS-based URL pointing to the user’s avatar image.
+     * A HTTPS-based URL pointing to the user's avatar image.
      */
     @SerializedName("profile_image_url_https")
     public final String profileImageUrlHttps;
@@ -263,7 +263,7 @@ public class User implements Serializable, Identifiable {
     public final boolean showAllInlineMedia;
 
     /**
-     * Nullable. If possible, the user’s most recent tweet or retweet. In some circumstances, this
+     * Nullable. If possible, the user's most recent tweet or retweet. In some circumstances, this
      * data cannot be provided and this field will be omitted, null, or empty. Perspectival
      * attributes within tweets embedded within users cannot always be relied upon. See Why are
      * embedded objects stale or inaccurate?.
@@ -309,7 +309,7 @@ public class User implements Serializable, Identifiable {
     public final String withheldInCountries;
 
     /**
-     * When present, indicates whether the content being withheld is the “status” or a “user.”
+     * When present, indicates whether the content being withheld is the "status" or a "user."
      */
     @SerializedName("withheld_scope")
     public final String withheldScope;

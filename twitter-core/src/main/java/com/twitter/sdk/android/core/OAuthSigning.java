@@ -83,7 +83,7 @@ public class OAuthSigning {
      * Returns OAuth Echo header for <a href="https://dev.twitter.com/rest/reference/get/account/verify_credentials">verify_credentials</a> endpoint.
      *
      * @return A map of OAuth Echo headers
-     * @see {@link #getOAuthEchoHeaders(String, String, java.util.Map)}
+     * @see #getOAuthEchoHeaders(String, String, java.util.Map)
      */
     public Map<String, String> getOAuthEchoHeadersForVerifyCredentials() {
         return oAuth1aHeaders.getOAuthEchoHeaders(authConfig, authToken, null,
