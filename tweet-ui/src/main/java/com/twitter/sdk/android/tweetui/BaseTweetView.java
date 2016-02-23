@@ -26,7 +26,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +48,7 @@ import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.core.internal.UserUtils;
 import com.twitter.sdk.android.core.models.VideoInfo;
 import com.twitter.sdk.android.tweetui.internal.MediaBadgeView;
+import com.twitter.sdk.android.tweetui.internal.SpanClickHandler;
 import com.twitter.sdk.android.tweetui.internal.TweetMediaUtils;
 import com.twitter.sdk.android.tweetui.internal.TweetMediaView;
 
@@ -501,8 +501,6 @@ public abstract class BaseTweetView extends LinearLayout {
         final OnClickListener listener = new PermalinkClickListener();
 
         this.setOnClickListener(listener);
-        // Set the listener on the text so just plain text will still launch the permalink
-        contentView.setOnClickListener(listener);
     }
 
     /**
@@ -583,14 +581,11 @@ public abstract class BaseTweetView extends LinearLayout {
      */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void setText(Tweet displayTweet) {
-        contentView.setMovementMethod(LinkMovementMethod.getInstance());
-        // We need to reset the focus flags on the text view here since setting the movement
-        // method has set the flags to an undesirable state
-        contentView.setFocusable(false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             contentView.setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_NO);
         }
         final CharSequence tweetText = Utils.charSeqOrEmpty(getLinkifiedText(displayTweet));
+        SpanClickHandler.enableClicksOnSpans(contentView);
         if (!TextUtils.isEmpty(tweetText)) {
             contentView.setText(tweetText);
             contentView.setVisibility(VISIBLE);

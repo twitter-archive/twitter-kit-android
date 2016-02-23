@@ -17,13 +17,14 @@
 
 package com.twitter.sdk.android.tweetui;
 
+import android.graphics.Color;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
-import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.style.CharacterStyle;
-import android.text.style.ClickableSpan;
 import android.view.View;
+
+import com.twitter.sdk.android.tweetui.internal.ClickableLinkSpan;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -144,17 +145,12 @@ final class TweetTextLinkifier {
                     end -= len;
                     offset += len;
 
-                    final CharacterStyle span = new ClickableSpan() {
+                    final CharacterStyle span = new ClickableLinkSpan(Color.TRANSPARENT,
+                            linkColor, false) {
                         @Override
                         public void onClick(View widget) {
                             if (listener == null) return;
                             listener.onUrlClicked(url.url);
-                        }
-
-                        @Override
-                        public void updateDrawState(TextPaint ds) {
-                            ds.setColor(linkColor);
-                            ds.setUnderlineText(false);  // Links should not be underlined
                         }
                     };
                     spannable.setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
