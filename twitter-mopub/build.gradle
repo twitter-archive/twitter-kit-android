@@ -84,4 +84,14 @@ dependencies {
     compile (rootProject.mopub) {
         transitive = true;
     }
+
+    testCompile rootProject.mockito
+    testCompile rootProject.junit
+    testCompile(rootProject.robolectric) {
+        exclude group: 'commons-logging', module: 'commons-logging'
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+    }
+    testCompile (rootProject.junitAddons) {
+        transitive = false
+    }
 }
