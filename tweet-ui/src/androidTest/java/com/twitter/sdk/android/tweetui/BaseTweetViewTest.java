@@ -211,6 +211,35 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
         TestUtils.setLocale(getContext(), originalLocale);
     }
 
+    public void testSetTweetMediaClickListener() {
+        final BaseTweetView view = createView(context, TestFixtures.TEST_TWEET_LINK);
+        view.setTweetMediaClickListener(new TweetMediaClickListener() {
+            @Override
+            public void onMediaEntityClick(Tweet tweet, MediaEntity entity) {
+
+            }
+        });
+
+        assertNotNull(view.tweetMediaClickListener);
+    }
+
+    public void testSetTweetLinkClickListener() {
+        final BaseTweetView view = createView(context, TestFixtures.TEST_TWEET_LINK);
+        final TweetLinkClickListener linkClickListener = mock(TweetLinkClickListener.class);
+        view.setTweetLinkClickListener(linkClickListener);
+
+        assertNotNull(view.tweetLinkClickListener);
+
+        view.getLinkClickListener().onUrlClicked(TestFixtures.TEST_URL);
+        verify(linkClickListener).onLinkClick(TestFixtures.TEST_TWEET_LINK, TestFixtures.TEST_URL);
+    }
+
+    public void testSetTweet_defaultClickListener() {
+        final BaseTweetView view = createView(context, TestFixtures.TEST_TWEET_LINK);
+
+        assertNull(view.tweetLinkClickListener);
+    }
+
     // Permalink click
     public void testSetTweet_permalink() {
         final BaseTweetView view = createView(context, null);

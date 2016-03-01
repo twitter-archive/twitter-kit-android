@@ -72,6 +72,8 @@ public final class TestFixtures {
     public static final String INVALID_TIMESTAMP_INPUT = "Dec 12, 2013";
 
     public static final String TEST_PHOTO_URL = "https://pbs.twimg.com/media/someimage.jpg";
+    public static final String TEST_URL = "https://twitter.com/";
+    public static final String TEST_STATUS_WITH_LINK = "A test Tweet status message. " + TEST_URL;
 
     public static final String TEST_CONTENT_DESCRIPTION
             = "Alfred Verbose Named. A test Tweet status message.. Jun 6, 2012.";
@@ -82,6 +84,8 @@ public final class TestFixtures {
             = "https://twitter.com/twitter_unknown/status/1";
 
     public static final Tweet TEST_TWEET = createTweet(1L, TEST_USER, TEST_STATUS, TEST_TIMESTAMP,
+            false);
+    public static final Tweet TEST_TWEET_LINK = createTweet(1L, TEST_USER, TEST_STATUS_WITH_LINK, TEST_TIMESTAMP,
             false);
     public static final Tweet TEST_FAVORITED_TWEET = createTweet(1L, TEST_USER, TEST_STATUS,
             TEST_TIMESTAMP, true);
