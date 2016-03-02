@@ -23,12 +23,10 @@
     </style>
 
     <style name="tw__TweetContainer" parent="tw__TweetFillWidth">
-        <item name="android:background">@drawable/tw__bg_tweet</item>
         <item name="android:paddingTop">@dimen/tw__tweet_container_padding_top</item>
     </style>
 
     <style name="tw__CompactTweetContainer" parent="tw__TweetFillWidth">
-        <item name="android:background">@drawable/tw__bg_tweet_compact</item>
         <item name="android:paddingTop">@dimen/tw__compact_tweet_container_padding_top</item>
     </style>
 

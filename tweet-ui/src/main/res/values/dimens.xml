@@ -21,7 +21,6 @@
     <!--TweetView-->
 
     <!--Container-->
-    <dimen name="tw__tweet_container_width">1dp</dimen>
     <dimen name="tw__tweet_container_padding_top">0dp</dimen>
     <dimen name="tw__tweet_container_bottom_separator">18dp</dimen>
     <!--Retweeted By line-->
