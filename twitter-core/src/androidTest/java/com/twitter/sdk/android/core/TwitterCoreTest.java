@@ -24,8 +24,12 @@ import io.fabric.sdk.android.FabricAndroidTestCase;
 import io.fabric.sdk.android.FabricTestUtils;
 import io.fabric.sdk.android.KitStub;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import javax.net.ssl.SSLSocketFactory;
 
@@ -219,13 +223,15 @@ public class TwitterCoreTest extends FabricAndroidTestCase {
         // We don't want to use FabricTestUtils here because we want to test
         // this when onBackground is also running
         Fabric.with(getContext(), twitterCore);
-        final ParallelCallableExecutor<SSLSocketFactory> executor =
-                new ParallelCallableExecutor<>(
-                        new SSLSocketFactoryCallable(twitterCore),
-                        new SSLSocketFactoryCallable(twitterCore));
-        final List<SSLSocketFactory> sslSocketFactories = executor.getAllValues();
-        assertNotNull(sslSocketFactories.get(0));
-        assertSame(sslSocketFactories.get(0), sslSocketFactories.get(1));
+        final List<SSLSocketFactoryCallable> callables = Arrays.asList(
+                new SSLSocketFactoryCallable(twitterCore),
+                new SSLSocketFactoryCallable(twitterCore));
+        final ExecutorService executorService = Executors.newFixedThreadPool(callables.size());
+        final List<Future<SSLSocketFactory>> socketFactories = executorService.invokeAll(callables);
+
+        assertNotNull(socketFactories.get(0).get());
+        assertNotNull(socketFactories.get(1).get());
+        assertSame(socketFactories.get(0).get(), socketFactories.get(1).get());
     }
 
     private static class SSLSocketFactoryCallable implements Callable<SSLSocketFactory> {
