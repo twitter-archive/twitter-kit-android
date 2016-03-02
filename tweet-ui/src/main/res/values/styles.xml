@@ -22,6 +22,7 @@
         <item name="tw__container_bg_color">@color/tw__tweet_light_container_bg_color</item>
         <item name="tw__primary_text_color">@color/tw__tweet_light_primary_text_color</item>
         <item name="tw__action_color">@color/tw__tweet_action_color</item>
+        <item name="tw__action_highlight_color">@color/tw__tweet_action_light_highlight_color</item>
     </style>
 
     <style name="tw__TweetLightWithActionsStyle" parent="tw__TweetLightStyle">
@@ -32,6 +33,7 @@
         <item name="tw__container_bg_color">@color/tw__tweet_dark_container_bg_color</item>
         <item name="tw__primary_text_color">@color/tw__tweet_dark_primary_text_color</item>
         <item name="tw__action_color">@color/tw__tweet_action_color</item>
+        <item name="tw__action_highlight_color">@color/tw__tweet_action_dark_highlight_color</item>
     </style>
 
     <style name="tw__TweetDarkWithActionsStyle" parent="tw__TweetDarkStyle">

@@ -101,6 +101,7 @@ public abstract class BaseTweetView extends LinearLayout {
     int primaryTextColor;
     int secondaryTextColor;
     int actionColor;
+    int actionHighlightColor;
     int mediaBgColor;
     // resource id's
     int photoErrorResId;
@@ -274,6 +275,9 @@ public abstract class BaseTweetView extends LinearLayout {
         actionColor = a.getColor(
                 R.styleable.tw__TweetView_tw__action_color,
                 getResources().getColor(R.color.tw__tweet_action_color));
+        actionHighlightColor = a.getColor(
+                R.styleable.tw__TweetView_tw__action_highlight_color,
+                getResources().getColor(R.color.tw__tweet_action_light_highlight_color));
         tweetActionsEnabled =
                 a.getBoolean(R.styleable.tw__TweetView_tw__tweet_actions_enabled, false);
 
@@ -786,7 +790,7 @@ public abstract class BaseTweetView extends LinearLayout {
         final boolean stripPhotoEntity = TweetMediaUtils.hasPhoto(displayTweet);
 
         return TweetTextLinkifier.linkifyUrls(formattedText, getLinkClickListener(),
-                stripPhotoEntity, actionColor);
+                stripPhotoEntity, actionColor, actionHighlightColor);
     }
 
     void setContentDescription(Tweet displayTweet) {

@@ -18,6 +18,8 @@
 <!-- see go/colors -->
 <resources>
     <color name="tw__tweet_action_color">#55acee</color>
+    <color name="tw__tweet_action_light_highlight_color">#ebeef0</color>
+    <color name="tw__tweet_action_dark_highlight_color">#667580</color>
     <color name="tw__tweet_container_border">#1a000000</color>
 
     <color name="tw__tweet_light_container_bg_color">#ffffff</color>

@@ -17,7 +17,6 @@
 
 package com.twitter.sdk.android.tweetui;
 
-import android.graphics.Color;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -44,10 +43,13 @@ final class TweetTextLinkifier {
      * @param tweetText             The formatted and adjusted tweet wrapper
      * @param listener              A listener to handle link clicks
      * @param stripLastPhotoEntity  If true will strip the last photo entity from the linkified text
+     * @param linkColor             The link color
+     * @param linkHighlightColor    The link background color when pressed
      * @return                      The Tweet text with displayUrls substituted in
      */
     static CharSequence linkifyUrls(FormattedTweetText tweetText,
-            final LinkClickListener listener, boolean stripLastPhotoEntity, final int linkColor) {
+            final LinkClickListener listener, boolean stripLastPhotoEntity, final int linkColor,
+            final int linkHighlightColor) {
         if (tweetText == null) return null;
 
         if (TextUtils.isEmpty(tweetText.text)) {
@@ -74,7 +76,7 @@ final class TweetTextLinkifier {
          */
         final List<FormattedUrlEntity> combined = mergeAndSortEntities(urls, media);
 
-        addUrlEntities(spannable, combined, lastPhoto, listener, linkColor);
+        addUrlEntities(spannable, combined, lastPhoto, listener, linkColor, linkHighlightColor);
         return spannable;
     }
 
@@ -111,16 +113,17 @@ final class TweetTextLinkifier {
     /**
      * Swaps display urls in for t.co urls and adjusts the remaining entity indices.
      *
-     * @param spannable The final formatted text that we are building
-     * @param entities  The combined list of media and url entities
-     * @param lastPhoto If there is a final photo entity we should strip from the text
-     * @param listener  The link click listener to attach to the span
-     * @param linkColor The link color
+     * @param spannable          The final formatted text that we are building
+     * @param entities           The combined list of media and url entities
+     * @param lastPhoto          If there is a final photo entity we should strip from the text
+     * @param listener           The link click listener to attach to the span
+     * @param linkColor          The link color
+     * @param linkHighlightColor The link background color when pressed
      */
     private static void addUrlEntities(final SpannableStringBuilder spannable,
             final List<FormattedUrlEntity> entities,
             final FormattedMediaEntity lastPhoto,
-            final LinkClickListener listener, final int linkColor) {
+            final LinkClickListener listener, final int linkColor, final int linkHighlightColor) {
         if (entities == null || entities.isEmpty()) return;
 
         int offset = 0;
@@ -145,7 +148,7 @@ final class TweetTextLinkifier {
                     end -= len;
                     offset += len;
 
-                    final CharacterStyle span = new ClickableLinkSpan(Color.TRANSPARENT,
+                    final CharacterStyle span = new ClickableLinkSpan(linkHighlightColor,
                             linkColor, false) {
                         @Override
                         public void onClick(View widget) {
