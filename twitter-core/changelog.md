@@ -3,6 +3,10 @@
 
 ## Unreleased
 
+## v1.6.5
+ * Removed Verisign Class 3 Certificate from pinning list.
+ * Fixed JavaDocs.
+
 ## v1.6.4
 
 * Fixed retrieving auth token when using OkHttp 2.3+.

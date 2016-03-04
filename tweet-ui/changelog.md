@@ -4,6 +4,11 @@
 
 ## Unreleased
 
+## v1.10.0
+ * Added click listeners on Tweet views for URL and media clicks.
+ * Fixed click listeners on Tweet text so multiple events are not generated.
+ * Fixed JavaDocs.
+
 ## v1.9.1
 
 * Added gif or duration badge to media view.
