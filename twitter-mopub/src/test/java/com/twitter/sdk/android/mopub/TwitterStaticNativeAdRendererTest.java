@@ -30,6 +30,7 @@ import com.mopub.nativeads.StaticNativeAd;
 import com.mopub.network.MaxWidthImageLoader;
 import com.mopub.network.Networking;
 import com.mopub.volley.toolbox.ImageLoader;
+import com.twitter.sdk.android.mopub.internal.RoundedImageView;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -97,7 +98,7 @@ public class TwitterStaticNativeAdRendererTest {
         twitterStaticNativeAd.textView = mock(TextView.class);
         twitterStaticNativeAd.titleView = mock(TextView.class);
         twitterStaticNativeAd.callToActionView = mock(TextView.class);
-        twitterStaticNativeAd.mainImageView = mock(ImageView.class);
+        twitterStaticNativeAd.mainImageView = mock(RoundedImageView.class);
         twitterStaticNativeAd.iconImageView = mock(ImageView.class);
         twitterStaticNativeAd.privacyInformationIconImageView = mock(ImageView.class);
 

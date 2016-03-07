@@ -15,74 +15,91 @@
   ~
   -->
 
-<RelativeLayout
+<LinearLayout
+    android:id="@+id/tw__ad_mopub_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/tw__ad_padding">
+    style="@style/tw__ad_container">
 
-    <ImageView
+    <com.twitter.sdk.android.mopub.internal.RoundedImageView
         android:id="@+id/native_ad_main_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/tw__ad_image_margin_bottom"
         android:adjustViewBounds="true"
-        android:background="@null"
-        android:scaleType="fitXY"
         tools:ignore="ContentDescription"/>
 
-    <ImageView
-        android:id="@+id/native_ad_icon_image"
-        android:layout_width="@dimen/tw__ad_icon_size"
-        android:layout_height="@dimen/tw__ad_icon_size"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/native_ad_main_image"
-        android:layout_marginRight="@dimen/tw__ad_icon_margin_right"
-        tools:ignore="ContentDescription"/>
-
-    <TextView
-        android:id="@+id/native_ad_title"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/native_ad"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/native_ad_main_image"
-        android:layout_toRightOf="@id/native_ad_icon_image"
-        android:ellipsize="none"
-        android:focusable="false"
-        android:textColor="@color/tw__ad_primary_text_color"
-        android:textSize="@dimen/tw__ad_text_size_large"
-        android:textStyle="bold"
-        tools:text="MoPub Native Ad"/>
+        android:padding="@dimen/tw__ad_space_padding"
+        android:background="@drawable/tw__native_ad_title">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/native_ad_title"
-        android:layout_toRightOf="@id/native_ad_icon_image"
-        android:text="@string/tw__sponsored"
-        android:textColor="@color/tw__ad_secondary_text_color"/>
+        <ImageView
+            android:id="@+id/native_ad_icon_image"
+            android:layout_width="@dimen/tw__ad_icon_size"
+            android:layout_height="@dimen/tw__ad_icon_size"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/tw__ad_icon_margin_left"
+            android:layout_marginRight="@dimen/tw__ad_icon_margin_right"
+            tools:ignore="ContentDescription"/>
 
-    <TextView
-        android:id="@+id/native_ad_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/native_ad_icon_image"
-        tools:text="Welcome to Native MoPub Ads. Native ads blend seamlessly into your content."/>
+        <TextView
+            android:id="@+id/native_ad_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/native_ad_icon_image"
+            android:layout_marginLeft="@dimen/tw__ad_title_margin_left"
+            android:focusable="false"
+            android:textColor="@color/tw__ad_text_primary_color"
+            android:textSize="@dimen/tw__ad_text_size_large"
+            android:textStyle="bold"
+            tools:text="MoPub Native Ad"/>
 
-    <ImageView
-        android:id="@+id/native_ad_privacy_information_icon_image"
-        android:layout_width="@dimen/tw__ad_privacy_icon_size"
-        android:layout_height="@dimen/tw__ad_privacy_icon_size"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/native_ad_main_image"
-        android:background="@null"
-        android:padding="10dp"
-        tools:ignore="ContentDescription"/>
+        <TextView
+            android:id="@+id/native_ad_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/native_ad_title"
+            android:layout_alignLeft="@id/native_ad_title"
+            android:textColor="@color/tw__ad_text_primary_color"
+            android:textSize="@dimen/tw__ad_text_size_medium"
+            tools:text="Welcome to Native MoPub Ads. Native ads blend seamlessly into your
+            content."/>
+    </RelativeLayout>
 
     <Button
         android:id="@+id/native_ad_cta"
+        android:textAllCaps="false"
+        android:background="@drawable/tw__native_cta"
+        android:stateListAnimator="@null"
+        style="@style/tw__ad_cta_button"
+        tools:text="Buy now"
+        tools:ignore="UnusedAttribute"/>
+
+    <RelativeLayout
+        android:id="@+id/native_ad_privacy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/native_ad_text"
-        tools:text="Call to Action"/>
-</RelativeLayout>
+        android:layout_marginLeft="@dimen/tw__ad_privacy_margin_left">
+
+        <ImageView
+            android:id="@+id/native_ad_privacy_info_icon_image"
+            android:layout_width="@dimen/tw__ad_privacy_icon_size"
+            android:layout_height="@dimen/tw__ad_privacy_icon_size"
+            android:background="@null"
+            android:padding="@dimen/tw__ad_privacy_icon_padding"
+            android:contentDescription="@string/tw__privacy_icon_content_desc"/>
+
+        <TextView
+            android:id="@+id/native_ad_privacy_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toEndOf="@id/native_ad_privacy_info_icon_image"
+            android:layout_marginLeft="@dimen/tw__ad_privacy_text_margin_left"
+            android:text="@string/tw__sponsored"
+            android:textSize="@dimen/tw__ad_text_size_small"
+            android:textColor="@color/tw__ad_text_secondary_color"/>
+    </RelativeLayout>
+</LinearLayout>

@@ -16,13 +16,29 @@
   -->
 
 <resources>
-    <!-- native ads -->
-    <dimen name="tw__ad_padding">16dp</dimen>
-    <dimen name="tw__ad_image_margin_bottom">8dp</dimen>
-    <dimen name="tw__ad_icon_margin_right">8dp</dimen>
+    <!-- Root layout -->
+    <dimen name="tw__ad_layout_padding">14dp</dimen>
+    <dimen name="tw__ad_layout_padding_bottom">0dp</dimen>
+
+    <!-- Ad space: image, icon and text -->
+    <dimen name="tw__ad_space_padding">12dp</dimen>
+    <dimen name="tw__ad_icon_margin_left">2dp</dimen>
+    <dimen name="tw__ad_icon_margin_right">2dp</dimen>
     <dimen name="tw__ad_icon_size">40dp</dimen>
+    <dimen name="tw__ad_title_margin_left">8dp</dimen>
+    <dimen name="tw__ad_text_border_size">1.5dp</dimen>
+
+    <!-- Main Image, CTA button -->
+    <dimen name="tw__ad_main_image_cta_button_radius">5dp</dimen>
+
+    <!-- Privacy -->
+    <dimen name="tw__ad_privacy_margin_left">-10dp</dimen>
     <dimen name="tw__ad_privacy_icon_size">40dp</dimen>
+    <dimen name="tw__ad_privacy_icon_padding">10dp</dimen>
+    <dimen name="tw__ad_privacy_text_margin_left">-5dp</dimen>
 
     <!--density-independent(micro 10sp, small 12sp, medium 14sp, large 16sp)-->
     <dimen name="tw__ad_text_size_large">16sp</dimen>
+    <dimen name="tw__ad_text_size_medium">14sp</dimen>
+    <dimen name="tw__ad_text_size_small">12sp</dimen>
 </resources>

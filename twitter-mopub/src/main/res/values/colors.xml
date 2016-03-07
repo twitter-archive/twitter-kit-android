@@ -16,6 +16,16 @@
   -->
 
 <resources>
-    <color name="tw__ad_primary_text_color">#292f33</color>
-    <color name="tw__ad_secondary_text_color">#aab8c2</color>
+    <!-- Ad space -->
+    <color name="tw__ad_text_primary_color">#292F33</color>
+    <color name="tw__ad_text_background_color">@android:color/white</color>
+    <color name="tw__ad_text_border_color">#E1E8ED</color>
+
+    <!-- Call to action -->
+    <color name="tw__ad_cta_default">#174791</color>
+    <color name="tw__ad_cta_pressed">#032559</color>
+    <color name="tw__ad_cta_text">@android:color/white</color>
+
+    <!-- Privacy -->
+    <color name="tw__ad_text_secondary_color">#667580</color>
 </resources>

@@ -24,11 +24,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.twitter.sdk.android.mopub.internal.RoundedImageView;
+
 public class TwitterStaticNativeAd extends FrameLayout {
     TextView titleView;
     TextView textView;
     TextView callToActionView;
-    ImageView mainImageView;
+    RoundedImageView mainImageView;
     ImageView iconImageView;
     ImageView privacyInformationIconImageView;
 
@@ -42,8 +44,8 @@ public class TwitterStaticNativeAd extends FrameLayout {
 
     public TwitterStaticNativeAd(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
         findSubviews();
+        setupView();
     }
 
     void findSubviews() {
@@ -52,9 +54,15 @@ public class TwitterStaticNativeAd extends FrameLayout {
         titleView = (TextView) findViewById(R.id.native_ad_title);
         textView = (TextView) findViewById(R.id.native_ad_text);
         callToActionView = (TextView) findViewById(R.id.native_ad_cta);
-        mainImageView = (ImageView) findViewById(R.id.native_ad_main_image);
+        mainImageView = (RoundedImageView) findViewById(R.id.native_ad_main_image);
         iconImageView = (ImageView) findViewById(R.id.native_ad_icon_image);
         privacyInformationIconImageView =
-                (ImageView) findViewById(R.id.native_ad_privacy_information_icon_image);
+                (ImageView) findViewById(R.id.native_ad_privacy_info_icon_image);
+    }
+
+    void setupView() {
+        final int radius =
+                (int) getResources().getDimension(R.dimen.tw__ad_main_image_cta_button_radius);
+        mainImageView.setCornerRadii(radius, radius, 0, 0);
     }
 }

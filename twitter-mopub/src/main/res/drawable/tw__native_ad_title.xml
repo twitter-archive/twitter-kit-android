@@ -15,7 +15,17 @@
   ~
   -->
 
-<resources>
-  <string name="tw__sponsored">This is a sponsored ad</string>
-  <string name="tw__privacy_icon_content_desc">Privacy Icon</string>
-</resources>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/tw__ad_text_border_color" />
+        </shape>
+    </item>
+    <item
+        android:left="@dimen/tw__ad_text_border_size"
+        android:right="@dimen/tw__ad_text_border_size">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/tw__ad_text_background_color" />
+        </shape>
+    </item>
+</layer-list>
