@@ -172,7 +172,7 @@ public class ComposerView extends LinearLayout {
     }
 
     void setCharCount(int remainingCount) {
-        charCountView.setText(Integer.toString(remainingCount));
+        charCountView.setText(String.format("%d", remainingCount));
     }
 
     void setCharCountTextStyle(int textStyleResId) {

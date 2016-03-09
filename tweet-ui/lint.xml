@@ -28,9 +28,6 @@
     <issue id="MissingQuantity" severity="ignore" />
     <issue id="ImpliedQuantity" severity="ignore" />
     <issue id="UnusedQuantity" severity="ignore" />
-    <!--Ignore support library point updates unless there are useful fixes or features. Any updates
-    should be communicated to developers since they require downloading new libs from the manager-->
-    <issue id="GradleDependency" severity="ignore" />
     <issue id="WrongRegion" severity="ignore" />
     <issue id="IconDensities" severity="ignore">
         <ignore path="src/main/res/drawable-mdpi/tw__heart_animation_detail_60fps*"/>
@@ -40,4 +37,5 @@
     <issue id="HandlerLeak" severity="ignore">
         <ignore path="src/main/java/com/twitter/sdk/android/tweetui/internal/VideoControlView.java"/>
     </issue>
+    <issue id="GoogleAppIndexingWarning" severity="ignore"/>
 </lint>
