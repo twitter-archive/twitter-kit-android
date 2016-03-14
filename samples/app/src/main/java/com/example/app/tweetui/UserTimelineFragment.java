@@ -33,6 +33,7 @@ import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterAuthException;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.mopub.TwitterMoPubAdAdapter;
 import com.twitter.sdk.android.mopub.TwitterStaticNativeAdRenderer;
 import com.twitter.sdk.android.tweetui.TweetTimelineListAdapter;
 import com.twitter.sdk.android.tweetui.UserTimeline;
@@ -71,11 +72,10 @@ public class UserTimelineFragment extends ListFragment {
                 .setOnActionCallback(actionCallback)
                 .build();
 
-        final RequestParameters params = new RequestParameters.Builder().build();
-        final MoPubAdAdapter wrapped = new MoPubAdAdapter(getActivity(), adapter);
+        final MoPubAdAdapter wrapped = new TwitterMoPubAdAdapter(getActivity(), adapter);
         TwitterStaticNativeAdRenderer adRenderer = new TwitterStaticNativeAdRenderer();
         wrapped.registerAdRenderer(adRenderer);
-        wrapped.loadAds(BuildConfig.MOPUB_AD_UNIT_ID, params);
+        wrapped.loadAds(BuildConfig.MOPUB_AD_UNIT_ID);
 
         setListAdapter(wrapped);
     }
