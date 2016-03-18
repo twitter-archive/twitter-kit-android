@@ -16,16 +16,15 @@
   -->
 
 <resources>
-    <!-- Ad space -->
-    <color name="tw__ad_text_primary_color">#292F33</color>
-    <color name="tw__ad_text_background_color">@android:color/white</color>
-    <color name="tw__ad_text_border_color">#E1E8ED</color>
+    <color name="tw__ad_light_container_bg_color">#F5F8FA</color>
+    <color name="tw__ad_light_card_bg_color">@android:color/white</color>
+    <color name="tw__ad_light_card_border_color">#E1E8ED</color>
+    <color name="tw__ad_light_text_primary_color">#292F33</color>
 
-    <!-- Call to action -->
-    <color name="tw__ad_cta_default">#174791</color>
-    <color name="tw__ad_cta_pressed">#032559</color>
-    <color name="tw__ad_cta_text">@android:color/white</color>
+    <color name="tw__ad_dark_container_bg_color">#000000</color>
+    <color name="tw__ad_dark_card_bg_color">#292F33</color>
+    <color name="tw__ad_dark_card_border_color">#8899A6</color>
+    <color name="tw__ad_dark_text_primary_color">#F5F8FA</color>
 
-    <!-- Privacy -->
-    <color name="tw__ad_text_secondary_color">#667580</color>
+    <color name="tw__ad_cta_default">#1B95E0</color>
 </resources>

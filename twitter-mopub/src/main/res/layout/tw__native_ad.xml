@@ -29,11 +29,10 @@
         tools:ignore="ContentDescription"/>
 
     <RelativeLayout
-        android:id="@+id/native_ad"
+        android:id="@+id/native_ad_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/tw__ad_space_padding"
-        android:background="@drawable/tw__native_ad_title">
+        android:padding="@dimen/tw__ad_space_padding">
 
         <ImageView
             android:id="@+id/native_ad_icon_image"
@@ -51,7 +50,7 @@
             android:layout_toRightOf="@id/native_ad_icon_image"
             android:layout_marginLeft="@dimen/tw__ad_title_margin_left"
             android:focusable="false"
-            android:textColor="@color/tw__ad_text_primary_color"
+            android:textColor="@color/tw__ad_light_text_primary_color"
             android:textSize="@dimen/tw__ad_text_size_large"
             android:textStyle="bold"
             tools:text="MoPub Native Ad"/>
@@ -62,7 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/native_ad_title"
             android:layout_alignLeft="@id/native_ad_title"
-            android:textColor="@color/tw__ad_text_primary_color"
+            android:textColor="@color/tw__ad_light_text_primary_color"
             android:textSize="@dimen/tw__ad_text_size_medium"
             tools:text="Welcome to Native MoPub Ads. Native ads blend seamlessly into your
             content."/>
@@ -71,11 +70,10 @@
     <Button
         android:id="@+id/native_ad_cta"
         android:textAllCaps="false"
-        android:background="@drawable/tw__native_cta"
         android:stateListAnimator="@null"
-        style="@style/tw__ad_cta_button"
         tools:text="Buy now"
-        tools:ignore="UnusedAttribute"/>
+        tools:ignore="UnusedAttribute"
+        style="@style/tw__ad_cta_button"/>
 
     <RelativeLayout
         android:id="@+id/native_ad_privacy"
@@ -92,14 +90,13 @@
             android:contentDescription="@string/tw__privacy_icon_content_desc"/>
 
         <TextView
-            android:id="@+id/native_ad_privacy_detail"
+            android:id="@+id/native_ad_privacy_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_toEndOf="@id/native_ad_privacy_info_icon_image"
             android:layout_marginLeft="@dimen/tw__ad_privacy_text_margin_left"
             android:text="@string/tw__sponsored"
-            android:textSize="@dimen/tw__ad_text_size_small"
-            android:textColor="@color/tw__ad_text_secondary_color"/>
+            android:textSize="@dimen/tw__ad_text_size_small"/>
     </RelativeLayout>
 </LinearLayout>

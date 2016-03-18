@@ -16,7 +16,6 @@
   -->
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-
     <style name="tw__ad_container">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -30,7 +29,6 @@
     <style name="tw__ad_cta_button">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/tw__ad_cta_text</item>
         <item name="android:textSize">@dimen/tw__ad_text_size_medium</item>
         <item name="android:gravity">center</item>
     </style>

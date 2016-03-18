@@ -28,10 +28,21 @@ import com.mopub.nativeads.NativeRendererHelper;
 import com.mopub.nativeads.StaticNativeAd;
 
 public class TwitterStaticNativeAdRenderer implements MoPubAdRenderer<StaticNativeAd> {
+    private static final int DEFAULT_STYLE = R.style.tw__ad_LightStyle;
+
+    private final int styleResId;
+
+    public TwitterStaticNativeAdRenderer() {
+        this.styleResId = DEFAULT_STYLE;
+    }
+
+    public TwitterStaticNativeAdRenderer(int styleResId) {
+        this.styleResId = styleResId;
+    }
 
     @Override
     public View createAdView(final Activity activity, final ViewGroup parent) {
-        return new TwitterStaticNativeAd(activity);
+        return new TwitterStaticNativeAd(activity, null, styleResId);
     }
 
     @Override
@@ -46,17 +57,17 @@ public class TwitterStaticNativeAdRenderer implements MoPubAdRenderer<StaticNati
 
     private void update(final TwitterStaticNativeAd staticNativeView,
             final StaticNativeAd staticNativeAd) {
-        NativeRendererHelper.addTextView(staticNativeView.titleView,
+        NativeRendererHelper.addTextView(staticNativeView.adTitleView,
                 staticNativeAd.getTitle());
-        NativeRendererHelper.addTextView(staticNativeView.textView, staticNativeAd.getText());
+        NativeRendererHelper.addTextView(staticNativeView.adTextView, staticNativeAd.getText());
         NativeRendererHelper.addTextView(staticNativeView.callToActionView,
                 staticNativeAd.getCallToAction());
         NativeImageHelper.loadImageView(staticNativeAd.getMainImageUrl(),
                 staticNativeView.mainImageView);
         NativeImageHelper.loadImageView(staticNativeAd.getIconImageUrl(),
-                staticNativeView.iconImageView);
+                staticNativeView.adIconView);
         NativeRendererHelper.addPrivacyInformationIcon(
-                staticNativeView.privacyInformationIconImageView,
+                staticNativeView.privacyInfoView,
                 staticNativeAd.getPrivacyInformationIconImageUrl(),
                 staticNativeAd.getPrivacyInformationIconClickThroughUrl());
     }

@@ -15,17 +15,11 @@
   ~
   -->
 
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
-        <shape android:shape="rectangle">
-            <solid android:color="@color/tw__ad_text_border_color" />
-        </shape>
-    </item>
-    <item
-        android:left="@dimen/tw__ad_text_border_size"
-        android:right="@dimen/tw__ad_text_border_size">
-        <shape android:shape="rectangle">
-            <solid android:color="@color/tw__ad_text_background_color" />
-        </shape>
-    </item>
-</layer-list>
+<resources>
+    <declare-styleable name="tw__native_ad">
+        <attr name="tw__ad_container_bg_color" format="color"/>
+        <attr name="tw__ad_card_bg_color" format="color"/>
+        <attr name="tw__ad_text_primary_color" format="color"/>
+        <attr name="tw__ad_cta_button_color" format="color"/>
+    </declare-styleable>
+</resources>

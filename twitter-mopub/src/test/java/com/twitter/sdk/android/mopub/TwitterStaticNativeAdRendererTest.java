@@ -95,12 +95,12 @@ public class TwitterStaticNativeAdRendererTest {
         twitterStaticNativeAdRenderer = new TwitterStaticNativeAdRenderer();
 
         twitterStaticNativeAd = new TwitterStaticNativeAd(RuntimeEnvironment.application);
-        twitterStaticNativeAd.textView = mock(TextView.class);
-        twitterStaticNativeAd.titleView = mock(TextView.class);
+        twitterStaticNativeAd.adTextView = mock(TextView.class);
+        twitterStaticNativeAd.adTitleView = mock(TextView.class);
         twitterStaticNativeAd.callToActionView = mock(TextView.class);
         twitterStaticNativeAd.mainImageView = mock(RoundedImageView.class);
-        twitterStaticNativeAd.iconImageView = mock(ImageView.class);
-        twitterStaticNativeAd.privacyInformationIconImageView = mock(ImageView.class);
+        twitterStaticNativeAd.adIconView = mock(ImageView.class);
+        twitterStaticNativeAd.privacyInfoView = mock(ImageView.class);
 
         staticNativeAd = new StaticNativeAd() { };
         staticNativeAd.setTitle(TEST_TITLE);
@@ -130,14 +130,14 @@ public class TwitterStaticNativeAdRendererTest {
     public void testRenderAdView_shouldReturnPopulatedView() {
         twitterStaticNativeAdRenderer.renderAdView(twitterStaticNativeAd, staticNativeAd);
 
-        verify(twitterStaticNativeAd.titleView).setText(TEST_TITLE);
-        verify(twitterStaticNativeAd.textView).setText(TEST_TEXT);
+        verify(twitterStaticNativeAd.adTitleView).setText(TEST_TITLE);
+        verify(twitterStaticNativeAd.adTextView).setText(TEST_TEXT);
         verify(twitterStaticNativeAd.callToActionView).setText(TEST_CTA);
         verify(twitterStaticNativeAd.mainImageView).setImageBitmap(mockBitmap);
-        verify(twitterStaticNativeAd.iconImageView).setImageBitmap(mockBitmap);
-        verify(twitterStaticNativeAd.privacyInformationIconImageView)
+        verify(twitterStaticNativeAd.adIconView).setImageBitmap(mockBitmap);
+        verify(twitterStaticNativeAd.privacyInfoView)
                 .setImageDrawable(any(Drawable.class));
-        verify(twitterStaticNativeAd.privacyInformationIconImageView)
+        verify(twitterStaticNativeAd.privacyInfoView)
                 .setOnClickListener(any(View.OnClickListener.class));
     }
 

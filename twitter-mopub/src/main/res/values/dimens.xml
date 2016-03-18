@@ -21,15 +21,12 @@
     <dimen name="tw__ad_layout_padding_bottom">0dp</dimen>
 
     <!-- Ad space: image, icon and text -->
+    <dimen name="tw__ad_view_radius">5dp</dimen>
     <dimen name="tw__ad_space_padding">12dp</dimen>
     <dimen name="tw__ad_icon_margin_left">2dp</dimen>
     <dimen name="tw__ad_icon_margin_right">2dp</dimen>
     <dimen name="tw__ad_icon_size">40dp</dimen>
     <dimen name="tw__ad_title_margin_left">8dp</dimen>
-    <dimen name="tw__ad_text_border_size">1.5dp</dimen>
-
-    <!-- Main Image, CTA button -->
-    <dimen name="tw__ad_main_image_cta_button_radius">5dp</dimen>
 
     <!-- Privacy -->
     <dimen name="tw__ad_privacy_margin_left">-10dp</dimen>
