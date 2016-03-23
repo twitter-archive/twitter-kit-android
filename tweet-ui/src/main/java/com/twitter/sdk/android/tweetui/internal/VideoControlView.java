@@ -212,6 +212,10 @@ public class VideoControlView extends FrameLayout {
         return getVisibility() == View.VISIBLE;
     }
 
+    public void resume() {
+        handler.sendEmptyMessage(SHOW_PROGRESS_MSG);
+    }
+
     public interface MediaPlayerControl {
         void start();
 

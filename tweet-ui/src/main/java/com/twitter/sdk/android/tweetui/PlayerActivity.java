@@ -27,16 +27,22 @@ import com.twitter.sdk.android.core.models.MediaEntity;
 public class PlayerActivity extends Activity {
     static final String MEDIA_ENTITY = "MEDIA_ENTITY";
     static final String TWEET_ID = "TWEET_ID";
+
     PlayerController playerController;
+    VideoView videoView;
+    VideoControlView videoControlView;
+
+    int videoPosition = 0;
+    boolean videoPaused = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tw__player_activity);
 
-        final VideoView videoView = (VideoView) findViewById(R.id.video_view);
-        final VideoControlView videoControlView =
-                (VideoControlView) findViewById(R.id.video_control_view);
+        videoView = (VideoView) findViewById(R.id.video_view);
+        videoControlView = (VideoControlView) findViewById(R.id.video_control_view);
+
         final long tweetId = getIntent().getLongExtra(TWEET_ID, 0);
         final MediaEntity entity = (MediaEntity) getIntent().getSerializableExtra(MEDIA_ENTITY);
 
@@ -51,5 +57,29 @@ public class PlayerActivity extends Activity {
     public void onDestroy() {
         playerController.cleanup();
         super.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (videoPaused) {
+            videoView.seekTo(videoPosition);
+            videoView.start();
+
+            // restart the VideoControlView
+            videoControlView.resume();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (videoView.isPlaying()) {
+            videoPosition = videoView.getCurrentPosition();
+            videoView.pause();
+            videoPaused = true;
+        }
     }
 }
