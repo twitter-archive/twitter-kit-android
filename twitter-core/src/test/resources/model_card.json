@@ -1,0 +1,102 @@
+{
+  "binding_values": {
+    "app_id": {
+      "scribe_key": "publisher_app_id",
+      "string_value": "co.vine.android",
+      "type": "STRING"
+    },
+    "app_is_free": {
+      "string_value": "true",
+      "type": "STRING"
+    },
+    "app_name": {
+      "string_value": "Vine - video entertainment",
+      "type": "STRING"
+    },
+    "app_num_ratings": {
+      "string_value": "1,080,460",
+      "type": "STRING"
+    },
+    "app_price_amount": {
+      "string_value": "0.0",
+      "type": "STRING"
+    },
+    "app_price_currency": {
+      "string_value": "USD",
+      "type": "STRING"
+    },
+    "app_star_rating": {
+      "string_value": "4.2",
+      "type": "STRING"
+    },
+    "app_url": {
+      "string_value": "http://t.co/redirect?url=https%3A%2F%2Fvine.co%2Fv%2FeYqdg0ZQq11&sig=3f926515488a274a5ad490fe5c178f9a11366682&ssr=true&slug=u9fFPye5uF",
+      "type": "STRING"
+    },
+    "app_url_resolved": {
+      "string_value": "https://vine.co/v/eYqdg0ZQq11",
+      "type": "STRING"
+    },
+    "card_url": {
+      "scribe_key": "card_url",
+      "string_value": "https://t.co/u9fFPye5uF",
+      "type": "STRING"
+    },
+    "description": {
+      "string_value": "Vine by Krystaalized",
+      "type": "STRING"
+    },
+    "domain": {
+      "string_value": "vine.co",
+      "type": "STRING"
+    },
+    "player_height": {
+      "string_value": "535",
+      "type": "STRING"
+    },
+    "player_image": {
+      "image_value": {
+        "alt": null,
+        "height": 480,
+        "url": "https://o.twimg.com/qwhjddd",
+        "width": 480
+      },
+      "type": "IMAGE"
+    },
+    "player_stream_content_type": {
+      "string_value": "video/mp4; codecs=avc1.42E01E, mp4a.40.2",
+      "type": "STRING"
+    },
+    "player_stream_url": {
+      "string_value": "https://v.cdn.vine.co/r/videos/A37DAF7D721270513540440653824_41d075d38e8.2.0.5737545349973686981.mp4?versionId=EGjtEcEvZBhzj4QrceZJsPKNQ0hKDp1E",
+      "type": "STRING"
+    },
+    "player_url": {
+      "string_value": "https://vine.co/v/eYqdg0ZQq11/card",
+      "type": "STRING"
+    },
+    "player_width": {
+      "string_value": "535",
+      "type": "STRING"
+    },
+    "site": {
+      "scribe_key": "publisher_id",
+      "type": "USER",
+      "user_value": {
+        "id_str": "586671909",
+        "path": []
+      }
+    },
+    "title": {
+      "string_value": "The Irish Riverdance \ud83c\udf40 #TraditionalDanceWeek #Represent",
+      "type": "STRING"
+    },
+    "vanity_url": {
+      "scribe_key": "vanity_url",
+      "string_value": "vine.co",
+      "type": "STRING"
+    }
+  },
+  "name": "player",
+  "url": "https://t.co/u9fFPye5uF"
+}

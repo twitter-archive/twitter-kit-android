@@ -247,6 +247,12 @@ public class Tweet implements Identifiable {
     public final String withheldScope;
 
     /**
+     * Nullable. Card data used to attach rich photos, videos and media experience to Tweets.
+     */
+    @SerializedName("card")
+    public final Card card;
+
+    /**
      * @deprecated use {@link TweetBuilder} instead.
      */
     @Deprecated
@@ -265,6 +271,10 @@ public class Tweet implements Identifiable {
                 text, truncated, user, withheldCopyright, withheldInCountries, withheldScope);
     }
 
+    /**
+     * @deprecated use {@link TweetBuilder} instead.
+     */
+    @Deprecated
     public Tweet(Coordinates coordinates, String createdAt, Object currentUserRetweet,
             TweetEntities entities, TweetEntities extendedEtities, Integer favoriteCount,
             boolean favorited, String filterLevel, long id, String idStr,
@@ -273,6 +283,22 @@ public class Tweet implements Identifiable {
             boolean possiblySensitive, Object scopes, int retweetCount, boolean retweeted,
             Tweet retweetedStatus, String source, String text, boolean truncated, User user,
             boolean withheldCopyright, List<String> withheldInCountries, String withheldScope) {
+        this(coordinates, createdAt, currentUserRetweet, entities, extendedEtities, favoriteCount,
+                favorited, filterLevel, id, idStr, inReplyToScreenName, inReplyToStatusId,
+                inReplyToStatusIdStr, inReplyToUserId, inReplyToUserIdStr, lang, place,
+                possiblySensitive, scopes, retweetCount, retweeted, retweetedStatus, source,
+                text, truncated, user, withheldCopyright, withheldInCountries, withheldScope, null);
+    }
+
+    public Tweet(Coordinates coordinates, String createdAt, Object currentUserRetweet,
+            TweetEntities entities, TweetEntities extendedEtities, Integer favoriteCount,
+            boolean favorited, String filterLevel, long id, String idStr,
+            String inReplyToScreenName, long inReplyToStatusId, String inReplyToStatusIdStr,
+            long inReplyToUserId, String inReplyToUserIdStr, String lang, Place place,
+            boolean possiblySensitive, Object scopes, int retweetCount, boolean retweeted,
+            Tweet retweetedStatus, String source, String text, boolean truncated, User user,
+            boolean withheldCopyright, List<String> withheldInCountries, String withheldScope,
+            Card card) {
         this.coordinates = coordinates;
         this.createdAt = createdAt;
         this.currentUserRetweet = currentUserRetweet;
@@ -302,6 +328,7 @@ public class Tweet implements Identifiable {
         this.withheldCopyright = withheldCopyright;
         this.withheldInCountries = withheldInCountries;
         this.withheldScope = withheldScope;
+        this.card = card;
     }
 
     @Override

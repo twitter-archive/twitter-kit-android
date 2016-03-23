@@ -49,6 +49,7 @@ public class TweetBuilder {
     private boolean withheldCopyright;
     private List<String> withheldInCountries;
     private String withheldScope;
+    private Card card;
 
     public TweetBuilder setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
@@ -195,6 +196,11 @@ public class TweetBuilder {
         return this;
     }
 
+    public TweetBuilder setCard(Card card) {
+        this.card = card;
+        return this;
+    }
+
     public TweetBuilder copy(Tweet tweet) {
         this.coordinates = tweet.coordinates;
         this.createdAt = tweet.createdAt;
@@ -225,6 +231,7 @@ public class TweetBuilder {
         this.withheldCopyright = tweet.withheldCopyright;
         this.withheldInCountries = tweet.withheldInCountries;
         this.withheldScope = tweet.withheldScope;
+        this.card = tweet.card;
         return this;
     }
 
@@ -234,6 +241,6 @@ public class TweetBuilder {
                 inReplyToStatusId, inReplyToStatusIdStr, inReplyToUserId, inReplyToUserIdStr,
                 lang, place, possiblySensitive, scopes, retweetCount, retweeted,
                 retweetedStatus, source, text, truncated, user, withheldCopyright,
-                withheldInCountries, withheldScope);
+                withheldInCountries, withheldScope, card);
     }
 }

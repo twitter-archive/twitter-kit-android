@@ -18,6 +18,8 @@
 package com.twitter.sdk.android.core;
 
 import com.twitter.sdk.android.core.internal.TwitterApi;
+import com.twitter.sdk.android.core.models.BindingValues;
+import com.twitter.sdk.android.core.models.BindingValuesAdapter;
 import com.twitter.sdk.android.core.models.SafeListAdapter;
 import com.twitter.sdk.android.core.models.SafeMapAdapter;
 import com.twitter.sdk.android.core.services.AccountService;
@@ -66,6 +68,7 @@ public class TwitterApiClient {
         final Gson gson = new GsonBuilder()
                 .registerTypeAdapterFactory(new SafeListAdapter())
                 .registerTypeAdapterFactory(new SafeMapAdapter())
+                .registerTypeAdapter(BindingValues.class, new BindingValuesAdapter())
                 .create();
 
         apiAdapter = new RestAdapter.Builder()
