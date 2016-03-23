@@ -18,6 +18,7 @@
 package com.twitter.sdk.android.tweetui.internal;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,12 +26,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.twitter.sdk.android.core.internal.VineCardUtils;
+import com.twitter.sdk.android.core.models.Card;
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.tweetui.R;
 
 public class MediaBadgeView extends FrameLayout {
     TextView videoDuration;
-    ImageView gifBadge;
+    ImageView badge;
 
     public MediaBadgeView(Context context) {
         this(context, null);
@@ -52,22 +55,44 @@ public class MediaBadgeView extends FrameLayout {
         final View view = inflater.inflate(R.layout.tw__media_badge, this, true);
 
         videoDuration = (TextView) view.findViewById(R.id.tw__video_duration);
-        gifBadge = (ImageView) view.findViewById(R.id.tw__gif_badge);
+        badge = (ImageView) view.findViewById(R.id.tw__gif_badge);
     }
 
     public void setMediaEntity(MediaEntity entity) {
         if (TweetMediaUtils.GIF_TYPE.equals(entity.type)) {
-            gifBadge.setVisibility(View.VISIBLE);
-            videoDuration.setVisibility(View.GONE);
+            setBadge(getResources().getDrawable(R.drawable.tw__gif_badge));
         } else if (TweetMediaUtils.VIDEO_TYPE.equals(entity.type)) {
-            videoDuration.setVisibility(View.VISIBLE);
-            gifBadge.setVisibility(View.GONE);
-
             final long duration = entity.videoInfo == null ? 0 : entity.videoInfo.durationMillis;
-            videoDuration.setText(MediaTimeUtils.getPlaybackTime(duration));
+            setText(duration);
         } else {
-            videoDuration.setVisibility(View.GONE);
-            gifBadge.setVisibility(View.GONE);
+            setEmpty();
         }
+    }
+
+    public void setCard(Card card) {
+        if (VineCardUtils.isVine(card)) {
+            setBadge(getResources().getDrawable(R.drawable.tw__vine_badge));
+        } else {
+            setEmpty();
+        }
+    }
+
+    void setText(long duration) {
+        videoDuration.setVisibility(View.VISIBLE);
+        badge.setVisibility(View.GONE);
+
+        videoDuration.setText(MediaTimeUtils.getPlaybackTime(duration));
+    }
+
+    void setBadge(Drawable drawable) {
+        badge.setVisibility(View.VISIBLE);
+        videoDuration.setVisibility(View.GONE);
+
+        badge.setImageDrawable(drawable);
+    }
+
+    void setEmpty() {
+        videoDuration.setVisibility(View.GONE);
+        badge.setVisibility(View.GONE);
     }
 }

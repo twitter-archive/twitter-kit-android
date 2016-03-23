@@ -17,6 +17,9 @@
 
 package com.twitter.sdk.android.tweetui;
 
+import com.twitter.sdk.android.core.internal.VineCardUtils;
+import com.twitter.sdk.android.core.models.BindingValues;
+import com.twitter.sdk.android.core.models.Card;
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
@@ -24,11 +27,15 @@ import com.twitter.sdk.android.core.models.TweetEntities;
 import com.twitter.sdk.android.core.models.UrlEntity;
 import com.twitter.sdk.android.core.models.User;
 import com.twitter.sdk.android.core.models.UserBuilder;
+import com.twitter.sdk.android.core.models.UserValue;
 import com.twitter.sdk.android.core.models.VideoInfo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class TestFixtures {
     public static final String CONSUMER_KEY = "consumer_key";
@@ -159,6 +166,15 @@ public final class TestFixtures {
                 .build();
     }
 
+    static Tweet createTweetWithVineCard(long id, User user, String text, Card card) {
+        return new TweetBuilder()
+                .setId(id)
+                .setCard(card)
+                .setText(text)
+                .setUser(user)
+                .build();
+    }
+
     static void addTweetsWithId(List<Tweet> tweets, List<Long> tweetIds) {
         for (long tweetId : tweetIds) {
             tweets.add(createTweet(tweetId));
@@ -209,5 +225,30 @@ public final class TestFixtures {
 
     public static VideoInfo createVideoInfoWithVariant(VideoInfo.Variant variant) {
         return new VideoInfo(null, 0, Arrays.asList(variant));
+    }
+
+
+    public static final BindingValues TEST_BINDING_VALUES =
+            new BindingValues(Collections.<String, Object>emptyMap());
+
+    public static Card sampleInvalidVineCard() {
+        return new Card(TEST_BINDING_VALUES, "invalid");
+    }
+
+    public static final String PLAYER_CARD_VINE = VineCardUtils.VINE_CARD;
+
+    public static final String TEST_VINE_USER_ID = "586671909";
+
+    public static Card sampleValidVineCard() {
+        return new Card(createBindingValuesForCard(), PLAYER_CARD_VINE);
+    }
+
+    public static BindingValues createBindingValuesForCard() {
+        final UserValue testUser = new UserValue(TEST_VINE_USER_ID);
+        final Map<String, Object> testValues = new HashMap<>();
+        testValues.put("site", testUser);
+
+        final BindingValues bindingValues = new BindingValues(testValues);
+        return bindingValues;
     }
 }

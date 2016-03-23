@@ -26,6 +26,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -51,23 +52,23 @@ public class BindingValuesAdapter implements JsonSerializer<BindingValues>,
     @Override
     public BindingValues deserialize(JsonElement json, Type typeOfT,
             JsonDeserializationContext context) throws JsonParseException {
-        final BindingValues bindingValues = new BindingValues();
         if (!json.isJsonObject()) {
-            return bindingValues;
+            return new BindingValues();
         }
 
         final JsonObject obj = json.getAsJsonObject();
         final Set<Map.Entry<String, JsonElement>> members = obj.entrySet();
 
+        final Map<String, Object> bindingHash = new HashMap<>(32);
         for (Map.Entry<String, JsonElement> member : members) {
             final String key = member.getKey();
             final JsonObject memberObj = member.getValue().getAsJsonObject();
             final Object value = getValue(memberObj, context);
 
-            bindingValues.add(key, value);
+            bindingHash.put(key, value);
         }
 
-        return bindingValues;
+        return new BindingValues(bindingHash);
     }
 
     Object getValue(JsonObject obj, JsonDeserializationContext context) {

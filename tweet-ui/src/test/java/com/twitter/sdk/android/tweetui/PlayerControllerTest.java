@@ -21,9 +21,8 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
-import com.twitter.sdk.android.core.models.MediaEntity;
-import com.twitter.sdk.android.core.models.VideoInfo;
 import com.twitter.sdk.android.tweetui.internal.VideoControlView;
 import com.twitter.sdk.android.tweetui.internal.VideoView;
 
@@ -47,8 +46,9 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class PlayerControllerTest {
-    private static final String TEST_CONTENT_TYPE_MP4 = "video/mp4";
     private static final String TEST_CONTENT_URL = "https://example.com";
+    private static final String TEST_CALL_TO_ACTION_URL = "https://example.com";
+    private static final String TEST_CALL_TO_ACTION_TEXT = "Open in";
     private static final int TEST_SEEK_POSITION = 1000;
     private static final Uri TEST_URI = Uri.parse(TEST_CONTENT_URL);
 
@@ -58,37 +58,37 @@ public class PlayerControllerTest {
     VideoControlView videoControlView;
     @Mock
     ProgressBar videoProgressView;
+    @Mock
+    TextView callToActionView;
+    @Mock
+    View rootView;
     @Captor
     private ArgumentCaptor<View.OnClickListener> clickListenerCaptor;
     @Captor
     private ArgumentCaptor<MediaPlayer.OnPreparedListener> prepareListenerCaptor;
     @Captor
     private ArgumentCaptor<MediaPlayer.OnInfoListener> infoListenerCaptor;
-    PlayerController subject;
-    MediaEntity entity;
 
+    PlayerController subject;
+    PlayerActivity.PlayerItem playerItem;
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-
-        subject = spy(new PlayerController(videoView, videoControlView, videoProgressView));
-
-        final VideoInfo.Variant variant =
-                new VideoInfo.Variant(0, TEST_CONTENT_TYPE_MP4, TEST_URI.toString());
-        final VideoInfo videoInfo = TestFixtures.createVideoInfoWithVariant(variant);
-        entity = TestFixtures.createEntityWithVideo(videoInfo);
+        subject = spy(
+                new PlayerController(rootView, videoView, videoControlView,
+                        videoProgressView, callToActionView));
+        playerItem = new PlayerActivity.PlayerItem(TEST_CONTENT_URL, false);
     }
 
     @Test
     public void testPrepare() {
         doNothing().when(subject).setUpMediaControl();
-        subject.prepare(entity);
+        subject.prepare(playerItem);
 
         verify(subject).setUpMediaControl(false);
         verify(videoView).setVideoURI(TEST_URI, false);
         verify(videoView).requestFocus();
-
         verify(videoView).setOnPreparedListener(any(MediaPlayer.OnPreparedListener.class));
         verify(videoView).setOnInfoListener(any(MediaPlayer.OnInfoListener.class));
     }
@@ -96,7 +96,7 @@ public class PlayerControllerTest {
     @Test
     public void testPrepare_verifyOnPreparedListener() {
         doNothing().when(subject).setUpMediaControl();
-        subject.prepare(entity);
+        subject.prepare(playerItem);
 
         verify(subject).setUpMediaControl(false);
         verify(videoView).setVideoURI(TEST_URI, false);
@@ -104,6 +104,27 @@ public class PlayerControllerTest {
         verify(videoView).setOnPreparedListener(prepareListenerCaptor.capture());
         verify(videoView).setOnInfoListener(any(MediaPlayer.OnInfoListener.class));
         verifyOnPreparedListener(prepareListenerCaptor.getValue());
+    }
+
+    @Test
+    public void testPrepare_setUpCallToActionListener() {
+        doNothing().when(subject).setUpMediaControl();
+
+        final PlayerActivity.PlayerItem itemWithCallToActionUrl =
+                new PlayerActivity.PlayerItem(TEST_CONTENT_URL, false,
+                        TEST_CALL_TO_ACTION_TEXT, TEST_CALL_TO_ACTION_URL);
+        subject.prepare(itemWithCallToActionUrl);
+
+        verify(subject).setUpMediaControl(false);
+        verify(videoView).setVideoURI(TEST_URI, false);
+        verify(videoView).requestFocus();
+        verify(videoView).setOnPreparedListener(any(MediaPlayer.OnPreparedListener.class));
+        verify(videoView).setOnInfoListener(any(MediaPlayer.OnInfoListener.class));
+
+        verify(callToActionView).setVisibility(View.VISIBLE);
+        verify(callToActionView).setText(TEST_CALL_TO_ACTION_TEXT);
+        verify(callToActionView).setOnClickListener(any(View.OnClickListener.class));
+        verify(rootView).setOnClickListener(any(View.OnClickListener.class));
     }
 
     private void verifyOnPreparedListener(MediaPlayer.OnPreparedListener listener) {
@@ -114,7 +135,7 @@ public class PlayerControllerTest {
     @Test
     public void testPrepare_verifyOnInfoListener() {
         doNothing().when(subject).setUpMediaControl();
-        subject.prepare(entity);
+        subject.prepare(playerItem);
 
         verify(subject).setUpMediaControl(false);
         verify(videoView).setVideoURI(TEST_URI, false);

@@ -18,10 +18,10 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@drawable/tw__bg_media_badge"/>
     <item
-        android:left="@dimen/tw__gif_badge_padding"
-        android:bottom="@dimen/tw__gif_badge_padding"
-        android:right="@dimen/tw__gif_badge_padding"
-        android:top="@dimen/tw__gif_badge_padding">
+        android:left="@dimen/tw__badge_padding"
+        android:bottom="@dimen/tw__badge_padding"
+        android:right="@dimen/tw__badge_padding"
+        android:top="@dimen/tw__badge_padding">
         <bitmap android:src="@drawable/tw__ic_gif_badge"/>
     </item>
 </layer-list>

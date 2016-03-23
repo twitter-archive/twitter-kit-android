@@ -19,6 +19,7 @@ package com.twitter.sdk.android.tweetui.internal;
 
 import android.view.View;
 
+import com.twitter.sdk.android.core.models.Card;
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.VideoInfo;
 import com.twitter.sdk.android.tweetui.TestFixtures;
@@ -33,7 +34,7 @@ public class MediaBadgeViewTest extends FabricAndroidTestCase {
     }
 
     public void testInitialViewState() {
-        assertEquals(View.GONE, view.gifBadge.getVisibility());
+        assertEquals(View.GONE, view.badge.getVisibility());
         assertEquals(View.GONE, view.videoDuration.getVisibility());
     }
 
@@ -41,7 +42,7 @@ public class MediaBadgeViewTest extends FabricAndroidTestCase {
         final MediaEntity entity = TestFixtures.createEntityWithAnimatedGif(null);
         view.setMediaEntity(entity);
 
-        assertEquals(View.VISIBLE, view.gifBadge.getVisibility());
+        assertEquals(View.VISIBLE, view.badge.getVisibility());
         assertEquals(View.GONE, view.videoDuration.getVisibility());
     }
 
@@ -50,7 +51,7 @@ public class MediaBadgeViewTest extends FabricAndroidTestCase {
         final MediaEntity entity = TestFixtures.createEntityWithVideo(videoInfo);
         view.setMediaEntity(entity);
 
-        assertEquals(View.GONE, view.gifBadge.getVisibility());
+        assertEquals(View.GONE, view.badge.getVisibility());
         assertEquals(View.VISIBLE, view.videoDuration.getVisibility());
         assertEquals("0:01", view.videoDuration.getText());
     }
@@ -59,7 +60,7 @@ public class MediaBadgeViewTest extends FabricAndroidTestCase {
         final MediaEntity entity = TestFixtures.createEntityWithVideo(null);
         view.setMediaEntity(entity);
 
-        assertEquals(View.GONE, view.gifBadge.getVisibility());
+        assertEquals(View.GONE, view.badge.getVisibility());
         assertEquals(View.VISIBLE, view.videoDuration.getVisibility());
         assertEquals("0:00", view.videoDuration.getText());
     }
@@ -68,7 +69,23 @@ public class MediaBadgeViewTest extends FabricAndroidTestCase {
         final MediaEntity entity = TestFixtures.createMediaEntityWithPhoto(null);
         view.setMediaEntity(entity);
 
-        assertEquals(View.GONE, view.gifBadge.getVisibility());
+        assertEquals(View.GONE, view.badge.getVisibility());
+        assertEquals(View.GONE, view.videoDuration.getVisibility());
+    }
+
+    public void testSetEntity_withVineCard() {
+        final Card vineCard = TestFixtures.sampleValidVineCard();
+        view.setCard(vineCard);
+
+        assertEquals(View.VISIBLE, view.badge.getVisibility());
+        assertEquals(View.GONE, view.videoDuration.getVisibility());
+    }
+
+    public void testSetEntity_withInvalidVineCard() {
+        final Card vineCard = TestFixtures.sampleInvalidVineCard();
+        view.setCard(vineCard);
+
+        assertEquals(View.GONE, view.badge.getVisibility());
         assertEquals(View.GONE, view.videoDuration.getVisibility());
     }
 }

@@ -20,16 +20,20 @@ package com.twitter.sdk.android.core.models;
 import com.google.gson.annotations.SerializedName;
 
 public class ImageValue {
+
     @SerializedName("height")
     public final int height;
+
     @SerializedName("width")
     public final int width;
+
     @SerializedName("url")
     public final String url;
+
     @SerializedName("alt")
     public final String alt;
 
-    ImageValue(int height, int width, String url, String alt) {
+    public ImageValue(int height, int width, String url, String alt) {
         this.height = height;
         this.width = width;
         this.url = url;

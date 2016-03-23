@@ -17,13 +17,14 @@
 
 package com.twitter.sdk.android.tweetui;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
-import com.twitter.sdk.android.core.models.MediaEntity;
-import com.twitter.sdk.android.tweetui.internal.TweetMediaUtils;
+import com.twitter.sdk.android.core.IntentUtils;
 import com.twitter.sdk.android.tweetui.internal.VideoControlView;
 import com.twitter.sdk.android.tweetui.internal.VideoView;
 
@@ -34,24 +35,33 @@ class PlayerController {
     final VideoView videoView;
     final VideoControlView videoControlView;
     final ProgressBar videoProgressView;
-
+    final TextView callToActionView;
+    View rootView;
     int seekPosition = 0;
     boolean isPlaying = true;
 
-    PlayerController(VideoView videoView, VideoControlView videoControlView,
-            ProgressBar videoProgressView) {
+    PlayerController(View rootView) {
+        this.rootView = rootView;
+        this.videoView = (VideoView) rootView.findViewById(R.id.video_view);
+        this.videoControlView = (VideoControlView) rootView.findViewById(R.id.video_control_view);
+        this.videoProgressView = (ProgressBar) rootView.findViewById(R.id.video_progress_view);
+        this.callToActionView = (TextView) rootView.findViewById(R.id.call_to_action_view);
+    }
+
+    // Unit testing purposes
+    PlayerController(View rootView, VideoView videoView, VideoControlView videoControlView,
+                     ProgressBar videoProgressView, TextView callToActionView) {
+        this.rootView = rootView;
         this.videoView = videoView;
         this.videoControlView = videoControlView;
         this.videoProgressView = videoProgressView;
+        this.callToActionView = callToActionView;
     }
 
-    void prepare(MediaEntity entity) {
+    void prepare(PlayerActivity.PlayerItem item) {
         try {
-            final boolean looping = TweetMediaUtils.isLooping(entity);
-            final String url = TweetMediaUtils.getSupportedVariant(entity).url;
-            final Uri uri = Uri.parse(url);
-
-            setUpMediaControl(looping);
+            setUpCallToAction(item);
+            setUpMediaControl(item.looping);
             videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mediaPlayer) {
@@ -71,7 +81,8 @@ class PlayerController {
                     return false;
                 }
             });
-            videoView.setVideoURI(uri, looping);
+            final Uri uri = Uri.parse(item.url);
+            videoView.setVideoURI(uri, item.looping);
             videoView.requestFocus();
         } catch (Exception e) {
             Fabric.getLogger().e(TAG, "Error occurred during video playback", e);
@@ -123,4 +134,39 @@ class PlayerController {
     void setUpMediaControl() {
         videoView.setMediaController(videoControlView);
     }
+
+    void setUpCallToAction(PlayerActivity.PlayerItem item) {
+        if (item.callToActionText != null && item.callToActionUrl != null) {
+            callToActionView.setVisibility(View.VISIBLE);
+            callToActionView.setText(item.callToActionText);
+            setUpCallToActionListener(item.callToActionUrl);
+            setUpRootViewOnClickListener();
+        }
+    }
+
+    void setUpCallToActionListener(final String callToActionUrl) {
+        callToActionView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Uri uri = Uri.parse(callToActionUrl);
+                final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                IntentUtils.safeStartActivity(callToActionView.getContext(), intent);
+            }
+        });
+    }
+
+    void setUpRootViewOnClickListener() {
+        rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (callToActionView.getVisibility() == View.VISIBLE) {
+                    callToActionView.setVisibility(View.GONE);
+                } else {
+                    callToActionView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+    }
+
+
 }

@@ -15,16 +15,12 @@
   ~
   -->
 
-<merge
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+    <stroke
+        android:width="@dimen/tw__cta_border_size"
+        android:color="@color/tw__cta_border_color"/>
 
-    <ImageView
-        tools:ignore="ContentDescription"
-        android:id="@+id/tw__gif_badge"
-        style="@style/tw__Badge"/>
+    <solid android:color="@android:color/transparent"/>
 
-    <TextView
-        android:id="@+id/tw__video_duration"
-        style="@style/tw__Badge.VideoDuration" />
-</merge>
+    <corners android:radius="@dimen/tw__cta_radius"/>
+</shape>

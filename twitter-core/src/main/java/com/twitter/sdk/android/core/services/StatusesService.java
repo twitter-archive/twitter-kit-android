@@ -61,7 +61,8 @@ public interface StatusesService {
      * @param includeEntities (optional) The entities node will be disincluded when set to false.
      * @param cb The callback to invoke when the request completes.
      */
-    @GET("/1.1/statuses/mentions_timeline.json?tweet_mode=extended")
+    @GET("/1.1/statuses/mentions_timeline.json?" +
+            "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
     void mentionsTimeline(@Query("count") Integer count,
                           @Query("since_id") Long sinceId,
                           @Query("max_id") Long maxId,
@@ -118,7 +119,8 @@ public interface StatusesService {
      *                        include_rts, the retweets will still contain a full user object.
      * @param cb The callback to invoke when the request completes.
      */
-    @GET("/1.1/statuses/user_timeline.json?tweet_mode=extended")
+    @GET("/1.1/statuses/user_timeline.json?" +
+            "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
     void userTimeline(@Query("user_id") Long userId,
                       @Query("screen_name") String screenName,
                       @Query("count") Integer count,
@@ -164,7 +166,8 @@ public interface StatusesService {
      * @param includeEntities (optional) The entities node will be disincluded when set to false.
      * @param cb The callback to invoke when the request completes.
      */
-    @GET("/1.1/statuses/home_timeline.json?tweet_mode=extended")
+    @GET("/1.1/statuses/home_timeline.json?" +
+            "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
     void homeTimeline(@Query("count") Integer count,
                       @Query("since_id") Long sinceId,
                       @Query("max_id") Long maxId,
@@ -198,7 +201,8 @@ public interface StatusesService {
      *                            false.
      * @param cb The callback to invoke when the request completes.
      */
-    @GET("/1.1/statuses/retweets_of_me.json?tweet_mode=extended")
+    @GET("/1.1/statuses/retweets_of_me.json?" +
+            "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
     void retweetsOfMe(@Query("count") Integer count,
                       @Query("since_id") Long sinceId,
                       @Query("max_id") Long maxId,
@@ -222,7 +226,8 @@ public interface StatusesService {
      * @param includeEntities (optional) The entities node will be disincluded when set to false.
      * @param cb The callback to invoke when the request completes.
      */
-    @GET("/1.1/statuses/show.json?tweet_mode=extended")
+    @GET("/1.1/statuses/show.json?" +
+            "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
     void show(@Query("id") Long id,
               @Query("trim_user") Boolean trimUser,
               @Query("include_my_retweet") Boolean includeMyRetweet,
@@ -260,7 +265,8 @@ public interface StatusesService {
      *            explicitly null value paired with it
      * @param cb The callback to invoke when the request completes.
      */
-    @GET("/1.1/statuses/lookup.json?tweet_mode=extended")
+    @GET("/1.1/statuses/lookup.json?" +
+            "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
     void lookup(@Query("id") String id,
                 @Query("include_entities") Boolean includeEntities,
                 @Query("trim_user") Boolean trimUser,
@@ -313,7 +319,8 @@ public interface StatusesService {
      */
     @Deprecated
     @FormUrlEncoded
-    @POST("/1.1/statuses/update.json?tweet_mode=extended")
+    @POST("/1.1/statuses/update.json?" +
+            "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
     void update(@Field("status") String status,
            @Field("in_reply_to_status_id") Long inReplyToStatusId,
            @Field("possibly_sensitive") Boolean possiblySensitive,
@@ -369,7 +376,8 @@ public interface StatusesService {
      * @param cb The callback to invoke when the request completes.
      */
     @FormUrlEncoded
-    @POST("/1.1/statuses/update.json?tweet_mode=extended")
+    @POST("/1.1/statuses/update.json?" +
+            "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
     void update(@Field("status") String status,
                 @Field("in_reply_to_status_id") Long inReplyToStatusId,
                 @Field("possibly_sensitive") Boolean possiblySensitive,
@@ -391,7 +399,8 @@ public interface StatusesService {
      * @param cb The callback to invoke when the request completes.
      */
     @FormUrlEncoded
-    @POST("/1.1/statuses/retweet/{id}.json?tweet_mode=extended")
+    @POST("/1.1/statuses/retweet/{id}.json?" +
+            "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
     void retweet(@Path("id") Long id,
                  @Field("trim_user") Boolean trimUser,
                  Callback<Tweet> cb);
@@ -407,7 +416,8 @@ public interface StatusesService {
      * @param cb The callback to invoke when the request completes.
      */
     @FormUrlEncoded
-    @POST("/1.1/statuses/destroy/{id}.json?tweet_mode=extended")
+    @POST("/1.1/statuses/destroy/{id}.json?" +
+            "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
     void destroy(@Path("id") Long id,
                  @Field("trim_user") Boolean trimUser,
                  Callback<Tweet> cb);
@@ -423,7 +433,8 @@ public interface StatusesService {
      * @param cb The callback to invoke when the request completes.
      */
     @FormUrlEncoded
-    @POST("/1.1/statuses/unretweet/{id}.json?tweet_mode=extended")
+    @POST("/1.1/statuses/unretweet/{id}.json?" +
+            "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
     void unretweet(@Path("id") Long id,
             @Field("trim_user") Boolean trimUser,
             Callback<Tweet> cb);

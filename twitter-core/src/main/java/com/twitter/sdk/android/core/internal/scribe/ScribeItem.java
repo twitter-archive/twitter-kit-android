@@ -18,10 +18,15 @@
 package com.twitter.sdk.android.core.internal.scribe;
 
 import com.google.gson.annotations.SerializedName;
+import com.twitter.sdk.android.core.internal.VineCardUtils;
+import com.twitter.sdk.android.core.models.Card;
+import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.User;
 
-public class ScribeItem {
+import java.io.Serializable;
+
+public class ScribeItem implements Serializable {
     /**
      * Scribe item types. See ItemType in
      * See: source/tree/science/src/thrift/com/twitter/clientapp/gen/client_app.thrift
@@ -95,6 +100,40 @@ public class ScribeItem {
                 .build();
     }
 
+    public static ScribeItem fromTweetCard(long tweetId, Card card) {
+        return new ScribeItem.Builder()
+                .setItemType(ScribeItem.TYPE_TWEET)
+                .setId(tweetId)
+                .setMediaDetails(createCardDetails(tweetId, card))
+                .build();
+    }
+
+    public static ScribeItem fromMediaEntity(long tweetId, MediaEntity mediaEntity) {
+        return new ScribeItem.Builder()
+                .setItemType(ScribeItem.TYPE_TWEET)
+                .setId(tweetId)
+                .setMediaDetails(createMediaDetails(tweetId, mediaEntity))
+                .build();
+    }
+
+    static ScribeItem.MediaDetails createMediaDetails(long tweetId,
+                                                             MediaEntity mediaEntity) {
+        return new ScribeItem.MediaDetails(tweetId, getMediaType(mediaEntity), mediaEntity.id);
+    }
+
+    static ScribeItem.MediaDetails createCardDetails(long tweetId, Card card) {
+        return new ScribeItem.MediaDetails(tweetId, MediaDetails.TYPE_VINE,
+                Long.valueOf(VineCardUtils.getPublisherId(card)));
+    }
+
+    static int getMediaType(MediaEntity mediaEntity) {
+        if (MediaDetails.GIF_TYPE.equals(mediaEntity.type)) {
+            return ScribeItem.MediaDetails.TYPE_ANIMATED_GIF;
+        } else {
+            return ScribeItem.MediaDetails.TYPE_CONSUMER;
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -126,7 +165,7 @@ public class ScribeItem {
     /**
      * Card event.
      */
-    public static class CardEvent {
+    public static class CardEvent implements Serializable {
         public CardEvent(int cardType) {
             promotionCardType = cardType;
         }
@@ -151,11 +190,13 @@ public class ScribeItem {
     /**
      * Media details.
      */
-    public static class MediaDetails {
+    public static class MediaDetails implements Serializable {
         public static final int TYPE_CONSUMER = 1;
         public static final int TYPE_AMPLIFY = 2;
         public static final int TYPE_ANIMATED_GIF = 3;
         public static final int TYPE_VINE = 4;
+
+        public static final String GIF_TYPE = "animated_gif";
 
         @SerializedName("content_id")
         public final long contentId;

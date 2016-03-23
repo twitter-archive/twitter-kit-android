@@ -38,14 +38,13 @@ import static org.mockito.Mockito.verify;
 
 public class VideoScribeClientImplTest {
     static final long TEST_MEDIA_ID = 123456789L;
-    static final String TEST_TYPE_CONSUMER = "video";
-    static final int TEST_TYPE_CONSUMER_ID = 1;
-    static final String TEST_TYPE_ANIMATED_GIF = "animated_gif";
-    static final int TEST_TYPE_ANIMATED_GIF_ID = 3;
     static final String TEST_TFW_CLIENT_EVENT_PAGE = "android";
     static final String TEST_TFW_CLIENT_EVENT_SECTION = "video";
     static final String TEST_SCRIBE_IMPRESSION_ACTION = "impression";
     static final String TEST_SCRIBE_PLAY_ACTION = "play";
+
+    static final String TEST_TYPE_ANIMATED_GIF = "animated_gif";
+    static final int TEST_TYPE_ANIMATED_GIF_ID = 3;
 
     private VideoScribeClientImpl scribeClient;
     @Mock
@@ -64,8 +63,9 @@ public class VideoScribeClientImplTest {
 
     @Test
     public void testImpression() {
-        scribeClient.impression(TestFixtures.TEST_TWEET_ID,
+        final ScribeItem scribeItem = ScribeItem.fromMediaEntity(TestFixtures.TEST_TWEET_ID,
                 createTestEntity(TEST_TYPE_ANIMATED_GIF));
+        scribeClient.impression(scribeItem);
 
         verify(tweetUi).scribe(namespaceArgumentCaptor.capture(), itemsArgumentCaptor.capture());
 
@@ -79,8 +79,9 @@ public class VideoScribeClientImplTest {
 
     @Test
     public void testPlay() {
-        scribeClient.play(TestFixtures.TEST_TWEET_ID,
+        final ScribeItem scribeItem = ScribeItem.fromMediaEntity(TestFixtures.TEST_TWEET_ID,
                 createTestEntity(TEST_TYPE_ANIMATED_GIF));
+        scribeClient.play(scribeItem);
 
         verify(tweetUi).scribe(namespaceArgumentCaptor.capture(), itemsArgumentCaptor.capture());
 
@@ -90,22 +91,6 @@ public class VideoScribeClientImplTest {
 
         final List<ScribeItem> items = itemsArgumentCaptor.getValue();
         assertItems(items);
-    }
-
-    @Test
-    public void testCreateScribeItem_withAnimatedGif() {
-        final ScribeItem.MediaDetails mediaDetails = scribeClient.createMediaDetails(
-                TestFixtures.TEST_TWEET_ID, createTestEntity(TEST_TYPE_ANIMATED_GIF));
-
-        assertMediaDetails(mediaDetails, TEST_TYPE_ANIMATED_GIF_ID);
-    }
-
-    @Test
-    public void testCreateScribeItem_withConsumerVideo() {
-        final ScribeItem.MediaDetails mediaDetails = scribeClient.createMediaDetails(
-                TestFixtures.TEST_TWEET_ID, createTestEntity(TEST_TYPE_CONSUMER));
-
-        assertMediaDetails(mediaDetails, TEST_TYPE_CONSUMER_ID);
     }
 
     static void assertItems(List<ScribeItem> items) {
@@ -123,6 +108,7 @@ public class VideoScribeClientImplTest {
         assertEquals(type, mediaDetails.mediaType);
         assertEquals(TEST_MEDIA_ID, mediaDetails.publisherId);
     }
+
 
     static void assertBaseNamespace(EventNamespace ns) {
         assertEquals(SyndicationClientEvent.CLIENT_NAME, ns.client);

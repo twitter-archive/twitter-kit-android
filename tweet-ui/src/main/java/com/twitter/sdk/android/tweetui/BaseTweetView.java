@@ -42,6 +42,10 @@ import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.IntentUtils;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.internal.VineCardUtils;
+import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
+import com.twitter.sdk.android.core.models.Card;
+import com.twitter.sdk.android.core.models.ImageValue;
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
@@ -561,6 +565,16 @@ public abstract class BaseTweetView extends LinearLayout {
         }
     }
 
+    void scribeCardImpression(Long tweetId, Card card) {
+        final ScribeItem scribeItem = ScribeItem.fromTweetCard(tweetId, card);
+        dependencyProvider.getVideoScribeClient().impression(scribeItem);
+    }
+
+    void scribeMediaEntityImpression(long tweetId, MediaEntity mediaEntity) {
+        final ScribeItem scribeItem = ScribeItem.fromMediaEntity(tweetId, mediaEntity);
+        dependencyProvider.getVideoScribeClient().impression(scribeItem);
+    }
+
     /**
      * Apply the style attributes to the Tweet subviews. Must be called after view inflation and
      * findSubviews.
@@ -670,7 +684,26 @@ public abstract class BaseTweetView extends LinearLayout {
     final void setTweetMedia(Tweet displayTweet) {
         clearMediaView();
 
-        if (displayTweet != null && TweetMediaUtils.hasSupportedVideo(displayTweet)) {
+        if (displayTweet == null) {
+            mediaContainerView.setVisibility(ImageView.GONE);
+            return;
+        }
+
+        if (displayTweet.card != null && VineCardUtils.isVine(displayTweet.card)) {
+            final Card vineCard = displayTweet.card;
+            mediaContainerView.setVisibility(ImageView.VISIBLE);
+            mediaView.setOverlayDrawable(getContext().getResources()
+                    .getDrawable(R.drawable.tw__player_overlay));
+            mediaBadgeView.setCard(vineCard);
+            setVineCardLauncher(displayTweet.id, vineCard);
+
+            final ImageValue imageValue = VineCardUtils.getImageValue(vineCard);
+            if (imageValue != null) {
+                setMediaImage(imageValue.url, getAspectRatio(imageValue));
+            }
+
+            scribeCardImpression(displayTweet.id, vineCard);
+        } else if (TweetMediaUtils.hasSupportedVideo(displayTweet)) {
             final MediaEntity mediaEntity = TweetMediaUtils.getVideoEntity(displayTweet);
             // set the image view to visible before setting via picasso placeholders into so
             // measurements are done correctly, fixes a bug where the placeholder was a small square
@@ -680,10 +713,10 @@ public abstract class BaseTweetView extends LinearLayout {
                     .getDrawable(R.drawable.tw__player_overlay));
             mediaBadgeView.setMediaEntity(mediaEntity);
             setMediaLauncher(displayTweet, mediaEntity);
-            setTweetMedia(mediaEntity);
+            setMediaImage(mediaEntity.mediaUrlHttps, getAspectRatio(mediaEntity));
 
-            dependencyProvider.getVideoScribeClient().impression(displayTweet.id, mediaEntity);
-        } else if (displayTweet != null && TweetMediaUtils.hasPhoto(displayTweet)) {
+            scribeMediaEntityImpression(displayTweet.id, mediaEntity);
+        } else if (TweetMediaUtils.hasPhoto(displayTweet)) {
             final MediaEntity mediaEntity = TweetMediaUtils.getPhotoEntity(displayTweet);
             // set the image view to visible before setting via picasso placeholders into so
             // measurements are done correctly, fixes a bug where the placeholder was a small square
@@ -691,7 +724,7 @@ public abstract class BaseTweetView extends LinearLayout {
             mediaContainerView.setVisibility(ImageView.VISIBLE);
             mediaBadgeView.setMediaEntity(mediaEntity);
             setPhotoLauncher(displayTweet, mediaEntity);
-            setTweetMedia(mediaEntity);
+            setMediaImage(mediaEntity.mediaUrlHttps, getAspectRatio(mediaEntity));
         } else {
             mediaContainerView.setVisibility(ImageView.GONE);
         }
@@ -706,9 +739,14 @@ public abstract class BaseTweetView extends LinearLayout {
                 } else {
                     final VideoInfo.Variant variant = TweetMediaUtils.getSupportedVariant(entity);
                     if (variant != null) {
+
                         final Intent intent = new Intent(getContext(), PlayerActivity.class);
-                        intent.putExtra(PlayerActivity.MEDIA_ENTITY, entity);
-                        intent.putExtra(PlayerActivity.TWEET_ID, displayTweet.id);
+                        final boolean looping = TweetMediaUtils.isLooping(entity);
+                        final String url = TweetMediaUtils.getSupportedVariant(entity).url;
+                        final PlayerActivity.PlayerItem item =
+                                new PlayerActivity.PlayerItem(url, looping);
+                        intent.putExtra(PlayerActivity.PLAYER_ITEM, item);
+
                         IntentUtils.safeStartActivity(getContext(), intent);
                     }
                 }
@@ -732,7 +770,29 @@ public abstract class BaseTweetView extends LinearLayout {
         });
     }
 
-    void setTweetMedia(MediaEntity photoEntity) {
+    private void setVineCardLauncher(final Long tweetId, final Card vineCard) {
+        mediaView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Intent intent = new Intent(getContext(), PlayerActivity.class);
+                final String playerStreamUrl = VineCardUtils.getStreamUrl(vineCard);
+                final String callToActionUrl = VineCardUtils.getCallToActionUrl(vineCard);
+                final String callToActionText =
+                        getContext().getResources().getString(R.string.tw__cta_text);
+                final PlayerActivity.PlayerItem playerItem =
+                        new PlayerActivity.PlayerItem(playerStreamUrl, true,
+                                callToActionText, callToActionUrl);
+                intent.putExtra(PlayerActivity.PLAYER_ITEM, playerItem);
+
+                final ScribeItem scribeItem = ScribeItem.fromTweetCard(tweetId, vineCard);
+                intent.putExtra(PlayerActivity.SCRIBE_ITEM, scribeItem);
+
+                IntentUtils.safeStartActivity(getContext(), intent);
+            }
+        });
+    }
+
+    void setMediaImage(String imagePath, double aspectRatio) {
         final Picasso imageLoader = dependencyProvider.getImageLoader();
 
         if (imageLoader == null) return;
@@ -742,8 +802,8 @@ public abstract class BaseTweetView extends LinearLayout {
         // For recycled targets, which already have a width and (stale) height, reset the size
         // target to zero so Picasso fit works correctly.
         mediaView.resetSize();
-        mediaView.setAspectRatio(getAspectRatio(photoEntity));
-        imageLoader.load(photoEntity.mediaUrlHttps)
+        mediaView.setAspectRatio(aspectRatio);
+        imageLoader.load(imagePath)
                 .placeholder(mediaBg)
                 .fit()
                 .centerCrop()
@@ -757,6 +817,14 @@ public abstract class BaseTweetView extends LinearLayout {
         }
 
         return (double) photoEntity.sizes.medium.w / photoEntity.sizes.medium.h;
+    }
+
+    protected double getAspectRatio(ImageValue imageValue) {
+        if (imageValue == null || imageValue.width == 0 || imageValue.height == 0) {
+            return DEFAULT_ASPECT_RATIO;
+        }
+
+        return (double) imageValue.width / imageValue.height;
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)

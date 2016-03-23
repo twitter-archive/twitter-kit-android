@@ -17,10 +17,10 @@
 
 package com.twitter.sdk.android.tweetui;
 
-import com.twitter.sdk.android.core.models.MediaEntity;
+import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
 
 public interface VideoScribeClient {
-    void impression(long tweetId, MediaEntity mediaEntity);
+    void impression(ScribeItem card);
 
-    void play(long tweetId, MediaEntity mediaEntity);
+    void play(ScribeItem card);
 }

@@ -75,10 +75,6 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="tw__Badge.Gif">
-        <item name="android:src">@drawable/tw__gif_badge</item>
-    </style>
-
     <style name="tw__TweetBadge">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

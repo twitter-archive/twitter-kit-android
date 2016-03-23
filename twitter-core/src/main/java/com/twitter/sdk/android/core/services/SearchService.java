@@ -76,7 +76,8 @@ public interface SearchService {
      * @param includeEntities (optional) The entities node will be disincluded when set to false.
      * @param cb (required) Callback to be executed with result
      */
-    @GET("/1.1/search/tweets.json?tweet_mode=extended")
+    @GET("/1.1/search/tweets.json?" +
+            "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
     void tweets(@Query("q") String query,
                 @EncodedQuery("geocode") Geocode geocode, //EncodedQuery protects commas from encode
                 @Query("lang") String lang,

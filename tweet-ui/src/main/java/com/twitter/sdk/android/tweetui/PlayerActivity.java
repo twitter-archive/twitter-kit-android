@@ -19,15 +19,20 @@ package com.twitter.sdk.android.tweetui;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.ProgressBar;
+import android.view.View;
 
-import com.twitter.sdk.android.tweetui.internal.VideoControlView;
-import com.twitter.sdk.android.tweetui.internal.VideoView;
-import com.twitter.sdk.android.core.models.MediaEntity;
+import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
+
+import java.io.Serializable;
 
 public class PlayerActivity extends Activity {
-    static final String MEDIA_ENTITY = "MEDIA_ENTITY";
-    static final String TWEET_ID = "TWEET_ID";
+
+    static final String PLAYER_ITEM = "PLAYER_ITEM";
+
+    static final String SCRIBE_ITEM = "SCRIBE_ITEM";
+
+    static final VideoScribeClient videoScribeClient =
+            new VideoScribeClientImpl(TweetUi.getInstance());
 
     PlayerController playerController;
 
@@ -36,19 +41,13 @@ public class PlayerActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tw__player_activity);
 
-        final ProgressBar videoProgressView = (ProgressBar) findViewById(R.id.video_progress_view);
-        final VideoView videoView = (VideoView) findViewById(R.id.video_view);
-        final VideoControlView videoControlView =
-                (VideoControlView) findViewById(R.id.video_control_view);
+        final PlayerItem item = (PlayerItem) getIntent().getSerializableExtra(PLAYER_ITEM);
+        final View rootView = findViewById(android.R.id.content);
+        playerController = new PlayerController(rootView);
+        playerController.prepare(item);
 
-        final long tweetId = getIntent().getLongExtra(TWEET_ID, 0);
-        final MediaEntity entity = (MediaEntity) getIntent().getSerializableExtra(MEDIA_ENTITY);
-
-        final VideoScribeClient scribeClient = new VideoScribeClientImpl(TweetUi.getInstance());
-        scribeClient.play(tweetId, entity);
-
-        playerController = new PlayerController(videoView, videoControlView, videoProgressView);
-        playerController.prepare(entity);
+        final ScribeItem scribeItem = (ScribeItem) getIntent().getSerializableExtra(SCRIBE_ITEM);
+        scribeCardPlayImpression(scribeItem);
     }
 
     @Override
@@ -67,5 +66,29 @@ public class PlayerActivity extends Activity {
     public void onDestroy() {
         playerController.onDestroy();
         super.onDestroy();
+    }
+
+    private void scribeCardPlayImpression(ScribeItem scribeItem) {
+        videoScribeClient.play(scribeItem);
+    }
+
+    public static class PlayerItem implements Serializable {
+        public String url;
+        public boolean looping;
+        public String callToActionUrl;
+        public String callToActionText;
+
+        public PlayerItem(String url, boolean looping) {
+            this.url = url;
+            this.looping = looping;
+        }
+
+        public PlayerItem(String url, boolean looping,
+                          String callToActionText, String callToActionUrl) {
+            this.url = url;
+            this.looping = looping;
+            this.callToActionText = callToActionText;
+            this.callToActionUrl = callToActionUrl;
+        }
     }
 }

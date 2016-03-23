@@ -54,7 +54,8 @@ public interface ListService {
      *                        representation you see in home_timeline.
      * @param cb The callback to invoke when the request completes.
      */
-    @GET("/1.1/lists/statuses.json?tweet_mode=extended")
+    @GET("/1.1/lists/statuses.json?" +
+            "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
     void statuses(@Query("list_id") Long listId,
                   @Query("slug") String slug,
                   @Query("owner_screen_name") String ownerScreenName,

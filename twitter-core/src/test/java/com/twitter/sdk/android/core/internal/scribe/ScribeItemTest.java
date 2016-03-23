@@ -18,6 +18,9 @@
 package com.twitter.sdk.android.core.internal.scribe;
 
 import com.twitter.sdk.android.core.BuildConfig;
+import com.twitter.sdk.android.core.TestFixtures;
+import com.twitter.sdk.android.core.models.Card;
+import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.core.models.User;
@@ -29,15 +32,23 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class ScribeItemTest {
     static final long TEST_ID = 123;
+    static final long TEST_MEDIA_ID = 586671909L;
     static final String TEST_MESSAGE = "test message";
     static final ScribeItem.CardEvent TEST_CARD_EVENT = new ScribeItem.CardEvent(1);
     static final ScribeItem.MediaDetails TEST_MEDIA_DETAILS = new ScribeItem.MediaDetails(1, 2, 3);
+
+    static final String TEST_TYPE_ANIMATED_GIF = "animated_gif";
+    static final String TEST_TYPE_CONSUMER = "video";
+    static final int TEST_TYPE_CONSUMER_ID = 1;
+    static final int TEST_TYPE_ANIMATED_GIF_ID = 3;
+    static final int TEST_TYPE_VINE_ID = 4;
 
     @Test
     public void testFromTweet() {
@@ -57,6 +68,37 @@ public class ScribeItemTest {
         assertEquals(Long.valueOf(TEST_ID), item.id);
         assertEquals(Integer.valueOf(ScribeItem.TYPE_USER), item.itemType);
         assertNull(item.description);
+    }
+
+    @Test
+    public void testFromMediaEntity_withAnimatedGif() {
+        final MediaEntity animatedGif = createTestEntity(TEST_TYPE_ANIMATED_GIF);
+        final ScribeItem scribeItem = ScribeItem.fromMediaEntity(TEST_ID, animatedGif);
+
+        assertEquals(Long.valueOf(TEST_ID), scribeItem.id);
+        assertEquals(Integer.valueOf(ScribeItem.TYPE_TWEET), scribeItem.itemType);
+        assertMediaDetails(scribeItem.mediaDetails, TEST_TYPE_ANIMATED_GIF_ID);
+    }
+
+    @Test
+    public void testFromMediaEntity_withConsumerVideo() {
+        final MediaEntity videoEntity = createTestEntity(TEST_TYPE_CONSUMER);
+        final ScribeItem scribeItem = ScribeItem.fromMediaEntity(TEST_ID, videoEntity);
+
+        assertEquals(Long.valueOf(TEST_ID), scribeItem.id);
+        assertEquals(Integer.valueOf(ScribeItem.TYPE_TWEET), scribeItem.itemType);
+        assertMediaDetails(scribeItem.mediaDetails, TEST_TYPE_CONSUMER_ID);
+    }
+
+    @Test
+    public void testFromTweetCard() {
+        final long tweetId = TEST_ID;
+        final Card vineCard = TestFixtures.sampleValidVineCard();
+        final ScribeItem scribeItem = ScribeItem.fromTweetCard(tweetId, vineCard);
+
+        assertEquals(Long.valueOf(TEST_ID), scribeItem.id);
+        assertEquals(Integer.valueOf(ScribeItem.TYPE_TWEET), scribeItem.itemType);
+        assertMediaDetails(scribeItem.mediaDetails, TEST_TYPE_VINE_ID);
     }
 
     @Test
@@ -94,5 +136,18 @@ public class ScribeItemTest {
         assertNull(item.description);
         assertNull(item.cardEvent);
         assertNull(item.mediaDetails);
+    }
+
+
+    static void assertMediaDetails(ScribeItem.MediaDetails mediaDetails, int type) {
+        assertNotNull(mediaDetails);
+        assertEquals(TEST_ID, mediaDetails.contentId);
+        assertEquals(type, mediaDetails.mediaType);
+        assertEquals(TEST_MEDIA_ID, mediaDetails.publisherId);
+    }
+
+    private MediaEntity createTestEntity(String type) {
+        return new MediaEntity(null, null, null, 0, 0, TEST_MEDIA_ID, null, null, null, null, 0,
+                null, type, null);
     }
 }

@@ -18,7 +18,14 @@
 package com.twitter.sdk.android.core;
 
 import com.twitter.sdk.android.core.internal.TwitterApiConstants;
+import com.twitter.sdk.android.core.internal.VineCardUtils;
 import com.twitter.sdk.android.core.models.ApiError;
+import com.twitter.sdk.android.core.models.BindingValues;
+import com.twitter.sdk.android.core.models.Card;
+import com.twitter.sdk.android.core.models.UserValue;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public final class TestFixtures {
 
@@ -35,4 +42,21 @@ public final class TestFixtures {
             TwitterApiConstants.Errors.GUEST_AUTH_ERROR_CODE);
     public static final ApiError TEST_LEGACY_ERROR = new ApiError("legacy error",
             TwitterApiConstants.Errors.LEGACY_ERROR);
+
+    public static final String PLAYER_CARD_VINE = VineCardUtils.VINE_CARD;
+
+    public static final String TEST_VINE_USER_ID = "586671909";
+
+    public static Card sampleValidVineCard() {
+        return new Card(createBindingValuesForCard(), PLAYER_CARD_VINE);
+    }
+
+    public static BindingValues createBindingValuesForCard() {
+        final UserValue testUser = new UserValue(TEST_VINE_USER_ID);
+        final Map<String, Object> testValues = new HashMap<>();
+        testValues.put("site", testUser);
+
+        final BindingValues bindingValues = new BindingValues(testValues);
+        return bindingValues;
+    }
 }

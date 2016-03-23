@@ -47,7 +47,8 @@ public interface FavoriteService {
      * @param includeEntities (optional) The entities node will be omitted when set to false.
      * @param cb The callback to invoke when the request completes.
      */
-    @GET("/1.1/favorites/list.json?tweet_mode=extended")
+    @GET("/1.1/favorites/list.json?" +
+            "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
     void list(@Query("user_id") Long userId,
             @Query("screen_name") String screenName,
             @Query("count") Integer count,
@@ -70,7 +71,8 @@ public interface FavoriteService {
      * @param cb The callback to invoke when the request completes.
      */
     @FormUrlEncoded
-    @POST("/1.1/favorites/destroy.json?tweet_mode=extended")
+    @POST("/1.1/favorites/destroy.json?" +
+            "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
     void destroy(@Field("id") Long id,
             @Field("include_entities") Boolean includeEntities,
             Callback<Tweet> cb);
@@ -88,7 +90,8 @@ public interface FavoriteService {
      * @param cb The callback to invoke when the request completes.
      */
     @FormUrlEncoded
-    @POST("/1.1/favorites/create.json?tweet_mode=extended")
+    @POST("/1.1/favorites/create.json?" +
+            "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
     void create(@Field("id") Long id,
             @Field("include_entities") Boolean includeEntities,
             Callback<Tweet> cb);

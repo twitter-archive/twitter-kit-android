@@ -29,6 +29,8 @@ import io.fabric.sdk.android.KitStub;
 import io.fabric.sdk.android.Logger;
 
 import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.models.Card;
+import com.twitter.sdk.android.core.models.ImageValue;
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.Tweet;
 
@@ -42,7 +44,6 @@ import static org.mockito.Mockito.*;
  * Tests the state of BaseTweetViews created via constructors.
  */
 public abstract class BaseTweetViewTest extends TweetUiTestCase {
-    private static final String ANY_ADVERTISING_ID = "ANY_ID";
     private static final String REQUIRED_RETWEETED_BY_TEXT = "Retweeted by Mr Retweets";
     protected static final double DELTA = 0.001f;
 
@@ -411,8 +412,14 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
 
     public void testGetAspectRatio_withNullMediaEntity() {
         final BaseTweetView view = createView(context, TestFixtures.TEST_TWEET);
+        final MediaEntity mediaEntity = null;
+        assertEquals(BaseTweetView.DEFAULT_ASPECT_RATIO, view.getAspectRatio(mediaEntity));
+    }
 
-        assertEquals(BaseTweetView.DEFAULT_ASPECT_RATIO, view.getAspectRatio(null));
+    public void testGetAspectRatio_withNullImageValue() {
+        final BaseTweetView view = createView(context, TestFixtures.TEST_TWEET);
+        final ImageValue imageValue = null;
+        assertEquals(BaseTweetView.DEFAULT_ASPECT_RATIO, view.getAspectRatio(imageValue));
     }
 
     public void testGetAspectRatio_mediaEntityWithNullSizes() {
@@ -497,7 +504,7 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
                 R.style.tw__TweetDarkStyle, mockDependencyProvider);
 
         try {
-            tweetView.setTweetMedia(mock(MediaEntity.class));
+            tweetView.setTweetMedia(mock(Tweet.class));
         } catch (NullPointerException e) {
             fail("Should have handled null error image");
         }
@@ -529,5 +536,20 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
         tweetView.setTweet(TestFixtures.TEST_RETWEET);
         assertEquals(View.VISIBLE, tweetView.retweetedByView.getVisibility());
         assertEquals(REQUIRED_RETWEETED_BY_TEXT, tweetView.retweetedByView.getText());
+    }
+
+    public void testRender_rendersVineCard() {
+        final BaseTweetView view = createViewWithMocks(context, null);
+        final Card sampleVineCard = TestFixtures.sampleValidVineCard();
+        final Tweet tweetWithVineCard = TestFixtures.createTweetWithVineCard(
+                TestFixtures.TEST_TWEET_ID, TestFixtures.TEST_USER,
+                TestFixtures.TEST_STATUS, sampleVineCard);
+
+        view.setTweet(tweetWithVineCard);
+
+        assertEquals(TestFixtures.TEST_NAME, view.fullNameView.getText().toString());
+        assertEquals(TestFixtures.TEST_FORMATTED_SCREEN_NAME, view.screenNameView.getText());
+        assertEquals(TestFixtures.TEST_STATUS, view.contentView.getText().toString());
+        assertEquals(View.VISIBLE, view.mediaBadgeView.getVisibility());
     }
 }

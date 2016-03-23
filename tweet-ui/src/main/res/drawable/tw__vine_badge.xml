@@ -15,16 +15,13 @@
   ~
   -->
 
-<merge
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <ImageView
-        tools:ignore="ContentDescription"
-        android:id="@+id/tw__gif_badge"
-        style="@style/tw__Badge"/>
-
-    <TextView
-        android:id="@+id/tw__video_duration"
-        style="@style/tw__Badge.VideoDuration" />
-</merge>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/tw__bg_media_badge"/>
+    <item
+        android:left="@dimen/tw__badge_padding"
+        android:bottom="@dimen/tw__badge_padding"
+        android:right="@dimen/tw__badge_padding"
+        android:top="@dimen/tw__badge_padding">
+        <bitmap android:src="@drawable/tw__ic_vine_badge"/>
+    </item>
+</layer-list>

@@ -20,16 +20,18 @@ package com.twitter.sdk.android.tweetui;
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
 import com.twitter.sdk.android.core.internal.scribe.SyndicationClientEvent;
-import com.twitter.sdk.android.core.models.MediaEntity;
-import com.twitter.sdk.android.tweetui.internal.TweetMediaUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 class VideoScribeClientImpl implements VideoScribeClient {
+
     static final String TFW_CLIENT_EVENT_PAGE = "android";
+
     static final String TFW_CLIENT_EVENT_SECTION = "video";
+
     static final String SCRIBE_IMPRESSION_ACTION = "impression";
+
     static final String SCRIBE_PLAY_ACTION = "play";
 
     final TweetUi tweetUi;
@@ -39,39 +41,19 @@ class VideoScribeClientImpl implements VideoScribeClient {
     }
 
     @Override
-    public void impression(long tweetId, MediaEntity mediaEntity) {
+    public void impression(ScribeItem scribeItem) {
         final List<ScribeItem> items = new ArrayList<>();
-        items.add(createScribeItem(tweetId, mediaEntity));
+        items.add(scribeItem);
 
         tweetUi.scribe(getTfwImpressionNamespace(), items);
     }
 
     @Override
-    public void play(long tweetId, MediaEntity mediaEntity) {
+    public void play(ScribeItem scribeItem) {
         final List<ScribeItem> items = new ArrayList<>();
-        items.add(createScribeItem(tweetId, mediaEntity));
+        items.add(scribeItem);
 
         tweetUi.scribe(getTfwPlayNamespace(), items);
-    }
-
-    static ScribeItem createScribeItem(long tweetId, MediaEntity mediaEntity) {
-        return new ScribeItem.Builder()
-                .setItemType(ScribeItem.TYPE_TWEET)
-                .setId(tweetId)
-                .setMediaDetails(createMediaDetails(tweetId, mediaEntity))
-                .build();
-    }
-
-    static ScribeItem.MediaDetails createMediaDetails(long tweetId, MediaEntity mediaEntity) {
-        return new ScribeItem.MediaDetails(tweetId, getMediaType(mediaEntity), mediaEntity.id);
-    }
-
-    static int getMediaType(MediaEntity mediaEntity) {
-        if (TweetMediaUtils.GIF_TYPE.equals(mediaEntity.type)) {
-            return ScribeItem.MediaDetails.TYPE_ANIMATED_GIF;
-        } else {
-            return ScribeItem.MediaDetails.TYPE_CONSUMER;
-        }
     }
 
     static EventNamespace getTfwImpressionNamespace() {

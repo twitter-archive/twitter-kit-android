@@ -29,4 +29,7 @@
 
     <color name="tw__seekbar_thumb_outer_color">#4dffffff</color>
     <color name="tw__seekbar_thumb_inner_color">#ffffffff</color>
+
+    <color name="tw__cta_border_color">@android:color/white</color>
+    <color name="tw__cta_text_color">@android:color/white</color>
 </resources>
