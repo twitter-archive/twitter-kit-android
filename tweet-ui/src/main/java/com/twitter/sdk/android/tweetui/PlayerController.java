@@ -17,7 +17,6 @@
 
 package com.twitter.sdk.android.tweetui;
 
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.view.View;
 
@@ -33,6 +32,9 @@ class PlayerController {
     final VideoView videoView;
     final VideoControlView videoControlView;
 
+    int seekPosition = 0;
+    boolean isPlaying = true;
+
     PlayerController(VideoView videoView, VideoControlView videoControlView) {
         this.videoView = videoView;
         this.videoControlView = videoControlView;
@@ -47,14 +49,29 @@ class PlayerController {
             setUpMediaControl(looping);
             videoView.setVideoURI(uri, looping);
             videoView.requestFocus();
-            videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                public void onPrepared(MediaPlayer mediaPlayer) {
-                    videoView.start();
-                }
-            });
         } catch (Exception e) {
             Fabric.getLogger().e(TAG, "Error occurred during video playback", e);
         }
+    }
+
+    void onResume() {
+        if (seekPosition != 0) {
+            videoView.seekTo(seekPosition);
+        }
+        if (isPlaying) {
+            videoView.start();
+            videoControlView.update();
+        }
+    }
+
+    void onPause() {
+        isPlaying = videoView.isPlaying();
+        seekPosition = videoView.getCurrentPosition();
+        videoView.pause();
+    }
+
+    void onDestroy() {
+        videoView.stopPlayback();
     }
 
     void setUpMediaControl(boolean looping) {
@@ -81,9 +98,5 @@ class PlayerController {
 
     void setUpMediaControl() {
         videoView.setMediaController(videoControlView);
-    }
-
-    void cleanup() {
-        videoView.stopPlayback();
     }
 }

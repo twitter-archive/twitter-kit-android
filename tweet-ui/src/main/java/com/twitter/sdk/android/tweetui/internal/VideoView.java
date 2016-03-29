@@ -48,9 +48,7 @@ import android.view.SurfaceView;
  * play position, or selected tracks.  Applications should
  * save and restore these on their own in
  * {@link android.app.Activity#onSaveInstanceState} and
- * {@link android.app.Activity#onRestoreInstanceState}.<p>
- * Also note that the audio session id (from {@link #getAudioSessionId}) may
- * change from its previously returned value when the VideoView is restored.
+ * {@link android.app.Activity#onRestoreInstanceState}.
  */
 public class VideoView extends SurfaceView
         implements VideoControlView.MediaPlayerControl {
@@ -87,9 +85,6 @@ public class VideoView extends SurfaceView
     private OnErrorListener mOnErrorListener;
     private OnInfoListener mOnInfoListener;
     private int mSeekWhenPrepared;  // recording the seek position while preparing
-    private boolean mCanPause;
-    private boolean mCanSeekBack;
-    private boolean mCanSeekForward;
     private boolean mLooping;
 
     public VideoView(Context context) {
@@ -164,10 +159,6 @@ public class VideoView extends SurfaceView
             // no size yet, just adopt the given spec sizes
         }
         setMeasuredDimension(width, height);
-    }
-
-    public int resolveAdjustedSize(int desiredSize, int measureSpec) {
-        return getDefaultSize(desiredSize, measureSpec);
     }
 
     private void initVideoView() {
@@ -278,7 +269,6 @@ public class VideoView extends SurfaceView
         public void onPrepared(MediaPlayer mp) {
             mCurrentState = STATE_PREPARED;
 
-            mCanPause = mCanSeekBack = mCanSeekForward = true;
             if (mOnPreparedListener != null) {
                 mOnPreparedListener.onPrepared(mMediaPlayer);
             }
@@ -582,30 +572,5 @@ public class VideoView extends SurfaceView
                 mCurrentState != STATE_ERROR &&
                 mCurrentState != STATE_IDLE &&
                 mCurrentState != STATE_PREPARING);
-    }
-
-    @Override
-    public boolean canPause() {
-        return mCanPause;
-    }
-
-    @Override
-    public boolean canSeekBackward() {
-        return mCanSeekBack;
-    }
-
-    @Override
-    public boolean canSeekForward() {
-        return mCanSeekForward;
-    }
-
-    @Override
-    public int getAudioSessionId() {
-        if (mAudioSession == 0) {
-            MediaPlayer foo = new MediaPlayer();
-            mAudioSession = foo.getAudioSessionId();
-            foo.release();
-        }
-        return mAudioSession;
     }
 }

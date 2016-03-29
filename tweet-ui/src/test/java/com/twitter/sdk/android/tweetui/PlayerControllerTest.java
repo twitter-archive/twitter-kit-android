@@ -17,7 +17,6 @@
 
 package com.twitter.sdk.android.tweetui;
 
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.view.View;
 
@@ -36,7 +35,7 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -47,14 +46,14 @@ import static org.mockito.Mockito.when;
 public class PlayerControllerTest {
     private static final String TEST_CONTENT_TYPE_MP4 = "video/mp4";
     private static final String TEST_CONTENT_URL = "https://example.com";
+    private static final int TEST_SEEK_POSITION = 1000;
+
     @Mock
     VideoView videoView;
     @Mock
     VideoControlView videoControlView;
     @Captor
     private ArgumentCaptor<View.OnClickListener> clickListenerCaptor;
-    @Captor
-    private ArgumentCaptor<MediaPlayer.OnPreparedListener> preparedListenerCaptor;
 
     @Before
     public void setUp() {
@@ -77,12 +76,6 @@ public class PlayerControllerTest {
         verify(playerController).setUpMediaControl(false);
         verify(videoView).setVideoURI(testUri, false);
         verify(videoView).requestFocus();
-        verify(videoView).setOnPreparedListener(preparedListenerCaptor.capture());
-
-        final MediaPlayer.OnPreparedListener listener = preparedListenerCaptor.getValue();
-        assertNotNull(listener);
-        listener.onPrepared(null);
-        verify(videoView).start();
     }
 
     @Test
@@ -130,10 +123,45 @@ public class PlayerControllerTest {
     }
 
     @Test
-    public void testCleanup() {
+    public void testOnDestroy() {
         final PlayerController playerController = new PlayerController(videoView, videoControlView);
-        playerController.cleanup();
+        playerController.onDestroy();
 
         verify(videoView).stopPlayback();
+    }
+
+    @Test
+    public void testOnPause() {
+        when(videoView.getCurrentPosition()).thenReturn(TEST_SEEK_POSITION);
+        when(videoView.isPlaying()).thenReturn(true);
+
+        final PlayerController playerController = new PlayerController(videoView, videoControlView);
+        playerController.onPause();
+
+        verify(videoView).getCurrentPosition();
+        verify(videoView).isPlaying();
+        assertEquals(true, playerController.isPlaying);
+        assertEquals(TEST_SEEK_POSITION, playerController.seekPosition);
+    }
+
+    @Test
+    public void testOnResume() {
+        final PlayerController playerController = new PlayerController(videoView, videoControlView);
+        playerController.isPlaying = true;
+        playerController.seekPosition = TEST_SEEK_POSITION;
+        playerController.onResume();
+
+        verify(videoView).start();
+    }
+
+    @Test
+    public void testOnResume_withSeeekPosition() {
+        final PlayerController playerController = new PlayerController(videoView, videoControlView);
+        playerController.isPlaying = true;
+        playerController.seekPosition = TEST_SEEK_POSITION;
+        playerController.onResume();
+
+        verify(videoView).seekTo(TEST_SEEK_POSITION);
+        verify(videoView).start();
     }
 }

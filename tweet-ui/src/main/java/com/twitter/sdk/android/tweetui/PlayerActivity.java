@@ -29,19 +29,15 @@ public class PlayerActivity extends Activity {
     static final String TWEET_ID = "TWEET_ID";
 
     PlayerController playerController;
-    VideoView videoView;
-    VideoControlView videoControlView;
-
-    int videoPosition = 0;
-    boolean videoPaused = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tw__player_activity);
 
-        videoView = (VideoView) findViewById(R.id.video_view);
-        videoControlView = (VideoControlView) findViewById(R.id.video_control_view);
+        final VideoView videoView = (VideoView) findViewById(R.id.video_view);
+        final VideoControlView videoControlView =
+                (VideoControlView) findViewById(R.id.video_control_view);
 
         final long tweetId = getIntent().getLongExtra(TWEET_ID, 0);
         final MediaEntity entity = (MediaEntity) getIntent().getSerializableExtra(MEDIA_ENTITY);
@@ -54,32 +50,20 @@ public class PlayerActivity extends Activity {
     }
 
     @Override
-    public void onDestroy() {
-        playerController.cleanup();
-        super.onDestroy();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
-
-        if (videoPaused) {
-            videoView.seekTo(videoPosition);
-            videoView.start();
-
-            // restart the VideoControlView
-            videoControlView.resume();
-        }
+        playerController.onResume();
     }
 
     @Override
     protected void onPause() {
+        playerController.onPause();
         super.onPause();
+    }
 
-        if (videoView.isPlaying()) {
-            videoPosition = videoView.getCurrentPosition();
-            videoView.pause();
-            videoPaused = true;
-        }
+    @Override
+    public void onDestroy() {
+        playerController.onDestroy();
+        super.onDestroy();
     }
 }
