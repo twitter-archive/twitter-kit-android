@@ -19,6 +19,7 @@ package com.twitter.sdk.android.tweetui;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.widget.ProgressBar;
 
 import com.twitter.sdk.android.tweetui.internal.VideoControlView;
 import com.twitter.sdk.android.tweetui.internal.VideoView;
@@ -35,6 +36,7 @@ public class PlayerActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tw__player_activity);
 
+        final ProgressBar videoProgressView = (ProgressBar) findViewById(R.id.video_progress_view);
         final VideoView videoView = (VideoView) findViewById(R.id.video_view);
         final VideoControlView videoControlView =
                 (VideoControlView) findViewById(R.id.video_control_view);
@@ -45,7 +47,7 @@ public class PlayerActivity extends Activity {
         final VideoScribeClient scribeClient = new VideoScribeClientImpl(TweetUi.getInstance());
         scribeClient.play(tweetId, entity);
 
-        playerController = new PlayerController(videoView, videoControlView);
+        playerController = new PlayerController(videoView, videoControlView, videoProgressView);
         playerController.prepare(entity);
     }
 

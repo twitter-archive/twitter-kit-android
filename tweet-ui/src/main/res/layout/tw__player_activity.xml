@@ -23,6 +23,12 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"/>
 
+    <ProgressBar
+        android:id="@+id/video_progress_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
     <com.twitter.sdk.android.tweetui.internal.VideoControlView
         android:id="@+id/video_control_view"
         android:layout_width="match_parent"

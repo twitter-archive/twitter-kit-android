@@ -17,8 +17,10 @@
 
 package com.twitter.sdk.android.tweetui;
 
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.tweetui.internal.TweetMediaUtils;
@@ -31,13 +33,16 @@ class PlayerController {
     private static final String TAG = "PlayerController";
     final VideoView videoView;
     final VideoControlView videoControlView;
+    final ProgressBar videoProgressView;
 
     int seekPosition = 0;
     boolean isPlaying = true;
 
-    PlayerController(VideoView videoView, VideoControlView videoControlView) {
+    PlayerController(VideoView videoView, VideoControlView videoControlView,
+            ProgressBar videoProgressView) {
         this.videoView = videoView;
         this.videoControlView = videoControlView;
+        this.videoProgressView = videoProgressView;
     }
 
     void prepare(MediaEntity entity) {
@@ -49,6 +54,25 @@ class PlayerController {
             setUpMediaControl(looping);
             videoView.setVideoURI(uri, looping);
             videoView.requestFocus();
+            videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mediaPlayer) {
+                    videoProgressView.setVisibility(View.GONE);
+                }
+            });
+            videoView.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+                @Override
+                public boolean onInfo(MediaPlayer mediaPlayer, int what, int extra) {
+                    if (what == MediaPlayer.MEDIA_INFO_BUFFERING_END) {
+                        videoProgressView.setVisibility(View.GONE);
+                        return true;
+                    } else if (what == MediaPlayer.MEDIA_INFO_BUFFERING_START) {
+                        videoProgressView.setVisibility(View.VISIBLE);
+                        return true;
+                    }
+                    return false;
+                }
+            });
         } catch (Exception e) {
             Fabric.getLogger().e(TAG, "Error occurred during video playback", e);
         }

@@ -17,8 +17,10 @@
 
 package com.twitter.sdk.android.tweetui;
 
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.VideoInfo;
@@ -36,6 +38,7 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -47,68 +50,111 @@ public class PlayerControllerTest {
     private static final String TEST_CONTENT_TYPE_MP4 = "video/mp4";
     private static final String TEST_CONTENT_URL = "https://example.com";
     private static final int TEST_SEEK_POSITION = 1000;
+    private static final Uri TEST_URI = Uri.parse(TEST_CONTENT_URL);
 
     @Mock
     VideoView videoView;
     @Mock
     VideoControlView videoControlView;
+    @Mock
+    ProgressBar videoProgressView;
     @Captor
     private ArgumentCaptor<View.OnClickListener> clickListenerCaptor;
+    @Captor
+    private ArgumentCaptor<MediaPlayer.OnPreparedListener> prepareListenerCaptor;
+    @Captor
+    private ArgumentCaptor<MediaPlayer.OnInfoListener> infoListenerCaptor;
+    PlayerController subject;
+    MediaEntity entity;
+
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
+
+        subject = spy(new PlayerController(videoView, videoControlView, videoProgressView));
+
+        final VideoInfo.Variant variant =
+                new VideoInfo.Variant(0, TEST_CONTENT_TYPE_MP4, TEST_URI.toString());
+        final VideoInfo videoInfo = TestFixtures.createVideoInfoWithVariant(variant);
+        entity = TestFixtures.createEntityWithVideo(videoInfo);
     }
 
     @Test
     public void testPrepare() {
-        final Uri testUri = Uri.parse(TEST_CONTENT_URL);
-        final VideoInfo.Variant variant =
-                new VideoInfo.Variant(0, TEST_CONTENT_TYPE_MP4, testUri.toString());
-        final VideoInfo videoInfo = TestFixtures.createVideoInfoWithVariant(variant);
-        final MediaEntity entity = TestFixtures.createEntityWithVideo(videoInfo);
+        doNothing().when(subject).setUpMediaControl();
+        subject.prepare(entity);
 
-        final PlayerController playerController =
-                spy(new PlayerController(videoView, videoControlView));
-        doNothing().when(playerController).setUpMediaControl();
-        playerController.prepare(entity);
-
-        verify(playerController).setUpMediaControl(false);
-        verify(videoView).setVideoURI(testUri, false);
+        verify(subject).setUpMediaControl(false);
+        verify(videoView).setVideoURI(TEST_URI, false);
         verify(videoView).requestFocus();
+
+        verify(videoView).setOnPreparedListener(any(MediaPlayer.OnPreparedListener.class));
+        verify(videoView).setOnInfoListener(any(MediaPlayer.OnInfoListener.class));
+    }
+
+    @Test
+    public void testPrepare_verifyOnPreparedListener() {
+        doNothing().when(subject).setUpMediaControl();
+        subject.prepare(entity);
+
+        verify(subject).setUpMediaControl(false);
+        verify(videoView).setVideoURI(TEST_URI, false);
+        verify(videoView).requestFocus();
+        verify(videoView).setOnPreparedListener(prepareListenerCaptor.capture());
+        verify(videoView).setOnInfoListener(any(MediaPlayer.OnInfoListener.class));
+        verifyOnPreparedListener(prepareListenerCaptor.getValue());
+    }
+
+    private void verifyOnPreparedListener(MediaPlayer.OnPreparedListener listener) {
+        listener.onPrepared(null);
+        verify(videoProgressView).setVisibility(View.GONE);
+    }
+
+    @Test
+    public void testPrepare_verifyOnInfoListener() {
+        doNothing().when(subject).setUpMediaControl();
+        subject.prepare(entity);
+
+        verify(subject).setUpMediaControl(false);
+        verify(videoView).setVideoURI(TEST_URI, false);
+        verify(videoView).requestFocus();
+        verify(videoView).setOnPreparedListener(any(MediaPlayer.OnPreparedListener.class));
+        verify(videoView).setOnInfoListener(infoListenerCaptor.capture());
+        verifyOnInfoListener(infoListenerCaptor.getValue());
+    }
+
+    private void verifyOnInfoListener(MediaPlayer.OnInfoListener listener) {
+        listener.onInfo(null, MediaPlayer.MEDIA_INFO_BUFFERING_START, 0);
+        verify(videoProgressView).setVisibility(View.VISIBLE);
+        listener.onInfo(null, MediaPlayer.MEDIA_INFO_BUFFERING_END, 0);
+        verify(videoProgressView).setVisibility(View.GONE);
     }
 
     @Test
     public void testPrepare_withNullEntity() {
-        final PlayerController playerController =
-                spy(new PlayerController(videoView, videoControlView));
-        doNothing().when(playerController).setUpMediaControl();
-        playerController.prepare(null);
+        doNothing().when(subject).setUpMediaControl();
+        subject.prepare(null);
     }
 
     @Test
     public void testSetUpMediaControl_withLooping() {
-        final PlayerController playerController =
-                spy(new PlayerController(videoView, videoControlView));
-        playerController.setUpMediaControl(true);
+        subject.setUpMediaControl(true);
 
-        verify(playerController).setUpLoopControl();
+        verify(subject).setUpLoopControl();
     }
 
     @Test
     public void testSetUpMediaControl_withOutLooping() {
-        final PlayerController playerController =
-                spy(new PlayerController(videoView, videoControlView));
-        doNothing().when(playerController).setUpMediaControl();
-        playerController.setUpMediaControl(false);
+        doNothing().when(subject).setUpMediaControl();
+        subject.setUpMediaControl(false);
 
-        verify(playerController).setUpMediaControl();
+        verify(subject).setUpMediaControl();
     }
 
     @Test
     public void testSetUpLoopControl() {
-        final PlayerController playerController = new PlayerController(videoView, videoControlView);
-        playerController.setUpLoopControl();
+        subject.setUpLoopControl();
 
         verify(videoView).setOnClickListener(clickListenerCaptor.capture());
         final View.OnClickListener listener = clickListenerCaptor.getValue();
@@ -124,8 +170,7 @@ public class PlayerControllerTest {
 
     @Test
     public void testOnDestroy() {
-        final PlayerController playerController = new PlayerController(videoView, videoControlView);
-        playerController.onDestroy();
+        subject.onDestroy();
 
         verify(videoView).stopPlayback();
     }
@@ -135,31 +180,28 @@ public class PlayerControllerTest {
         when(videoView.getCurrentPosition()).thenReturn(TEST_SEEK_POSITION);
         when(videoView.isPlaying()).thenReturn(true);
 
-        final PlayerController playerController = new PlayerController(videoView, videoControlView);
-        playerController.onPause();
+        subject.onPause();
 
         verify(videoView).getCurrentPosition();
         verify(videoView).isPlaying();
-        assertEquals(true, playerController.isPlaying);
-        assertEquals(TEST_SEEK_POSITION, playerController.seekPosition);
+        assertEquals(true, subject.isPlaying);
+        assertEquals(TEST_SEEK_POSITION, subject.seekPosition);
     }
 
     @Test
     public void testOnResume() {
-        final PlayerController playerController = new PlayerController(videoView, videoControlView);
-        playerController.isPlaying = true;
-        playerController.seekPosition = TEST_SEEK_POSITION;
-        playerController.onResume();
+        subject.isPlaying = true;
+        subject.seekPosition = TEST_SEEK_POSITION;
+        subject.onResume();
 
         verify(videoView).start();
     }
 
     @Test
     public void testOnResume_withSeeekPosition() {
-        final PlayerController playerController = new PlayerController(videoView, videoControlView);
-        playerController.isPlaying = true;
-        playerController.seekPosition = TEST_SEEK_POSITION;
-        playerController.onResume();
+        subject.isPlaying = true;
+        subject.seekPosition = TEST_SEEK_POSITION;
+        subject.onResume();
 
         verify(videoView).seekTo(TEST_SEEK_POSITION);
         verify(videoView).start();
