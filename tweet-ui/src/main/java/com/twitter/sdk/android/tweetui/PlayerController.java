@@ -52,8 +52,6 @@ class PlayerController {
             final Uri uri = Uri.parse(url);
 
             setUpMediaControl(looping);
-            videoView.setVideoURI(uri, looping);
-            videoView.requestFocus();
             videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mediaPlayer) {
@@ -73,6 +71,8 @@ class PlayerController {
                     return false;
                 }
             });
+            videoView.setVideoURI(uri, looping);
+            videoView.requestFocus();
         } catch (Exception e) {
             Fabric.getLogger().e(TAG, "Error occurred during video playback", e);
         }
