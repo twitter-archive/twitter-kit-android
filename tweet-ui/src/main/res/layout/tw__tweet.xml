@@ -46,8 +46,7 @@
         tools:ignore="ContentDescription"
         android:id="@+id/tw__tweet_author_avatar"
         style="@style/tw__TweetAvatar"
-        android:layout_below="@id/tw__tweet_retweeted_by"
-        tools:background="@color/tw__tweet_media_preview_bg_color"/>
+        android:layout_below="@id/tw__tweet_retweeted_by"/>
 
     <TextView
         android:id="@+id/tw__tweet_author_full_name"

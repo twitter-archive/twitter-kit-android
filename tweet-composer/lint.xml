@@ -23,5 +23,4 @@
         assets for all your app's images." -->
         <ignore path="src/main/res/drawable-xxxhdpi"/>
     </issue>
-    <issue id="GoogleAppIndexingWarning" severity="ignore"/>
 </lint>

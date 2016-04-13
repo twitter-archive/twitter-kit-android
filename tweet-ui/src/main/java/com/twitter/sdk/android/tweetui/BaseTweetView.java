@@ -54,6 +54,7 @@ import com.twitter.sdk.android.tweetui.internal.TweetMediaView;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 @SuppressWarnings({"TooManyMethods", "TooManyFields"})
 public abstract class BaseTweetView extends LinearLayout {
@@ -504,7 +505,8 @@ public abstract class BaseTweetView extends LinearLayout {
 
             @Override
             public void failure(TwitterException exception) {
-                Fabric.getLogger().d(TAG, String.format(TweetUtils.LOAD_TWEET_DEBUG, tweetId));
+                Fabric.getLogger().d(TAG,
+                        String.format(Locale.ENGLISH, TweetUtils.LOAD_TWEET_DEBUG, tweetId));
             }
         };
         dependencyProvider.getTweetUi().getTweetRepository().loadTweet(getTweetId(), repoCb);

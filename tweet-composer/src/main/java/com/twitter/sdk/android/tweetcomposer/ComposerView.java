@@ -38,6 +38,8 @@ import com.twitter.sdk.android.core.internal.UserUtils;
 import com.twitter.sdk.android.core.internal.util.ObservableScrollView;
 import com.twitter.sdk.android.core.models.User;
 
+import java.util.Locale;
+
 public class ComposerView extends LinearLayout {
     ImageView avatarView;
     ImageView closeView;
@@ -172,7 +174,7 @@ public class ComposerView extends LinearLayout {
     }
 
     void setCharCount(int remainingCount) {
-        charCountView.setText(String.format("%d", remainingCount));
+        charCountView.setText(String.format(Locale.getDefault(), "%d", remainingCount));
     }
 
     void setCharCountTextStyle(int textStyleResId) {

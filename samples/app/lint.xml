@@ -18,4 +18,6 @@
 
 <lint>
     <issue id="GoogleAppIndexingWarning" severity="ignore"/>
+    <issue id="MissingPermission" severity="ignore"/>
+    <issue id="Registered" severity="ignore"/>
 </lint>

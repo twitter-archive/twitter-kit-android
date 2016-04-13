@@ -37,5 +37,4 @@
     <issue id="HandlerLeak" severity="ignore">
         <ignore path="src/main/java/com/twitter/sdk/android/tweetui/internal/VideoControlView.java"/>
     </issue>
-    <issue id="GoogleAppIndexingWarning" severity="ignore"/>
 </lint>
