@@ -43,6 +43,7 @@ public class TweetMediaUtilsTest {
     private static final String TEST_MEDIA_TYPE_VIDEO = "video";
     private static final String TEST_MEDIA_TYPE_ANIMATED_GIF = "animated_gif";
     private static final String TEST_CONTENT_TYPE_MP4 = "video/mp4";
+    private static final String TEST_CONTENT_TYPE_HLS = "application/x-mpegURL";
     private static final String TEST_CONTENT_TYPE_DASH = "video/dash+xml";
 
     @Test
@@ -271,19 +272,25 @@ public class TweetMediaUtilsTest {
     }
 
     @Test
-    public void testIsVariantSupported() {
+    public void testIsVariantSupported_withMP4() {
         final VideoInfo.Variant variant = new VideoInfo.Variant(0, TEST_CONTENT_TYPE_MP4, null);
         assertTrue(TweetMediaUtils.isVariantSupported(variant));
     }
 
     @Test
-    public void testIsVariantSupported_nullContentType() {
+    public void testIsVariantSupported_withHLS() {
+        final VideoInfo.Variant variant = new VideoInfo.Variant(0, TEST_CONTENT_TYPE_HLS, null);
+        assertTrue(TweetMediaUtils.isVariantSupported(variant));
+    }
+
+    @Test
+    public void testIsVariantSupported_withNullContentType() {
         final VideoInfo.Variant variant = new VideoInfo.Variant(0, null, null);
         assertFalse(TweetMediaUtils.isVariantSupported(variant));
     }
 
     @Test
-    public void testIsVariantSupported_unsupportedContentType() {
+    public void testIsVariantSupported_withUnsupportedContentType() {
         final VideoInfo.Variant variant = new VideoInfo.Variant(0, TEST_CONTENT_TYPE_DASH, null);
         assertFalse(TweetMediaUtils.isVariantSupported(variant));
     }

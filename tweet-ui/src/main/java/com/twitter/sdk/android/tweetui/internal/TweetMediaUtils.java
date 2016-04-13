@@ -31,7 +31,7 @@ final public class TweetMediaUtils {
     public static final String VIDEO_TYPE = "video";
     public static final String GIF_TYPE = "animated_gif";
     private static final String CONTENT_TYPE_MP4 = "video/mp4";
-    private static final String CONTENT_TYPE_WEBM = "video/webm";
+    private static final String CONTENT_TYPE_HLS = "application/x-mpegURL";
 
     private TweetMediaUtils() {
     }
@@ -125,10 +125,10 @@ final public class TweetMediaUtils {
     }
 
     static boolean isVariantSupported(VideoInfo.Variant variant) {
-        if (CONTENT_TYPE_MP4.equals(variant.contentType)) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP &&
+                CONTENT_TYPE_HLS.equals(variant.contentType)) {
             return true;
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
-                && CONTENT_TYPE_WEBM.equals(variant.contentType)) {
+        } else if (CONTENT_TYPE_MP4.equals(variant.contentType)) {
             return true;
         }
 

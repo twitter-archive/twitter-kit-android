@@ -219,9 +219,9 @@ public class VideoView extends SurfaceView
             mMediaPlayer.setOnInfoListener(mInfoListener);
             mMediaPlayer.setOnBufferingUpdateListener(mBufferingUpdateListener);
             mCurrentBufferPercentage = 0;
+            mMediaPlayer.setLooping(mLooping);
             mMediaPlayer.setDataSource(getContext(), mUri);
             mMediaPlayer.setDisplay(mSurfaceHolder);
-            mMediaPlayer.setLooping(mLooping);
             mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mMediaPlayer.setScreenOnWhilePlaying(true);
             mMediaPlayer.prepareAsync();
