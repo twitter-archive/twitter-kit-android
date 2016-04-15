@@ -46,5 +46,6 @@
     <string name="tweet_load_error">Failed to load Tweet</string>
     <string name="multi_tweet_view_error">Failed to load tweets</string>
     <string name="timeline_empty">No tweets :(</string>
+    <string name="tweet_pojo">Tweet Pojo</string>
 
 </resources>

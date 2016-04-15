@@ -1,0 +1,399 @@
+[
+  {
+    "contributors": null,
+    "coordinates": null,
+    "created_at": "Mon Apr 11 22:42:04 +0000 2016",
+    "entities": {
+      "hashtags": [
+        {
+          "indices": [
+            58,
+            75
+          ],
+          "text": "userverification"
+        }
+      ],
+      "media": [
+        {
+          "display_url": "pic.twitter.com/X6axD8CQ8G",
+          "expanded_url": "http://twitter.com/digits/status/719654922409521152/photo/1",
+          "id": 719654691236282372,
+          "id_str": "719654691236282372",
+          "indices": [
+            143,
+            144
+          ],
+          "media_url": "http://pbs.twimg.com/tweet_video_thumb/Cfy6IPgVAAQ6jDw.jpg",
+          "media_url_https": "https://pbs.twimg.com/tweet_video_thumb/Cfy6IPgVAAQ6jDw.jpg",
+          "sizes": {
+            "large": {
+              "h": 434,
+              "resize": "fit",
+              "w": 506
+            },
+            "medium": {
+              "h": 434,
+              "resize": "fit",
+              "w": 506
+            },
+            "small": {
+              "h": 292,
+              "resize": "fit",
+              "w": 340
+            },
+            "thumb": {
+              "h": 150,
+              "resize": "crop",
+              "w": 150
+            }
+          },
+          "source_status_id": 719654922409521152,
+          "source_status_id_str": "719654922409521152",
+          "source_user_id": 2847649621,
+          "source_user_id_str": "2847649621",
+          "type": "photo",
+          "url": "https://t.co/X6axD8CQ8G"
+        }
+      ],
+      "symbols": [],
+      "urls": [],
+      "user_mentions": [
+        {
+          "id": 2847649621,
+          "id_str": "2847649621",
+          "indices": [
+            3,
+            10
+          ],
+          "name": "Digits",
+          "screen_name": "digits"
+        }
+      ]
+    },
+    "extended_entities": {
+      "media": [
+        {
+          "display_url": "pic.twitter.com/X6axD8CQ8G",
+          "expanded_url": "http://twitter.com/digits/status/719654922409521152/photo/1",
+          "id": 719654691236282372,
+          "id_str": "719654691236282372",
+          "indices": [
+            143,
+            144
+          ],
+          "media_url": "http://pbs.twimg.com/tweet_video_thumb/Cfy6IPgVAAQ6jDw.jpg",
+          "media_url_https": "https://pbs.twimg.com/tweet_video_thumb/Cfy6IPgVAAQ6jDw.jpg",
+          "sizes": {
+            "large": {
+              "h": 434,
+              "resize": "fit",
+              "w": 506
+            },
+            "medium": {
+              "h": 434,
+              "resize": "fit",
+              "w": 506
+            },
+            "small": {
+              "h": 292,
+              "resize": "fit",
+              "w": 340
+            },
+            "thumb": {
+              "h": 150,
+              "resize": "crop",
+              "w": 150
+            }
+          },
+          "source_status_id": 719654922409521152,
+          "source_status_id_str": "719654922409521152",
+          "source_user_id": 2847649621,
+          "source_user_id_str": "2847649621",
+          "type": "animated_gif",
+          "url": "https://t.co/X6axD8CQ8G",
+          "video_info": {
+            "aspect_ratio": [
+              253,
+              217
+            ],
+            "variants": [
+              {
+                "bitrate": 0,
+                "content_type": "video/mp4",
+                "url": "https://pbs.twimg.com/tweet_video/Cfy6IPgVAAQ6jDw.mp4"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "favorite_count": 0,
+    "favorited": false,
+    "geo": null,
+    "id": 719656792750358528,
+    "id_str": "719656792750358528",
+    "in_reply_to_screen_name": null,
+    "in_reply_to_status_id": null,
+    "in_reply_to_status_id_str": null,
+    "in_reply_to_user_id": null,
+    "in_reply_to_user_id_str": null,
+    "is_quote_status": false,
+    "lang": "en",
+    "place": null,
+    "possibly_sensitive": false,
+    "retweet_count": 21,
+    "retweeted": false,
+    "retweeted_status": {
+      "contributors": null,
+      "coordinates": null,
+      "created_at": "Mon Apr 11 22:34:38 +0000 2016",
+      "entities": {
+        "hashtags": [
+          {
+            "indices": [
+              46,
+              63
+            ],
+            "text": "userverification"
+          }
+        ],
+        "media": [
+          {
+            "display_url": "pic.twitter.com/X6axD8CQ8G",
+            "expanded_url": "http://twitter.com/digits/status/719654922409521152/photo/1",
+            "id": 719654691236282372,
+            "id_str": "719654691236282372",
+            "indices": [
+              120,
+              143
+            ],
+            "media_url": "http://pbs.twimg.com/tweet_video_thumb/Cfy6IPgVAAQ6jDw.jpg",
+            "media_url_https": "https://pbs.twimg.com/tweet_video_thumb/Cfy6IPgVAAQ6jDw.jpg",
+            "sizes": {
+              "large": {
+                "h": 434,
+                "resize": "fit",
+                "w": 506
+              },
+              "medium": {
+                "h": 434,
+                "resize": "fit",
+                "w": 506
+              },
+              "small": {
+                "h": 292,
+                "resize": "fit",
+                "w": 340
+              },
+              "thumb": {
+                "h": 150,
+                "resize": "crop",
+                "w": 150
+              }
+            },
+            "type": "photo",
+            "url": "https://t.co/X6axD8CQ8G"
+          }
+        ],
+        "symbols": [],
+        "urls": [],
+        "user_mentions": []
+      },
+      "extended_entities": {
+        "media": [
+          {
+            "display_url": "pic.twitter.com/X6axD8CQ8G",
+            "expanded_url": "http://twitter.com/digits/status/719654922409521152/photo/1",
+            "id": 719654691236282372,
+            "id_str": "719654691236282372",
+            "indices": [
+              120,
+              143
+            ],
+            "media_url": "http://pbs.twimg.com/tweet_video_thumb/Cfy6IPgVAAQ6jDw.jpg",
+            "media_url_https": "https://pbs.twimg.com/tweet_video_thumb/Cfy6IPgVAAQ6jDw.jpg",
+            "sizes": {
+              "large": {
+                "h": 434,
+                "resize": "fit",
+                "w": 506
+              },
+              "medium": {
+                "h": 434,
+                "resize": "fit",
+                "w": 506
+              },
+              "small": {
+                "h": 292,
+                "resize": "fit",
+                "w": 340
+              },
+              "thumb": {
+                "h": 150,
+                "resize": "crop",
+                "w": 150
+              }
+            },
+            "type": "animated_gif",
+            "url": "https://t.co/X6axD8CQ8G",
+            "video_info": {
+              "aspect_ratio": [
+                253,
+                217
+              ],
+              "variants": [
+                {
+                  "bitrate": 0,
+                  "content_type": "video/mp4",
+                  "url": "https://pbs.twimg.com/tweet_video/Cfy6IPgVAAQ6jDw.mp4"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "favorite_count": 32,
+      "favorited": false,
+      "geo": null,
+      "id": 719654922409521152,
+      "id_str": "719654922409521152",
+      "in_reply_to_screen_name": null,
+      "in_reply_to_status_id": null,
+      "in_reply_to_status_id_str": null,
+      "in_reply_to_user_id": null,
+      "in_reply_to_user_id_str": null,
+      "is_quote_status": false,
+      "lang": "en",
+      "place": null,
+      "possibly_sensitive": false,
+      "retweet_count": 21,
+      "retweeted": false,
+      "source": "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>",
+      "text": "1/ Passwords = poor UX. Non-password forms of #userverification are emerging: phone, fingerprint &amp; even the selfie. https://t.co/X6axD8CQ8G",
+      "truncated": false,
+      "user": {
+        "contributors_enabled": false,
+        "created_at": "Wed Oct 08 16:01:38 +0000 2014",
+        "default_profile": true,
+        "default_profile_image": false,
+        "description": "No more passwords. Powerful login that grows your mobile graph.",
+        "entities": {
+          "description": {
+            "urls": []
+          },
+          "url": {
+            "urls": [
+              {
+                "display_url": "digits.com",
+                "expanded_url": "http://digits.com",
+                "indices": [
+                  0,
+                  22
+                ],
+                "url": "http://t.co/BNZoojPX1o"
+              }
+            ]
+          }
+        },
+        "favourites_count": 42,
+        "follow_request_sent": false,
+        "followers_count": 36085,
+        "following": false,
+        "friends_count": 1,
+        "geo_enabled": false,
+        "has_extended_profile": false,
+        "id": 2847649621,
+        "id_str": "2847649621",
+        "is_translation_enabled": false,
+        "is_translator": false,
+        "lang": "en",
+        "listed_count": 80,
+        "location": "San Francisco, CA",
+        "name": "Digits",
+        "notifications": false,
+        "profile_background_color": "C0DEED",
+        "profile_background_image_url": "http://abs.twimg.com/images/themes/theme1/bg.png",
+        "profile_background_image_url_https": "https://abs.twimg.com/images/themes/theme1/bg.png",
+        "profile_background_tile": false,
+        "profile_banner_url": "https://pbs.twimg.com/profile_banners/2847649621/1427216104",
+        "profile_image_url": "http://pbs.twimg.com/profile_images/524974153040793600/SFY-beyr_normal.png",
+        "profile_image_url_https": "https://pbs.twimg.com/profile_images/524974153040793600/SFY-beyr_normal.png",
+        "profile_link_color": "0084B4",
+        "profile_sidebar_border_color": "C0DEED",
+        "profile_sidebar_fill_color": "DDEEF6",
+        "profile_text_color": "333333",
+        "profile_use_background_image": true,
+        "protected": false,
+        "screen_name": "digits",
+        "statuses_count": 223,
+        "time_zone": "Mazatlan",
+        "url": "http://t.co/BNZoojPX1o",
+        "utc_offset": -21600,
+        "verified": true
+      }
+    },
+    "source": "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>",
+    "text": "RT @digits: 1/ Passwords = poor UX. Non-password forms of #userverification are emerging: phone, fingerprint &amp; even the selfie. https://t.c\u2026",
+    "truncated": false,
+    "user": {
+      "contributors_enabled": false,
+      "created_at": "Thu Oct 16 00:15:43 +0000 2014",
+      "default_profile": true,
+      "default_profile_image": false,
+      "description": "The official Twitter account for Fabric. The tools you need to build the best apps.",
+      "entities": {
+        "description": {
+          "urls": []
+        },
+        "url": {
+          "urls": [
+            {
+              "display_url": "get.fabric.io",
+              "expanded_url": "http://get.fabric.io",
+              "indices": [
+                0,
+                22
+              ],
+              "url": "http://t.co/OZQv5dblxS"
+            }
+          ]
+        }
+      },
+      "favourites_count": 545,
+      "follow_request_sent": false,
+      "followers_count": 134190,
+      "following": false,
+      "friends_count": 7,
+      "geo_enabled": false,
+      "has_extended_profile": false,
+      "id": 2857397298,
+      "id_str": "2857397298",
+      "is_translation_enabled": false,
+      "is_translator": false,
+      "lang": "en",
+      "listed_count": 319,
+      "location": "San Francisco, CA",
+      "name": "Fabric",
+      "notifications": false,
+      "profile_background_color": "C0DEED",
+      "profile_background_image_url": "http://abs.twimg.com/images/themes/theme1/bg.png",
+      "profile_background_image_url_https": "https://abs.twimg.com/images/themes/theme1/bg.png",
+      "profile_background_tile": false,
+      "profile_banner_url": "https://pbs.twimg.com/profile_banners/2857397298/1413997067",
+      "profile_image_url": "http://pbs.twimg.com/profile_images/524967911010471937/wKnU1vK2_normal.png",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/524967911010471937/wKnU1vK2_normal.png",
+      "profile_link_color": "0084B4",
+      "profile_sidebar_border_color": "C0DEED",
+      "profile_sidebar_fill_color": "DDEEF6",
+      "profile_text_color": "333333",
+      "profile_use_background_image": true,
+      "protected": false,
+      "screen_name": "fabric",
+      "statuses_count": 1943,
+      "time_zone": "Pacific Time (US & Canada)",
+      "url": "http://t.co/OZQv5dblxS",
+      "utc_offset": -25200,
+      "verified": true
+    }
+  }
+]

@@ -93,5 +93,14 @@ public class TweetUiMainActivity extends BaseActivity {
                 startActivity(new Intent(TweetUiMainActivity.this, TweetPreviewActivity.class));
             }
         });
+
+        final Button tweetPojoButton = (Button) findViewById(
+                R.id.button_tweet_pojo_activity);
+        tweetPojoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(TweetUiMainActivity.this, TweetPojoActivity.class));
+            }
+        });
     }
 }

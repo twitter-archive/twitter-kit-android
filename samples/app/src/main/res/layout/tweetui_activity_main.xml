@@ -10,54 +10,65 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/button_tweet_preview_activity"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/preview_tweet"/>
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/button_xml_tweet_activity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/xml_tweets_activity"/>
+            <Button
+                android:id="@+id/button_tweet_preview_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/preview_tweet" />
 
-        <Button
-            android:id="@+id/button_tweet_activity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tweets_activity"/>
+            <Button
+                android:id="@+id/button_xml_tweet_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/xml_tweets_activity" />
 
-        <Button
-            android:id="@+id/button_unique_tweet_activity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/unqiue_tweets"/>
+            <Button
+                android:id="@+id/button_tweet_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tweets_activity" />
 
-        <Button
-            android:id="@+id/button_timelines_activity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_timelines_activity"/>
+            <Button
+                android:id="@+id/button_unique_tweet_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/unqiue_tweets" />
 
-        <Button
-            android:id="@+id/button_fixed_timeline_activity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/fixed_timeline"/>
+            <Button
+                android:id="@+id/button_timelines_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/button_timelines_activity" />
 
-        <Button
-            android:id="@+id/button_refresh_timeline_activity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/refresh_timeline"/>
+            <Button
+                android:id="@+id/button_fixed_timeline_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fixed_timeline" />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/button_refresh_timeline_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/refresh_timeline" />
+
+            <Button
+                android:id="@+id/button_tweet_pojo_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tweet_pojo" />
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
