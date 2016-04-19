@@ -22,7 +22,6 @@ import android.text.TextUtils;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
 
 import java.util.List;
@@ -78,45 +77,6 @@ public final class TweetUtils {
     }
 
     /**
-     * Loads a single Tweet by id.
-     * @param tweetId Tweet id
-     * @param loadCallback callback
-     * @deprecated Use {@link #loadTweet(long, Callback)} instead.
-     */
-    @Deprecated
-    public static void loadTweet(final long tweetId, final LoadCallback<Tweet> loadCallback) {
-        final Callback<Tweet> cb = new CallbackAdapter<>(loadCallback);
-        loadTweet(tweetId, new LoggingCallback<Tweet>(cb, Fabric.getLogger()) {
-            @Override
-            public void success(Result<Tweet> result) {
-                if (cb != null) {
-                    cb.success(result);
-                }
-            }
-        });
-    }
-
-    /**
-     * Loads a List of Tweets by id. Returns Tweets in the order requested.
-     * @param tweetIds List of Tweet ids
-     * @param loadCallback callback
-     * @deprecated Use {@link #loadTweet(long, Callback)} instead.
-     */
-    @Deprecated
-    public static void loadTweets(final List<Long> tweetIds,
-                                  final LoadCallback<List<Tweet>> loadCallback) {
-        final Callback<List<Tweet>> cb = new CallbackAdapter<>(loadCallback);
-        loadTweets(tweetIds, new LoggingCallback<List<Tweet>>(cb, Fabric.getLogger()) {
-            @Override
-            public void success(Result<List<Tweet>> result) {
-                if (cb != null) {
-                    cb.success(result);
-                }
-            }
-        });
-    }
-
-    /**
      * Determines if an accurate permalink can be constructed for the Tweet
      *
      * @param tweet a Tweet which may be missing fields for resolving its author
@@ -164,30 +124,5 @@ public final class TweetUtils {
             permalink = String.format(Locale.US, PERMALINK_FORMAT, screenName, tweetId);
         }
         return Uri.parse(permalink);
-    }
-
-    /**
-     * Shim to convert deprecated LoadCallback to Callback.
-     */
-    public static class CallbackAdapter<T> extends Callback<T> {
-        private LoadCallback<T> cb;
-
-        CallbackAdapter(LoadCallback<T> cb) {
-            this.cb = cb;
-        }
-
-        @Override
-        public void success(Result<T> result) {
-            if (cb != null) {
-                cb.success(result.data);
-            }
-        }
-
-        @Override
-        public void failure(TwitterException exception) {
-            if (cb != null) {
-                cb.failure(exception);
-            }
-        }
     }
 }
