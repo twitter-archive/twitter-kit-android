@@ -27,12 +27,7 @@ import com.twitter.sdk.android.core.services.StatusesService;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
-import org.mockito.ArgumentCaptor;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -54,19 +49,6 @@ public final class MockUtils {
                 .thenReturn(requestCreator);
         doNothing().when(requestCreator).into(any(ImageView.class));
         return picasso;
-    }
-
-    public static void mockExecutorService(ExecutorService executorService) {
-        final ArgumentCaptor<Runnable> runableArgument =
-                ArgumentCaptor.forClass(Runnable.class);
-        when(executorService.submit(runableArgument.capture())).thenAnswer(
-                new Answer<Object>() {
-                    @Override
-                    public Object answer(InvocationOnMock invocation) throws Throwable {
-                        return null;
-                    }
-                }
-        );
     }
 
     public static void mockStatusesServiceClient(TwitterApiClient apiClient,

@@ -668,7 +668,7 @@ public class TimelineDelegateTest {
             TestItem.populateList(testItems, numItems);
             final TimelineResult<TestItem> timelineResult
                     = new TimelineResult<>(new TimelineCursor(minPosition, maxPosition), testItems);
-            cb.success(timelineResult, null);
+            cb.success(new Result<>(timelineResult, null));
         }
 
         @Override
@@ -677,7 +677,7 @@ public class TimelineDelegateTest {
             TestItem.populateList(testItems, numItems);
             final TimelineResult<TestItem> timelineResult
                     = new TimelineResult<>(new TimelineCursor(minPosition, maxPosition), testItems);
-            cb.success(timelineResult, null);
+            cb.success(new Result<>(timelineResult, null));
         }
     }
 }

@@ -17,14 +17,13 @@
 
 package com.twitter.sdk.android.core.services;
 
-import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.models.Media;
 
-import retrofit.http.Multipart;
-import retrofit.http.POST;
-import retrofit.http.Part;
-import retrofit.mime.TypedFile;
-import retrofit.mime.TypedString;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.http.Multipart;
+import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 public interface MediaService {
 
@@ -38,12 +37,10 @@ public interface MediaService {
      *              parameter.
      * @param mediaData the base64-encoded file content to upload. Cannot be used with the media
      *                  parameter
-     * @param cb The callback to invoke when the request completes.
      */
     @Multipart
-    @POST("/1.1/media/upload.json")
-    void upload(@Part("media") TypedFile media,
-                @Part("media_data") TypedFile mediaData,
-                @Part("additional_owners") TypedString additionalOwners,
-                Callback<Media> cb);
+    @POST("https://upload.twitter.com/1.1/media/upload.json")
+    Call<Media> upload(@Part("media") RequestBody media,
+                @Part("media_data") RequestBody mediaData,
+                @Part("additional_owners") RequestBody additionalOwners);
 }

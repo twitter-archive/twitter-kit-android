@@ -25,6 +25,7 @@ import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.internal.TwitterApi;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
@@ -34,16 +35,21 @@ import java.lang.reflect.Method;
 
 import javax.net.ssl.SSLSocketFactory;
 
-import retrofit.http.Body;
-import retrofit.http.Field;
-import retrofit.http.Header;
-import retrofit.http.Headers;
-import retrofit.http.POST;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.http.Field;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
+import retrofit2.mock.Calls;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
@@ -54,39 +60,40 @@ public class OAuth2ServiceTest  {
      * Example consumer key and consumer secret values provided by:
      * https://dev.twitter.com/oauth/application-only
      */
-    private static final String CONSUMER_KEY = "xvz1evFS4wEEPTGEFPHBog";
-    private static final String CONSUMER_SECRET = "L8qq9PZyRg6ieKGEKhZolGC0vJWLw8iEJ88DRdyOg";
-    private static final OAuth2Token APP_TOKEN = new OAuth2Token("type", "access");
-    private static final GuestAuthToken GUEST_TOKEN = new GuestAuthToken("type", "access", "guest");
-    private static final GuestTokenResponse GUEST_RESPONSE = new GuestTokenResponse("guest");
+    static final String CONSUMER_KEY = "xvz1evFS4wEEPTGEFPHBog";
+    static final String CONSUMER_SECRET = "L8qq9PZyRg6ieKGEKhZolGC0vJWLw8iEJ88DRdyOg";
+    static final TwitterAuthConfig AUTH_CONFIG = new TwitterAuthConfig(CONSUMER_KEY, CONSUMER_SECRET);
+    static final String EXPECTED_BASIC_AUTH = "Basic eHZ6MWV2RlM0d0VFUFRHRUZQSEJvZzpMOHFxOVBaeVJnNmllS0dFS2hab2xHQzB2SldMdzhpRUo4OERSZHlPZw==";
+    static final OAuth2Token APP_TOKEN = new OAuth2Token("type", "access");
+    static final GuestAuthToken GUEST_TOKEN = new GuestAuthToken("type", "access", "guest");
+    static final GuestTokenResponse GUEST_RESPONSE = new GuestTokenResponse("guest");
 
-    private final TwitterAuthConfig authConfig;
-    private final TwitterCore twitterCore;
-    private final SSLSocketFactory sslSocketFactory;
-    private final TwitterApi twitterApi;
-    private final OAuth2Service service;
+    private TwitterCore twitterCore;
+    private SSLSocketFactory sslSocketFactory;
+    private TwitterApi twitterApi;
+    private OAuth2Service service;
 
-    public OAuth2ServiceTest() {
-        authConfig = new TwitterAuthConfig(CONSUMER_KEY, CONSUMER_SECRET);
-        twitterCore = new TwitterCore(authConfig);
+    @Before
+    public void setUp() {
+        twitterCore = mock(TwitterCore.class);
+        when(twitterCore.getAuthConfig()).thenReturn(AUTH_CONFIG);
+
+        sslSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
         twitterApi = new TwitterApi();
-        sslSocketFactory = mock(SSLSocketFactory.class);
         service = new OAuth2Service(twitterCore, sslSocketFactory, twitterApi);
     }
 
-    private class MockOAuth2Api implements OAuth2Service.OAuth2Api {
+    public class MockOAuth2Api implements OAuth2Service.OAuth2Api {
 
         @Override
-        public void getGuestToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
-                @Body String dummy, Callback<GuestTokenResponse> cb) {
-            // Does nothing
+        public Call<GuestTokenResponse> getGuestToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth) {
+            return Calls.response(Response.success(GUEST_RESPONSE));
         }
 
         @Override
-        public void getAppAuthToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
-                @Field(OAuthConstants.PARAM_GRANT_TYPE) String grantType,
-                Callback<OAuth2Token> cb) {
-            // Does nothing
+        public Call<OAuth2Token> getAppAuthToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
+                                                 @Field(OAuthConstants.PARAM_GRANT_TYPE) String grantType) {
+            return Calls.response(Response.success(APP_TOKEN));
         }
     }
 
@@ -103,7 +110,7 @@ public class OAuth2ServiceTest  {
     @Test
     public void testGetGuestToken_url() throws NoSuchMethodException {
         final Method method = OAuth2Service.OAuth2Api.class
-                .getDeclaredMethod("getGuestToken", String.class, String.class, Callback.class);
+                .getDeclaredMethod("getGuestToken", String.class);
         final POST post = method.getAnnotation(POST.class);
         assertEquals("/1.1/guest/activate.json", post.value());
     }
@@ -111,7 +118,7 @@ public class OAuth2ServiceTest  {
     @Test
     public void testGetAppAuthToken_url() throws NoSuchMethodException {
         final Method method = OAuth2Service.OAuth2Api.class
-                .getDeclaredMethod("getAppAuthToken", String.class, String.class, Callback.class);
+                .getDeclaredMethod("getAppAuthToken", String.class, String.class);
         final POST post = method.getAnnotation(POST.class);
         assertEquals("/oauth2/token", post.value());
     }
@@ -119,7 +126,7 @@ public class OAuth2ServiceTest  {
     @Test
     public void testGetAppAuthToken_contentType() throws NoSuchMethodException {
         final Method method = OAuth2Service.OAuth2Api.class
-                .getDeclaredMethod("getAppAuthToken", String.class, String.class, Callback.class);
+                .getDeclaredMethod("getAppAuthToken", String.class, String.class);
         final Headers header = method.getAnnotation(Headers.class);
         assertEquals("Content-Type: application/x-www-form-urlencoded;charset=UTF-8",
                 header.value()[0]);
@@ -139,18 +146,11 @@ public class OAuth2ServiceTest  {
 
     @Test
     public void testRequestAppAuthToken() {
-        service.api = new MockOAuth2Api() {
-            @Override
-            public void getAppAuthToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
-                                        @Field(OAuthConstants.PARAM_GRANT_TYPE) String grantType,
-                                        Callback<OAuth2Token> cb) {
-                assertEquals("Basic eHZ6MWV2RlM0d0VFUFRHRUZQSEJvZzpMOHFxOVBaeVJnNmllS0dFS2hab2xH" +
-                                "QzB2SldMdzhpRUo4OERSZHlPZw==",
-                        auth);
-                assertEquals(OAuthConstants.GRANT_TYPE_CLIENT_CREDENTIALS, grantType);
-            }
-        };
-        service.requestAppAuthToken(null);
+        service.api = spy(new MockOAuth2Api());
+        service.requestAppAuthToken(mock(Callback.class));
+
+        verify(service.api).getAppAuthToken(EXPECTED_BASIC_AUTH,
+                OAuthConstants.GRANT_TYPE_CLIENT_CREDENTIALS);
     }
 
     @Test
@@ -159,35 +159,16 @@ public class OAuth2ServiceTest  {
         final String bearerAuth = OAuthConstants.AUTHORIZATION_BEARER + " "
                 + token.getAccessToken();
 
-        service.api = new MockOAuth2Api() {
-            @Override
-            public void getGuestToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
-                    @Body String dummy, Callback<GuestTokenResponse> cb) {
-                assertEquals(bearerAuth, auth);
-            }
-        };
+        service.api = spy(new MockOAuth2Api());
+        service.requestGuestToken(mock(Callback.class), token);
 
-        service.requestGuestToken(null, token);
+        verify(service.api).getGuestToken(bearerAuth);
     }
 
     @Test
     public void testRequestGuestAuthToken_guestAuthSuccess() {
 
-        service.api = new MockOAuth2Api() {
-            @Override
-            public void getGuestToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
-                    @Body String dummy, Callback<GuestTokenResponse> cb) {
-                cb.success(new Result<>(GUEST_RESPONSE, null));
-            }
-
-            @Override
-            public void getAppAuthToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
-                                        @Field(OAuthConstants.PARAM_GRANT_TYPE) String grantType,
-                                        Callback<OAuth2Token> cb) {
-                cb.success(new Result<>(APP_TOKEN, null));
-            }
-        };
-
+        service.api = new MockOAuth2Api();
         service.requestGuestAuthToken(new Callback<GuestAuthToken>() {
             @Override
             public void success(Result<GuestAuthToken> result) {
@@ -206,16 +187,8 @@ public class OAuth2ServiceTest  {
 
         service.api = new MockOAuth2Api() {
             @Override
-            public void getGuestToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
-                    @Body String dummy, Callback<GuestTokenResponse> cb) {
-                cb.failure(mock(TwitterException.class));
-            }
-
-            @Override
-            public void getAppAuthToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
-                                        @Field(OAuthConstants.PARAM_GRANT_TYPE) String grantType,
-                                        Callback<OAuth2Token> cb) {
-                cb.success(new Result<>(APP_TOKEN, null));
+            public Call<GuestTokenResponse> getGuestToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth) {
+                return Calls.failure(null);
             }
         };
 
@@ -237,18 +210,9 @@ public class OAuth2ServiceTest  {
 
         service.api = new MockOAuth2Api() {
             @Override
-            public void getGuestToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
-                    @Body String dummy, Callback<GuestTokenResponse> cb) {
-                // We should never get here, since app auth failure would prevent us from making the
-                // guest token request.
-                fail();
-            }
-
-            @Override
-            public void getAppAuthToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
-                    @Field(OAuthConstants.PARAM_GRANT_TYPE) String grantType,
-                    Callback<OAuth2Token> cb) {
-                cb.failure(mock(TwitterException.class));
+            public Call<OAuth2Token> getAppAuthToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
+                                                     @Field(OAuthConstants.PARAM_GRANT_TYPE) String grantType) {
+                return Calls.failure(null);
             }
         };
 

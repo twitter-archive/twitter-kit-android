@@ -24,7 +24,8 @@ import io.fabric.sdk.android.services.common.CommonUtils;
 import io.fabric.sdk.android.services.common.IdManager;
 import io.fabric.sdk.android.services.common.QueueFile;
 import io.fabric.sdk.android.services.events.FilesSender;
-import com.twitter.sdk.android.core.AuthenticatedClient;
+
+import com.twitter.sdk.android.core.AuthInterceptor;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -40,16 +41,18 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import javax.net.ssl.SSLSocketFactory;
 
-import retrofit.RequestInterceptor;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.android.MainThreadExecutor;
-import retrofit.client.Response;
-import retrofit.http.Field;
-import retrofit.http.FormUrlEncoded;
-import retrofit.http.Headers;
-import retrofit.http.POST;
-import retrofit.http.Path;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 class ScribeFilesSender implements FilesSender {
 
@@ -73,7 +76,7 @@ class ScribeFilesSender implements FilesSender {
     private final TwitterAuthConfig authConfig;
     private final List<SessionManager<? extends Session>> sessionManagers;
     private final SSLSocketFactory sslSocketFactory;
-    private final AtomicReference<RestAdapter> apiAdapter;
+    private final AtomicReference<ScribeService> scribeService;
     private final ExecutorService executorService;
     private final IdManager idManager;
 
@@ -89,7 +92,7 @@ class ScribeFilesSender implements FilesSender {
         this.sslSocketFactory = sslSocketFactory;
         this.executorService = executorService;
         this.idManager = idManager;
-        this.apiAdapter = new AtomicReference<>();
+        this.scribeService = new AtomicReference<>();
     }
 
     @Override
@@ -99,20 +102,17 @@ class ScribeFilesSender implements FilesSender {
                 final String scribeEvents = getScribeEventsAsJsonArrayString(files);
                 CommonUtils.logControlled(context, scribeEvents);
 
-                final Response response = upload(scribeEvents);
-                if (response.getStatus() == HttpURLConnection.HTTP_OK) {
+                final Response<ResponseBody> response = upload(scribeEvents);
+                if (response.code() == HttpURLConnection.HTTP_OK) {
                     return true;
                 } else {
                     CommonUtils.logControlledError(context, SEND_FILE_FAILURE_ERROR, null);
+                    if (response.code() == HttpURLConnection.HTTP_INTERNAL_ERROR ||
+                            response.code() == HttpURLConnection.HTTP_BAD_REQUEST) {
+                        return true;
+                    }
                 }
-            } catch (RetrofitError e) {
-                CommonUtils.logControlledError(context, SEND_FILE_FAILURE_ERROR, e);
-                if (e.getResponse() != null &&
-                        (e.getResponse().getStatus() == HttpURLConnection.HTTP_INTERNAL_ERROR ||
-                         e.getResponse().getStatus() == HttpURLConnection.HTTP_BAD_REQUEST)) {
-                    return true;
-                }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 CommonUtils.logControlledError(context, SEND_FILE_FAILURE_ERROR, e);
             }
         } else {
@@ -157,39 +157,40 @@ class ScribeFilesSender implements FilesSender {
      * @return true if we have an api adapter for uploading
      */
     private boolean hasApiAdapter() {
-        return getApiAdapter() != null;
+        return getScribeService() != null;
     }
 
     /**
      * For testing purposes only.
      */
-    void setApiAdapter(RestAdapter restAdapter) {
-        apiAdapter.set(restAdapter);
+    void setScribeService(ScribeService restAdapter) {
+        scribeService.set(restAdapter);
     }
 
     /**
      * @return the api adapter, may be {@code null}
      */
-    synchronized RestAdapter getApiAdapter() {
-        if (apiAdapter.get() == null) {
+    synchronized ScribeService getScribeService() {
+        if (scribeService.get() == null) {
             final Session session = getSession(ownerId);
-            final RequestInterceptor interceptor
-                    = new ConfigRequestInterceptor(scribeConfig, idManager);
             if (isValidSession(session)) {
-                apiAdapter.compareAndSet(null,
-                        new RestAdapter.Builder()
-                                .setEndpoint(scribeConfig.baseUrl)
-                                .setExecutors(executorService, new MainThreadExecutor())
-                                .setRequestInterceptor(interceptor)
-                                .setClient(new AuthenticatedClient(authConfig, session,
-                                        sslSocketFactory))
-                                .build()
-                );
+                final OkHttpClient client = new OkHttpClient.Builder()
+                        .sslSocketFactory(sslSocketFactory)
+                        .addInterceptor(new ConfigRequestInterceptor(scribeConfig, idManager))
+                        .addInterceptor(new AuthInterceptor(session, authConfig))
+                        .build();
+
+                final Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(scribeConfig.baseUrl)
+                        .client(client)
+                        .build();
+
+                scribeService.compareAndSet(null, retrofit.create(ScribeService.class));
             } else {
                 CommonUtils.logControlled(context, "No valid session at this time");
             }
         }
-        return apiAdapter.get();
+        return scribeService.get();
     }
 
     private Session getSession(long ownerId) {
@@ -208,14 +209,15 @@ class ScribeFilesSender implements FilesSender {
     }
 
     /**
-     * Uploads scribe events. Requires valid apiAdapter.
+     * Uploads scribe events. Requires valid scribeService.
      */
-    Response upload(String scribeEvents) {
-        final ScribeService service = apiAdapter.get().create(ScribeService.class);
+    Response<ResponseBody> upload(String scribeEvents) throws IOException {
+        final ScribeService service = getScribeService();
         if (!TextUtils.isEmpty(scribeConfig.sequence)) {
-            return service.uploadSequence(scribeConfig.sequence, scribeEvents);
+            return service.uploadSequence(scribeConfig.sequence, scribeEvents).execute();
         } else {
-            return service.upload(scribeConfig.pathVersion, scribeConfig.pathType, scribeEvents);
+            return service.upload(scribeConfig.pathVersion, scribeConfig.pathType, scribeEvents)
+                    .execute();
         }
     }
 
@@ -224,18 +226,20 @@ class ScribeFilesSender implements FilesSender {
         @Headers("Content-Type: application/x-www-form-urlencoded;charset=UTF-8")
         @FormUrlEncoded
         @POST("/{version}/jot/{type}")
-        Response upload(@Path("version") String version, @Path("type") String type,
-                        @Field("log[]") String logs);
+        Call<ResponseBody> upload(@Path("version") String version,
+                                  @Path("type") String type,
+                                  @Field("log[]") String logs);
 
         @Headers("Content-Type: application/x-www-form-urlencoded;charset=UTF-8")
         @FormUrlEncoded
         @POST("/scribe/{sequence}")
-        Response uploadSequence(@Path("sequence") String sequence, @Field("log[]") String logs);
+        Call<ResponseBody> uploadSequence(@Path("sequence") String sequence,
+                                          @Field("log[]") String logs);
     }
 
     // At a certain point we might need to allow either a custom RequestInterceptor to be set
     // by the user of the ScribeClient or a custom map of headers to be supplied.
-    static class ConfigRequestInterceptor implements RequestInterceptor {
+    static class ConfigRequestInterceptor implements Interceptor {
         private static final String USER_AGENT_HEADER = "User-Agent";
         private static final String CLIENT_UUID_HEADER = "X-Client-UUID";
         private static final String POLLING_HEADER = "X-Twitter-Polling";
@@ -250,9 +254,10 @@ class ScribeFilesSender implements FilesSender {
         }
 
         @Override
-        public void intercept(RequestFacade request) {
+        public okhttp3.Response intercept(Chain chain) throws IOException {
+            final Request.Builder builder = chain.request().newBuilder();
             if (!TextUtils.isEmpty(scribeConfig.userAgent)) {
-                request.addHeader(USER_AGENT_HEADER, scribeConfig.userAgent);
+                builder.addHeader(USER_AGENT_HEADER, scribeConfig.userAgent);
             }
 
             /**
@@ -266,7 +271,7 @@ class ScribeFilesSender implements FilesSender {
              * Scribelib in turn is used by Rufous to marshall the data into the scribe structure.
              */
             if (!TextUtils.isEmpty(idManager.getDeviceUUID())) {
-                request.addHeader(CLIENT_UUID_HEADER, idManager.getDeviceUUID());
+                builder.addHeader(CLIENT_UUID_HEADER, idManager.getDeviceUUID());
             }
 
             /**
@@ -275,7 +280,9 @@ class ScribeFilesSender implements FilesSender {
              *
              * See: https://confluence.twitter.biz/display/PIE/Identifying+API+calls+associated+with+background+polling+events
              */
-            request.addHeader(POLLING_HEADER, POLLING_HEADER_VALUE);
+            builder.addHeader(POLLING_HEADER, POLLING_HEADER_VALUE);
+
+            return chain.proceed(builder.build());
         }
     }
 }

@@ -26,21 +26,13 @@ import com.google.gson.annotations.SerializedName;
 public class ApiError {
 
     @SerializedName("message")
-    private final String message;
+    public final String message;
 
     @SerializedName("code")
-    private final int code;
+    public final int code;
 
     public ApiError(String message, int code) {
         this.message = message;
         this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public int getCode() {
-        return code;
     }
 }

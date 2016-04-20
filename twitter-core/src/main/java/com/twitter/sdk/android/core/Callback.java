@@ -17,32 +17,35 @@
 
 package com.twitter.sdk.android.core;
 
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * Communicates responses from a server or offline requests. One and only one method will be
  * invoked in response to a given request.
  * <p>
- * Callback methods are executed using the {@link retrofit.RestAdapter} callback executor. When none is
+ * Callback methods are executed using the {@link retrofit2.Retrofit} callback executor. When none is
  * specified, the following defaults are used:
  * <ul>
  * <li>Callbacks are executed on the application's main (UI) thread.</li>
  * </ul>
  *
  * @param <T> expected response type
- * @see retrofit.RestAdapter.Builder#setExecutors
  */
-public abstract class Callback<T> implements retrofit.Callback<T> {
+public abstract class Callback<T> implements retrofit2.Callback<T> {
 
     @Override
-    public final void success(T t, Response response) {
-        success(new Result<>(t, response));
+    public final void onResponse(Call<T> call, Response<T> response){
+        if (response.isSuccessful()) {
+            success(new Result<>(response.body(), response));
+        } else {
+            failure(new TwitterApiException(response));
+        }
     }
 
     @Override
-    public final void failure(RetrofitError error) {
-        failure(TwitterApiException.convert(error));
+    public final void onFailure(Call<T> call, Throwable t) {
+        failure(new TwitterException("Request Failure", t));
     }
 
     /**

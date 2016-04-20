@@ -20,7 +20,6 @@ package com.twitter.sdk.android.tweetui;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterApiClient;
-import com.twitter.sdk.android.core.GuestCallback;
 import com.twitter.sdk.android.core.services.ListService;
 
 import static org.mockito.Matchers.*;
@@ -80,7 +79,7 @@ public class TwitterListTimelineTest extends TweetUiTestCase {
         final Callback<TwitterApiClient> request = timeline.createListTimelineRequest(TEST_SINCE_ID,
                 TEST_MAX_ID, mock(Callback.class));
         final TwitterApiClient mockTwitterApiClient = mock(TwitterApiClient.class);
-        final ListService mockListService = mock(ListService.class);
+        final ListService mockListService = mock(ListService.class, new MockCallAnswer());
         when(mockTwitterApiClient.getListService()).thenReturn(mockListService);
         // execute request with mock auth'd TwitterApiClient (auth queue tested separately)
         request.success(new Result<>(mockTwitterApiClient, null));
@@ -89,7 +88,7 @@ public class TwitterListTimelineTest extends TweetUiTestCase {
         // assert twitterListTimeline call is made with the correct arguments
         verify(mockListService).statuses(eq(TEST_LIST_ID), eq(TEST_SLUG),
                 eq(TEST_OWNER_SCREEN_NAME), eq(TEST_OWNER_ID), eq(TEST_SINCE_ID), eq(TEST_MAX_ID),
-                eq(TEST_ITEMS_PER_REQUEST), eq(true), eq(true), any(GuestCallback.class));
+                eq(TEST_ITEMS_PER_REQUEST), eq(true), eq(true));
     }
 
     public void testGetScribeSection() {

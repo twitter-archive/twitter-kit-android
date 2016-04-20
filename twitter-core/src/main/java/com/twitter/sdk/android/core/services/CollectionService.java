@@ -17,11 +17,11 @@
 
 package com.twitter.sdk.android.core.services;
 
-import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.internal.TwitterCollection;
 
-import retrofit.http.GET;
-import retrofit.http.Query;
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 public interface CollectionService {
 
@@ -40,14 +40,11 @@ public interface CollectionService {
      * @param maxPosition Returns results with a position value less than or equal to the specified
      *                    position.
      * @param minPosition Returns results with a position greater than the specified position.
-     * @param cb The callback to invoke when the request completes.
      */
-
     @GET("/1.1/collections/entries.json?" +
             "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
-    void collection(@Query("id") String id,
-                    @Query("count") Integer count,
-                    @Query("max_position") Long maxPosition,
-                    @Query("min_position") Long minPosition,
-                    Callback<TwitterCollection> cb);
+    Call<TwitterCollection> collection(@Query("id") String id,
+                                       @Query("count") Integer count,
+                                       @Query("max_position") Long maxPosition,
+                                       @Query("min_position") Long minPosition);
 }

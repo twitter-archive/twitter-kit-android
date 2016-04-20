@@ -17,7 +17,7 @@
 
 package com.twitter.sdk.android.core;
 
-import retrofit.client.Response;
+import retrofit2.Response;
 
 /**
  * Encapsulates parsed result for delivery.

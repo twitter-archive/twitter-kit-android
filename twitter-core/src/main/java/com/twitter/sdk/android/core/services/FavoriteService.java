@@ -17,16 +17,16 @@
 
 package com.twitter.sdk.android.core.services;
 
-import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.models.Tweet;
 
 import java.util.List;
 
-import retrofit.http.Field;
-import retrofit.http.FormUrlEncoded;
-import retrofit.http.GET;
-import retrofit.http.POST;
-import retrofit.http.Query;
+import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface FavoriteService {
 
@@ -45,18 +45,15 @@ public interface FavoriteService {
      * @param maxId (optional) Returns results with an ID less than (that is, older than) or equal
      *              to the specified ID.
      * @param includeEntities (optional) The entities node will be omitted when set to false.
-     * @param cb The callback to invoke when the request completes.
      */
     @GET("/1.1/favorites/list.json?" +
             "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
-    void list(@Query("user_id") Long userId,
-            @Query("screen_name") String screenName,
-            @Query("count") Integer count,
-            @Query("since_id") String sinceId,
-            @Query("max_id") String maxId,
-            @Query("include_entities") Boolean includeEntities,
-            Callback<List<Tweet>> cb);
-
+    Call<List<Tweet>> list(@Query("user_id") Long userId,
+                           @Query("screen_name") String screenName,
+                           @Query("count") Integer count,
+                           @Query("since_id") String sinceId,
+                           @Query("max_id") String maxId,
+                           @Query("include_entities") Boolean includeEntities);
 
     /**
      * Un-favorites the status specified in the ID parameter as the authenticating user. Returns the
@@ -68,14 +65,12 @@ public interface FavoriteService {
      *
      * @param id (required) The numerical ID of the desired status.
      * @param includeEntities (optional) The entities node will be omitted when set to false.
-     * @param cb The callback to invoke when the request completes.
      */
     @FormUrlEncoded
     @POST("/1.1/favorites/destroy.json?" +
             "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
-    void destroy(@Field("id") Long id,
-            @Field("include_entities") Boolean includeEntities,
-            Callback<Tweet> cb);
+    Call<Tweet> destroy(@Field("id") Long id,
+                        @Field("include_entities") Boolean includeEntities);
 
     /**
      * Favorites the status specified in the ID parameter as the authenticating user. Returns the
@@ -87,12 +82,10 @@ public interface FavoriteService {
      *
      * @param id (required) The numerical ID of the desired status.
      * @param includeEntities (optional) The entities node will be omitted when set to false.
-     * @param cb The callback to invoke when the request completes.
      */
     @FormUrlEncoded
     @POST("/1.1/favorites/create.json?" +
             "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
-    void create(@Field("id") Long id,
-            @Field("include_entities") Boolean includeEntities,
-            Callback<Tweet> cb);
+    Call<Tweet> create(@Field("id") Long id,
+                       @Field("include_entities") Boolean includeEntities);
 }

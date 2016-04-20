@@ -20,7 +20,6 @@ package com.twitter.sdk.android.tweetui;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterApiClient;
-import com.twitter.sdk.android.core.GuestCallback;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.core.internal.TwitterCollection;
@@ -125,7 +124,8 @@ public class CollectionTimelineTest extends TweetUiTestCase {
         final Callback<TwitterApiClient> request = timeline.createCollectionRequest(
                 TEST_MIN_POSITION, TEST_MAX_POSITION, mock(Callback.class));
         final TwitterApiClient mockTwitterApiClient = mock(TwitterApiClient.class);
-        final CollectionService mockCollectionService = mock(CollectionService.class);
+        final CollectionService mockCollectionService =
+                mock(CollectionService.class, new MockCallAnswer());
         when(mockTwitterApiClient.getCollectionService()).thenReturn(mockCollectionService);
         request.success(new Result<>(mockTwitterApiClient, null));
         // assert collection service is requested once
@@ -133,8 +133,7 @@ public class CollectionTimelineTest extends TweetUiTestCase {
         // assert collection call is made with the correct arguments
         verify(mockCollectionService).collection(
                 eq(CollectionTimeline.COLLECTION_PREFIX + TEST_COLLECTION_ID),
-                eq(TEST_ITEMS_PER_REQUEST), eq(TEST_MAX_POSITION), eq(TEST_MIN_POSITION),
-                any(GuestCallback.class));
+                eq(TEST_ITEMS_PER_REQUEST), eq(TEST_MAX_POSITION), eq(TEST_MIN_POSITION));
     }
 
     public void testGetScribeSection() {

@@ -24,7 +24,7 @@ import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.internal.scribe.TwitterCoreScribeClientHolder;
 import com.twitter.sdk.android.core.services.AccountService;
 
-import retrofit.RetrofitError;
+import java.io.IOException;
 
 public class TwitterSessionVerifier implements SessionVerifier {
     static final String SCRIBE_CLIENT = "android";
@@ -56,8 +56,8 @@ public class TwitterSessionVerifier implements SessionVerifier {
         final AccountService accountService = accountServiceProvider.getAccountService(session);
         try {
             scribeVerifySession();
-            accountService.verifyCredentials(true, false);
-        } catch (RetrofitError e) {
+            accountService.verifyCredentials(true, false).execute();
+        } catch (IOException | RuntimeException e) {
             // We ignore failures since we will attempt the verification again the next time
             // the verification period comes up. This has the potential to lose events, but we
             // are not aiming towards 100% capture rate.

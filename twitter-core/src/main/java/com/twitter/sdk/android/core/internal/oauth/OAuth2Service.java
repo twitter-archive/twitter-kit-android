@@ -29,12 +29,12 @@ import com.twitter.sdk.android.core.internal.TwitterApi;
 
 import javax.net.ssl.SSLSocketFactory;
 
-import retrofit.http.Body;
-import retrofit.http.Field;
-import retrofit.http.FormUrlEncoded;
-import retrofit.http.Header;
-import retrofit.http.Headers;
-import retrofit.http.POST;
+import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
 
 /**
  * OAuth2.0 service. Provides methods for requesting guest auth tokens.
@@ -44,15 +44,14 @@ public class OAuth2Service extends OAuthService {
 
     interface OAuth2Api {
         @POST("/1.1/guest/activate.json")
-        void getGuestToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
-                @Body String dummy, Callback<GuestTokenResponse> cb);
+        Call<GuestTokenResponse> getGuestToken(
+                @Header(AuthHeaders.HEADER_AUTHORIZATION) String auth);
 
         @Headers("Content-Type: application/x-www-form-urlencoded;charset=UTF-8")
         @FormUrlEncoded
         @POST("/oauth2/token")
-        void getAppAuthToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
-                @Field(OAuthConstants.PARAM_GRANT_TYPE) String grantType,
-                Callback<OAuth2Token> cb);
+        Call<OAuth2Token> getAppAuthToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
+                                          @Field(OAuthConstants.PARAM_GRANT_TYPE) String grantType);
     }
 
     public OAuth2Service(TwitterCore twitterCore, SSLSocketFactory sslSocketFactory,
@@ -110,8 +109,8 @@ public class OAuth2Service extends OAuthService {
      * @param callback The callback interface to invoke when when the request completes.
      */
     void requestAppAuthToken(final Callback<OAuth2Token> callback) {
-        api.getAppAuthToken(getAuthHeader(), OAuthConstants.GRANT_TYPE_CLIENT_CREDENTIALS,
-                callback);
+        api.getAppAuthToken(getAuthHeader(), OAuthConstants.GRANT_TYPE_CLIENT_CREDENTIALS)
+                .enqueue(callback);
     }
 
     /**
@@ -122,7 +121,7 @@ public class OAuth2Service extends OAuthService {
      */
     void requestGuestToken(final Callback<GuestTokenResponse> callback,
             OAuth2Token appAuthToken) {
-        api.getGuestToken(getAuthorizationHeader(appAuthToken), "", callback);
+        api.getGuestToken(getAuthorizationHeader(appAuthToken)).enqueue(callback);
     }
 
     /**

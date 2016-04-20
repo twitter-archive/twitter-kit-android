@@ -24,8 +24,9 @@ import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.models.User;
 
-import retrofit.http.GET;
-import retrofit.http.Query;
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 class ShareEmailClient extends TwitterApiClient {
     static final int RESULT_CODE_CANCELED = Activity.RESULT_CANCELED;
@@ -46,14 +47,13 @@ class ShareEmailClient extends TwitterApiClient {
      * @param callback The callback to invoke when the request completes.
      */
     protected void getEmail(Callback<User> callback) {
-        getService(EmailService.class).verifyCredentials(true, true, callback);
+        getService(EmailService.class).verifyCredentials(true, true).enqueue(callback);
     }
 
     interface EmailService {
         @GET("/1.1/account/verify_credentials.json?include_email=true")
-        void verifyCredentials(
+        Call<User> verifyCredentials(
                 @Query("include_entities") Boolean includeEntities,
-                @Query("skip_status") Boolean skipStatus,
-                Callback<User> cb);
+                @Query("skip_status") Boolean skipStatus);
     }
 }

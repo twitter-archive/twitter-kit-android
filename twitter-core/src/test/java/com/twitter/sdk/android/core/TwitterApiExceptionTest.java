@@ -46,13 +46,8 @@ public class TwitterApiExceptionTest  {
     @Test
     public void testParseErrorCode() throws IOException {
         final ApiError apiError = TwitterApiException.parseApiError(API_ERROR_JSON);
-        assertEquals(API_ERROR_CODE, apiError.getCode());
-        assertEquals(API_ERROR_MESSAGE, apiError.getMessage());
-    }
-
-    @Test
-    public void testParseError_null() throws Exception {
-        assertNull(TwitterApiException.parseApiError(null));
+        assertEquals(API_ERROR_CODE, apiError.code);
+        assertEquals(API_ERROR_MESSAGE, apiError.message);
     }
 
     @Test
@@ -63,15 +58,15 @@ public class TwitterApiExceptionTest  {
     @Test
     public void testParseError_noErrorCode() throws Exception {
         final ApiError apiError = TwitterApiException.parseApiError(API_ERROR_NO_ERROR_CODE);
-        assertEquals(DEFAULT_ERROR_CODE, apiError.getCode());
-        assertEquals(API_ERROR_MESSAGE, apiError.getMessage());
+        assertEquals(DEFAULT_ERROR_CODE, apiError.code);
+        assertEquals(API_ERROR_MESSAGE, apiError.message);
     }
 
     @Test
     public void testParseError_noMessage() throws Exception {
         final ApiError apiError = TwitterApiException.parseApiError(API_ERROR_NO_ERROR_MESSAGE);
-        assertEquals(API_ERROR_CODE, apiError.getCode());
-        assertEquals(null, apiError.getMessage());
+        assertEquals(API_ERROR_CODE, apiError.code);
+        assertEquals(null, apiError.message);
     }
 
 }

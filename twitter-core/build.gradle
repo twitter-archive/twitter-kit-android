@@ -86,26 +86,21 @@ internal {
 dependencies {
     compile rootProject.fabric
     compile rootProject.retrofit
+    compile rootProject.retrofitGsonConverter
     compile rootProject.gson
-
-    debugCompile rootProject.fabricTest
-
-    //Will use the provided packages if they are available in the app developers workspace.
-    provided rootProject.okHttp
-    provided rootProject.okHttpUrlConnection
-
-    androidTestCompile (rootProject.junitAddons) {
-        transitive = false
-    }
+    compile rootProject.okHttp
 
     androidTestCompile rootProject.mockito
     androidTestCompile rootProject.dexmakerMockito
     androidTestCompile rootProject.fabricTest
+    androidTestCompile (rootProject.junitAddons) {
+        transitive = false
+    }
 
     testCompile rootProject.fabricTest
     testCompile rootProject.mockito
     testCompile rootProject.junit
-    testCompile rootProject.mavenAntTasks
+    testCompile rootProject.retrofitMock
     testCompile(rootProject.robolectric) {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'

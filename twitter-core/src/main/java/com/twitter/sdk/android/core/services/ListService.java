@@ -17,13 +17,13 @@
 
 package com.twitter.sdk.android.core.services;
 
-import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.models.Tweet;
 
 import java.util.List;
 
-import retrofit.http.GET;
-import retrofit.http.Query;
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 public interface ListService {
 
@@ -52,18 +52,16 @@ public interface ListService {
      *                        retweets (if they exist) in addition to the standard stream of tweets.
      *                        The output format of retweeted tweets is identical to the
      *                        representation you see in home_timeline.
-     * @param cb The callback to invoke when the request completes.
      */
     @GET("/1.1/lists/statuses.json?" +
             "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
-    void statuses(@Query("list_id") Long listId,
-                  @Query("slug") String slug,
-                  @Query("owner_screen_name") String ownerScreenName,
-                  @Query("owner_id") Long ownerId,
-                  @Query("since_id") Long sinceId,
-                  @Query("max_id") Long maxId,
-                  @Query("count") Integer count,
-                  @Query("include_entities") Boolean includeEntities,
-                  @Query("include_rts") Boolean includeRetweets,
-                  Callback<List<Tweet>> cb);
+    Call<List<Tweet>> statuses(@Query("list_id") Long listId,
+                               @Query("slug") String slug,
+                               @Query("owner_screen_name") String ownerScreenName,
+                               @Query("owner_id") Long ownerId,
+                               @Query("since_id") Long sinceId,
+                               @Query("max_id") Long maxId,
+                               @Query("count") Integer count,
+                               @Query("include_entities") Boolean includeEntities,
+                               @Query("include_rts") Boolean includeRetweets);
 }

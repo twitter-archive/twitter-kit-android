@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthException;
 import com.twitter.sdk.android.core.TwitterAuthToken;
@@ -88,8 +89,8 @@ public abstract class AuthHandler {
                 final String tokenSecret = data.getStringExtra(EXTRA_TOKEN_SECRET);
                 final String screenName = data.getStringExtra(EXTRA_SCREEN_NAME);
                 final long userId = data.getLongExtra(EXTRA_USER_ID, 0L);
-                callback.success(new TwitterSession(
-                        new TwitterAuthToken(token, tokenSecret), userId, screenName), null);
+                callback.success(new Result<>(new TwitterSession(
+                        new TwitterAuthToken(token, tokenSecret), userId, screenName), null));
             } else if (data != null && data.hasExtra(EXTRA_AUTH_ERROR)) {
                 callback.failure(
                         (TwitterAuthException) data.getSerializableExtra(EXTRA_AUTH_ERROR));

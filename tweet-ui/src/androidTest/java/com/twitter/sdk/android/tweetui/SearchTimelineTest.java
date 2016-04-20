@@ -20,7 +20,6 @@ package com.twitter.sdk.android.tweetui;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterApiClient;
-import com.twitter.sdk.android.core.GuestCallback;
 import com.twitter.sdk.android.core.services.SearchService;
 import com.twitter.sdk.android.core.services.params.Geocode;
 
@@ -112,7 +111,7 @@ public class SearchTimelineTest extends TweetUiTestCase {
         final Callback<TwitterApiClient> request = timeline.createSearchRequest(TEST_SINCE_ID,
                 TEST_MAX_ID, mock(Callback.class));
         final TwitterApiClient mockTwitterApiClient = mock(TwitterApiClient.class);
-        final SearchService mockSearchService = mock(SearchService.class);
+        final SearchService mockSearchService = mock(SearchService.class, new MockCallAnswer());
         when(mockTwitterApiClient.getSearchService()).thenReturn(mockSearchService);
         // execute request with mock auth'd TwitterApiClient (auth queue tested separately)
         request.success(new Result<>(mockTwitterApiClient, null));
@@ -122,7 +121,7 @@ public class SearchTimelineTest extends TweetUiTestCase {
         verify(mockSearchService).tweets(eq(TEST_QUERY + SearchTimeline.FILTER_RETWEETS),
                 isNull(Geocode.class), eq(TEST_LANG), isNull(String.class),
                 eq(TEST_RESULT_TYPE), eq(TEST_ITEMS_PER_REQUEST), isNull(String.class),
-                eq(TEST_SINCE_ID), eq(TEST_MAX_ID), eq(true), any(GuestCallback.class));
+                eq(TEST_SINCE_ID), eq(TEST_MAX_ID), eq(true));
     }
 
     public void testGetScribeSection() {

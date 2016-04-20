@@ -17,14 +17,19 @@
 
 package com.twitter.sdk.android.core.internal.oauth;
 
-import com.twitter.sdk.android.core.DefaultClient;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.internal.TwitterApi;
 
+import java.io.IOException;
+
 import javax.net.ssl.SSLSocketFactory;
 
-import retrofit.RequestInterceptor;
-import retrofit.RestAdapter;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Base class for OAuth service.
@@ -36,7 +41,7 @@ abstract class OAuthService {
     private final TwitterCore twitterCore;
     private final TwitterApi api;
     private final String userAgent;
-    private final RestAdapter apiAdapter;
+    private final Retrofit apiAdapter;
 
     public OAuthService(TwitterCore twitterCore, SSLSocketFactory sslSocketFactory,
             TwitterApi api) {
@@ -48,15 +53,23 @@ abstract class OAuthService {
             throw new IllegalArgumentException("sslSocketFactory must not be null");
         }
 
-        apiAdapter = new RestAdapter.Builder()
-                .setEndpoint(getApi().getBaseHostUrl())
-                .setClient(new DefaultClient(sslSocketFactory))
-                .setRequestInterceptor(new RequestInterceptor() {
+        final OkHttpClient client = new OkHttpClient.Builder()
+                .sslSocketFactory(sslSocketFactory)
+                .addInterceptor(new Interceptor() {
                     @Override
-                    public void intercept(RequestFacade request) {
-                        request.addHeader("User-Agent", getUserAgent());
+                    public Response intercept(Chain chain) throws IOException {
+                        final Request request = chain.request().newBuilder()
+                                .addHeader("User-Agent", getUserAgent())
+                                .build();
+                        return chain.proceed(request);
                     }
                 })
+                .build();
+
+        apiAdapter = new Retrofit.Builder()
+                .baseUrl(getApi().getBaseHostUrl())
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
 
@@ -72,7 +85,7 @@ abstract class OAuthService {
         return userAgent;
     }
 
-    protected RestAdapter getApiAdapter() {
+    protected Retrofit getApiAdapter() {
         return apiAdapter;
     }
 }

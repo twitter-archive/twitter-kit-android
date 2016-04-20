@@ -102,11 +102,11 @@ ext {
     // Other
     picasso = 'com.squareup.picasso:picasso:2.5.2'
     supportV4 = 'com.android.support:support-v4:22.2.0'
-    retrofit = 'com.squareup.retrofit:retrofit:1.8.0'
-    retrofitMock = 'com.squareup.retrofit:retrofit-mock:1.8.0'
-    gson = 'com.google.code.gson:gson:2.4'
-    okHttp = 'com.squareup.okhttp:okhttp:2.3.0'
-    okHttpUrlConnection = 'com.squareup.okhttp:okhttp-urlconnection:2.3.0'
+    retrofit = 'com.squareup.retrofit2:retrofit:2.0.2'
+    retrofitMock = 'com.squareup.retrofit2:retrofit-mock:2.0.2'
+    retrofitGsonConverter = 'com.squareup.retrofit2:converter-gson:2.0.2'
+    gson = 'com.google.code.gson:gson:2.6.1'
+    okHttp = 'com.squareup.okhttp3:okhttp:3.2.0'
     design = 'com.android.support:design:22.2.0'
     tweetText = 'com.twitter:twitter-text:1.13.0'
 }

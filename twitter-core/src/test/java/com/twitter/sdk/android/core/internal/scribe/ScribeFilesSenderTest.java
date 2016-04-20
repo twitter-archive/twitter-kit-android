@@ -22,6 +22,15 @@ import android.content.Context;
 import io.fabric.sdk.android.services.common.CommonUtils;
 import io.fabric.sdk.android.services.common.IdManager;
 
+import okhttp3.Interceptor;
+import okhttp3.MediaType;
+import okhttp3.Protocol;
+import okhttp3.Request;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.mock.Calls;
+
 import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
@@ -36,6 +45,9 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
@@ -51,12 +63,6 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 import javax.net.ssl.SSLSocketFactory;
-
-import retrofit.RequestInterceptor;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Header;
-import retrofit.client.Response;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -85,7 +91,6 @@ public class ScribeFilesSenderTest {
     private List<SessionManager<? extends Session>> sessionManagers;
     private SessionManager<Session> mockSessionMgr;
     private Session mockSession;
-    private RestAdapter mockAdapter;
     private ScribeFilesSender.ScribeService mockService;
     private IdManager mockIdManager;
     private Context context;
@@ -106,9 +111,7 @@ public class ScribeFilesSenderTest {
         when(mockSessionMgr.getSession(anyLong())).thenReturn(mockSession);
         when(mockSession.getAuthToken()).thenReturn(mock(TwitterAuthToken.class));
 
-        mockAdapter = mock(RestAdapter.class);
         mockService = mock(ScribeFilesSender.ScribeService.class);
-        when(mockAdapter.create(ScribeFilesSender.ScribeService.class)).thenReturn(mockService);
 
         mockIdManager = mock(IdManager.class);
 
@@ -120,7 +123,7 @@ public class ScribeFilesSenderTest {
         filesSender = new ScribeFilesSender(context, scribeConfig,
                 ScribeConstants.LOGGED_OUT_USER_ID, mock(TwitterAuthConfig.class), sessionManagers,
                 mock(SSLSocketFactory.class), mock(ExecutorService.class), mockIdManager);
-        filesSender.setApiAdapter(mockAdapter);
+        filesSender.setScribeService(mockService);
 
         filenames = new String[] {
                 "se_c9666213-d768-45a1-a3ca-5941e4c35f26_1404423214376.tap",
@@ -156,16 +159,11 @@ public class ScribeFilesSenderTest {
         }
     }
 
-    private void setUpMockServiceResponse(Response response) {
-        when(mockService.upload(anyString(), anyString(), anyString())).thenReturn(response);
-        when(mockService.uploadSequence(anyString(), anyString())).thenReturn(response);
-    }
-
-    private void setUpMockServiceErrorResponse(Response response) {
-        final RetrofitError error = mock(RetrofitError.class);
-        when(error.getResponse()).thenReturn(response);
-
-        when(mockService.upload(anyString(), anyString(), anyString())).thenThrow(error);
+    private void setUpMockServiceResponse(Call<ResponseBody> response) {
+        when(mockService.upload(anyString(), anyString(), anyString()))
+                .thenReturn(response);
+        when(mockService.uploadSequence(anyString(), anyString()))
+                .thenReturn(response);
     }
 
     private void setUpScribeSequence(String sequence) {
@@ -176,11 +174,17 @@ public class ScribeFilesSenderTest {
         filesSender = new ScribeFilesSender(context, config,
                 ScribeConstants.LOGGED_OUT_USER_ID, mock(TwitterAuthConfig.class), sessionManagers,
                 mock(SSLSocketFactory.class), mock(ExecutorService.class), mock(IdManager.class));
-        filesSender.setApiAdapter(mockAdapter);
+        filesSender.setScribeService(mockService);
     }
 
-    private Response newResponse(int statusCode) {
-        return new Response(ANY_URL, statusCode, ANY_REASON, new ArrayList<Header>(), null);
+    private Call<ResponseBody> successResponse() {
+        final ResponseBody body = ResponseBody.create(MediaType.parse("application/json"), "");
+        return Calls.response(body);
+    }
+
+    private Call<ResponseBody> errorResponse(int statusCode) {
+        final ResponseBody body = ResponseBody.create(MediaType.parse("application/json"), "");
+        return Calls.response(Response.<ResponseBody>error(statusCode, body));
     }
 
     // tests follow
@@ -196,36 +200,38 @@ public class ScribeFilesSenderTest {
 
     @Test
     public void testGetApiAdapter_nullSession() {
-        filesSender.setApiAdapter(null); // set api adapter to null since we pre-set it in setUp
+        filesSender.setScribeService(null); // set api adapter to null since we pre-set it in setUp
         when(mockSessionMgr.getSession(anyLong())).thenReturn(null);
-        assertNull(filesSender.getApiAdapter());
+        assertNull(filesSender.getScribeService());
     }
 
     @Test
     public void testGetApiAdapter_validSession() {
         when(mockSessionMgr.getSession(anyLong())).thenReturn(mockSession);
-        assertNotNull(filesSender.getApiAdapter());
+        assertNotNull(filesSender.getScribeService());
     }
 
     @Test
     public void testGetApiAdapter_multipleCalls() {
         when(mockSessionMgr.getSession(anyLong())).thenReturn(mockSession);
-        final RestAdapter apiAdapter = filesSender.getApiAdapter();
-        assertEquals(apiAdapter, filesSender.getApiAdapter());
+        final ScribeFilesSender.ScribeService service = filesSender.getScribeService();
+        assertEquals(service, filesSender.getScribeService());
     }
 
     @Test
-    public void testUpload_noSequence() {
+    public void testUpload_noSequence() throws IOException{
         final String logs = TEST_LOGS;
+        setUpMockServiceResponse(successResponse());
         setUpScribeSequence(null);
         filesSender.upload(logs);
         verify(mockService).upload(ANY_SCRIBE_PATH_VERSION, ANY_SCRIBE_PATH_TYPE, logs);
     }
 
     @Test
-    public void testUpload_withSequence() {
+    public void testUpload_withSequence() throws IOException {
         final String sequence = "1";
         final String logs = TEST_LOGS;
+        setUpMockServiceResponse(successResponse());
         setUpScribeSequence(sequence);
         filesSender.upload(logs);
         verify(mockService).uploadSequence(sequence, logs);
@@ -234,96 +240,113 @@ public class ScribeFilesSenderTest {
     @Test
     public void testSend_nullSession() {
         // Send should fail when we don't have a valid session.
-        filesSender.setApiAdapter(null); // set api adapter to null since we pre-set it in setUp
+        filesSender.setScribeService(null); // set api adapter to null since we pre-set it in setUp
         when(mockSessionMgr.getSession(anyLong())).thenReturn(null);
         assertFalse(filesSender.send(tempFiles));
-        verifyZeroInteractions(mockAdapter);
+        verifyZeroInteractions(mockService);
     }
 
     @Test
     public void testSend_uploadSucceeds() {
-        setUpMockServiceResponse(newResponse(HttpURLConnection.HTTP_OK));
+        setUpMockServiceResponse(successResponse());
         assertTrue(filesSender.send(tempFiles));
     }
 
     @Test
     public void testSend_uploadFailsInternalServerError() {
-        setUpMockServiceErrorResponse(newResponse(HttpURLConnection.HTTP_INTERNAL_ERROR));
+        setUpMockServiceResponse(errorResponse(HttpURLConnection.HTTP_INTERNAL_ERROR));
         assertTrue(filesSender.send(tempFiles));
         verify(mockService, times(1)).upload(anyString(), anyString(), anyString());
     }
 
     @Test
     public void testSend_uploadFailsBadRequest() {
-        setUpMockServiceErrorResponse(newResponse(HttpURLConnection.HTTP_BAD_REQUEST));
+        setUpMockServiceResponse(errorResponse(HttpURLConnection.HTTP_BAD_REQUEST));
         assertTrue(filesSender.send(tempFiles));
         verify(mockService, times(1)).upload(anyString(), anyString(), anyString());
     }
 
     @Test
     public void testSend_uploadFailsForbidden() {
-        setUpMockServiceErrorResponse(newResponse(HttpURLConnection.HTTP_FORBIDDEN));
+        setUpMockServiceResponse(errorResponse(HttpURLConnection.HTTP_FORBIDDEN));
         assertFalse(filesSender.send(tempFiles));
     }
 
-    @Test
-    public void testConfigRequestInterceptor_addsPollingHeader() {
-        final ScribeConfig config = mock(ScribeConfig.class);
-        final RequestInterceptor.RequestFacade facade
-                = mock(RequestInterceptor.RequestFacade.class);
-        final RequestInterceptor interceptor
-                = new ScribeFilesSender.ConfigRequestInterceptor(config, mockIdManager);
-        interceptor.intercept(facade);
-        verify(facade, times(1)).addHeader(TWITTER_POLLING_HEADER,
-                REQUIRED_TWITTER_POLLING_HEADER_VALUE);
+    public Interceptor.Chain createMockChain() throws IOException{
+        final Request request = new Request.Builder().url("https://dummy.com").build();
+        final Interceptor.Chain chain  = mock(Interceptor.Chain.class);
+        when(chain.request()).thenReturn(request);
+        when(chain.proceed(any(Request.class))).thenAnswer(new Answer<okhttp3.Response>() {
+            @Override
+            public okhttp3.Response answer(InvocationOnMock invocation) throws Throwable {
+                final Object[] args = invocation.getArguments();
+                return new okhttp3.Response.Builder()
+                        .protocol(Protocol.HTTP_1_1)
+                        .code(HttpURLConnection.HTTP_OK)
+                        .request((Request) args[0])
+                        .build();
+            }
+        });
+        return chain;
     }
 
     @Test
-    public void testConfigRequestInterceptor_nullUserAgent() {
+    public void testConfigRequestInterceptor_addsPollingHeader() throws IOException {
+        final ScribeConfig config = mock(ScribeConfig.class);
+        final Interceptor interceptor
+                = new ScribeFilesSender.ConfigRequestInterceptor(config, mockIdManager);
+
+        final Request request = interceptor.intercept(createMockChain()).request();
+
+        assertEquals(REQUIRED_TWITTER_POLLING_HEADER_VALUE, request.header(TWITTER_POLLING_HEADER));
+    }
+
+    @Test
+    public void testConfigRequestInterceptor_nullUserAgent() throws IOException {
         final ScribeConfig config = new ScribeConfig(true, ScribeConfig.BASE_URL,
                 ANY_SCRIBE_PATH_VERSION, ANY_SCRIBE_PATH_TYPE, null, null,
                 ScribeConfig.DEFAULT_MAX_FILES_TO_KEEP, ScribeConfig.DEFAULT_SEND_INTERVAL_SECONDS);
-        final RequestInterceptor.RequestFacade facade
-                = mock(RequestInterceptor.RequestFacade.class);
-        final RequestInterceptor interceptor
+        final Interceptor interceptor
                 = new ScribeFilesSender.ConfigRequestInterceptor(config, mockIdManager);
-        interceptor.intercept(facade);
-        verify(facade, times(0)).addHeader(eq(USER_AGENT_HEADER), anyString());
+
+        final Request request = interceptor.intercept(createMockChain()).request();
+
+        assertNull(request.header(USER_AGENT_HEADER));
     }
 
     @Test
-    public void testConfigRequestInterceptor_anUserAgent() {
+    public void testConfigRequestInterceptor_anUserAgent() throws IOException {
         final ScribeConfig config = new ScribeConfig(true, ScribeConfig.BASE_URL,
                 ANY_SCRIBE_PATH_VERSION, ANY_SCRIBE_PATH_TYPE, null, ANY_USER_AGENT,
                 ScribeConfig.DEFAULT_MAX_FILES_TO_KEEP, ScribeConfig.DEFAULT_SEND_INTERVAL_SECONDS);
-        final RequestInterceptor.RequestFacade facade
-                = mock(RequestInterceptor.RequestFacade.class);
-        final RequestInterceptor interceptor
+        final Interceptor interceptor
                 = new ScribeFilesSender.ConfigRequestInterceptor(config, mockIdManager);
-        interceptor.intercept(facade);
-        verify(facade, times(1)).addHeader(USER_AGENT_HEADER, ANY_USER_AGENT);
+
+        final Request request = interceptor.intercept(createMockChain()).request();
+
+        assertEquals(ANY_USER_AGENT, request.header(USER_AGENT_HEADER));
     }
 
     @Test
-    public void testConfigRequestInterceptor_nullIdManager() {
+    public void testConfigRequestInterceptor_nullIdManager() throws IOException {
         final ScribeConfig config = mock(ScribeConfig.class);
-        final RequestInterceptor.RequestFacade facade
-                = mock(RequestInterceptor.RequestFacade.class);
-        final RequestInterceptor interceptor
+        final Interceptor interceptor
                 = new ScribeFilesSender.ConfigRequestInterceptor(config, mockIdManager);
-        interceptor.intercept(facade);
-        verify(facade, times(0)).addHeader(eq(DEVICE_ID_HEADER) , anyString());
+
+        final Request request = interceptor.intercept(createMockChain()).request();
+
+        assertNull(request.header(DEVICE_ID_HEADER));
     }
 
     @Test
-    public void testConfigRequestInterceptor_anIdManager() {
+    public void testConfigRequestInterceptor_anIdManager() throws IOException {
         final ScribeConfig config = mock(ScribeConfig.class);
-        final RequestInterceptor.RequestFacade facade
-                = mock(RequestInterceptor.RequestFacade.class);
+        final Interceptor interceptor
+                = new ScribeFilesSender.ConfigRequestInterceptor(config, mockIdManager);
         when(mockIdManager.getDeviceUUID()).thenReturn(ANY_DEVICE_ID);
-        final RequestInterceptor interceptor
-                = new ScribeFilesSender.ConfigRequestInterceptor(config, mockIdManager);
-        interceptor.intercept(facade);
-        verify(facade, times(1)).addHeader(DEVICE_ID_HEADER, ANY_DEVICE_ID);
+
+        final Request request = interceptor.intercept(createMockChain()).request();
+
+        assertEquals(ANY_DEVICE_ID, request.header(DEVICE_ID_HEADER));
     }
 }

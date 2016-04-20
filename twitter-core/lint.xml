@@ -36,4 +36,5 @@
         <ignore
             path="src/main/java/com/twitter/sdk/android/core/identity/ShareEmailResultReceiver.java"/>
     </issue>
+    <issue id="InvalidPackage" severity="ignore"/>
 </lint>

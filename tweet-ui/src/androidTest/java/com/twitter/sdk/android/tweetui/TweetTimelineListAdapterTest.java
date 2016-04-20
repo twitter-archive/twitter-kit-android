@@ -20,6 +20,7 @@ package com.twitter.sdk.android.tweetui;
 import android.view.View;
 
 import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.tweetui.internal.TimelineDelegate;
 
@@ -167,7 +168,7 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
             final TimelineCursor timelineCursor = new TimelineCursor(tweets);
             final TimelineResult<Tweet> timelineResult
                     = new TimelineResult<>(timelineCursor, tweets);
-            cb.success(timelineResult, null);
+            cb.success(new Result<>(timelineResult, null));
         }
 
         @Override
@@ -176,7 +177,7 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
             final TimelineCursor timelineCursor = new TimelineCursor(tweets);
             final TimelineResult<Tweet> timelineResult
                     = new TimelineResult<>(timelineCursor, tweets);
-            cb.success(timelineResult, null);
+            cb.success(new Result<>(timelineResult, null));
         }
     }
 }

@@ -83,7 +83,7 @@ public class UserTimeline extends BaseTimeline implements Timeline<Tweet> {
             public void success(Result<TwitterApiClient> result) {
                 result.data.getStatusesService().userTimeline(userId, screenName,
                         maxItemsPerRequest, sinceId, maxId, false, !includeReplies, null,
-                        includeRetweets, new GuestCallback<>(new TweetsCallback(cb)));
+                        includeRetweets).enqueue(new GuestCallback<>(new TweetsCallback(cb)));
             }
         };
     }

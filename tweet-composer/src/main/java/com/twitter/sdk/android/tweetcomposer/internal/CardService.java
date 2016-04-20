@@ -17,11 +17,10 @@
 
 package com.twitter.sdk.android.tweetcomposer.internal;
 
-import com.twitter.sdk.android.core.Callback;
-
-import retrofit.http.Field;
-import retrofit.http.FormUrlEncoded;
-import retrofit.http.POST;
+import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.POST;
 
 /**
  * Internal Twitter Cards API.
@@ -32,6 +31,6 @@ public interface CardService {
      * Internal API for creating Twitter cards.
      */
     @FormUrlEncoded
-    @POST("/v2/cards/create.json")
-    void create(@Field("card_data") CardData data, Callback<CardCreate> cb);
+    @POST("https://caps.twitter.com/v2/cards/create.json")
+    Call<CardCreate> create(@Field("card_data") CardData data);
 }

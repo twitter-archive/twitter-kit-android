@@ -35,13 +35,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
 
 import javax.net.ssl.SSLSocketFactory;
 
-import retrofit.RestAdapter;
-import retrofit.android.MainThreadExecutor;
-import retrofit.converter.GsonConverter;
+import okhttp3.OkHttpClient;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * A class to allow authenticated access to Twitter API endpoints.
@@ -49,15 +48,13 @@ import retrofit.converter.GsonConverter;
  * interfaces to {@link com.twitter.sdk.android.core.TwitterApiClient#getService(Class)}
  */
 public class TwitterApiClient {
-    private static final String UPLOAD_ENDPOINT = "https://upload.twitter.com";
     final ConcurrentHashMap<Class, Object> services;
-    final RestAdapter apiAdapter;
-    final RestAdapter uploadAdapter;
+    final Retrofit apiAdapter;
 
     TwitterApiClient(TwitterAuthConfig authConfig,
                      Session session,
                      TwitterApi twitterApi,
-                     SSLSocketFactory sslSocketFactory, ExecutorService executorService) {
+                     SSLSocketFactory sslSocketFactory) {
 
         if (session == null) {
             throw new IllegalArgumentException("Session must not be null.");
@@ -65,24 +62,21 @@ public class TwitterApiClient {
 
         this.services = new ConcurrentHashMap<>();
 
+        final OkHttpClient client = new OkHttpClient.Builder()
+                .sslSocketFactory(sslSocketFactory)
+                .addInterceptor(new AuthInterceptor(session, authConfig))
+                .build();
+
         final Gson gson = new GsonBuilder()
                 .registerTypeAdapterFactory(new SafeListAdapter())
                 .registerTypeAdapterFactory(new SafeMapAdapter())
                 .registerTypeAdapter(BindingValues.class, new BindingValuesAdapter())
                 .create();
 
-        apiAdapter = new RestAdapter.Builder()
-                .setClient(new AuthenticatedClient(authConfig, session, sslSocketFactory))
-                .setEndpoint(twitterApi.getBaseHostUrl())
-                .setConverter(new GsonConverter(gson))
-                .setExecutors(executorService, new MainThreadExecutor())
-                .build();
-
-        uploadAdapter = new RestAdapter.Builder()
-                .setClient(new AuthenticatedClient(authConfig, session, sslSocketFactory))
-                .setEndpoint(UPLOAD_ENDPOINT)
-                .setConverter(new GsonConverter(gson))
-                .setExecutors(executorService, new MainThreadExecutor())
+        apiAdapter = new Retrofit.Builder()
+                .client(client)
+                .baseUrl(twitterApi.getBaseHostUrl())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
     }
 
@@ -96,8 +90,7 @@ public class TwitterApiClient {
      */
     public TwitterApiClient(Session session) {
         this(TwitterCore.getInstance().getAuthConfig(), session, new TwitterApi(),
-                TwitterCore.getInstance().getSSLSocketFactory(),
-                TwitterCore.getInstance().getFabric().getExecutorService());
+                TwitterCore.getInstance().getSSLSocketFactory());
     }
 
     /**
@@ -155,7 +148,7 @@ public class TwitterApiClient {
      * upload endpoints.
      */
     public MediaService getMediaService() {
-        return getAdapterService(uploadAdapter, MediaService.class);
+        return getService(MediaService.class);
     }
 
     /**
@@ -166,19 +159,8 @@ public class TwitterApiClient {
      */
     @SuppressWarnings("unchecked")
     protected <T> T getService(Class<T> cls) {
-        return getAdapterService(apiAdapter, cls);
-    }
-
-    /**
-     * Converts a Retrofit style interfaces into an instance using the given RestAdapter.
-     * @param adapter the retrofit RestAdapter to use to generate a service instance
-     * @param cls Retrofit style service interface
-     * @return instance of cls
-     */
-    @SuppressWarnings("unchecked")
-    protected <T> T getAdapterService(RestAdapter adapter, Class<T> cls) {
         if (!services.contains(cls)) {
-            services.putIfAbsent(cls, adapter.create(cls));
+            services.putIfAbsent(cls, apiAdapter.create(cls));
         }
         return (T) services.get(cls);
     }

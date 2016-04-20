@@ -20,7 +20,6 @@ package com.twitter.sdk.android.tweetui;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterApiClient;
-import com.twitter.sdk.android.core.GuestCallback;
 import com.twitter.sdk.android.core.services.StatusesService;
 
 import static org.mockito.Mockito.*;
@@ -92,7 +91,8 @@ public class UserTimelineTest extends TweetUiTestCase {
         final Callback<TwitterApiClient> request = timeline.createUserTimelineRequest(TEST_SINCE_ID,
                 TEST_MAX_ID, mock(Callback.class));
         final TwitterApiClient mockTwitterApiClient = mock(TwitterApiClient.class);
-        final StatusesService mockStatusesService = mock(StatusesService.class);
+        final StatusesService mockStatusesService =
+                mock(StatusesService.class, new MockCallAnswer());
         when(mockTwitterApiClient.getStatusesService()).thenReturn(mockStatusesService);
         // execute request with mock auth'd TwitterApiClient (auth queue tested separately)
         request.success(new Result<>(mockTwitterApiClient, null));
@@ -102,7 +102,7 @@ public class UserTimelineTest extends TweetUiTestCase {
         verify(mockStatusesService, times(1)).userTimeline(eq(TestFixtures.TEST_USER.id),
                 eq(TestFixtures.TEST_USER.screenName), eq(TEST_ITEMS_PER_REQUEST),
                 eq(TEST_SINCE_ID), eq(TEST_MAX_ID), eq(false), eq(true), isNull(Boolean.class),
-                isNull(Boolean.class), any(GuestCallback.class));
+                isNull(Boolean.class));
     }
 
     public void testGetScribeSection() {

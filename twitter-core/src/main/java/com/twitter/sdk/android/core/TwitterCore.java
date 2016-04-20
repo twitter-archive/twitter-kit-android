@@ -60,8 +60,7 @@ public class TwitterCore extends Kit<Boolean> {
     private volatile SSLSocketFactory sslSocketFactory;
 
     public TwitterCore(TwitterAuthConfig authConfig) {
-        this.authConfig = authConfig;
-        apiClients = new ConcurrentHashMap<>();
+        this(authConfig, new ConcurrentHashMap<Session, TwitterApiClient>());
     }
 
     TwitterCore(TwitterAuthConfig authConfig,

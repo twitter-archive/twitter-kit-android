@@ -24,14 +24,12 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-import io.fabric.sdk.android.services.common.CurrentTimeProvider;
-import retrofit.client.Header;
+import okhttp3.Headers;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
@@ -41,12 +39,11 @@ public class TwitterRateLimitTest  {
     public static final String X_RATE_LIMIT_REMAINING = "x-rate-limit-remaining";
     public static final String X_RATE_LIMIT_RESET = "x-rate-limit-reset";
 
-    private List<Header> headers;
+    private Map<String, String> headers;
 
     @Before
     public void setUp() throws Exception {
-
-        headers = new ArrayList<>();
+        headers = new HashMap<>();
     }
 
     @Test
@@ -61,11 +58,11 @@ public class TwitterRateLimitTest  {
         final String limit = "10";
         final String remaining = "20";
         final String reset = "30";
-        headers.add(new Header(X_RATE_LIMIT_LIMIT, limit));
-        headers.add(new Header(X_RATE_LIMIT_REMAINING, remaining));
-        headers.add(new Header(X_RATE_LIMIT_RESET, reset));
+        headers.put(X_RATE_LIMIT_LIMIT, limit);
+        headers.put(X_RATE_LIMIT_REMAINING, remaining);
+        headers.put(X_RATE_LIMIT_RESET, reset);
 
-        final TwitterRateLimit rateLimit = new TwitterRateLimit(headers);
+        final TwitterRateLimit rateLimit = new TwitterRateLimit(Headers.of(headers));
         assertEquals(10, rateLimit.getLimit());
         assertEquals(20, rateLimit.getRemaining());
         assertEquals(30L, rateLimit.getReset());
@@ -73,32 +70,9 @@ public class TwitterRateLimitTest  {
 
     @Test
     public void testCreator_emptyHeader() {
-        final List<Header> headers = new ArrayList<>();
-        final TwitterRateLimit rateLimit = new TwitterRateLimit(headers);
+        final TwitterRateLimit rateLimit = new TwitterRateLimit(Headers.of(headers));
         assertEquals(0, rateLimit.getLimit());
         assertEquals(0, rateLimit.getRemaining());
         assertEquals(0, rateLimit.getReset());
-    }
-
-    @Test
-    public void testRemainingTime_resetInFuture() {
-        final String reset = "1500";
-        headers.add(new Header(X_RATE_LIMIT_RESET, reset));
-        final CurrentTimeProvider mockCurrentTimeProvider
-                = mock(CurrentTimeProvider.class);
-        when(mockCurrentTimeProvider.getCurrentTimeMillis()).thenReturn(1000000L);
-        final TwitterRateLimit rateLimit = new TwitterRateLimit(headers, mockCurrentTimeProvider);
-        assertEquals(500L, rateLimit.getRemainingTime());
-    }
-
-    @Test
-    public void testRemainingTime_resetInPast() {
-        final String reset = "500";
-        headers.add(new Header(X_RATE_LIMIT_RESET, reset));
-        final CurrentTimeProvider mockCurrentTimeProvider
-                = mock(CurrentTimeProvider.class);
-        when(mockCurrentTimeProvider.getCurrentTimeMillis()).thenReturn(1000000L);
-        final TwitterRateLimit rateLimit = new TwitterRateLimit(headers, mockCurrentTimeProvider);
-        assertEquals(0L, rateLimit.getRemainingTime());
     }
 }

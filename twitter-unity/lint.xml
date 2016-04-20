@@ -15,5 +15,6 @@
   ~ limitations under the License.
   ~
   -->
-
-<lint/>
+<lint>
+    <issue id="InvalidPackage" severity="ignore"/>
+</lint>

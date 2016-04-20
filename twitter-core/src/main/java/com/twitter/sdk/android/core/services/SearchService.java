@@ -17,12 +17,12 @@
 
 package com.twitter.sdk.android.core.services;
 
-import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.services.params.Geocode;
 import com.twitter.sdk.android.core.models.Search;
-import retrofit.http.EncodedQuery;
-import retrofit.http.GET;
-import retrofit.http.Query;
+
+import retrofit2.Call;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 public interface SearchService {
 
@@ -74,19 +74,18 @@ public interface SearchService {
      * @param maxId (optional) Returns results with an ID less than (that is, older than) or equal
      *              to the specified ID.
      * @param includeEntities (optional) The entities node will be disincluded when set to false.
-     * @param cb (required) Callback to be executed with result
      */
     @GET("/1.1/search/tweets.json?" +
             "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
-    void tweets(@Query("q") String query,
-                @EncodedQuery("geocode") Geocode geocode, //EncodedQuery protects commas from encode
-                @Query("lang") String lang,
-                @Query("locale") String locale,
-                @Query("result_type") String resultType,
-                @Query("count") Integer count,
-                @Query("until") String until,
-                @Query("since_id") Long sinceId,
-                @Query("max_id") Long maxId,
-                @Query("include_entities") Boolean includeEntities,
-                Callback<Search> cb);
+    Call<Search> tweets(@Query("q") String query,
+                        //EncodedQuery protects commas from encode
+                        @Query(value = "geocode", encoded = true) Geocode geocode,
+                        @Query("lang") String lang,
+                        @Query("locale") String locale,
+                        @Query("result_type") String resultType,
+                        @Query("count") Integer count,
+                        @Query("until") String until,
+                        @Query("since_id") Long sinceId,
+                        @Query("max_id") Long maxId,
+                        @Query("include_entities") Boolean includeEntities);
 }

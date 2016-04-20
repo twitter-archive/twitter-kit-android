@@ -86,8 +86,8 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
             @Override
             public void success(Result<TwitterApiClient> result) {
                 result.data.getSearchService().tweets(query, null, languageCode, null, resultType,
-                        maxItemsPerRequest, null, sinceId, maxId, true,
-                        new GuestCallback<>(new SearchCallback(cb)));
+                        maxItemsPerRequest, null, sinceId, maxId, true)
+                        .enqueue(new GuestCallback<>(new SearchCallback(cb)));
             }
         };
     }
@@ -112,7 +112,7 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
             final TimelineResult<Tweet> timelineResult
                     = new TimelineResult<>(new TimelineCursor(tweets), tweets);
             if (cb != null) {
-                cb.success(timelineResult, result.response);
+                cb.success(new Result<>(timelineResult, result.response));
             }
         }
 

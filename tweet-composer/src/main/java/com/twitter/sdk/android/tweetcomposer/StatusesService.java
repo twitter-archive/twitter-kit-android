@@ -17,18 +17,17 @@
 
 package com.twitter.sdk.android.tweetcomposer;
 
-import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.models.Tweet;
 
-import retrofit.http.Field;
-import retrofit.http.FormUrlEncoded;
-import retrofit.http.POST;
+import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.POST;
 
 public interface StatusesService {
 
     @FormUrlEncoded
     @POST("/1.1/statuses/update.json")
-    void update(@Field("status") String status,
-                @Field("card_uri") String cardUri,
-                Callback<Tweet> cb);
+    Call<Tweet> update(@Field("status") String status,
+                       @Field("card_uri") String cardUri);
 }

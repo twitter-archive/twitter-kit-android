@@ -61,8 +61,8 @@ class ComposerController {
     }
 
     void setProfilePhoto() {
-        dependencyProvider.getApiClient(session).getAccountService().verifyCredentials(false, true,
-                new Callback<User>() {
+        dependencyProvider.getApiClient(session).getAccountService().verifyCredentials(false, true)
+                .enqueue(new Callback<User>() {
                     @Override
                     public void success(Result<User> result) {
                         composerView.setProfilePhotoView(result.data);

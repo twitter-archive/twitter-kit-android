@@ -34,7 +34,8 @@ import com.twitter.sdk.android.tweetcomposer.internal.CardData;
 import java.io.File;
 
 import io.fabric.sdk.android.Fabric;
-import retrofit.mime.TypedFile;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 public class TweetUploadService extends IntentService {
     public static final String UPLOAD_SUCCESS
@@ -84,7 +85,7 @@ public class TweetUploadService extends IntentService {
 
     void uploadTweet(TwitterSession session, final String text) {
         final ComposerApiClient client = dependencyProvider.getComposerApiClient(session);
-        client.getComposerStatusesService().update(text, null, new Callback<Tweet>() {
+        client.getComposerStatusesService().update(text, null).enqueue(new Callback<Tweet>() {
             @Override
             public void success(Result<Tweet> result) {
                 sendSuccessBroadcast(result.data.getId());
@@ -109,18 +110,18 @@ public class TweetUploadService extends IntentService {
         }
         final File file = new File(path);
         final String mimeType = FileUtils.getMimeType(file);
-        final TypedFile media = new TypedFile(mimeType, file);
+        final RequestBody media = RequestBody.create(MediaType.parse(mimeType), file);
 
-        client.getMediaService().upload(media, null, null, new Callback<Media>() {
+        client.getMediaService().upload(media, null, null).enqueue(new Callback<Media>() {
             @Override
             public void success(Result<Media> result) {
                 final CardData cardData = CardDataFactory.createAppCardData(card,
                         result.data.mediaId, dependencyProvider.getAdvertisingId());
-                client.getCardService().create(cardData, new Callback<CardCreate>() {
+                client.getCardService().create(cardData).enqueue(new Callback<CardCreate>() {
                     @Override
                     public void success(Result<CardCreate> result) {
                         final String cardUri = result.data.cardUri;
-                        client.getComposerStatusesService().update(text, cardUri,
+                        client.getComposerStatusesService().update(text, cardUri).enqueue(
                                 new Callback<Tweet>() {
                                     @Override
                                     public void success(Result<Tweet> result) {

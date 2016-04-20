@@ -57,7 +57,7 @@ public class GuestAuthClientTest  {
         mockTwitterApi = new TwitterApi();
         guestSessionManager = new SimpleSessionManager<>();
         mockCallback = mock(Callback.class);
-        mockSslSocketFactory = mock(SSLSocketFactory.class);
+        mockSslSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
     }
 
     @Test

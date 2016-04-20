@@ -22,7 +22,6 @@ import android.content.Intent;
 import android.view.View;
 
 import com.twitter.Validator;
-import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterSession;
@@ -34,6 +33,8 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
+
+import retrofit2.Call;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -77,6 +78,8 @@ public class ComposerControllerTest {
 
         final TwitterApiClient mockTwitterApiClient = mock(TwitterApiClient.class);
         mockAccountService = mock(AccountService.class);
+        when(mockAccountService.verifyCredentials(any(Boolean.class), any(Boolean.class)))
+                .thenReturn(mock(Call.class));
         when(mockTwitterApiClient.getAccountService()).thenReturn(mockAccountService);
 
         mockCardViewFactory = mock(CardViewFactory.class);
@@ -108,7 +111,7 @@ public class ComposerControllerTest {
         verify(mockComposerView).setCardView(any(View.class));
         verify(mockDependencyProvider).getApiClient(mockTwitterSession);
         verify(mockDependencyProvider).getCardViewFactory();
-        verify(mockAccountService).verifyCredentials(eq(false), eq(true), any(Callback.class));
+        verify(mockAccountService).verifyCredentials(eq(false), eq(true));
         verify(mockComposerScribeClient).impression(mockCard);
     }
 

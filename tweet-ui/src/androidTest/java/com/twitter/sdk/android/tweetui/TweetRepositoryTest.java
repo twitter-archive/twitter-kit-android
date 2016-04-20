@@ -17,6 +17,7 @@
 
 package com.twitter.sdk.android.tweetui;
 
+import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.models.Tweet;
 
 import static org.mockito.Matchers.any;
@@ -30,7 +31,7 @@ public class TweetRepositoryTest extends TweetUiTestCase {
         final TestTweetRepository mockRepo = mock(TestTweetRepository.class);
         final TestTweetRepository.SingleTweetCallback callback
                 = mockRepo.new SingleTweetCallback(null);
-        callback.success(null, null);
+        callback.success(new Result<Tweet>(null, null));
         verify(mockRepo, times(1)).updateCache(any(Tweet.class));
     }
 }

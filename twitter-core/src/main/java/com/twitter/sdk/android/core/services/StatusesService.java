@@ -17,17 +17,17 @@
 
 package com.twitter.sdk.android.core.services;
 
-import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.models.Tweet;
 
 import java.util.List;
 
-import retrofit.http.Field;
-import retrofit.http.FormUrlEncoded;
-import retrofit.http.GET;
-import retrofit.http.POST;
-import retrofit.http.Path;
-import retrofit.http.Query;
+import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface StatusesService {
 
@@ -59,17 +59,15 @@ public interface StatusesService {
      *                          status response to include the screen_name of the contributor. By
      *                          default only the user_id of the contributor is included.
      * @param includeEntities (optional) The entities node will be disincluded when set to false.
-     * @param cb The callback to invoke when the request completes.
      */
     @GET("/1.1/statuses/mentions_timeline.json?" +
             "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
-    void mentionsTimeline(@Query("count") Integer count,
-                          @Query("since_id") Long sinceId,
-                          @Query("max_id") Long maxId,
-                          @Query("trim_user") Boolean trimUser,
-                          @Query("contributor_details") Boolean contributeDetails,
-                          @Query("include_entities") Boolean includeEntities,
-                          Callback<List<Tweet>> cb);
+    Call<List<Tweet>> mentionsTimeline(@Query("count") Integer count,
+                                       @Query("since_id") Long sinceId,
+                                       @Query("max_id") Long maxId,
+                                       @Query("trim_user") Boolean trimUser,
+                                       @Query("contributor_details") Boolean contributeDetails,
+                                       @Query("include_entities") Boolean includeEntities);
 
     /**
      * Returns a collection of the most recent tweets posted by the user indicated by the
@@ -117,20 +115,18 @@ public interface StatusesService {
      *                        of the timeline and the slice selected by the count parameter).
      *                        Note: If you're using the trim_user parameter in conjunction with
      *                        include_rts, the retweets will still contain a full user object.
-     * @param cb The callback to invoke when the request completes.
      */
     @GET("/1.1/statuses/user_timeline.json?" +
             "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
-    void userTimeline(@Query("user_id") Long userId,
-                      @Query("screen_name") String screenName,
-                      @Query("count") Integer count,
-                      @Query("since_id") Long sinceId,
-                      @Query("max_id") Long maxId,
-                      @Query("trim_user") Boolean trimUser,
-                      @Query("exclude_replies") Boolean excludeReplies,
-                      @Query("contributor_details") Boolean contributeDetails,
-                      @Query("include_rts") Boolean includeRetweets,
-                      Callback<List<Tweet>> cb);
+    Call<List<Tweet>> userTimeline(@Query("user_id") Long userId,
+                                   @Query("screen_name") String screenName,
+                                   @Query("count") Integer count,
+                                   @Query("since_id") Long sinceId,
+                                   @Query("max_id") Long maxId,
+                                   @Query("trim_user") Boolean trimUser,
+                                   @Query("exclude_replies") Boolean excludeReplies,
+                                   @Query("contributor_details") Boolean contributeDetails,
+                                   @Query("include_rts") Boolean includeRetweets);
 
     /**
      * Returns a collection of the most recent Tweets and retweets posted by the authenticating user
@@ -164,18 +160,16 @@ public interface StatusesService {
      *                          status response to include the screen_name of the contributor. By
      *                          default only the user_id of the contributor is included.
      * @param includeEntities (optional) The entities node will be disincluded when set to false.
-     * @param cb The callback to invoke when the request completes.
      */
     @GET("/1.1/statuses/home_timeline.json?" +
             "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
-    void homeTimeline(@Query("count") Integer count,
-                      @Query("since_id") Long sinceId,
-                      @Query("max_id") Long maxId,
-                      @Query("trim_user") Boolean trimUser,
-                      @Query("exclude_replies") Boolean excludeReplies,
-                      @Query("contributor_details") Boolean contributeDetails,
-                      @Query("include_entities") Boolean includeEntities,
-                      Callback<List<Tweet>> cb);
+    Call<List<Tweet>> homeTimeline(@Query("count") Integer count,
+                                   @Query("since_id") Long sinceId,
+                                   @Query("max_id") Long maxId,
+                                   @Query("trim_user") Boolean trimUser,
+                                   @Query("exclude_replies") Boolean excludeReplies,
+                                   @Query("contributor_details") Boolean contributeDetails,
+                                   @Query("include_entities") Boolean includeEntities);
 
     /**
      * Returns the most recent tweets authored by the authenticating user that have been retweeted
@@ -199,17 +193,15 @@ public interface StatusesService {
      * @param includeEntities (optional) The entities node will be disincluded when set to false.
      * @param includeUserEntities (optional) The user entities node will not be included when set to
      *                            false.
-     * @param cb The callback to invoke when the request completes.
      */
     @GET("/1.1/statuses/retweets_of_me.json?" +
             "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
-    void retweetsOfMe(@Query("count") Integer count,
-                      @Query("since_id") Long sinceId,
-                      @Query("max_id") Long maxId,
-                      @Query("trim_user") Boolean trimUser,
-                      @Query("include_entities") Boolean includeEntities,
-                      @Query("include_user_entities") Boolean includeUserEntities,
-                      Callback<List<Tweet>> cb);
+    Call<List<Tweet>> retweetsOfMe(@Query("count") Integer count,
+                                   @Query("since_id") Long sinceId,
+                                   @Query("max_id") Long maxId,
+                                   @Query("trim_user") Boolean trimUser,
+                                   @Query("include_entities") Boolean includeEntities,
+                                   @Query("include_user_entities") Boolean includeUserEntities);
 
     /**
      * Returns a single Tweet, specified by the id parameter. The Tweet's author will also be
@@ -224,15 +216,13 @@ public interface StatusesService {
      *                         additional current_user_retweet node, containing the ID of the source
      *                         status for the retweet.
      * @param includeEntities (optional) The entities node will be disincluded when set to false.
-     * @param cb The callback to invoke when the request completes.
      */
     @GET("/1.1/statuses/show.json?" +
             "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
-    void show(@Query("id") Long id,
-              @Query("trim_user") Boolean trimUser,
-              @Query("include_my_retweet") Boolean includeMyRetweet,
-              @Query("include_entities") Boolean includeEntities,
-              Callback<Tweet> cb);
+    Call<Tweet> show(@Query("id") Long id,
+                     @Query("trim_user") Boolean trimUser,
+                     @Query("include_my_retweet") Boolean includeMyRetweet,
+                     @Query("include_entities") Boolean includeEntities);
 
     /**
      * Returns fully-hydrated Tweet objects for up to 100 tweets per request, as specified by
@@ -263,15 +253,13 @@ public interface StatusesService {
      * @param map (optional) When using the map parameter, tweets that do not exist or cannot be
      *            viewed by the current user will still have their key represented but with an
      *            explicitly null value paired with it
-     * @param cb The callback to invoke when the request completes.
      */
     @GET("/1.1/statuses/lookup.json?" +
             "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
-    void lookup(@Query("id") String id,
-                @Query("include_entities") Boolean includeEntities,
-                @Query("trim_user") Boolean trimUser,
-                @Query("map") Boolean map,
-                Callback<List<Tweet>> cb);
+    Call<List<Tweet>> lookup(@Query("id") String id,
+                             @Query("include_entities") Boolean includeEntities,
+                             @Query("trim_user") Boolean trimUser,
+                             @Query("map") Boolean map);
 
     /**
      * Updates the authenticating user's current status, also known as tweeting.
@@ -315,21 +303,19 @@ public interface StatusesService {
      *                 Omit this parameter to receive the complete user object.
      * @param mediaIds A comma separated media ids as a string for uploaded media to associate
      *                 with a Tweet. You may include up to 4 photos in a Tweet.
-     * @param cb The callback to invoke when the request completes.
      */
     @FormUrlEncoded
     @POST("/1.1/statuses/update.json?" +
             "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
-    void update(@Field("status") String status,
-                @Field("in_reply_to_status_id") Long inReplyToStatusId,
-                @Field("possibly_sensitive") Boolean possiblySensitive,
-                @Field("lat") Double latitude,
-                @Field("long") Double longitude,
-                @Field("place_id") String placeId,
-                @Field("display_cooridnates") Boolean displayCoordinates,
-                @Field("trim_user") Boolean trimUser,
-                @Field("media_ids") String mediaIds,
-                Callback<Tweet> cb);
+    Call<Tweet> update(@Field("status") String status,
+                       @Field("in_reply_to_status_id") Long inReplyToStatusId,
+                       @Field("possibly_sensitive") Boolean possiblySensitive,
+                       @Field("lat") Double latitude,
+                       @Field("long") Double longitude,
+                       @Field("place_id") String placeId,
+                       @Field("display_cooridnates") Boolean displayCoordinates,
+                       @Field("trim_user") Boolean trimUser,
+                       @Field("media_ids") String mediaIds);
 
     /**
      * Retweets a Tweet. Returns the original Tweet with retweet details embedded.
@@ -338,14 +324,12 @@ public interface StatusesService {
      * @param trimUser (optional) When set to either true, t or 1, each Tweet returned in a timeline
      *                 will include a user object including only the status authors numerical ID.
      *                 Omit this parameter to receive the complete user object.
-     * @param cb The callback to invoke when the request completes.
      */
     @FormUrlEncoded
     @POST("/1.1/statuses/retweet/{id}.json?" +
             "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
-    void retweet(@Path("id") Long id,
-                 @Field("trim_user") Boolean trimUser,
-                 Callback<Tweet> cb);
+    Call<Tweet> retweet(@Path("id") Long id,
+                        @Field("trim_user") Boolean trimUser);
 
     /**
      * Destroys the status specified by the required ID parameter. The authenticating user must be
@@ -355,14 +339,12 @@ public interface StatusesService {
      * @param trimUser (optional) When set to either true, t or 1, each Tweet returned in a timeline
      *                 will include a user object including only the status authors numerical ID.
      *                 Omit this parameter to receive the complete user object.
-     * @param cb The callback to invoke when the request completes.
      */
     @FormUrlEncoded
     @POST("/1.1/statuses/destroy/{id}.json?" +
             "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
-    void destroy(@Path("id") Long id,
-                 @Field("trim_user") Boolean trimUser,
-                 Callback<Tweet> cb);
+    Call<Tweet> destroy(@Path("id") Long id,
+                        @Field("trim_user") Boolean trimUser);
 
     /**
      * Destroys the retweet specified by the required source Tweet's ID parameter. Returns the
@@ -372,12 +354,10 @@ public interface StatusesService {
      * @param trimUser (optional) When set to either true, t or 1, each Tweet returned in a timeline
      *                 will include a user object including only the status authors numerical ID.
      *                 Omit this parameter to receive the complete user object.
-     * @param cb The callback to invoke when the request completes.
      */
     @FormUrlEncoded
     @POST("/1.1/statuses/unretweet/{id}.json?" +
             "tweet_mode=extended&include_cards=true&cards_platform=TwitterKit-13")
-    void unretweet(@Path("id") Long id,
-            @Field("trim_user") Boolean trimUser,
-            Callback<Tweet> cb);
+    Call<Tweet> unretweet(@Path("id") Long id,
+                          @Field("trim_user") Boolean trimUser);
 }

@@ -78,7 +78,7 @@ public class TwitterListTimeline extends BaseTimeline implements Timeline<Tweet>
             @Override
             public void success(Result<TwitterApiClient> result) {
                 result.data.getListService().statuses(listId, slug, ownerScreenName, ownerId,
-                        sinceId, maxId, maxItemsPerRequest, true, includeRetweets,
+                        sinceId, maxId, maxItemsPerRequest, true, includeRetweets).enqueue(
                         new GuestCallback<>(new TweetsCallback(cb)));
             }
         };

@@ -88,7 +88,7 @@ public class CollectionTimeline extends BaseTimeline implements Timeline<Tweet> 
             @Override
             public void success(Result<TwitterApiClient> result) {
                 result.data.getCollectionService().collection(collectionIdentifier,
-                        maxItemsPerRequest, maxPosition, minPosition,
+                        maxItemsPerRequest, maxPosition, minPosition).enqueue(
                         new GuestCallback<>(new CollectionCallback(cb)));
             }
         };
@@ -120,7 +120,7 @@ public class CollectionTimeline extends BaseTimeline implements Timeline<Tweet> 
                 timelineResult = new TimelineResult<>(null, Collections.<Tweet>emptyList());
             }
             if (cb != null) {
-                cb.success(timelineResult, result.response);
+                cb.success(new Result(timelineResult, result.response));
             }
         }
 

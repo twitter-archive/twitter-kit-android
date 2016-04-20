@@ -17,11 +17,9 @@
 
 package com.twitter.sdk.android.core;
 
-import java.util.List;
-
 import io.fabric.sdk.android.services.common.CurrentTimeProvider;
 import io.fabric.sdk.android.services.common.SystemCurrentTimeProvider;
-import retrofit.client.Header;
+import okhttp3.Headers;
 
 /**
  * Represents the rate limit data returned on the headers of a request
@@ -34,27 +32,25 @@ class TwitterRateLimit  {
     private final static String REMAINING_KEY = "x-rate-limit-remaining";
     private final static String RESET_KEY = "x-rate-limit-reset";
 
-    private final long epochSeconds;
     private int requestLimit;
     private int remainingRequest;
     private long resetSeconds;
 
-    TwitterRateLimit(final List<Header> headers) {
+    TwitterRateLimit(final Headers headers) {
         this(headers, new SystemCurrentTimeProvider());
     }
 
-    TwitterRateLimit(final List<Header> headers, CurrentTimeProvider timeProvider) {
+    TwitterRateLimit(final Headers headers, CurrentTimeProvider timeProvider) {
         if (headers == null) {
             throw new IllegalArgumentException("headers must not be null");
         }
-        this.epochSeconds = timeProvider.getCurrentTimeMillis() / 1000L;
-        for (Header header : headers) {
-            if (LIMIT_KEY.equals(header.getName())) {
-                requestLimit = Integer.valueOf(header.getValue());
-            } else if (REMAINING_KEY.equals(header.getName())) {
-                remainingRequest = Integer.valueOf(header.getValue());
-            } else if (RESET_KEY.equals(header.getName())) {
-                resetSeconds = Long.valueOf(header.getValue());
+        for (int i = 0; i < headers.size(); i++) {
+            if (LIMIT_KEY.equals(headers.name(i))) {
+                requestLimit = Integer.valueOf(headers.value(i));
+            } else if (REMAINING_KEY.equals(headers.name(i))) {
+                remainingRequest = Integer.valueOf(headers.value(i));
+            } else if (RESET_KEY.equals(headers.name(i))) {
+                resetSeconds = Long.valueOf(headers.value(i));
             }
         }
     }
@@ -78,23 +74,5 @@ class TwitterRateLimit  {
      */
     public long getReset() {
         return resetSeconds;
-    }
-
-    /**
-     * Returns epoch time that request was made.
-     */
-    public long getRequestedTime() {
-        return epochSeconds;
-    }
-
-    /**
-     * Returns epoch time remaining in rate limit window.
-     */
-    public long getRemainingTime() {
-        if (epochSeconds > resetSeconds) {
-            return 0;
-        } else {
-            return resetSeconds - epochSeconds;
-        }
     }
 }

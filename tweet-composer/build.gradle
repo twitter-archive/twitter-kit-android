@@ -84,7 +84,7 @@ dependencies {
     testCompile rootProject.fabricTest
     testCompile rootProject.mockito
     testCompile rootProject.junit
-    testCompile rootProject.mavenAntTasks
+    testCompile rootProject.retrofitMock
     testCompile(rootProject.robolectric) {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'

@@ -32,12 +32,14 @@ import org.mockito.ArgumentCaptor;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
-import retrofit.RetrofitError;
+import java.io.IOException;
+
+import retrofit2.mock.Calls;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -102,12 +104,12 @@ public class TwitterSessionVerifierTest {
 
     @Test
     public void testVerifySession_catchesRetrofitExceptionsAndFinishesVerification() {
-        doThrow(mock(RetrofitError.class)).when(mockAccountService).verifyCredentials(true, false);
+        doReturn(Calls.failure(new IOException()))
+                .when(mockAccountService).verifyCredentials(true, false);
 
         verifier.verifySession(mock(Session.class));
 
         verify(mockAccountService).verifyCredentials(true, false);
         // success, we caught the exception
     }
-
 }

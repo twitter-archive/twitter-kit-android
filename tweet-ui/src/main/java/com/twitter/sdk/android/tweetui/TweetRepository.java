@@ -103,7 +103,7 @@ class TweetRepository {
                 Fabric.getLogger()) {
             @Override
             public void success(Result<TwitterApiClient> result) {
-                result.data.getFavoriteService().create(tweetId, true, cb);
+                result.data.getFavoriteService().create(tweetId, true).enqueue(cb);
             }
         });
     }
@@ -113,7 +113,7 @@ class TweetRepository {
                 Fabric.getLogger()) {
             @Override
             public void success(Result<TwitterApiClient> result) {
-                result.data.getFavoriteService().destroy(tweetId, true, cb);
+                result.data.getFavoriteService().destroy(tweetId, true).enqueue(cb);
             }
         });
     }
@@ -123,7 +123,7 @@ class TweetRepository {
                 Fabric.getLogger()) {
             @Override
             public void success(Result<TwitterApiClient> result) {
-                result.data.getStatusesService().retweet(tweetId, false, cb);
+                result.data.getStatusesService().retweet(tweetId, false).enqueue(cb);
             }
         });
     }
@@ -133,7 +133,7 @@ class TweetRepository {
                 Fabric.getLogger()) {
             @Override
             public void success(Result<TwitterApiClient> result) {
-                result.data.getStatusesService().unretweet(tweetId, false, cb);
+                result.data.getStatusesService().unretweet(tweetId, false).enqueue(cb);
             }
         });
     }
@@ -156,7 +156,7 @@ class TweetRepository {
         guestAuthQueue.addClientRequest(new Callback<TwitterApiClient>() {
             @Override
             public void success(Result<TwitterApiClient> result) {
-                result.data.getStatusesService().show(tweetId, null, null, null,
+                result.data.getStatusesService().show(tweetId, null, null, null).enqueue(
                         new SingleTweetCallback(cb));
             }
 
@@ -183,7 +183,7 @@ class TweetRepository {
             @Override
             public void success(Result<TwitterApiClient> result) {
                 final String commaSepIds = TextUtils.join(",", tweetIds);
-                result.data.getStatusesService().lookup(commaSepIds, null, null, null,
+                result.data.getStatusesService().lookup(commaSepIds, null, null, null).enqueue(
                         new MultiTweetsCallback(tweetIds, cb));
             }
 

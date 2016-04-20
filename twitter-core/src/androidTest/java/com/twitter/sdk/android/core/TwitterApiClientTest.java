@@ -24,8 +24,6 @@ import com.twitter.sdk.android.core.internal.TwitterApi;
 import com.twitter.sdk.android.core.services.FavoriteService;
 import com.twitter.sdk.android.core.services.StatusesService;
 
-import java.util.concurrent.ExecutorService;
-
 import javax.net.ssl.SSLSocketFactory;
 
 import static org.mockito.Mockito.mock;
@@ -70,6 +68,6 @@ public class TwitterApiClientTest extends FabricAndroidTestCase {
 
     private TwitterApiClient newTwitterApiClient() {
         return new TwitterApiClient(mock(TwitterAuthConfig.class), mock(Session.class),
-                new TwitterApi(), mock(SSLSocketFactory.class), mock(ExecutorService.class));
+                new TwitterApi(), (SSLSocketFactory) SSLSocketFactory.getDefault());
     }
 }
