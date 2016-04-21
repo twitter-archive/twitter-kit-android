@@ -20,7 +20,6 @@ package com.twitter.sdk.android.tweetcomposer;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.test.AndroidTestCase;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -39,6 +38,7 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.eq;
@@ -50,7 +50,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
-public class TweetUploadServiceTest extends AndroidTestCase {
+public class TweetUploadServiceTest {
     private static final String EXPECTED_TWEET_TEXT = "tweet text";
 
     private Context context;

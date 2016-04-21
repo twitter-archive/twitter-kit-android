@@ -19,7 +19,6 @@ package com.twitter.sdk.android.tweetcomposer;
 
 import android.content.Context;
 import android.content.Intent;
-import android.test.AndroidTestCase;
 import android.view.View;
 
 import com.twitter.Validator;
@@ -36,6 +35,9 @@ import org.mockito.ArgumentCaptor;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -44,7 +46,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
-public class ComposerControllerTest extends AndroidTestCase {
+public class ComposerControllerTest {
     private static final String TWEET_TEXT = "some text";
     private static final int REMAINING_CHAR_COUNT = 131;
     private static final int OVERFLOW_REMAINING_CHAR_COUNT = -3;

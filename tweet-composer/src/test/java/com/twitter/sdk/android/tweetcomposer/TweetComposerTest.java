@@ -18,7 +18,6 @@
 package com.twitter.sdk.android.tweetcomposer;
 
 import android.content.Context;
-import android.test.AndroidTestCase;
 
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterSession;
@@ -34,11 +33,13 @@ import org.robolectric.annotation.Config;
 import io.fabric.sdk.android.FabricTestUtils;
 import io.fabric.sdk.android.KitStub;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
-public class TweetComposerTest extends AndroidTestCase {
+public class TweetComposerTest {
     private static final String TWITTER_NOT_INIT_ERROR_MSG
             = "Must start Twitter Kit with Fabric.with() first";
     private Context context = RuntimeEnvironment.application;
@@ -46,13 +47,11 @@ public class TweetComposerTest extends AndroidTestCase {
 
     @Before
     public void setUp() throws Exception {
-        super.setUp();
         tweetComposer = new TweetComposer();
     }
 
     @After
     public void tearDown() throws Exception {
-        super.tearDown();
         FabricTestUtils.resetFabric();
     }
 

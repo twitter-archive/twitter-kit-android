@@ -17,8 +17,6 @@
 
 package com.twitter.sdk.android.tweetcomposer.internal;
 
-import android.test.AndroidTestCase;
-
 import com.twitter.sdk.android.tweetcomposer.BuildConfig;
 
 import org.junit.Test;
@@ -26,9 +24,11 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
+import static org.junit.Assert.assertEquals;
+
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
-public class CardDataTest extends AndroidTestCase {
+public class CardDataTest {
     private static final String TEST_CARD = "card_type";
     private static final String TEST_DESCRIPTION = "description";
     private static final String TEST_SITE = "site";

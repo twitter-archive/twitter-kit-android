@@ -39,7 +39,6 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class ComposerActivityTest {
-    private static final String TWEET_TEXT = "tweet text";
     private Context mockContext;
     private TwitterSession mockSession;
     private TwitterAuthToken mockAuthToken;
