@@ -34,7 +34,6 @@ abstract class OAuthService {
     private static final String CLIENT_NAME = "TwitterAndroidSDK";
 
     private final TwitterCore twitterCore;
-    private final SSLSocketFactory sslSocketFactory;
     private final TwitterApi api;
     private final String userAgent;
     private final RestAdapter apiAdapter;
@@ -42,14 +41,16 @@ abstract class OAuthService {
     public OAuthService(TwitterCore twitterCore, SSLSocketFactory sslSocketFactory,
             TwitterApi api) {
         this.twitterCore = twitterCore;
-        this.sslSocketFactory = sslSocketFactory;
         this.api = api;
         userAgent = TwitterApi.buildUserAgent(CLIENT_NAME, twitterCore.getVersion());
 
+        if (sslSocketFactory == null) {
+            throw new IllegalArgumentException("sslSocketFactory must not be null");
+        }
 
         apiAdapter = new RestAdapter.Builder()
                 .setEndpoint(getApi().getBaseHostUrl())
-                .setClient(new DefaultClient(this.sslSocketFactory))
+                .setClient(new DefaultClient(sslSocketFactory))
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestFacade request) {
@@ -61,10 +62,6 @@ abstract class OAuthService {
 
     protected TwitterCore getTwitterCore() {
         return twitterCore;
-    }
-
-    protected SSLSocketFactory getSSLSocketFactory() {
-        return sslSocketFactory;
     }
 
     protected TwitterApi getApi() {

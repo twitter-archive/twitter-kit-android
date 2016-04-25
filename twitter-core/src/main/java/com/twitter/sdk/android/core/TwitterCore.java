@@ -192,7 +192,8 @@ public class TwitterCore extends Kit<Boolean> {
      */
     public void logInGuest(final Callback<AppSession> callback) {
         checkInitialized();
-        final OAuth2Service service = new OAuth2Service(this, null, new TwitterApi());
+        final OAuth2Service service =
+                new OAuth2Service(this, getSSLSocketFactory(), new TwitterApi());
         new GuestAuthClient(service).authorize(appSessionManager, callback);
     }
 

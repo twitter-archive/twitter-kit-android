@@ -32,6 +32,8 @@ import org.robolectric.annotation.Config;
 
 import java.lang.reflect.Method;
 
+import javax.net.ssl.SSLSocketFactory;
+
 import retrofit.http.Body;
 import retrofit.http.Field;
 import retrofit.http.Header;
@@ -60,12 +62,16 @@ public class OAuth2ServiceTest  {
 
     private final TwitterAuthConfig authConfig;
     private final TwitterCore twitterCore;
+    private final SSLSocketFactory sslSocketFactory;
+    private final TwitterApi twitterApi;
     private final OAuth2Service service;
 
     public OAuth2ServiceTest() {
         authConfig = new TwitterAuthConfig(CONSUMER_KEY, CONSUMER_SECRET);
         twitterCore = new TwitterCore(authConfig);
-        service = new OAuth2Service(twitterCore, null , new TwitterApi());
+        twitterApi = new TwitterApi();
+        sslSocketFactory = mock(SSLSocketFactory.class);
+        service = new OAuth2Service(twitterCore, sslSocketFactory, twitterApi);
     }
 
     private class MockOAuth2Api implements OAuth2Service.OAuth2Api {
@@ -81,6 +87,16 @@ public class OAuth2ServiceTest  {
                 @Field(OAuthConstants.PARAM_GRANT_TYPE) String grantType,
                 Callback<AppAuthToken> cb) {
             // Does nothing
+        }
+    }
+
+    @Test
+    public void testConstructor_withNullSSLSocketFactory() {
+        try {
+            new OAuth2Service(twitterCore, null, twitterApi);
+            fail("Expected IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            assertEquals("sslSocketFactory must not be null", e.getMessage());
         }
     }
 
@@ -111,15 +127,11 @@ public class OAuth2ServiceTest  {
 
     @Test
     public void testApiHost() {
-        final TwitterApi api = new TwitterApi();
-        final OAuth2Service service = new OAuth2Service(twitterCore, null, api);
-        assertEquals(api, service.getApi());
+        assertEquals(twitterApi, service.getApi());
     }
 
     @Test
     public void testGetUserAgent() {
-        final TwitterApi api = new TwitterApi();
-        final OAuth2Service service = new OAuth2Service(twitterCore, null, api);
         final String userAgent
                 = TwitterApi.buildUserAgent("TwitterAndroidSDK", twitterCore.getVersion());
         assertEquals(userAgent, service.getUserAgent());

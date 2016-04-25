@@ -43,6 +43,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import javax.net.ssl.SSLSocketFactory;
+
 import retrofit.client.Response;
 import retrofit.http.Body;
 import retrofit.http.Header;
@@ -68,7 +70,7 @@ public class OAuth1aServiceTest {
     public void setUp() throws Exception {
         authConfig = new TwitterAuthConfig("key", "secret");
         twitterCore = new TwitterCore(authConfig);
-        service = new OAuth1aService(twitterCore, null , new TwitterApi());
+        service = new OAuth1aService(twitterCore, mock(SSLSocketFactory.class) , new TwitterApi());
     }
 
     @Test
@@ -131,7 +133,8 @@ public class OAuth1aServiceTest {
     @Test
     public void testApiHost() {
         final TwitterApi api = new TwitterApi();
-        final OAuth1aService localService = new OAuth1aService(twitterCore, null, api);
+        final OAuth1aService localService =
+                new OAuth1aService(twitterCore, mock(SSLSocketFactory.class), api);
         assertEquals(api, localService.getApi());
     }
 
