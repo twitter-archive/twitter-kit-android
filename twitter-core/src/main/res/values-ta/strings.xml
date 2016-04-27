@@ -18,5 +18,9 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__allow_btn_txt">அனுமதி</string>
+    <string name="tw__login_btn_txt">Twitter -இல் உள்நுழையவும்</string>
+    <string name="tw__not_now_btn_txt">இப்பொழுது வேண்டாம்</string>
     <string name="tw__share_email_desc">%1$s அதன் தனியுரிமைக் கொள்கைக்கு இணங்க உங்கள் Twitter  கணக்கு \@%2$s-ஐப் பயன்படுத்தக் கூடிய வகையில் அந்தக் கணக்குடன் இணைக்கப்பட்டுள்ள மின்னஞ்சல் முகவரியை அணுக %1$s-ஐ அனுமதியுங்கள். எடுத்துக்காட்டாக, %1$s அந்த முகவரியில் புதுப்பிப்புகளையும் பிற தகவல்களையும் அனுப்பலாம்.</string>
+    <string name="tw__share_email_title">உங்கள் மின்னஞ்சல் முகவரியைப் பகிரவும்</string>
 </resources>

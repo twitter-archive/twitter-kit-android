@@ -17,4 +17,17 @@
   ~
   -->
 
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"/>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <plurals name="tw__time_hours">
+        <item quantity="one">1ಗಂ</item>
+        <item quantity="other">%dಗಂ</item>
+    </plurals>
+    <plurals name="tw__time_mins">
+        <item quantity="one">1ನಿ</item>
+        <item quantity="other">%dನಿ</item>
+    </plurals>
+    <plurals name="tw__time_secs">
+        <item quantity="one">1ಗಳು</item>
+        <item quantity="other">%dಗಳು</item>
+    </plurals>
+</resources>

@@ -18,7 +18,15 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__like_tweet">கீச்சை விரும்பு</string>
+    <string name="tw__liked_tweet">விரும்பியதை செயல்தவிர்</string>
+    <string name="tw__loading_tweet">ட்விட்டை ஏற்றுகிறது</string>
     <string name="tw__pause">இடைநிறுத்து</string>
     <string name="tw__play">இயக்கு</string>
     <string name="tw__replay">மீண்டும் இயக்கு</string>
+    <string name="tw__retweeted_by_format">%1$s -ஆல் மறுட்விட் செய்யப்பட்டது</string>
+    <string name="tw__share_content_format">\@%1$s\ -இன் ட்விட்டைக் காணுங்கள்: https://twitter.com/%1$s/status/%2$s</string>
+    <string name="tw__share_subject_format">%1$s (\@%2$s) -இடமிருந்து ட்விட்</string>
+    <string name="tw__share_tweet">ட்விட்டைப் பகிர்</string>
+    <string name="tw__tweet_content_description">%1$s. %2$s. %3$s.</string>
 </resources>

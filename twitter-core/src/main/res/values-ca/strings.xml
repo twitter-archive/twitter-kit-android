@@ -18,9 +18,9 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="tw__allow_btn_txt">Dopusti</string>
-    <string name="tw__login_btn_txt">Prijavite se putem Twittera</string>
-    <string name="tw__not_now_btn_txt">Ne sada</string>
-    <string name="tw__share_email_desc">Servisu %1$s dopustite pristup adresi e-pošte povezanoj s vašim računom za Twitter \@%2$s da bi je %1$s mogao koristiti u skladu sa svojim pravilima o privatnosti. %1$s bi vam na tu adresu, primjerice, mogao slati novosti i ostale obavijesti.</string>
-    <string name="tw__share_email_title">Dijelite svoju adresu e-pošte</string>
+    <string name="tw__allow_btn_txt">Permet-ho</string>
+    <string name="tw__login_btn_txt">Inicia sessió amb Twitter</string>
+    <string name="tw__not_now_btn_txt">Ara no</string>
+    <string name="tw__share_email_desc">Permet que %1$s accedeixi a l\'adreça electrònica associada al compte de Twitter \@%2$s perquè %1$s la pugui utilitzar d\'acord amb la seva política de privacitat. Per exemple, %1$s et podria enviar  actualitzacions i altres dades a aquesta adreça.</string>
+    <string name="tw__share_email_title">Comparteix l\'adreça electrònica</string>
 </resources>

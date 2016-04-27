@@ -18,7 +18,15 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__like_tweet">ટ્વીટ લાઈક કરો</string>
+    <string name="tw__liked_tweet">લાઈક પૂર્વવત કરો</string>
+    <string name="tw__loading_tweet">ટ્વીટ લોડ થઈ રહી છે</string>
     <string name="tw__pause">અટકાવો</string>
     <string name="tw__play">પ્લે કરો</string>
     <string name="tw__replay">પુન પ્લે કરો</string>
+    <string name="tw__retweeted_by_format">%1$s દ્વારા પુનટ્વીટ કરાઈ</string>
+    <string name="tw__share_content_format">\@%1$s\ની ટ્વીટ તપાસો: https://twitter.com/%1$s/status/%2$s</string>
+    <string name="tw__share_subject_format">%1$s (\@%2$s) તરફથી ટ્વીટ</string>
+    <string name="tw__share_tweet">ટ્વીટ શેર કરો</string>
+    <string name="tw__tweet_content_description">%1$s. %2$s. %3$s.</string>
 </resources>

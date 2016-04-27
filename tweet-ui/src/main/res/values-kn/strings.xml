@@ -18,7 +18,15 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__like_tweet">ಟ್ವೀಟ್ ಇಷ್ಟಪಡಿ</string>
+    <string name="tw__liked_tweet">ಇಷ್ಟಪಡಿ ರದ್ದುಮಾಡು</string>
+    <string name="tw__loading_tweet">ಟ್ವೀಟ್ ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ</string>
     <string name="tw__pause">ವಿರಾಮ</string>
     <string name="tw__play">ಪ್ಲೇ</string>
     <string name="tw__replay">ಮರುಪ್ಲೇ</string>
+    <string name="tw__retweeted_by_format">%1$s ಇಂದ ಮರುಟ್ವೀಟಿಸಲ್ಪಟ್ಟಿದೆ</string>
+    <string name="tw__share_content_format">ಪರಿಶೀಲಿಸಿ \@%1$s\'s ಟ್ವೀಟ್: https://twitter.com/%1$s/ಸ್ಥಿತಿ/%2$s</string>
+    <string name="tw__share_subject_format">%1$s (\@%2$s) ಇಂದ ಟ್ವೀಟ್</string>
+    <string name="tw__share_tweet">ಟ್ವೀಟ್ ಹಂಚಿಕೊಳ್ಳಿ</string>
+    <string name="tw__tweet_content_description">%1$s. %2$s. %3$s.</string>
 </resources>

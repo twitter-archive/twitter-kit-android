@@ -18,5 +18,9 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="tw__share_email_desc">%1$s यांना आपले ट्विटर खाते \@%2$s शी निगडीत ई-मेल पत्ता घेण्याची परवानगी द्या जेणेकरुन %1$s आपल्या गोपनीयता धोरणानुसार त्याचा वापर करु शकतील. उदाहरणार्थ, %1$s आपल्याला त्या पत्त्यावर अपडेट्स आणि अन्य माहिती पाठवू शकतील.</string>
+    <string name="tw__allow_btn_txt">अनुमती द्या</string>
+    <string name="tw__login_btn_txt">Twitter वर लॉग इन करा</string>
+    <string name="tw__not_now_btn_txt">आत्ता नको</string>
+    <string name="tw__share_email_desc">%1$s यांना आपल्या Twitter खात्याशी \@%2$s निगडीत ई-मेल पत्ता ऍक्सेस करण्याची परवानगी द्या जेणेकरुन %1$s आपल्या गोपनीयता धोरणानुसार त्याचा वापर करु शकतील. उदाहरणार्थ, %1$s आपल्याला त्या पत्त्यावर अपडेट्स आणि अन्य माहिती पाठवू शकतील.</string>
+    <string name="tw__share_email_title">आपला ई-मेल पत्ता शेअर करा</string>
 </resources>

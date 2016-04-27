@@ -21,6 +21,6 @@
     <string name="tw__allow_btn_txt">Povoliť</string>
     <string name="tw__login_btn_txt">Prihlásiť sa na Twitter</string>
     <string name="tw__not_now_btn_txt">Teraz nie</string>
-    <string name="tw__share_email_desc">Udeľte %1$s prístup k e-mailovej adrese priradenej k vášmu Twitter účtom \@%2$s, aby ju %1$s mohol použiť v súlade so svojimi zásadami ochrany súkromia. %1$s vám na túto adresu bude môcť posielať napríklad aktualizácie či iné informácie.</string>
-    <string name="tw__share_email_title">Zdieľajte vašu e-mailovú adresu</string>
+    <string name="tw__share_email_desc">Povoľte aplikácii %1$s prístup k e-mailovej adrese priradenej k vášmu účtu na Twitteri \@%2$s, aby ju aplikácia %1$s mohla použiť v súlade so svojimi zásadami ochrany súkromia. %1$s vám na túto adresu bude môcť napríklad odosielať aktualizácie a iné informácie.</string>
+    <string name="tw__share_email_title">Zdieľajte svoju e-mailovú adresu</string>
 </resources>

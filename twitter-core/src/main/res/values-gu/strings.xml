@@ -18,5 +18,9 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__allow_btn_txt">પરવાનગી આપે છે</string>
+    <string name="tw__login_btn_txt">Twitter સાથે લોગીન કરો</string>
+    <string name="tw__not_now_btn_txt">હમણાં નહીં</string>
     <string name="tw__share_email_desc">%1$sને તમારા Twitter એકાઉન્ટ \@%2$s સાથે સંકળાયેલા ઈમેલ એડ્રેસનો ઉપયોગ કરવાની મંજૂરી આપો જેથી %1$s તેનો ઉપયોગ તેની ગોપનીયતા નીતિ પ્રમાણે કરી શકે. ઉદા તરીકે, %1$s તે એડ્રેસ પર તમને અપડેટ્સ અને અન્ય માહિતી મોકલી શકે.</string>
+    <string name="tw__share_email_title">તમારું ઈમેલ એડ્રેસ શેર કરો</string>
 </resources>
