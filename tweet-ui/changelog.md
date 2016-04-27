@@ -1,13 +1,17 @@
 # Android SDK TweetUi Kit changelog
-
 *Non-trivial pull requests should include an entry below. Entries must be suitable for inclusion in public-facing materials such as release notes and blog posts. Keep them short, sweet, and in the past tense. New entries go on top. When merging to deploy, add the version number and date.*
 
 ## Unreleased
 
+## v1.10.1
+* Added HLS playback support. Removed WebM playback support.
+* Added loading and buffering spinners to video player.
+* Only show play button and media badge if playback is supported.
+
 ## v1.10.0
- * Added click listeners on Tweet views for URL and media clicks.
- * Fixed click listeners on Tweet text so multiple events are not generated.
- * Fixed JavaDocs.
+* Added click listeners on Tweet views for URL and media clicks.
+* Fixed click listeners on Tweet text so multiple events are not generated.
+* Fixed JavaDocs.
 
 ## v1.9.1
 

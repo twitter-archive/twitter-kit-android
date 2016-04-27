@@ -3,6 +3,9 @@
 
 ## Unreleased
 
+## v1.6.6
+* Fixed security issue where certificate pinning wasn't happening for some requests.
+
 ## v1.6.5
  * Removed Verisign Class 3 Certificate from pinning list.
  * Fixed JavaDocs.
