@@ -81,13 +81,16 @@ final public class TweetMediaUtils {
     }
 
     /**
-     * Returns true if there is a media entity with the type of "video" or "animated_gif"
+     * Returns true if there is a media entity with the type of "video" or "animated_gif" and
+     * playback is supported.
      *
-     * @param tweet The Tweet entities
-     * @return true if there is a media entity with the type of "video" or "animated_gif"
+     * @param tweet The Tweet
+     * @return true if there is a media entity with the type of "video" or "animated_gif" and
+     * playback is supported
      */
-    static public boolean hasVideo(Tweet tweet) {
-        return getVideoEntity(tweet) != null;
+    static public boolean hasSupportedVideo(Tweet tweet) {
+        final MediaEntity entity = getVideoEntity(tweet);
+        return entity != null && getSupportedVariant(entity) != null;
     }
 
     static boolean isPhotoType(MediaEntity mediaEntity) {

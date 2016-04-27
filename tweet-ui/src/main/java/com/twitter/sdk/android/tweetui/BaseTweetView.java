@@ -670,7 +670,7 @@ public abstract class BaseTweetView extends LinearLayout {
     final void setTweetMedia(Tweet displayTweet) {
         clearMediaView();
 
-        if (displayTweet != null && TweetMediaUtils.hasVideo(displayTweet)) {
+        if (displayTweet != null && TweetMediaUtils.hasSupportedVideo(displayTweet)) {
             final MediaEntity mediaEntity = TweetMediaUtils.getVideoEntity(displayTweet);
             // set the image view to visible before setting via picasso placeholders into so
             // measurements are done correctly, fixes a bug where the placeholder was a small square

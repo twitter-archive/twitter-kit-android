@@ -31,6 +31,7 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
@@ -174,19 +175,31 @@ public class TweetMediaUtilsTest {
     }
 
     @Test
-    public void testHasVideo_hasVideoEntity() {
-        final MediaEntity entity = TestFixtures.newMediaEntity(TEST_INDICES_START, TEST_INDICES_END,
-                TEST_MEDIA_TYPE_VIDEO);
-        final ArrayList<MediaEntity> media = new ArrayList<>();
-        media.add(entity);
-        final TweetEntities entities = new TweetEntities(null, null, media, null);
+    public void testHasSupportedVideo_hasUnsupportedVideoEntity() {
+        final VideoInfo.Variant variant = new VideoInfo.Variant(0, TEST_CONTENT_TYPE_DASH, null);
+        final VideoInfo videoInfo = TestFixtures.createVideoInfoWithVariant(variant);
+        final MediaEntity entity = TestFixtures.createEntityWithVideo(videoInfo);
+
+        final TweetEntities entities = new TweetEntities(null, null, Arrays.asList(entity), null);
         final Tweet tweet = new TweetBuilder().setExtendedEntities(entities).build();
 
-        assertTrue(TweetMediaUtils.hasVideo(tweet));
+        assertFalse(TweetMediaUtils.hasSupportedVideo(tweet));
     }
 
     @Test
-    public void testHasVideo_noVideoEntity() {
+    public void testHasSupportedVideo_hasSupportedVideoEntity() {
+        final VideoInfo.Variant variant = new VideoInfo.Variant(0, TEST_CONTENT_TYPE_MP4, null);
+        final VideoInfo videoInfo = TestFixtures.createVideoInfoWithVariant(variant);
+        final MediaEntity entity = TestFixtures.createEntityWithVideo(videoInfo);
+
+        final TweetEntities entities = new TweetEntities(null, null, Arrays.asList(entity), null);
+        final Tweet tweet = new TweetBuilder().setExtendedEntities(entities).build();
+
+        assertTrue(TweetMediaUtils.hasSupportedVideo(tweet));
+    }
+
+    @Test
+    public void testHasSupportedVideo_noVideoEntity() {
         final MediaEntity entity = TestFixtures.newMediaEntity(TEST_INDICES_START, TEST_INDICES_END,
                 TEST_MEDIA_TYPE_PHOTO);
         final ArrayList<MediaEntity> media = new ArrayList<>();
@@ -194,20 +207,20 @@ public class TweetMediaUtilsTest {
         final TweetEntities entities = new TweetEntities(null, null, media, null);
         final Tweet tweet = new TweetBuilder().setExtendedEntities(entities).build();
 
-        assertFalse(TweetMediaUtils.hasVideo(tweet));
+        assertFalse(TweetMediaUtils.hasSupportedVideo(tweet));
     }
 
     @Test
-    public void testHasVideo_uninitializedMediaEntities() {
+    public void testHasSupportedVideo_uninitializedMediaEntities() {
         final TweetEntities entities = new TweetEntities(null, null, null, null);
         final Tweet tweet = new TweetBuilder().setExtendedEntities(entities).build();
-        assertFalse(TweetMediaUtils.hasVideo(tweet));
+        assertFalse(TweetMediaUtils.hasSupportedVideo(tweet));
     }
 
     @Test
-    public void testHasVideo_nullEntities() {
+    public void testHasSupportedVideo_nullEntities() {
         final Tweet tweet = new TweetBuilder().setExtendedEntities(null).build();
-        assertFalse(TweetMediaUtils.hasVideo(tweet));
+        assertFalse(TweetMediaUtils.hasSupportedVideo(tweet));
     }
 
     @Test
