@@ -17,13 +17,10 @@
 
 package com.twitter.sdk.android.tweetui;
 
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterApiClient;
-import com.twitter.sdk.android.core.services.ListService;
+import com.twitter.sdk.android.core.TwitterCore;
 
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
 
 public class TwitterListTimelineTest extends TweetUiTestCase {
     private static final String ILLEGAL_TWEET_UI_MESSAGE = "TweetUi instance must not be null";
@@ -75,20 +72,13 @@ public class TwitterListTimelineTest extends TweetUiTestCase {
         // build a timeline with test params
         final TwitterListTimeline timeline = new TwitterListTimeline(tweetUi, TEST_LIST_ID,
                 TEST_SLUG, TEST_OWNER_ID, TEST_OWNER_SCREEN_NAME, TEST_ITEMS_PER_REQUEST, true);
-        // create a request (Callback<TwitterApiClient>) directly
-        final Callback<TwitterApiClient> request = timeline.createListTimelineRequest(TEST_SINCE_ID,
-                TEST_MAX_ID, mock(Callback.class));
-        final TwitterApiClient mockTwitterApiClient = mock(TwitterApiClient.class);
-        final ListService mockListService = mock(ListService.class, new MockCallAnswer());
-        when(mockTwitterApiClient.getListService()).thenReturn(mockListService);
-        // execute request with mock auth'd TwitterApiClient (auth queue tested separately)
-        request.success(new Result<>(mockTwitterApiClient, null));
-        // assert list service is requested once
-        verify(mockTwitterApiClient).getListService();
+
+        timeline.createListTimelineRequest(TEST_SINCE_ID, TEST_MAX_ID);
+
         // assert twitterListTimeline call is made with the correct arguments
-        verify(mockListService).statuses(eq(TEST_LIST_ID), eq(TEST_SLUG),
-                eq(TEST_OWNER_SCREEN_NAME), eq(TEST_OWNER_ID), eq(TEST_SINCE_ID), eq(TEST_MAX_ID),
-                eq(TEST_ITEMS_PER_REQUEST), eq(true), eq(true));
+        verify(TwitterCore.getInstance().getApiClient().getListService()).statuses(eq(TEST_LIST_ID),
+                eq(TEST_SLUG), eq(TEST_OWNER_SCREEN_NAME), eq(TEST_OWNER_ID), eq(TEST_SINCE_ID),
+                eq(TEST_MAX_ID), eq(TEST_ITEMS_PER_REQUEST), eq(true), eq(true));
     }
 
     public void testGetScribeSection() {

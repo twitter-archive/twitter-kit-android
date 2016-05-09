@@ -20,9 +20,19 @@ package com.twitter.sdk.android.tweetui;
 import android.os.Handler;
 
 import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.SessionManager;
+import com.twitter.sdk.android.core.TwitterApiClient;
+import com.twitter.sdk.android.core.TwitterAuthException;
+import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.core.services.FavoriteService;
+import com.twitter.sdk.android.core.services.StatusesService;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
@@ -36,60 +46,92 @@ import static org.mockito.Mockito.*;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class TweetRepositoryTest {
-    private static final Long anyId = 1L;
-    private static final List<Long> anyIds = new ArrayList<Long>();
-    private TweetUiAuthRequestQueue mockUserAuthQueue;
-    private TweetUiAuthRequestQueue mockGuestAuthQueue;
+    private static final Long anyId = 123L;
+    private static final List<Long> anyIds = new ArrayList<>();
+    private TwitterCore mockTwitterCore;
+    private TwitterApiClient mockApiClient;
+    private FavoriteService mockFavoriteService;
+    private StatusesService mockStatusesService;
+    private SessionManager<TwitterSession> mockSessionManager;
+    private Handler mockHandler;
     private TweetRepository tweetRepository;
 
     @Before
     public void setUp() throws Exception {
         anyIds.add(anyId);
-        mockUserAuthQueue = mock(TweetUiAuthRequestQueue.class);
-        mockGuestAuthQueue = mock(TweetUiAuthRequestQueue.class);
-        tweetRepository = new TweetRepository(mock(Handler.class), mockUserAuthQueue,
-                mockGuestAuthQueue);
+        mockTwitterCore = mock(TwitterCore.class);
+        mockApiClient = mock(TwitterApiClient.class);
+        mockStatusesService = mock(StatusesService.class, Mockito.RETURNS_MOCKS);
+        when(mockApiClient.getStatusesService()).thenReturn(mockStatusesService);
+        mockFavoriteService = mock(FavoriteService.class, Mockito.RETURNS_MOCKS);
+        when(mockApiClient.getFavoriteService()).thenReturn(mockFavoriteService);
+        when(mockTwitterCore.getApiClient(any(TwitterSession.class))).thenReturn(mockApiClient);
+        when(mockTwitterCore.getApiClient()).thenReturn(mockApiClient);
+        mockSessionManager = mock(SessionManager.class);
+        when(mockSessionManager.getActiveSession()).thenReturn(mock(TwitterSession.class));
+        mockHandler = mock(Handler.class);
+        tweetRepository = new TweetRepository(mockHandler, mockSessionManager, mockTwitterCore);
     }
 
     @Test
     public void testFavoriteDelegation() {
         tweetRepository.favorite(anyId, mock(Callback.class));
-        verify(mockUserAuthQueue, times(1)).addClientRequest(any(Callback.class));
-        verifyZeroInteractions(mockGuestAuthQueue);
+        verify(mockFavoriteService).create(anyId, false);
     }
 
     @Test
     public void testUnfavoriteDelegation() {
         tweetRepository.unfavorite(anyId, mock(Callback.class));
-        verify(mockUserAuthQueue, times(1)).addClientRequest(any(Callback.class));
-        verifyZeroInteractions(mockGuestAuthQueue);
+        verify(mockFavoriteService).destroy(anyId, false);
     }
 
     @Test
     public void testRetweetDelegation() {
         tweetRepository.retweet(anyId, mock(Callback.class));
-        verify(mockUserAuthQueue, times(1)).addClientRequest(any(Callback.class));
-        verifyZeroInteractions(mockGuestAuthQueue);
+        verify(mockStatusesService).retweet(anyId, false);
     }
 
     @Test
     public void testUnretweetDelegation() {
         tweetRepository.unretweet(anyId, mock(Callback.class));
-        verify(mockUserAuthQueue, times(1)).addClientRequest(any(Callback.class));
-        verifyZeroInteractions(mockGuestAuthQueue);
+        verify(mockStatusesService).unretweet(anyId, false);
     }
 
     @Test
     public void testLoadTweetDelegation() {
         tweetRepository.loadTweet(anyId, mock(Callback.class));
-        verifyZeroInteractions(mockUserAuthQueue);
-        verify(mockGuestAuthQueue, times(1)).addClientRequest(any(Callback.class));
+        verify(mockStatusesService).show(anyId, null, null, null);
     }
 
     @Test
     public void testLoadTweetsDelegation() {
         tweetRepository.loadTweets(anyIds, mock(Callback.class));
-        verifyZeroInteractions(mockUserAuthQueue);
-        verify(mockGuestAuthQueue, times(1)).addClientRequest(any(Callback.class));
+        verify(mockStatusesService).lookup(anyId.toString(), null, null, null);
+    }
+
+    @Test
+    public void testGetUserSession_withActiveUserSession() {
+        final Callback<TwitterSession> cb = mock(Callback.class);
+        tweetRepository.getUserSession(cb);
+
+        verify(cb).success(any(Result.class));
+    }
+
+    @Test
+    public void testGetUserSession_withNoActiveUserSession() {
+        final Callback<TwitterSession> cb = mock(Callback.class);
+        when(mockSessionManager.getActiveSession()).thenReturn(null);
+        tweetRepository.getUserSession(cb);
+
+        verify(cb).failure(any(TwitterAuthException.class));
+    }
+
+    @Test
+    public void testSingleTweetCallback_callsUpdateCache() {
+        final TweetRepository mockRepo = mock(TweetRepository.class);
+        final TweetRepository.SingleTweetCallback callback
+                = mockRepo.new SingleTweetCallback(null);
+        callback.success(new Result<Tweet>(null, null));
+        verify(mockRepo, times(1)).updateCache(any(Tweet.class));
     }
 }

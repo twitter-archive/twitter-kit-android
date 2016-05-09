@@ -17,9 +17,9 @@
 
 package com.twitter.sdk.android.tweetui;
 
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.TwitterApiClient;
-import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.core.models.Search;
+
+import retrofit2.Call;
 
 public class TestSearchTimeline extends SearchTimeline {
 
@@ -29,13 +29,7 @@ public class TestSearchTimeline extends SearchTimeline {
     }
 
     @Override
-    public void addRequest(Callback<TwitterApiClient> cb) {
-        super.addRequest(cb);
-    }
-
-    @Override
-    public Callback<TwitterApiClient> createSearchRequest(Long sinceId, Long maxId,
-            Callback<TimelineResult<Tweet>> cb) {
-        return super.createSearchRequest(sinceId, maxId, cb);
+    public Call<Search> createSearchRequest(Long sinceId, Long maxId) {
+        return super.createSearchRequest(sinceId, maxId);
     }
 }

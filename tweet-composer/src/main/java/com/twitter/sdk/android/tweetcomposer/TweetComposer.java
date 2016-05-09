@@ -24,6 +24,7 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.twitter.sdk.android.core.GuestSessionProvider;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.TwitterCore;
@@ -36,7 +37,6 @@ import io.fabric.sdk.android.services.concurrency.DependsOn;
 import io.fabric.sdk.android.services.network.UrlUtils;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -54,6 +54,7 @@ public class TweetComposer extends Kit<Void> {
     private final ConcurrentHashMap<Session, ComposerApiClient> apiClients;
     String advertisingId;
     SessionManager<TwitterSession> sessionManager;
+    GuestSessionProvider guestSessionProvider;
     private ScribeClient scribeClient;
 
     public TweetComposer() {
@@ -68,18 +69,15 @@ public class TweetComposer extends Kit<Void> {
 
     protected boolean onPreExecute() {
         sessionManager = TwitterCore.getInstance().getSessionManager();
+        guestSessionProvider = TwitterCore.getInstance().getGuestSessionProvider();
         return super.onPreExecute();
     }
 
     @Override
     protected Void doInBackground() {
         advertisingId = getIdManager().getAdvertisingId();
-        // Trigger restoration of session
-        sessionManager.getActiveSession();
-        final List<SessionManager<? extends Session>> sessionManagers = new ArrayList<>();
-        sessionManagers.add(sessionManager);
-        scribeClient = new ScribeClientImpl(new DefaultScribeClient(this,
-                KIT_SCRIBE_NAME, sessionManagers, getIdManager()));
+        scribeClient = new ScribeClientImpl(new DefaultScribeClient(this, KIT_SCRIBE_NAME,
+                sessionManager, guestSessionProvider, getIdManager()));
         return null;
     }
 

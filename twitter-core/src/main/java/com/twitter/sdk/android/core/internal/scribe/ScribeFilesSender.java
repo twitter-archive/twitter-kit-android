@@ -25,10 +25,13 @@ import io.fabric.sdk.android.services.common.IdManager;
 import io.fabric.sdk.android.services.common.QueueFile;
 import io.fabric.sdk.android.services.events.FilesSender;
 
-import com.twitter.sdk.android.core.AuthInterceptor;
+import com.twitter.sdk.android.core.GuestSessionProvider;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterAuthToken;
+import com.twitter.sdk.android.core.internal.network.GuestAuthInterceptor;
+import com.twitter.sdk.android.core.internal.network.OAuth1aInterceptor;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -74,21 +77,24 @@ class ScribeFilesSender implements FilesSender {
     private final ScribeConfig scribeConfig;
     private final long ownerId;
     private final TwitterAuthConfig authConfig;
-    private final List<SessionManager<? extends Session>> sessionManagers;
+    private final SessionManager<? extends Session<TwitterAuthToken>> sessionManager;
+    private final GuestSessionProvider guestSessionProvider;
     private final SSLSocketFactory sslSocketFactory;
     private final AtomicReference<ScribeService> scribeService;
     private final ExecutorService executorService;
     private final IdManager idManager;
 
     public ScribeFilesSender(Context context, ScribeConfig scribeConfig, long ownerId,
-            TwitterAuthConfig authConfig, List<SessionManager<? extends Session>> sessionManagers,
-            SSLSocketFactory sslSocketFactory, ExecutorService executorService,
-            IdManager idManager) {
+            TwitterAuthConfig authConfig,
+            SessionManager<? extends Session<TwitterAuthToken>> sessionManager,
+            GuestSessionProvider guestSessionProvider, SSLSocketFactory sslSocketFactory,
+            ExecutorService executorService, IdManager idManager) {
         this.context = context;
         this.scribeConfig = scribeConfig;
         this.ownerId = ownerId;
         this.authConfig = authConfig;
-        this.sessionManagers = sessionManagers;
+        this.sessionManager = sessionManager;
+        this.guestSessionProvider = guestSessionProvider;
         this.sslSocketFactory = sslSocketFactory;
         this.executorService = executorService;
         this.idManager = idManager;
@@ -173,35 +179,34 @@ class ScribeFilesSender implements FilesSender {
     synchronized ScribeService getScribeService() {
         if (scribeService.get() == null) {
             final Session session = getSession(ownerId);
+            OkHttpClient client;
             if (isValidSession(session)) {
-                final OkHttpClient client = new OkHttpClient.Builder()
+                client = new OkHttpClient.Builder()
                         .sslSocketFactory(sslSocketFactory)
                         .addInterceptor(new ConfigRequestInterceptor(scribeConfig, idManager))
-                        .addInterceptor(new AuthInterceptor(session, authConfig))
+                        .addInterceptor(new OAuth1aInterceptor(session, authConfig))
                         .build();
-
-                final Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(scribeConfig.baseUrl)
-                        .client(client)
-                        .build();
-
-                scribeService.compareAndSet(null, retrofit.create(ScribeService.class));
             } else {
-                CommonUtils.logControlled(context, "No valid session at this time");
+                client = new OkHttpClient.Builder()
+                        .sslSocketFactory(sslSocketFactory)
+                        .addInterceptor(new ConfigRequestInterceptor(scribeConfig, idManager))
+                        .addInterceptor(new GuestAuthInterceptor(guestSessionProvider))
+                        .build();
             }
+
+            final Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(scribeConfig.baseUrl)
+                    .client(client)
+                    .build();
+
+            scribeService.compareAndSet(null, retrofit.create(ScribeService.class));
         }
+
         return scribeService.get();
     }
 
     private Session getSession(long ownerId) {
-        Session sessionToReturn = null;
-        for (SessionManager<? extends Session> sessionManager : sessionManagers) {
-            sessionToReturn = sessionManager.getSession(ownerId);
-            if (sessionToReturn != null) {
-                break;
-            }
-        }
-        return sessionToReturn;
+        return sessionManager.getSession(ownerId);
     }
 
     private boolean isValidSession(Session session) {
@@ -257,7 +262,7 @@ class ScribeFilesSender implements FilesSender {
         public okhttp3.Response intercept(Chain chain) throws IOException {
             final Request.Builder builder = chain.request().newBuilder();
             if (!TextUtils.isEmpty(scribeConfig.userAgent)) {
-                builder.addHeader(USER_AGENT_HEADER, scribeConfig.userAgent);
+                builder.header(USER_AGENT_HEADER, scribeConfig.userAgent);
             }
 
             /**
@@ -271,7 +276,7 @@ class ScribeFilesSender implements FilesSender {
              * Scribelib in turn is used by Rufous to marshall the data into the scribe structure.
              */
             if (!TextUtils.isEmpty(idManager.getDeviceUUID())) {
-                builder.addHeader(CLIENT_UUID_HEADER, idManager.getDeviceUUID());
+                builder.header(CLIENT_UUID_HEADER, idManager.getDeviceUUID());
             }
 
             /**
@@ -280,7 +285,7 @@ class ScribeFilesSender implements FilesSender {
              *
              * See: https://confluence.twitter.biz/display/PIE/Identifying+API+calls+associated+with+background+polling+events
              */
-            builder.addHeader(POLLING_HEADER, POLLING_HEADER_VALUE);
+            builder.header(POLLING_HEADER, POLLING_HEADER_VALUE);
 
             return chain.proceed(builder.build());
         }

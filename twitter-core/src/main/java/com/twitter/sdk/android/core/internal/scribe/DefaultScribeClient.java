@@ -24,10 +24,12 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.twitter.sdk.android.core.BuildConfig;
+import com.twitter.sdk.android.core.GuestSession;
+import com.twitter.sdk.android.core.GuestSessionProvider;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
+import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.TwitterSession;
 
 import java.util.Collections;
 import java.util.List;
@@ -56,23 +58,24 @@ public class DefaultScribeClient extends ScribeClient {
     private static volatile ScheduledExecutorService executor;
 
     private final Kit kit;
-    private final List<SessionManager<? extends Session>> sessionManagers;
+    private final SessionManager<? extends Session<TwitterAuthToken>> sessionManager;
     private final String advertisingId;
 
     public DefaultScribeClient(Kit kit, String kitName,
-                               List<SessionManager<? extends Session>> sessionManagers,
-                               IdManager idManager) {
-        this(kit, kitName, getGson(), sessionManagers, idManager);
+            SessionManager<? extends Session<TwitterAuthToken>> sessionManager,
+            GuestSessionProvider guestSessionProvider, IdManager idManager) {
+        this(kit, kitName, getGson(), sessionManager, guestSessionProvider, idManager);
     }
 
     DefaultScribeClient(Kit kit, String kitName, Gson gson,
-            List<SessionManager<? extends Session>> sessionManagers, IdManager idManager) {
+            SessionManager<? extends Session<TwitterAuthToken>> sessionManager,
+            GuestSessionProvider guestSessionProvider, IdManager idManager) {
         super(kit, getExecutor(), getScribeConfig(Settings.getInstance().awaitSettingsData(),
                 getUserAgent(kitName, kit)), new ScribeEvent.Transform(gson),
-                TwitterCore.getInstance().getAuthConfig(), sessionManagers,
+                TwitterCore.getInstance().getAuthConfig(), sessionManager, guestSessionProvider,
                 TwitterCore.getInstance().getSSLSocketFactory(), idManager);
 
-        this.sessionManagers = sessionManagers;
+        this.sessionManager = sessionManager;
         this.kit = kit;
         this.advertisingId = idManager.getAdvertisingId();
     }
@@ -113,14 +116,7 @@ public class DefaultScribeClient extends ScribeClient {
 
     // visible for tests
     Session getActiveSession() {
-        Session session = null;
-        for (SessionManager<? extends Session> sessionManager : sessionManagers) {
-            session = sessionManager.getActiveSession();
-            if (session != null) {
-                break;
-            }
-        }
-        return session;
+        return sessionManager.getActiveSession();
     }
 
     // visible for tests
@@ -132,7 +128,7 @@ public class DefaultScribeClient extends ScribeClient {
             // It's possible that we're attempting to load a tweet before we have a valid
             // session. Store the scribe event locally with the logged out user id so that we can
             // send it up at a later time with the logged out session.
-            scribeSessionId = TwitterSession.LOGGED_OUT_USER_ID;
+            scribeSessionId = GuestSession.LOGGED_OUT_USER_ID;
         }
         return scribeSessionId;
     }

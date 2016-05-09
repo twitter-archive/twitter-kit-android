@@ -19,12 +19,12 @@ package com.twitter.sdk.android.core;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-public final class TwitterTestUtils {
+public final class TwitterCoreTestUtils {
 
-    private TwitterTestUtils() {}
+    private TwitterCoreTestUtils() {}
 
-    public static TwitterCore createTwitter(TwitterAuthConfig authConfig,
-                                     ConcurrentHashMap<Session, TwitterApiClient> clients) {
-        return new TwitterCore(authConfig, clients);
+    public static TwitterCore createTwitterCore(TwitterAuthConfig authConfig,
+            ConcurrentHashMap<Session, TwitterApiClient> clients, TwitterApiClient guestClient) {
+        return new TwitterCore(authConfig, clients, guestClient);
     }
 }

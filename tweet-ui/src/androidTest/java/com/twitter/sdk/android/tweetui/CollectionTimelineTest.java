@@ -18,27 +18,23 @@
 package com.twitter.sdk.android.tweetui;
 
 import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterApiClient;
+import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.core.internal.TwitterCollection;
 import com.twitter.sdk.android.core.models.User;
 import com.twitter.sdk.android.core.models.UserBuilder;
-import com.twitter.sdk.android.core.services.CollectionService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class CollectionTimelineTest extends TweetUiTestCase {
     private static final String ILLEGAL_TWEET_UI_MESSAGE = "TweetUi instance must not be null";
@@ -102,36 +98,26 @@ public class CollectionTimelineTest extends TweetUiTestCase {
         final CollectionTimeline timeline = spy(new TestCollectionTimeline(tweetUi,
                 TEST_COLLECTION_ID, TEST_ITEMS_PER_REQUEST));
         timeline.next(TEST_MIN_POSITION, mock(Callback.class));
-        verify(timeline).createCollectionRequest(eq(TEST_MIN_POSITION), isNull(Long.class),
-                any(Callback.class));
-        verify(timeline).addRequest(any(Callback.class));
+        verify(timeline).createCollectionRequest(eq(TEST_MIN_POSITION), isNull(Long.class));
     }
 
     public void testPrevious_createsCorrectRequest() {
         final CollectionTimeline timeline = spy(new TestCollectionTimeline(tweetUi,
                 TEST_COLLECTION_ID, TEST_ITEMS_PER_REQUEST));
         timeline.next(TEST_MAX_POSITION, mock(Callback.class));
-        verify(timeline).createCollectionRequest(eq(TEST_MAX_POSITION), isNull(Long.class),
-                any(Callback.class));
-        verify(timeline).addRequest(any(Callback.class));
+        verify(timeline).createCollectionRequest(eq(TEST_MAX_POSITION), isNull(Long.class));
     }
 
     public void testCreateCollectionRequest() {
         // build a timeline with test params
         final CollectionTimeline timeline = new CollectionTimeline(tweetUi, TEST_COLLECTION_ID,
                 TEST_ITEMS_PER_REQUEST);
-        // create a request (Callback<TwitterApiClient>) directly
-        final Callback<TwitterApiClient> request = timeline.createCollectionRequest(
-                TEST_MIN_POSITION, TEST_MAX_POSITION, mock(Callback.class));
-        final TwitterApiClient mockTwitterApiClient = mock(TwitterApiClient.class);
-        final CollectionService mockCollectionService =
-                mock(CollectionService.class, new MockCallAnswer());
-        when(mockTwitterApiClient.getCollectionService()).thenReturn(mockCollectionService);
-        request.success(new Result<>(mockTwitterApiClient, null));
-        // assert collection service is requested once
-        verify(mockTwitterApiClient).getCollectionService();
+
+        // create a request directly
+        timeline.createCollectionRequest(TEST_MIN_POSITION, TEST_MAX_POSITION);
+
         // assert collection call is made with the correct arguments
-        verify(mockCollectionService).collection(
+        verify(TwitterCore.getInstance().getApiClient().getCollectionService()).collection(
                 eq(CollectionTimeline.COLLECTION_PREFIX + TEST_COLLECTION_ID),
                 eq(TEST_ITEMS_PER_REQUEST), eq(TEST_MAX_POSITION), eq(TEST_MIN_POSITION));
     }

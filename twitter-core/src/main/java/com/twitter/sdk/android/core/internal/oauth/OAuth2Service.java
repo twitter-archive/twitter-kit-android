@@ -45,19 +45,19 @@ public class OAuth2Service extends OAuthService {
     interface OAuth2Api {
         @POST("/1.1/guest/activate.json")
         Call<GuestTokenResponse> getGuestToken(
-                @Header(AuthHeaders.HEADER_AUTHORIZATION) String auth);
+                @Header(OAuthConstants.HEADER_AUTHORIZATION) String auth);
 
         @Headers("Content-Type: application/x-www-form-urlencoded;charset=UTF-8")
         @FormUrlEncoded
         @POST("/oauth2/token")
-        Call<OAuth2Token> getAppAuthToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
+        Call<OAuth2Token> getAppAuthToken(@Header(OAuthConstants.HEADER_AUTHORIZATION) String auth,
                                           @Field(OAuthConstants.PARAM_GRANT_TYPE) String grantType);
     }
 
     public OAuth2Service(TwitterCore twitterCore, SSLSocketFactory sslSocketFactory,
                          TwitterApi api) {
         super(twitterCore, sslSocketFactory, api);
-        this.api = getApiAdapter().create(OAuth2Api.class);
+        this.api = getRetrofit().create(OAuth2Api.class);
     }
 
     /**
@@ -127,7 +127,7 @@ public class OAuth2Service extends OAuthService {
     /**
      * Gets authorization header for inclusion in HTTP request headers.
      */
-    public static String getAuthorizationHeader(OAuth2Token token) {
+    private String getAuthorizationHeader(OAuth2Token token) {
         return OAuthConstants.AUTHORIZATION_BEARER + " " + token.getAccessToken();
     }
 

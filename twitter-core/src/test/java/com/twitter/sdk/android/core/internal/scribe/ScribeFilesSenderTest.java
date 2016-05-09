@@ -32,11 +32,12 @@ import retrofit2.Response;
 import retrofit2.mock.Calls;
 
 import com.twitter.sdk.android.core.BuildConfig;
-import com.twitter.sdk.android.core.Session;
+import com.twitter.sdk.android.core.GuestSessionProvider;
 import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.TestResources;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthToken;
+import com.twitter.sdk.android.core.TwitterSession;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -88,9 +89,9 @@ public class ScribeFilesSenderTest {
     private static final String TWITTER_POLLING_HEADER = "X-Twitter-Polling";
     private static final String REQUIRED_TWITTER_POLLING_HEADER_VALUE = "true";
 
-    private List<SessionManager<? extends Session>> sessionManagers;
-    private SessionManager<Session> mockSessionMgr;
-    private Session mockSession;
+    private SessionManager<TwitterSession> mockSessionMgr;
+    private GuestSessionProvider mockGuestSessionProvider;
+    private TwitterSession mockSession;
     private ScribeFilesSender.ScribeService mockService;
     private IdManager mockIdManager;
     private Context context;
@@ -107,7 +108,8 @@ public class ScribeFilesSenderTest {
 
         context = RuntimeEnvironment.application;
         mockSessionMgr = mock(SessionManager.class);
-        mockSession = mock(Session.class);
+        mockGuestSessionProvider = mock(GuestSessionProvider.class);
+        mockSession = mock(TwitterSession.class);
         when(mockSessionMgr.getSession(anyLong())).thenReturn(mockSession);
         when(mockSession.getAuthToken()).thenReturn(mock(TwitterAuthToken.class));
 
@@ -118,11 +120,10 @@ public class ScribeFilesSenderTest {
         final ScribeConfig scribeConfig = new ScribeConfig(true, ANY_URL, ANY_SCRIBE_PATH_VERSION,
                 ANY_SCRIBE_PATH_TYPE, null, ANY_USER_AGENT, ScribeConfig.DEFAULT_MAX_FILES_TO_KEEP,
                 ScribeConfig.DEFAULT_SEND_INTERVAL_SECONDS);
-        sessionManagers = new ArrayList<>();
-        sessionManagers.add(mockSessionMgr);
         filesSender = new ScribeFilesSender(context, scribeConfig,
-                ScribeConstants.LOGGED_OUT_USER_ID, mock(TwitterAuthConfig.class), sessionManagers,
-                mock(SSLSocketFactory.class), mock(ExecutorService.class), mockIdManager);
+                ScribeConstants.LOGGED_OUT_USER_ID, mock(TwitterAuthConfig.class), mockSessionMgr,
+                mockGuestSessionProvider, (SSLSocketFactory) SSLSocketFactory.getDefault(),
+                mock(ExecutorService.class), mockIdManager);
         filesSender.setScribeService(mockService);
 
         filenames = new String[] {
@@ -172,8 +173,9 @@ public class ScribeFilesSenderTest {
                 ScribeConfig.DEFAULT_MAX_FILES_TO_KEEP, ScribeConfig.DEFAULT_SEND_INTERVAL_SECONDS);
 
         filesSender = new ScribeFilesSender(context, config,
-                ScribeConstants.LOGGED_OUT_USER_ID, mock(TwitterAuthConfig.class), sessionManagers,
-                mock(SSLSocketFactory.class), mock(ExecutorService.class), mock(IdManager.class));
+                ScribeConstants.LOGGED_OUT_USER_ID, mock(TwitterAuthConfig.class), mockSessionMgr,
+                mockGuestSessionProvider, mock(SSLSocketFactory.class), mock(ExecutorService.class),
+                mock(IdManager.class));
         filesSender.setScribeService(mockService);
     }
 
@@ -199,10 +201,10 @@ public class ScribeFilesSenderTest {
     }
 
     @Test
-    public void testGetApiAdapter_nullSession() {
+    public void testGetApiAdapter_nullUserSession() {
         filesSender.setScribeService(null); // set api adapter to null since we pre-set it in setUp
         when(mockSessionMgr.getSession(anyLong())).thenReturn(null);
-        assertNull(filesSender.getScribeService());
+        assertNotNull(filesSender.getScribeService());
     }
 
     @Test

@@ -30,8 +30,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
-import java.util.Map;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -199,12 +197,6 @@ public class AuthTokenAdapterTest  {
     }
 
     private static class TestAuthToken extends AuthToken {
-
-        @Override
-        public Map<String, String> getAuthHeaders(TwitterAuthConfig authConfig, String method,
-                String url, Map<String, String> postParams) {
-            return null;
-        }
 
         @Override
         public boolean isExpired() {

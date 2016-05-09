@@ -26,8 +26,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
-import java.util.Map;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -35,7 +33,6 @@ import static org.junit.Assert.assertFalse;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class OAuth2TokenTest  {
 
-    private static final int HEADERS_COUNT = 1;
     private static final String TOKEN_TYPE = "tokenType";
     private static final String ACCESS_TOKEN = "accessToken";
 
@@ -48,15 +45,6 @@ public class OAuth2TokenTest  {
         final OAuth2Token parceledAuthToken
                 = OAuth2Token.CREATOR.createFromParcel(parcel);
         assertEquals(authToken, parceledAuthToken);
-    }
-
-    @Test
-    public void testGetAuthHeaders() {
-        final OAuth2Token token = new OAuth2Token(TOKEN_TYPE, ACCESS_TOKEN);
-        final Map<String, String> headers = token.getAuthHeaders(null, null, null, null);
-        assertEquals(HEADERS_COUNT, headers.size());
-        assertEquals(OAuth2Service.getAuthorizationHeader(token),
-                headers.get(GuestAuthToken.HEADER_AUTHORIZATION));
     }
 
     @Test

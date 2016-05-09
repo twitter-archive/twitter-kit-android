@@ -53,10 +53,10 @@ public class OAuth1aService extends OAuthService {
 
     interface OAuthApi {
         @POST("/oauth/request_token")
-        Call<ResponseBody> getTempToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth);
+        Call<ResponseBody> getTempToken(@Header(OAuthConstants.HEADER_AUTHORIZATION) String auth);
 
         @POST("/oauth/access_token")
-        Call<ResponseBody> getAccessToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
+        Call<ResponseBody> getAccessToken(@Header(OAuthConstants.HEADER_AUTHORIZATION) String auth,
                                           @Query(OAuthConstants.PARAM_VERIFIER) String verifier);
     }
 
@@ -70,7 +70,7 @@ public class OAuth1aService extends OAuthService {
     public OAuth1aService(TwitterCore twitterCore, SSLSocketFactory sslSocketFactory,
                           TwitterApi api) {
         super(twitterCore, sslSocketFactory, api);
-        this.api = getApiAdapter().create(OAuthApi.class);
+        this.api = getRetrofit().create(OAuthApi.class);
     }
 
     /**
@@ -146,7 +146,7 @@ public class OAuth1aService extends OAuthService {
         final String authHeader = new OAuth1aHeaders().getAuthorizationHeader(config, accessToken,
                 null, HttpMethod.valueOf(request.getRequestMethod()).name(),
                 request.getURL().toString(), postParams);
-        request.setRequestProperty(AuthHeaders.HEADER_AUTHORIZATION, authHeader);
+        request.setRequestProperty(OAuthConstants.HEADER_AUTHORIZATION, authHeader);
     }
 
     /**

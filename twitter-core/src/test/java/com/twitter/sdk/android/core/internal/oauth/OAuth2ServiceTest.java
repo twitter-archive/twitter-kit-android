@@ -86,12 +86,12 @@ public class OAuth2ServiceTest  {
     public class MockOAuth2Api implements OAuth2Service.OAuth2Api {
 
         @Override
-        public Call<GuestTokenResponse> getGuestToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth) {
+        public Call<GuestTokenResponse> getGuestToken(@Header(OAuthConstants.HEADER_AUTHORIZATION) String auth) {
             return Calls.response(Response.success(GUEST_RESPONSE));
         }
 
         @Override
-        public Call<OAuth2Token> getAppAuthToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
+        public Call<OAuth2Token> getAppAuthToken(@Header(OAuthConstants.HEADER_AUTHORIZATION) String auth,
                                                  @Field(OAuthConstants.PARAM_GRANT_TYPE) String grantType) {
             return Calls.response(Response.success(APP_TOKEN));
         }
@@ -187,7 +187,7 @@ public class OAuth2ServiceTest  {
 
         service.api = new MockOAuth2Api() {
             @Override
-            public Call<GuestTokenResponse> getGuestToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth) {
+            public Call<GuestTokenResponse> getGuestToken(@Header(OAuthConstants.HEADER_AUTHORIZATION) String auth) {
                 return Calls.failure(null);
             }
         };
@@ -210,8 +210,8 @@ public class OAuth2ServiceTest  {
 
         service.api = new MockOAuth2Api() {
             @Override
-            public Call<OAuth2Token> getAppAuthToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
-                                                     @Field(OAuthConstants.PARAM_GRANT_TYPE) String grantType) {
+            public Call<OAuth2Token> getAppAuthToken(@Header(OAuthConstants.HEADER_AUTHORIZATION) String auth,
+                    @Field(OAuthConstants.PARAM_GRANT_TYPE) String grantType) {
                 return Calls.failure(null);
             }
         };

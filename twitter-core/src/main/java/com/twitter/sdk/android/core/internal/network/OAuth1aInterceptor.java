@@ -15,9 +15,13 @@
  *
  */
 
-package com.twitter.sdk.android.core;
+package com.twitter.sdk.android.core.internal.network;
 
-import com.twitter.sdk.android.core.internal.TwitterRequestHeaders;
+import com.twitter.sdk.android.core.Session;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterAuthToken;
+import com.twitter.sdk.android.core.internal.oauth.OAuth1aHeaders;
+import com.twitter.sdk.android.core.internal.oauth.OAuthConstants;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -26,18 +30,21 @@ import java.util.Map;
 
 import io.fabric.sdk.android.services.network.UrlUtils;
 import okhttp3.FormBody;
-import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class AuthInterceptor implements Interceptor {
-    final Session session;
+/**
+ * Signs requests with OAuth1a signature
+ */
+public class OAuth1aInterceptor implements Interceptor {
+    final Session<? extends TwitterAuthToken> session;
     final TwitterAuthConfig authConfig;
 
-    public AuthInterceptor(Session session, TwitterAuthConfig authConfig) {
+    public OAuth1aInterceptor(Session<? extends TwitterAuthToken> session,
+            TwitterAuthConfig authConfig) {
         this.session = session;
         this.authConfig = authConfig;
     }
@@ -49,11 +56,9 @@ public class AuthInterceptor implements Interceptor {
                 .url(urlWorkaround(request.url()))
                 .build();
 
-        final Headers headers = getAuthHeaders(hackRequest);
-
         final Request newRequest = hackRequest
                 .newBuilder()
-                .headers(headers)
+                .header(OAuthConstants.HEADER_AUTHORIZATION, getAuthorizationHeader(hackRequest))
                 .build();
 
         return chain.proceed(newRequest);
@@ -71,15 +76,10 @@ public class AuthInterceptor implements Interceptor {
         return builder.build();
     }
 
-    Headers getAuthHeaders(Request request) throws IOException {
-        final TwitterRequestHeaders authHeaders = new TwitterRequestHeaders(request.method(),
-                request.url().toString(), authConfig, session, null, getPostParams(request));
-
-        final Headers.Builder builder = request.headers().newBuilder();
-        for (Map.Entry<String, String> header : authHeaders.getHeaders().entrySet()) {
-            builder.add(header.getKey(), header.getValue());
-        }
-        return builder.build();
+    String getAuthorizationHeader(Request request) throws IOException {
+        return new OAuth1aHeaders().getAuthorizationHeader(authConfig,
+                session.getAuthToken(), null, request.method(), request.url().toString(),
+                getPostParams(request));
     }
 
     Map<String, String> getPostParams(Request request) throws IOException {

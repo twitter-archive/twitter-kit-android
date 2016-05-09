@@ -18,12 +18,11 @@
 package com.twitter.sdk.android.core;
 
 import com.google.gson.annotations.SerializedName;
-import com.twitter.sdk.android.core.internal.oauth.AuthHeaders;
 
 /**
  * Base class for authentication tokens.
  */
-public abstract class AuthToken implements AuthHeaders {
+public abstract class AuthToken {
 
     /**
      * Unit time or epoch time when the token was created (always in UTC). The

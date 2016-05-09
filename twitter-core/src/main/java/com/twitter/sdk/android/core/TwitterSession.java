@@ -29,29 +29,21 @@ import com.google.gson.Gson;
  * Represents a Twitter session that is associated with a {@link com.twitter.sdk.android.core.TwitterAuthToken}.
  */
 public class TwitterSession extends Session<TwitterAuthToken> {
-
     public static final long UNKNOWN_USER_ID = -1L;
     public static final String UNKNOWN_USER_NAME = "";
-
-    public static final long LOGGED_OUT_USER_ID = 0L;
 
     @SerializedName("user_name")
     private final String userName;
 
     /**
-     * @param token     Auth token
+     * @param authToken Auth token
      * @param userId    User ID
      * @param userName  User Name
      *
      * @throws java.lang.IllegalArgumentException if token argument is null
      */
-    public TwitterSession(TwitterAuthToken token, long userId, String userName) {
-        super(token, userId);
-
-        if (token == null) {
-            throw new IllegalArgumentException("AuthToken must not be null.");
-        }
-
+    public TwitterSession(TwitterAuthToken authToken, long userId, String userName) {
+        super(authToken, userId);
         this.userName = userName;
     }
 
@@ -71,10 +63,8 @@ public class TwitterSession extends Session<TwitterAuthToken> {
 
         final TwitterSession that = (TwitterSession) o;
 
-        if (userName != null ? !userName.equals(that.userName) : that.userName != null)
-            return false;
+        return userName != null ? userName.equals(that.userName) : that.userName == null;
 
-        return true;
     }
 
     @Override

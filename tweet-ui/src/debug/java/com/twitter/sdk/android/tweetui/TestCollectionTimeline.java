@@ -17,9 +17,9 @@
 
 package com.twitter.sdk.android.tweetui;
 
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.TwitterApiClient;
-import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.core.internal.TwitterCollection;
+
+import retrofit2.Call;
 
 public class TestCollectionTimeline extends CollectionTimeline {
 
@@ -28,13 +28,7 @@ public class TestCollectionTimeline extends CollectionTimeline {
     }
 
     @Override
-    public void addRequest(Callback<TwitterApiClient> cb) {
-        super.addRequest(cb);
-    }
-
-    @Override
-    public Callback<TwitterApiClient> createCollectionRequest(Long minPosition, Long maxPosition,
-            Callback<TimelineResult<Tweet>> cb) {
-        return super.createCollectionRequest(minPosition, maxPosition, cb);
+    public Call<TwitterCollection> createCollectionRequest(Long minPosition, Long maxPosition) {
+        return super.createCollectionRequest(minPosition, maxPosition);
     }
 }

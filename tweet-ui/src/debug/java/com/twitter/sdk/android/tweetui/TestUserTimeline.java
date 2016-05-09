@@ -17,9 +17,11 @@
 
 package com.twitter.sdk.android.tweetui;
 
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.models.Tweet;
+
+import java.util.List;
+
+import retrofit2.Call;
 
 public class TestUserTimeline extends UserTimeline {
 
@@ -29,13 +31,7 @@ public class TestUserTimeline extends UserTimeline {
     }
 
     @Override
-    public void addRequest(Callback<TwitterApiClient> cb) {
-        super.addRequest(cb);
-    }
-
-    @Override
-    public Callback<TwitterApiClient> createUserTimelineRequest(Long sinceId, Long maxId,
-            Callback<TimelineResult<Tweet>> cb) {
-        return super.createUserTimelineRequest(sinceId, maxId, cb);
+    public Call<List<Tweet>> createUserTimelineRequest(Long sinceId, Long maxId) {
+        return super.createUserTimelineRequest(sinceId, maxId);
     }
 }

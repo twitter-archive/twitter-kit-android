@@ -23,9 +23,11 @@ import android.text.TextUtils;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterApiClient;
+import com.twitter.sdk.android.core.SessionManager;
+import com.twitter.sdk.android.core.TwitterAuthException;
+import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.GuestCallback;
+import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.models.Tweet;
 
 import java.util.List;
@@ -36,24 +38,27 @@ import io.fabric.sdk.android.Fabric;
  * Encapsulates Tweet API access. Tweet loads are read through a thread safe LruCache.
  */
 class TweetRepository {
-    private static final String TAG = TweetUi.LOGTAG;
-    private static final String AUTH_ERROR = "Auth could not be obtained.";
     // Cache size units are in number of entries, an average Tweet is roughly 900 bytes in memory
     private static final int DEFAULT_CACHE_SIZE = 20;
 
+    private final TwitterCore twitterCore;
     private final Handler mainHandler;
-    private final TweetUiAuthRequestQueue guestAuthQueue;
-    private final TweetUiAuthRequestQueue userAuthQueue;
+    private final SessionManager<TwitterSession> userSessionManagers;
 
     // leave this package accessible for testing
     final LruCache<Long, Tweet> tweetCache;
     final LruCache<Long, FormattedTweetText> formatCache;
 
-    TweetRepository(Handler mainHandler, TweetUiAuthRequestQueue userAuthQueue,
-            TweetUiAuthRequestQueue guestAuthQueue) {
+    TweetRepository(Handler mainHandler, SessionManager<TwitterSession> userSessionManagers) {
+        this(mainHandler, userSessionManagers, TwitterCore.getInstance());
+    }
+
+    // Testing only
+    TweetRepository(Handler mainHandler, SessionManager<TwitterSession> userSessionManagers,
+            TwitterCore twitterCore) {
+        this.twitterCore = twitterCore;
         this.mainHandler = mainHandler;
-        this.userAuthQueue = userAuthQueue;
-        this.guestAuthQueue = guestAuthQueue;
+        this.userSessionManagers = userSessionManagers;
         tweetCache = new LruCache<>(DEFAULT_CACHE_SIZE);
         formatCache = new LruCache<>(DEFAULT_CACHE_SIZE);
     }
@@ -79,7 +84,7 @@ class TweetRepository {
         return formattedTweetText;
     }
 
-    protected void updateCache(final Tweet tweet) {
+    void updateCache(final Tweet tweet) {
         tweetCache.put(tweet.id, tweet);
     }
 
@@ -99,43 +104,52 @@ class TweetRepository {
     }
 
     void favorite(final long tweetId, final Callback<Tweet> cb) {
-        userAuthQueue.addClientRequest(new LoggingCallback<TwitterApiClient>(cb,
-                Fabric.getLogger()) {
+        getUserSession(new LoggingCallback<TwitterSession>(cb, Fabric.getLogger()) {
             @Override
-            public void success(Result<TwitterApiClient> result) {
-                result.data.getFavoriteService().create(tweetId, true).enqueue(cb);
+            public void success(Result<TwitterSession> result) {
+                twitterCore.getApiClient(result.data).getFavoriteService().create(tweetId, false)
+                        .enqueue(cb);
             }
         });
     }
 
     void unfavorite(final long tweetId, final Callback<Tweet> cb) {
-        userAuthQueue.addClientRequest(new LoggingCallback<TwitterApiClient>(cb,
-                Fabric.getLogger()) {
+        getUserSession(new LoggingCallback<TwitterSession>(cb, Fabric.getLogger()) {
             @Override
-            public void success(Result<TwitterApiClient> result) {
-                result.data.getFavoriteService().destroy(tweetId, true).enqueue(cb);
+            public void success(Result<TwitterSession> result) {
+                twitterCore.getApiClient(result.data).getFavoriteService().destroy(tweetId, false)
+                        .enqueue(cb);
             }
         });
     }
 
     void retweet(final long tweetId, final Callback<Tweet> cb) {
-        userAuthQueue.addClientRequest(new LoggingCallback<TwitterApiClient>(cb,
-                Fabric.getLogger()) {
+        getUserSession(new LoggingCallback<TwitterSession>(cb, Fabric.getLogger()) {
             @Override
-            public void success(Result<TwitterApiClient> result) {
-                result.data.getStatusesService().retweet(tweetId, false).enqueue(cb);
+            public void success(Result<TwitterSession> result) {
+                twitterCore.getApiClient(result.data).getStatusesService().retweet(tweetId, false)
+                        .enqueue(cb);
             }
         });
     }
 
     void unretweet(final long tweetId, final Callback<Tweet> cb) {
-        userAuthQueue.addClientRequest(new LoggingCallback<TwitterApiClient>(cb,
-                Fabric.getLogger()) {
+        getUserSession(new LoggingCallback<TwitterSession>(cb, Fabric.getLogger()) {
             @Override
-            public void success(Result<TwitterApiClient> result) {
-                result.data.getStatusesService().unretweet(tweetId, false).enqueue(cb);
+            public void success(Result<TwitterSession> result) {
+                twitterCore.getApiClient(result.data).getStatusesService().unretweet(tweetId, false)
+                        .enqueue(cb);
             }
         });
+    }
+
+    void getUserSession(final Callback<TwitterSession> cb) {
+        final TwitterSession session = userSessionManagers.getActiveSession();
+        if (session == null) {
+            cb.failure(new TwitterAuthException("User authorization required"));
+        } else {
+            cb.success(new Result<>(session, null));
+        }
     }
 
     /**
@@ -153,21 +167,8 @@ class TweetRepository {
             return;
         }
 
-        guestAuthQueue.addClientRequest(new Callback<TwitterApiClient>() {
-            @Override
-            public void success(Result<TwitterApiClient> result) {
-                result.data.getStatusesService().show(tweetId, null, null, null).enqueue(
-                        new SingleTweetCallback(cb));
-            }
-
-            @Override
-            public void failure(TwitterException exception) {
-                Fabric.getLogger().e(TAG, AUTH_ERROR, exception);
-                if (cb != null) {
-                    cb.failure(exception);
-                }
-            }
-        });
+        twitterCore.getApiClient().getStatusesService()
+                .show(tweetId, null, null, null).enqueue(new SingleTweetCallback(cb));
     }
 
     /**
@@ -178,33 +179,20 @@ class TweetRepository {
      * @param cb callback
      */
     void loadTweets(final List<Long> tweetIds, final Callback<List<Tweet>> cb) {
-        guestAuthQueue.addClientRequest(new Callback<TwitterApiClient>() {
-
-            @Override
-            public void success(Result<TwitterApiClient> result) {
-                final String commaSepIds = TextUtils.join(",", tweetIds);
-                result.data.getStatusesService().lookup(commaSepIds, null, null, null).enqueue(
-                        new MultiTweetsCallback(tweetIds, cb));
-            }
-
-            @Override
-            public void failure(TwitterException exception) {
-                Fabric.getLogger().e(TAG, AUTH_ERROR, exception);
-                if (cb != null) {
-                    cb.failure(exception);
-                }
-            }
-        });
+        final String commaSepIds = TextUtils.join(",", tweetIds);
+        twitterCore.getApiClient().getStatusesService().lookup(commaSepIds, null, null, null)
+                .enqueue(new MultiTweetsCallback(tweetIds, cb));
     }
 
     /**
      * Callback updates the single Tweet cache before passing to the given callback on success.
      * Handles guest auth expired or failing tokens on failure.
      */
-    class SingleTweetCallback extends GuestCallback<Tweet> {
+    class SingleTweetCallback extends Callback<Tweet> {
+        final Callback<Tweet> cb;
 
         SingleTweetCallback(Callback<Tweet> cb) {
-            super(cb);
+            this.cb = cb;
         }
 
         @Override
@@ -215,17 +203,23 @@ class TweetRepository {
                 cb.success(new Result<>(tweet, result.response));
             }
         }
+
+        @Override
+        public void failure(TwitterException exception) {
+            cb.failure(exception);
+        }
     }
 
     /**
      * Callback handles sorting Tweets before passing to the given callback on success. Handles
      * guest auto expired or failing tokens on failure.
      */
-    class MultiTweetsCallback extends GuestCallback<List<Tweet>> {
+    class MultiTweetsCallback extends Callback<List<Tweet>> {
+        final Callback<List<Tweet>> cb;
         final List<Long> tweetIds;
 
         MultiTweetsCallback(List<Long> tweetIds, Callback<List<Tweet>> cb) {
-            super(cb);
+            this.cb = cb;
             this.tweetIds = tweetIds;
         }
 
@@ -235,6 +229,11 @@ class TweetRepository {
                 final List<Tweet> sorted = Utils.orderTweets(tweetIds, result.data);
                 cb.success(new Result<>(sorted, result.response));
             }
+        }
+
+        @Override
+        public void failure(TwitterException exception) {
+            cb.failure(exception);
         }
     }
 }

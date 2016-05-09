@@ -18,9 +18,7 @@
 package com.twitter.sdk.android.tweetui;
 
 import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterApiClient;
-import com.twitter.sdk.android.core.services.SearchService;
+import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.services.params.Geocode;
 
 import static org.mockito.Mockito.*;
@@ -89,8 +87,7 @@ public class SearchTimelineTest extends TweetUiTestCase {
                 TEST_RESULT_TYPE, TEST_LANG, TEST_ITEMS_PER_REQUEST));
         timeline.next(TEST_SINCE_ID, mock(Callback.class));
         verify(timeline).createSearchRequest(eq(TEST_SINCE_ID),
-                isNull(Long.class), any(Callback.class));
-        verify(timeline).addRequest(any(Callback.class));
+                isNull(Long.class));
     }
 
     public void testPrevious_createsCorrectRequest() {
@@ -99,26 +96,19 @@ public class SearchTimelineTest extends TweetUiTestCase {
         timeline.previous(TEST_MAX_ID, mock(Callback.class));
         // intentionally decrementing the maxId which is passed through to the request
         verify(timeline).createSearchRequest(isNull(Long.class),
-                eq(TEST_MAX_ID - 1), any(Callback.class));
-        verify(timeline).addRequest(any(Callback.class));
+                eq(TEST_MAX_ID - 1));
     }
 
     public void testCreateSearchRequest() {
         // build a timeline with test params
         final SearchTimeline timeline = spy(new TestSearchTimeline(tweetUi, TEST_QUERY,
                 TEST_RESULT_TYPE, TEST_LANG, TEST_ITEMS_PER_REQUEST));
-        // create a request (Callback<TwitterApiClient>) directly
-        final Callback<TwitterApiClient> request = timeline.createSearchRequest(TEST_SINCE_ID,
-                TEST_MAX_ID, mock(Callback.class));
-        final TwitterApiClient mockTwitterApiClient = mock(TwitterApiClient.class);
-        final SearchService mockSearchService = mock(SearchService.class, new MockCallAnswer());
-        when(mockTwitterApiClient.getSearchService()).thenReturn(mockSearchService);
-        // execute request with mock auth'd TwitterApiClient (auth queue tested separately)
-        request.success(new Result<>(mockTwitterApiClient, null));
-        // assert search service is requested once
-        verify(mockTwitterApiClient).getSearchService();
+        // create a request directly
+        timeline.createSearchRequest(TEST_SINCE_ID, TEST_MAX_ID);
+
         // assert searchTimeline call is made with the correct arguments
-        verify(mockSearchService).tweets(eq(TEST_QUERY + SearchTimeline.FILTER_RETWEETS),
+        verify(TwitterCore.getInstance().getApiClient().getSearchService())
+                .tweets(eq(TEST_QUERY + SearchTimeline.FILTER_RETWEETS),
                 isNull(Geocode.class), eq(TEST_LANG), isNull(String.class),
                 eq(TEST_RESULT_TYPE), eq(TEST_ITEMS_PER_REQUEST), isNull(String.class),
                 eq(TEST_SINCE_ID), eq(TEST_MAX_ID), eq(true));

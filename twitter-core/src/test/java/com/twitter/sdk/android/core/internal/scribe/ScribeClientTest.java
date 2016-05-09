@@ -24,6 +24,8 @@ import io.fabric.sdk.android.services.events.DisabledEventsStrategy;
 import io.fabric.sdk.android.services.events.EventsStrategy;
 
 import com.twitter.sdk.android.core.BuildConfig;
+import com.twitter.sdk.android.core.GuestSessionProvider;
+import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 
 import org.junit.Before;
@@ -34,7 +36,6 @@ import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 
 import javax.net.ssl.SSLSocketFactory;
@@ -64,8 +65,9 @@ public class ScribeClientTest {
 
         scribeClient = new ScribeClient(kitStub, mock(ScheduledExecutorService.class),
                 mock(ScribeConfig.class), mock(ScribeEvent.Transform.class),
-                mock(TwitterAuthConfig.class), mock(List.class),
-                mock(SSLSocketFactory.class), mock(IdManager.class));
+                mock(TwitterAuthConfig.class), mock(SessionManager.class),
+                mock(GuestSessionProvider.class), mock(SSLSocketFactory.class),
+                mock(IdManager.class));
     }
 
     @Test
@@ -114,7 +116,8 @@ public class ScribeClientTest {
                 ScribeConfig.DEFAULT_SEND_INTERVAL_SECONDS);
         scribeClient = new ScribeClient(mock(Kit.class), mock(ScheduledExecutorService.class),
                 config, mock(ScribeEvent.Transform.class), mock(TwitterAuthConfig.class),
-                mock(List.class), mock(SSLSocketFactory.class), mock(IdManager.class));
+                mock(SessionManager.class), mock(GuestSessionProvider.class),
+                mock(SSLSocketFactory.class), mock(IdManager.class));
 
         final EventsStrategy<ScribeEvent> scribeStrategy
                 = scribeClient.getScribeStrategy(ScribeConstants.LOGGED_OUT_USER_ID, null);
@@ -128,7 +131,8 @@ public class ScribeClientTest {
                 ScribeConfig.DEFAULT_SEND_INTERVAL_SECONDS);
         scribeClient = new ScribeClient(mock(Kit.class), mock(ScheduledExecutorService.class),
                 config, mock(ScribeEvent.Transform.class), mock(TwitterAuthConfig.class),
-                mock(List.class), mock(SSLSocketFactory.class), mock(IdManager.class));
+                mock(SessionManager.class), mock(GuestSessionProvider.class),
+                mock(SSLSocketFactory.class), mock(IdManager.class));
 
         final EventsStrategy<ScribeEvent> scribeStrategy
                 = scribeClient.getScribeStrategy(ScribeConstants.LOGGED_OUT_USER_ID, null);

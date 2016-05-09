@@ -19,15 +19,14 @@ package com.twitter.sdk.android.tweetui;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterApiClient;
+import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.GuestCallback;
 import com.twitter.sdk.android.core.models.Search;
 import com.twitter.sdk.android.core.models.Tweet;
 
 import java.util.List;
 
-import io.fabric.sdk.android.Fabric;
+import retrofit2.Call;
 
 /**
  * SearchTimeline provides a timeline of tweets from the search/tweets API source.
@@ -59,7 +58,7 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
      */
     @Override
     public void next(Long sinceId, Callback<TimelineResult<Tweet>> cb) {
-        addRequest(createSearchRequest(sinceId, null, cb));
+        createSearchRequest(sinceId, null).enqueue(new SearchCallback(cb));
     }
 
     /**
@@ -72,7 +71,7 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
         // api quirk: search api provides results that are inclusive of the maxId iff
         // FILTER_RETWEETS is added to the query (which we currently always add), decrement the
         // maxId to get exclusive results
-        addRequest(createSearchRequest(null, decrementMaxId(maxId), cb));
+        createSearchRequest(null, decrementMaxId(maxId)).enqueue(new SearchCallback(cb));
     }
 
     @Override
@@ -80,16 +79,9 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
         return SCRIBE_SECTION;
     }
 
-    Callback<TwitterApiClient> createSearchRequest(final Long sinceId, final Long maxId,
-            final Callback<TimelineResult<Tweet>> cb) {
-        return new LoggingCallback<TwitterApiClient>(cb, Fabric.getLogger()) {
-            @Override
-            public void success(Result<TwitterApiClient> result) {
-                result.data.getSearchService().tweets(query, null, languageCode, null, resultType,
-                        maxItemsPerRequest, null, sinceId, maxId, true)
-                        .enqueue(new GuestCallback<>(new SearchCallback(cb)));
-            }
-        };
+    Call<Search> createSearchRequest(final Long sinceId, final Long maxId) {
+        return TwitterCore.getInstance().getApiClient().getSearchService().tweets(query, null,
+                languageCode, null, resultType, maxItemsPerRequest, null, sinceId, maxId, true);
     }
 
     /**

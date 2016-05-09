@@ -22,10 +22,6 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 import com.twitter.sdk.android.core.AuthToken;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * OAuth2.0 token.
@@ -82,15 +78,6 @@ public class OAuth2Token extends AuthToken implements Parcelable {
         // the token is not known to have expired. App auth tokens only expire when manually
         // invalidated, while guest auth tokens are known to have expired after 3 hours.
         return false;
-    }
-
-    @Override
-    public Map<String, String> getAuthHeaders(TwitterAuthConfig authConfig, String method,
-            String url, Map<String, String> postParams) {
-        final Map<String, String> headers = new HashMap<>();
-        final String authorizationHeader = OAuth2Service.getAuthorizationHeader(this);
-        headers.put(HEADER_AUTHORIZATION, authorizationHeader);
-        return headers;
     }
 
     @Override

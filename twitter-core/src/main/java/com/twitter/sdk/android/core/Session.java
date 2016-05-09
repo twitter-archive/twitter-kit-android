@@ -23,7 +23,6 @@ import com.google.gson.annotations.SerializedName;
  * Base class for session associated with {@link com.twitter.sdk.android.core.AuthToken}.
  */
 public class Session<T extends AuthToken> {
-
     @SerializedName("auth_token")
     private final T authToken;
 
@@ -31,6 +30,10 @@ public class Session<T extends AuthToken> {
     private final long id;
 
     public Session(T authToken, long id) {
+        if (authToken == null) {
+            throw new IllegalArgumentException("AuthToken must not be null.");
+        }
+
         this.authToken = authToken;
         this.id = id;
     }
@@ -51,11 +54,7 @@ public class Session<T extends AuthToken> {
         final Session session = (Session) o;
 
         if (id != session.id) return false;
-        if (authToken != null ? !authToken.equals(session.authToken) : session.authToken != null) {
-            return false;
-        }
-
-        return true;
+        return authToken != null ? authToken.equals(session.authToken) : session.authToken == null;
     }
 
     @Override

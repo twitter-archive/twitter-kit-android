@@ -22,16 +22,14 @@ import io.fabric.sdk.android.Kit;
 import io.fabric.sdk.android.services.concurrency.DependsOn;
 
 import com.squareup.picasso.Picasso;
-import com.twitter.sdk.android.core.Session;
+import com.twitter.sdk.android.core.GuestSessionProvider;
 import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
-import com.twitter.sdk.android.tweetui.internal.GuestSessionProvider;
-import com.twitter.sdk.android.tweetui.internal.UserSessionProvider;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,15 +42,11 @@ public class TweetUi extends Kit<Boolean> {
 
     private static final String KIT_SCRIBE_NAME = "TweetUi";
 
-    List<SessionManager<? extends Session>> userSessionManagers;
-    List<SessionManager<? extends Session>> guestSessionManagers;
-    UserSessionProvider userSessionProvider;
+    SessionManager<TwitterSession> sessionManager;
     GuestSessionProvider guestSessionProvider;
     DefaultScribeClient scribeClient;
 
     private TweetRepository tweetRepository;
-    private TweetUiAuthRequestQueue userAuthQueue;
-    private TweetUiAuthRequestQueue guestAuthQueue;
     private Picasso imageLoader;
 
     /**
@@ -78,19 +72,11 @@ public class TweetUi extends Kit<Boolean> {
     protected boolean onPreExecute() {
         super.onPreExecute();
         final TwitterCore twitterCore = TwitterCore.getInstance();
-        userSessionManagers = new ArrayList<>(1);
-        userSessionManagers.add(twitterCore.getSessionManager());
-        userSessionProvider = new UserSessionProvider(userSessionManagers);
-        userAuthQueue = new TweetUiAuthRequestQueue(twitterCore, userSessionProvider);
 
-        guestSessionManagers = new ArrayList<>(2);
-        guestSessionManagers.add(twitterCore.getSessionManager());
-        guestSessionManagers.add(twitterCore.getGuestSessionManager());
-        guestSessionProvider = new GuestSessionProvider(twitterCore, guestSessionManagers);
-        guestAuthQueue = new TweetUiAuthRequestQueue(twitterCore, guestSessionProvider);
-
-        tweetRepository = new TweetRepository(getFabric().getMainHandler(), userAuthQueue,
-                guestAuthQueue);
+        sessionManager = twitterCore.getSessionManager();
+        guestSessionProvider = twitterCore.getGuestSessionProvider();
+        tweetRepository = new TweetRepository(getFabric().getMainHandler(),
+                twitterCore.getSessionManager());
         return true;
     }
 
@@ -101,10 +87,6 @@ public class TweetUi extends Kit<Boolean> {
          * ends up being strict mode violations if it is initialized on the main thread.
          */
         imageLoader = Picasso.with(getContext());
-
-        // restore active sessions to user and guest auth queues
-        userAuthQueue.sessionRestored(userSessionProvider.getActiveSession());
-        guestAuthQueue.sessionRestored(guestSessionProvider.getActiveSession());
 
         setUpScribeClient();
 
@@ -122,8 +104,8 @@ public class TweetUi extends Kit<Boolean> {
     }
 
     private void setUpScribeClient() {
-        scribeClient = new DefaultScribeClient(this, KIT_SCRIBE_NAME, guestSessionManagers,
-                getIdManager());
+        scribeClient = new DefaultScribeClient(this, KIT_SCRIBE_NAME, sessionManager,
+                guestSessionProvider, getIdManager());
     }
 
     void scribe(EventNamespace... namespaces) {
@@ -142,10 +124,6 @@ public class TweetUi extends Kit<Boolean> {
 
     TweetRepository getTweetRepository() {
         return tweetRepository;
-    }
-
-    TweetUiAuthRequestQueue getGuestAuthQueue() {
-        return guestAuthQueue;
     }
 
     // Testing purposes only

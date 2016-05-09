@@ -77,7 +77,8 @@ public class SessionMonitorTest {
         sessionMonitor = new SessionMonitor<>(mockSessionManager, mockSystemCurrentTimeProvider,
                 mockExecutorService, mockMonitorState, mockSessionVerifier);
         monitorState = new SessionMonitor.MonitorState();
-        final Session testSession = new Session(null, 1L);
+        final Session testSession = mock(Session.class);
+        when(testSession.getId()).thenReturn(1L);
         sessionMap = new HashMap<>();
         sessionMap.put(1L, testSession);
 

@@ -27,12 +27,18 @@ import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.services.persistence.SerializationStrategy;
 
 public class GuestSession extends Session<GuestAuthToken> {
+    public static final long LOGGED_OUT_USER_ID = 0L;
 
-    GuestSession(GuestAuthToken authToken) {
-        super(authToken, TwitterSession.LOGGED_OUT_USER_ID);
+    /**
+     * @param authToken Auth token
+     *
+     * @throws java.lang.IllegalArgumentException if token argument is null
+     */
+    public GuestSession(GuestAuthToken authToken) {
+        super(authToken, LOGGED_OUT_USER_ID);
     }
 
-    static class Serializer implements SerializationStrategy<GuestSession> {
+    static public class Serializer implements SerializationStrategy<GuestSession> {
 
         private final Gson gson;
 

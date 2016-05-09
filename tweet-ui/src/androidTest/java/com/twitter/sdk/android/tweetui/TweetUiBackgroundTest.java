@@ -65,8 +65,4 @@ public class TweetUiBackgroundTest extends FabricAndroidTestCase {
     public void testGetTweetRepository() {
         assertNotNull(TweetUi.getInstance().getTweetRepository());
     }
-
-    public void testGetGuestAuthQueue() {
-        assertNotNull(TweetUi.getInstance().getGuestAuthQueue());
-    }
 }

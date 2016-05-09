@@ -17,8 +17,8 @@
 
 package com.twitter.sdk.android.core.internal;
 
-import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.TwitterApiClient;
+import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.internal.scribe.TwitterCoreScribeClientHolder;
@@ -26,7 +26,7 @@ import com.twitter.sdk.android.core.services.AccountService;
 
 import java.io.IOException;
 
-public class TwitterSessionVerifier implements SessionVerifier {
+public class TwitterSessionVerifier implements SessionVerifier<TwitterSession> {
     static final String SCRIBE_CLIENT = "android";
     static final String SCRIBE_PAGE = "credentials";
     static final String SCRIBE_SECTION = ""; // intentionally blank
@@ -52,7 +52,7 @@ public class TwitterSessionVerifier implements SessionVerifier {
      *
      * @param session
      */
-    public void verifySession(final Session session) {
+    public void verifySession(final TwitterSession session) {
         final AccountService accountService = accountServiceProvider.getAccountService(session);
         try {
             scribeVerifySession();
@@ -84,7 +84,7 @@ public class TwitterSessionVerifier implements SessionVerifier {
      * SessionMonitor
      */
     protected static class AccountServiceProvider {
-        public AccountService getAccountService(Session session) {
+        public AccountService getAccountService(TwitterSession session) {
             return new TwitterApiClient(session).getAccountService();
         }
     }

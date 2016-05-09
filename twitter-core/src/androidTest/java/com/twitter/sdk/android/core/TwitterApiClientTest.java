@@ -19,12 +19,11 @@ package com.twitter.sdk.android.core;
 
 import io.fabric.sdk.android.FabricAndroidTestCase;
 import io.fabric.sdk.android.FabricTestUtils;
+import okhttp3.OkHttpClient;
 
 import com.twitter.sdk.android.core.internal.TwitterApi;
 import com.twitter.sdk.android.core.services.FavoriteService;
 import com.twitter.sdk.android.core.services.StatusesService;
-
-import javax.net.ssl.SSLSocketFactory;
 
 import static org.mockito.Mockito.mock;
 
@@ -33,7 +32,7 @@ public class TwitterApiClientTest extends FabricAndroidTestCase {
     public void testGetService_sdkNotStarted() {
         try {
             FabricTestUtils.resetFabric();
-            new TwitterApiClient(mock(Session.class));
+            new TwitterApiClient(mock(TwitterSession.class));
             fail();
         } catch (IllegalStateException ise) {
             assertEquals("Must Initialize Fabric before using singleton()", ise.getMessage());
@@ -42,8 +41,8 @@ public class TwitterApiClientTest extends FabricAndroidTestCase {
 
     public void testConstructor_noSession() throws Exception {
         try {
-            final TwitterCore twitterCore = TwitterTestUtils.createTwitter(
-                    new TwitterAuthConfig("", ""), null);
+            final TwitterCore twitterCore = TwitterCoreTestUtils.createTwitterCore(
+                    new TwitterAuthConfig("", ""), null, null);
             FabricTestUtils.with(getContext(), twitterCore);
             new TwitterApiClient(null);
             fail();
@@ -67,7 +66,6 @@ public class TwitterApiClientTest extends FabricAndroidTestCase {
     }
 
     private TwitterApiClient newTwitterApiClient() {
-        return new TwitterApiClient(mock(TwitterAuthConfig.class), mock(Session.class),
-                new TwitterApi(), (SSLSocketFactory) SSLSocketFactory.getDefault());
+        return new TwitterApiClient(mock(OkHttpClient.class), new TwitterApi());
     }
 }

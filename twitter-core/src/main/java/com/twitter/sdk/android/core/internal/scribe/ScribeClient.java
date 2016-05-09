@@ -28,12 +28,13 @@ import io.fabric.sdk.android.services.events.EventsStrategy;
 import io.fabric.sdk.android.services.events.QueueFileEventStorage;
 import io.fabric.sdk.android.services.persistence.FileStoreImpl;
 
+import com.twitter.sdk.android.core.GuestSessionProvider;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterAuthToken;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -78,7 +79,8 @@ public class ScribeClient {
     private final ScribeEvent.Transform transform;
 
     private final TwitterAuthConfig authConfig;
-    private final List<SessionManager<? extends Session>> sessionManagers;
+    private final SessionManager<? extends Session<TwitterAuthToken>> sessionManager;
+    private final GuestSessionProvider guestSessionProvider;
     private final SSLSocketFactory sslSocketFactory;
     private final IdManager idManager;
 
@@ -91,20 +93,22 @@ public class ScribeClient {
      * @param transform the scribe event transform for serializing and deserializing scribe events
      * flush of all queued events as long as a network connection is available.
      * @param authConfig the auth configuration
-     * @param sessionManagers the session manager
+     * @param sessionManager the session manager
      * @param sslSocketFactory the SSL socket factory
      * @param idManager the id manager used to provide the device id
      */
     public ScribeClient(Kit kit, ScheduledExecutorService executor, ScribeConfig scribeConfig,
             ScribeEvent.Transform transform, TwitterAuthConfig authConfig,
-            List<SessionManager<? extends Session>> sessionManagers,
-            SSLSocketFactory sslSocketFactory, IdManager idManager) {
+            SessionManager<? extends Session<TwitterAuthToken>> sessionManager,
+            GuestSessionProvider guestSessionProvider, SSLSocketFactory sslSocketFactory,
+            IdManager idManager) {
         this.kit = kit;
         this.executor = executor;
         this.scribeConfig = scribeConfig;
         this.transform = transform;
         this.authConfig = authConfig;
-        this.sessionManagers = sessionManagers;
+        this.sessionManager = sessionManager;
+        this.guestSessionProvider = guestSessionProvider;
         this.sslSocketFactory = sslSocketFactory;
         this.idManager = idManager;
 
@@ -162,7 +166,8 @@ public class ScribeClient {
             CommonUtils.logControlled(context, "Scribe enabled");
             return new EnabledScribeStrategy(context, executor, filesManager, scribeConfig,
                     new ScribeFilesSender(context, scribeConfig, ownerId, authConfig,
-                            sessionManagers, sslSocketFactory, executor, idManager));
+                            sessionManager, guestSessionProvider, sslSocketFactory, executor,
+                            idManager));
         } else {
             CommonUtils.logControlled(context, "Scribe disabled");
             return new DisabledEventsStrategy<>();

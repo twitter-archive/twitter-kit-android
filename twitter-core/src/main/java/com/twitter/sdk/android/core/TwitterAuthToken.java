@@ -20,12 +20,7 @@ package com.twitter.sdk.android.core;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.twitter.sdk.android.core.internal.oauth.OAuth1aHeaders;
-
 import com.google.gson.annotations.SerializedName;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Represents an authorization token and its secret.
@@ -72,17 +67,6 @@ public class TwitterAuthToken extends AuthToken implements Parcelable {
     public boolean isExpired() {
         // Twitter does not expire OAuth1a tokens
         return false;
-    }
-
-    @Override
-    public Map<String, String> getAuthHeaders(TwitterAuthConfig authConfig,
-            String method, String url, Map<String, String> postParams) {
-        final Map<String, String> headers = new HashMap<>(1);
-        final String authorizationHeader =
-                new OAuth1aHeaders().getAuthorizationHeader(authConfig, this, null, method, url,
-                        postParams);
-        headers.put(HEADER_AUTHORIZATION, authorizationHeader);
-        return headers;
     }
 
     @Override

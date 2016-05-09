@@ -105,7 +105,7 @@ public class OAuth1aServiceTest {
     public void testRequestTempToken() {
         service.api = new MockOAuth1aService() {
             @Override
-            public Call<ResponseBody> getTempToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth) {
+            public Call<ResponseBody> getTempToken(@Header(OAuthConstants.HEADER_AUTHORIZATION) String auth) {
                 assertTrue(auth.contains(OAuthConstants.PARAM_CALLBACK));
                 return super.getTempToken(auth);
             }
@@ -119,7 +119,7 @@ public class OAuth1aServiceTest {
         final String verifier = "verifier";
         service.api = new MockOAuth1aService() {
             @Override
-            public Call<ResponseBody> getAccessToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
+            public Call<ResponseBody> getAccessToken(@Header(OAuthConstants.HEADER_AUTHORIZATION) String auth,
                                                      @Query(OAuthConstants.PARAM_VERIFIER) String innerVerifier) {
 
                 assertEquals(verifier, innerVerifier);
@@ -303,13 +303,13 @@ public class OAuth1aServiceTest {
     private static class MockOAuth1aService implements OAuth1aService.OAuthApi {
 
         @Override
-        public Call<ResponseBody> getTempToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth) {
+        public Call<ResponseBody> getTempToken(@Header(OAuthConstants.HEADER_AUTHORIZATION) String auth) {
             final ResponseBody responseBody = ResponseBody.create(MediaType.parse("application/json"), "");
             return Calls.response(Response.success(responseBody));
         }
 
         @Override
-        public Call<ResponseBody> getAccessToken(@Header(AuthHeaders.HEADER_AUTHORIZATION) String auth,
+        public Call<ResponseBody> getAccessToken(@Header(OAuthConstants.HEADER_AUTHORIZATION) String auth,
                 @Query(OAuthConstants.PARAM_VERIFIER) String verifier) {
             final ResponseBody responseBody = ResponseBody.create(MediaType.parse("application/json"), "");
             return Calls.response(Response.success(responseBody));

@@ -18,12 +18,12 @@
 package com.twitter.sdk.android.tweetui;
 
 import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterApiClient;
-import com.twitter.sdk.android.core.GuestCallback;
+import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.models.Tweet;
 
-import io.fabric.sdk.android.Fabric;
+import java.util.List;
+
+import retrofit2.Call;
 
 /**
  * TwitterListTimeline provides a timeline of tweets from the lists/statuses API source.
@@ -57,7 +57,7 @@ public class TwitterListTimeline extends BaseTimeline implements Timeline<Tweet>
      */
     @Override
     public void next(Long sinceId, Callback<TimelineResult<Tweet>> cb) {
-        addRequest(createListTimelineRequest(sinceId, null, cb));
+        createListTimelineRequest(sinceId, null).enqueue(new TweetsCallback(cb));
     }
 
     /**
@@ -69,19 +69,13 @@ public class TwitterListTimeline extends BaseTimeline implements Timeline<Tweet>
     public void previous(Long maxId, Callback<TimelineResult<Tweet>> cb) {
         // lists/statuses api provides results which are inclusive of the maxId, decrement the
         // maxId to get exclusive results
-        addRequest(createListTimelineRequest(null, decrementMaxId(maxId), cb));
+        createListTimelineRequest(null, decrementMaxId(maxId)).enqueue(new TweetsCallback(cb));
     }
 
-    Callback<TwitterApiClient> createListTimelineRequest(final Long sinceId, final Long maxId,
-            final Callback<TimelineResult<Tweet>> cb) {
-        return new LoggingCallback<TwitterApiClient>(cb, Fabric.getLogger()) {
-            @Override
-            public void success(Result<TwitterApiClient> result) {
-                result.data.getListService().statuses(listId, slug, ownerScreenName, ownerId,
-                        sinceId, maxId, maxItemsPerRequest, true, includeRetweets).enqueue(
-                        new GuestCallback<>(new TweetsCallback(cb)));
-            }
-        };
+    Call<List<Tweet>> createListTimelineRequest(final Long sinceId, final Long maxId) {
+        return TwitterCore.getInstance().getApiClient().getListService().statuses(listId, slug,
+                ownerScreenName, ownerId, sinceId, maxId, maxItemsPerRequest, true,
+                includeRetweets);
     }
 
     @Override

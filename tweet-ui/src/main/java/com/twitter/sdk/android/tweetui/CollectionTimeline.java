@@ -18,14 +18,13 @@
 package com.twitter.sdk.android.tweetui;
 
 import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.internal.TwitterCollection;
 import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.core.models.User;
-import com.twitter.sdk.android.core.GuestCallback;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.fabric.sdk.android.Fabric;
+import retrofit2.Call;
 
 /**
  * CollectionTimeline provides a timeline of tweets from the collections/collection API source.
@@ -64,7 +63,7 @@ public class CollectionTimeline extends BaseTimeline implements Timeline<Tweet> 
      */
     @Override
     public void next(Long minPosition, Callback<TimelineResult<Tweet>> cb) {
-        addRequest(createCollectionRequest(minPosition, null, cb));
+        createCollectionRequest(minPosition, null).enqueue(new CollectionCallback(cb));
     }
 
     /**
@@ -74,7 +73,7 @@ public class CollectionTimeline extends BaseTimeline implements Timeline<Tweet> 
      */
     @Override
     public void previous(Long maxPosition, Callback<TimelineResult<Tweet>> cb) {
-        addRequest(createCollectionRequest(null, maxPosition, cb));
+        createCollectionRequest(null, maxPosition).enqueue(new CollectionCallback(cb));
     }
 
     @Override
@@ -82,16 +81,10 @@ public class CollectionTimeline extends BaseTimeline implements Timeline<Tweet> 
         return SCRIBE_SECTION;
     }
 
-    Callback<TwitterApiClient> createCollectionRequest(final Long minPosition,
-        final Long maxPosition, final Callback<TimelineResult<Tweet>> cb) {
-        return new LoggingCallback<TwitterApiClient>(cb, Fabric.getLogger()) {
-            @Override
-            public void success(Result<TwitterApiClient> result) {
-                result.data.getCollectionService().collection(collectionIdentifier,
-                        maxItemsPerRequest, maxPosition, minPosition).enqueue(
-                        new GuestCallback<>(new CollectionCallback(cb)));
-            }
-        };
+    Call<TwitterCollection> createCollectionRequest(final Long minPosition,
+            final Long maxPosition) {
+        return TwitterCore.getInstance().getApiClient().getCollectionService()
+                .collection(collectionIdentifier, maxItemsPerRequest, maxPosition, minPosition);
     }
 
 

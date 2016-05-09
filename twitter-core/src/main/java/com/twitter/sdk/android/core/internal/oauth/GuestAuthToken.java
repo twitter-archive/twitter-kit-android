@@ -20,9 +20,6 @@ package com.twitter.sdk.android.core.internal.oauth;
 import android.text.format.DateUtils;
 
 import com.google.gson.annotations.SerializedName;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
-
-import java.util.Map;
 
 public class GuestAuthToken extends OAuth2Token {
     public static final String HEADER_GUEST_TOKEN = "x-guest-token";
@@ -56,15 +53,6 @@ public class GuestAuthToken extends OAuth2Token {
     @Override
     public boolean isExpired() {
         return System.currentTimeMillis() >= this.createdAt + EXPIRES_IN_MS;
-    }
-
-    @Override
-    public Map<String, String> getAuthHeaders(TwitterAuthConfig authConfig, String method,
-            String url, Map<String, String> postParams) {
-        final Map<String, String> headers = super.getAuthHeaders(authConfig, method, url,
-                postParams);
-        headers.put(HEADER_GUEST_TOKEN, getGuestToken());
-        return headers;
     }
 
     @Override

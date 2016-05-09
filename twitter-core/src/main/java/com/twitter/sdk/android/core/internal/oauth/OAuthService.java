@@ -41,7 +41,7 @@ abstract class OAuthService {
     private final TwitterCore twitterCore;
     private final TwitterApi api;
     private final String userAgent;
-    private final Retrofit apiAdapter;
+    private final Retrofit retrofit;
 
     public OAuthService(TwitterCore twitterCore, SSLSocketFactory sslSocketFactory,
             TwitterApi api) {
@@ -59,14 +59,14 @@ abstract class OAuthService {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
                         final Request request = chain.request().newBuilder()
-                                .addHeader("User-Agent", getUserAgent())
+                                .header("User-Agent", getUserAgent())
                                 .build();
                         return chain.proceed(request);
                     }
                 })
                 .build();
 
-        apiAdapter = new Retrofit.Builder()
+        retrofit = new Retrofit.Builder()
                 .baseUrl(getApi().getBaseHostUrl())
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -85,7 +85,7 @@ abstract class OAuthService {
         return userAgent;
     }
 
-    protected Retrofit getApiAdapter() {
-        return apiAdapter;
+    protected Retrofit getRetrofit() {
+        return retrofit;
     }
 }

@@ -18,12 +18,12 @@
 package com.twitter.sdk.android.tweetui;
 
 import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterApiClient;
-import com.twitter.sdk.android.core.GuestCallback;
+import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.models.Tweet;
 
-import io.fabric.sdk.android.Fabric;
+import java.util.List;
+
+import retrofit2.Call;
 
 /**
  * UserTimeline provides a timeline of tweets from the statuses/userTimeline API source.
@@ -56,7 +56,7 @@ public class UserTimeline extends BaseTimeline implements Timeline<Tweet> {
      */
     @Override
     public void next(Long sinceId, Callback<TimelineResult<Tweet>> cb) {
-        addRequest(createUserTimelineRequest(sinceId, null, cb));
+        createUserTimelineRequest(sinceId, null).enqueue(new TweetsCallback(cb));
     }
 
     /**
@@ -68,7 +68,7 @@ public class UserTimeline extends BaseTimeline implements Timeline<Tweet> {
     public void previous(Long maxId, Callback<TimelineResult<Tweet>> cb) {
         // user timeline api provides results which are inclusive, decrement the maxId to get
         // exclusive results
-        addRequest(createUserTimelineRequest(null, decrementMaxId(maxId), cb));
+        createUserTimelineRequest(null, decrementMaxId(maxId)).enqueue(new TweetsCallback(cb));
     }
 
     @Override
@@ -76,16 +76,10 @@ public class UserTimeline extends BaseTimeline implements Timeline<Tweet> {
         return SCRIBE_SECTION;
     }
 
-    Callback<TwitterApiClient> createUserTimelineRequest(final Long sinceId,
-            final Long maxId, final Callback<TimelineResult<Tweet>> cb) {
-        return new LoggingCallback<TwitterApiClient>(cb, Fabric.getLogger()) {
-            @Override
-            public void success(Result<TwitterApiClient> result) {
-                result.data.getStatusesService().userTimeline(userId, screenName,
-                        maxItemsPerRequest, sinceId, maxId, false, !includeReplies, null,
-                        includeRetweets).enqueue(new GuestCallback<>(new TweetsCallback(cb)));
-            }
-        };
+    Call<List<Tweet>> createUserTimelineRequest(final Long sinceId, final Long maxId) {
+        return TwitterCore.getInstance().getApiClient().getStatusesService().userTimeline(userId,
+                screenName, maxItemsPerRequest, sinceId, maxId, false, !includeReplies, null,
+                includeRetweets);
     }
 
     /**

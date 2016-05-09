@@ -18,6 +18,8 @@
 package com.twitter.sdk.android.core.internal.oauth;
 
 public class OAuthConstants {
+    public static final String HEADER_AUTHORIZATION = "Authorization";
+    public static final String HEADER_GUEST_TOKEN = "x-guest-token";
 
     // OAuth1.0a parameter constants.
     public static final String PARAM_CALLBACK = "oauth_callback";

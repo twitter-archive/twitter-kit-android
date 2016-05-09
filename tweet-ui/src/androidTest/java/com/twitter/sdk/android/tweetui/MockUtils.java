@@ -22,6 +22,9 @@ import android.widget.ImageView;
 
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.TwitterApiClient;
+import com.twitter.sdk.android.core.services.CollectionService;
+import com.twitter.sdk.android.core.services.ListService;
+import com.twitter.sdk.android.core.services.SearchService;
 import com.twitter.sdk.android.core.services.StatusesService;
 
 import com.squareup.picasso.Picasso;
@@ -34,6 +37,7 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public final class MockUtils {
@@ -51,9 +55,17 @@ public final class MockUtils {
         return picasso;
     }
 
-    public static void mockStatusesServiceClient(TwitterApiClient apiClient,
-            StatusesService statusesService) {
+    public static void mockApiClient(TwitterApiClient apiClient) {
+        final StatusesService statusesService = mock(StatusesService.class, new MockCallAnswer());
+        final SearchService searchService = mock(SearchService.class, new MockCallAnswer());
+        final ListService listService = mock(ListService.class, new MockCallAnswer());
+        final CollectionService collectionService =
+                mock(CollectionService.class, new MockCallAnswer());
+
         when(apiClient.getStatusesService()).thenReturn(statusesService);
+        when(apiClient.getCollectionService()).thenReturn(collectionService);
+        when(apiClient.getSearchService()).thenReturn(searchService);
+        when(apiClient.getListService()).thenReturn(listService);
     }
 
     public static void mockClients(ConcurrentHashMap<Session, TwitterApiClient> clients,

@@ -18,9 +18,7 @@
 package com.twitter.sdk.android.tweetui;
 
 import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterApiClient;
-import com.twitter.sdk.android.core.services.StatusesService;
+import com.twitter.sdk.android.core.TwitterCore;
 
 import static org.mockito.Mockito.*;
 
@@ -69,8 +67,7 @@ public class UserTimelineTest extends TweetUiTestCase {
                 TestFixtures.TEST_USER.screenName, TEST_ITEMS_PER_REQUEST, null, null));
         timeline.next(TEST_SINCE_ID, mock(Callback.class));
         verify(timeline, times(1)).createUserTimelineRequest(eq(TEST_SINCE_ID),
-                isNull(Long.class), any(Callback.class));
-        verify(timeline, times(1)).addRequest(any(Callback.class));
+                isNull(Long.class));
     }
 
     public void testPrevious_createsCorrectRequest() {
@@ -79,30 +76,23 @@ public class UserTimelineTest extends TweetUiTestCase {
         timeline.previous(TEST_MAX_ID, mock(Callback.class));
         // intentionally decrementing the maxId which is passed through to the request
         verify(timeline, times(1)).createUserTimelineRequest(isNull(Long.class),
-                eq(TEST_MAX_ID - 1), any(Callback.class));
-        verify(timeline, times(1)).addRequest(any(Callback.class));
+                eq(TEST_MAX_ID - 1));
     }
 
     public void testCreateUserTimelineRequest() {
         // build a timeline with test params
         final UserTimeline timeline = new UserTimeline(tweetUi, TestFixtures.TEST_USER.id,
                 TestFixtures.TEST_USER.screenName, TEST_ITEMS_PER_REQUEST, null, null);
-        // create a request (Callback<TwitterApiClient>) directly
-        final Callback<TwitterApiClient> request = timeline.createUserTimelineRequest(TEST_SINCE_ID,
-                TEST_MAX_ID, mock(Callback.class));
-        final TwitterApiClient mockTwitterApiClient = mock(TwitterApiClient.class);
-        final StatusesService mockStatusesService =
-                mock(StatusesService.class, new MockCallAnswer());
-        when(mockTwitterApiClient.getStatusesService()).thenReturn(mockStatusesService);
-        // execute request with mock auth'd TwitterApiClient (auth queue tested separately)
-        request.success(new Result<>(mockTwitterApiClient, null));
-        // assert statuses service is requested once
-        verify(mockTwitterApiClient, times(1)).getStatusesService();
+
+        // create a request directly
+        timeline.createUserTimelineRequest(TEST_SINCE_ID, TEST_MAX_ID);
+
         // assert userTimeline call is made with the correct arguments
-        verify(mockStatusesService, times(1)).userTimeline(eq(TestFixtures.TEST_USER.id),
-                eq(TestFixtures.TEST_USER.screenName), eq(TEST_ITEMS_PER_REQUEST),
-                eq(TEST_SINCE_ID), eq(TEST_MAX_ID), eq(false), eq(true), isNull(Boolean.class),
-                isNull(Boolean.class));
+        verify(TwitterCore.getInstance().getApiClient().getStatusesService())
+                .userTimeline(eq(TestFixtures.TEST_USER.id),
+                        eq(TestFixtures.TEST_USER.screenName), eq(TEST_ITEMS_PER_REQUEST),
+                        eq(TEST_SINCE_ID), eq(TEST_MAX_ID), eq(false), eq(true),
+                        isNull(Boolean.class), isNull(Boolean.class));
     }
 
     public void testGetScribeSection() {

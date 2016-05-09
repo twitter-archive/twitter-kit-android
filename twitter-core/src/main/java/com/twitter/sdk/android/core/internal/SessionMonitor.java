@@ -47,7 +47,7 @@ public class SessionMonitor<T extends Session> {
      * @param executorService used to
      */
     public SessionMonitor(SessionManager<T> sessionManager, ExecutorService executorService,
-            SessionVerifier sessionVerifier) {
+            SessionVerifier<T> sessionVerifier) {
         this(sessionManager, new SystemCurrentTimeProvider(),
                 executorService, new MonitorState(), sessionVerifier);
     }

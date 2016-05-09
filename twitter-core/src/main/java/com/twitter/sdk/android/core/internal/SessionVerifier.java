@@ -19,6 +19,6 @@ package com.twitter.sdk.android.core.internal;
 
 import com.twitter.sdk.android.core.Session;
 
-public interface SessionVerifier {
-    void verifySession(Session session);
+public interface SessionVerifier<T extends Session> {
+    void verifySession(T session);
 }

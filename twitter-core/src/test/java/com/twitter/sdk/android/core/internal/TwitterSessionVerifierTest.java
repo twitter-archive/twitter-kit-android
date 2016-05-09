@@ -18,8 +18,8 @@
 package com.twitter.sdk.android.core.internal;
 
 import com.twitter.sdk.android.core.BuildConfig;
-import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.TestFixtures;
+import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.internal.TwitterSessionVerifier.AccountServiceProvider;
 import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
@@ -57,16 +57,17 @@ public class TwitterSessionVerifierTest {
     private AccountServiceProvider mockAccountServiceProvider;
     private TwitterSessionVerifier verifier;
     private AccountService mockAccountService;
-    private Session session;
+    private TwitterSession session;
 
     @Before
     public void setUp() throws Exception {
         mockAccountServiceProvider = mock(AccountServiceProvider.class);
         mockScribeClient = mock(DefaultScribeClient.class);
         mockAccountService = mock(AccountService.class);
-        when(mockAccountServiceProvider.getAccountService(any(Session.class))).thenReturn
+        when(mockAccountServiceProvider.getAccountService(any(TwitterSession.class))).thenReturn
                 (mockAccountService);
-        session = new Session(null, TestFixtures.USER_ID);
+        session = mock(TwitterSession.class);
+        when(session.getId()).thenReturn(TestFixtures.USER_ID);
         verifier = new TwitterSessionVerifier(mockAccountServiceProvider,
                 mockScribeClient);
     }
@@ -96,7 +97,7 @@ public class TwitterSessionVerifierTest {
                 (mockAccountServiceProvider,
                 null);
         try {
-            verifier.verifySession(mock(Session.class));
+            verifier.verifySession(session);
         } catch (NullPointerException e) {
             fail("should handle a null scribe client");
         }
@@ -107,7 +108,7 @@ public class TwitterSessionVerifierTest {
         doReturn(Calls.failure(new IOException()))
                 .when(mockAccountService).verifyCredentials(true, false);
 
-        verifier.verifySession(mock(Session.class));
+        verifier.verifySession(session);
 
         verify(mockAccountService).verifyCredentials(true, false);
         // success, we caught the exception

@@ -17,9 +17,8 @@
 
 package com.twitter.sdk.android.core.internal.scribe;
 
-import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.GuestSession;
 
 public class ScribeConstants {
-
-    public static final long LOGGED_OUT_USER_ID = TwitterSession.LOGGED_OUT_USER_ID;
+    public static final long LOGGED_OUT_USER_ID = GuestSession.LOGGED_OUT_USER_ID;
 }
