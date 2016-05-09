@@ -52,7 +52,7 @@ public class TwitterCore extends Kit<Boolean> {
     static final String SESSION_PREF_FILE_NAME = "session_store";
 
     SessionManager<TwitterSession> twitterSessionManager;
-    SessionManager<AppSession> appSessionManager;
+    SessionManager<GuestSession> guestSessionManager;
     SessionMonitor<TwitterSession> sessionMonitor;
 
     private final TwitterAuthConfig authConfig;
@@ -126,9 +126,9 @@ public class TwitterCore extends Kit<Boolean> {
         sessionMonitor = new SessionMonitor<>(twitterSessionManager,
                 getFabric().getExecutorService(), new TwitterSessionVerifier());
 
-        appSessionManager = new PersistedSessionManager<>(
+        guestSessionManager = new PersistedSessionManager<>(
                 new PreferenceStoreImpl(getContext(), SESSION_PREF_FILE_NAME),
-                new AppSession.Serializer(), PREF_KEY_ACTIVE_APP_SESSION, PREF_KEY_APP_SESSION);
+                new GuestSession.Serializer(), PREF_KEY_ACTIVE_APP_SESSION, PREF_KEY_APP_SESSION);
 
         return true;
     }
@@ -137,7 +137,7 @@ public class TwitterCore extends Kit<Boolean> {
     protected Boolean doInBackground() {
         // Trigger restoration of session
         twitterSessionManager.getActiveSession();
-        appSessionManager.getActiveSession();
+        guestSessionManager.getActiveSession();
         getSSLSocketFactory();
         initializeScribeClient();
         // Monitor activity lifecycle after sessions have been restored. Otherwise we would not
@@ -160,7 +160,7 @@ public class TwitterCore extends Kit<Boolean> {
     private void initializeScribeClient() {
         final List<SessionManager<? extends Session>> sessionManagers = new ArrayList<>();
         sessionManagers.add(twitterSessionManager);
-        sessionManagers.add(appSessionManager);
+        sessionManagers.add(guestSessionManager);
         TwitterCoreScribeClientHolder.initialize(this, sessionManagers, getIdManager());
     }
 
@@ -190,11 +190,11 @@ public class TwitterCore extends Kit<Boolean> {
      * @throws java.lang.IllegalStateException if {@link io.fabric.sdk.android.Fabric}
      *          or {@link TwitterCore} has not been initialized.
      */
-    public void logInGuest(final Callback<AppSession> callback) {
+    public void logInGuest(final Callback<GuestSession> callback) {
         checkInitialized();
         final OAuth2Service service =
                 new OAuth2Service(this, getSSLSocketFactory(), new TwitterApi());
-        new GuestAuthClient(service).authorize(appSessionManager, callback);
+        new GuestAuthClient(service).authorize(guestSessionManager, callback);
     }
 
     /**
@@ -229,16 +229,16 @@ public class TwitterCore extends Kit<Boolean> {
      * @throws java.lang.IllegalStateException if {@link io.fabric.sdk.android.Fabric}
      *          or {@link TwitterCore} has not been initialized.
      */
-    public SessionManager<AppSession> getAppSessionManager() {
+    public SessionManager<GuestSession> getGuestSessionManager() {
         checkInitialized();
-        return appSessionManager;
+        return guestSessionManager;
     }
 
     private Session getActiveSession() {
         // Prefer user session over app session.
         Session session = twitterSessionManager.getActiveSession();
         if (session == null) {
-            session = appSessionManager.getActiveSession();
+            session = guestSessionManager.getActiveSession();
         }
         return session;
     }

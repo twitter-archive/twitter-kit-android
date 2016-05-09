@@ -18,7 +18,6 @@
 package com.twitter.sdk.android.core;
 
 import com.twitter.sdk.android.core.internal.oauth.GuestAuthToken;
-import com.twitter.sdk.android.core.internal.oauth.OAuth2Token;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,12 +30,9 @@ import static org.junit.Assert.assertNull;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
-public class AppSessionSerializerTest  {
+public class GuestSessionSerializerTest {
     private static final long CREATED_AT = 1414450780L;
 
-    private static final String JSON_SESSION_APP = "{\"auth_token\":{\"auth_type\":\"oauth2\","
-            + "\"auth_token\":{\"token_type\":\"tokenType\",\"access_token\":\"accessToken\","
-            + "\"created_at\":1414450780}},\"id\":0}";
     private static final String JSON_SESSION_GUEST = "{\"auth_token\":{\"auth_type\":\"guest\","
             + "\"auth_token\":{\"guest_token\":\"guestToken\",\"token_type\":\"tokenType\","
             + "\"access_token\":\"accessToken\",\"created_at\":1414450780}},\"id\":0}";
@@ -49,12 +45,12 @@ public class AppSessionSerializerTest  {
     private static final String TEST_ACCESS_TOKEN = "accessToken";
     private static final String TEST_GUEST_TOKEN = "guestToken";
 
-    private AppSession.Serializer serializer;
+    private GuestSession.Serializer serializer;
 
     @Before
     public void setUp() throws Exception {
 
-        serializer = new AppSession.Serializer();
+        serializer = new GuestSession.Serializer();
     }
 
     @Test
@@ -63,15 +59,8 @@ public class AppSessionSerializerTest  {
     }
 
     @Test
-    public void testSerialize_sessionAuthTokenIsOAuth2Token() {
-        final AppSession session = new AppSession(new OAuth2Token(TEST_TOKEN_TYPE,
-                TEST_ACCESS_TOKEN, CREATED_AT));
-        assertEquals(JSON_SESSION_APP, serializer.serialize(session));
-    }
-
-    @Test
     public void testSerialze_sessionAuthTokenIsGuestAuthToken() {
-        final AppSession session = new AppSession(new GuestAuthToken(TEST_TOKEN_TYPE,
+        final GuestSession session = new GuestSession(new GuestAuthToken(TEST_TOKEN_TYPE,
                 TEST_ACCESS_TOKEN, TEST_GUEST_TOKEN, CREATED_AT));
         assertEquals(JSON_SESSION_GUEST, serializer.serialize(session));
     }
@@ -87,25 +76,17 @@ public class AppSessionSerializerTest  {
     }
 
     @Test
-    public void testDeserialize_serializedStringAuthTokenIsOAuth2Token() {
-        final AppSession session = serializer.deserialize(JSON_SESSION_APP);
-        assertEquals(OAuth2Token.class, session.getAuthToken().getClass());
-        assertEquals(TEST_TOKEN_TYPE, session.getAuthToken().getTokenType());
-        assertEquals(TEST_ACCESS_TOKEN, session.getAuthToken().getAccessToken());
-    }
-
-    @Test
     public void testDeserialize_serializedStringAuthTokenIsGuestAuthToken() {
-        final AppSession session = serializer.deserialize(JSON_SESSION_GUEST);
+        final GuestSession session = serializer.deserialize(JSON_SESSION_GUEST);
         assertEquals(GuestAuthToken.class, session.getAuthToken().getClass());
         assertEquals(TEST_TOKEN_TYPE, session.getAuthToken().getTokenType());
         assertEquals(TEST_ACCESS_TOKEN, session.getAuthToken().getAccessToken());
-        assertEquals(TEST_GUEST_TOKEN, ((GuestAuthToken) session.getAuthToken()).getGuestToken());
+        assertEquals(TEST_GUEST_TOKEN, session.getAuthToken().getGuestToken());
     }
 
     @Test
     public void testDeserialize_serializedStringAuthTokenIsInvalid() {
-        final AppSession session = serializer.deserialize(JSON_SESSION_INVALID_AUTH_TYPE);
+        final GuestSession session = serializer.deserialize(JSON_SESSION_INVALID_AUTH_TYPE);
         assertNull(session);
     }
 }

@@ -19,7 +19,7 @@ package com.twitter.sdk.android.tweetui.internal;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.internal.SessionProvider;
-import com.twitter.sdk.android.core.AppSession;
+import com.twitter.sdk.android.core.GuestSession;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.TwitterSession;
@@ -43,7 +43,7 @@ import static org.mockito.Mockito.*;
 public class SessionProviderTest {
     private List<SessionManager<? extends Session>> sessionManagers;
     private SessionManager<TwitterSession> mockTwitterSessionManager;
-    private SessionManager<AppSession> mockAppSessionManager;
+    private SessionManager<GuestSession> mockAppSessionManager;
     private SessionProvider sessionProvider;
 
     @Before
@@ -72,7 +72,7 @@ public class SessionProviderTest {
 
     @Test
     public void testGetActiveSession_activeSessionSecondManager() {
-        final AppSession mockSession = mock(AppSession.class);
+        final GuestSession mockSession = mock(GuestSession.class);
         when(mockAppSessionManager.getActiveSession()).thenReturn(mockSession);
         assertSame(mockSession, sessionProvider.getActiveSession());
     }

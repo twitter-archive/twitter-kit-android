@@ -17,7 +17,6 @@
 
 package com.twitter.sdk.android.core;
 
-import com.twitter.sdk.android.core.internal.oauth.AppAuthToken;
 import com.twitter.sdk.android.core.internal.oauth.GuestAuthToken;
 import com.twitter.sdk.android.core.internal.oauth.OAuth2Token;
 import com.twitter.sdk.android.core.internal.oauth.OAuthUtils;
@@ -127,14 +126,6 @@ public class AuthTokenAdapterTest  {
     }
 
     @Test
-    public void testSerialize_appAuthToken() {
-        final AuthTokenWrapper test = new AuthTokenWrapper(
-                new AppAuthToken(TOKEN_TYPE, ACCESS_TOKEN, CREATED_AT));
-        final String json = gson.toJson(test);
-        assertEquals(json, JSON_APP_AUTH_TOKEN, json);
-    }
-
-    @Test
     public void testDeserialize_oauth1aToken() {
         final AuthTokenWrapper authTokenWrapper = gson.fromJson(JSON_OAUTH1A_TOKEN,
                 AuthTokenWrapper.class);
@@ -161,16 +152,6 @@ public class AuthTokenAdapterTest  {
         assertTrue(authTokenWrapper.authToken instanceof GuestAuthToken);
         final GuestAuthToken authToken = (GuestAuthToken) authTokenWrapper.authToken;
         assertEquals(GUEST_TOKEN, authToken.getGuestToken());
-        assertEquals(TOKEN_TYPE, authToken.getTokenType());
-        assertEquals(ACCESS_TOKEN, authToken.getAccessToken());
-    }
-
-    @Test
-    public void testDeserialize_appAuthToken() {
-        final AuthTokenWrapper authTokenWrapper = gson.fromJson(JSON_APP_AUTH_TOKEN,
-                AuthTokenWrapper.class);
-        assertTrue(authTokenWrapper.authToken instanceof AppAuthToken);
-        final AppAuthToken authToken = (AppAuthToken) authTokenWrapper.authToken;
         assertEquals(TOKEN_TYPE, authToken.getTokenType());
         assertEquals(ACCESS_TOKEN, authToken.getAccessToken());
     }

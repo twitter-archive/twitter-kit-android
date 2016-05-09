@@ -26,7 +26,6 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.twitter.sdk.android.core.internal.oauth.AppAuthToken;
 import com.twitter.sdk.android.core.internal.oauth.GuestAuthToken;
 import com.twitter.sdk.android.core.internal.oauth.OAuth2Token;
 
@@ -49,7 +48,6 @@ public class AuthTokenAdapter implements JsonSerializer<AuthToken>, JsonDeserial
         authTypeRegistry.put("oauth1a", TwitterAuthToken.class);
         authTypeRegistry.put("oauth2", OAuth2Token.class);
         authTypeRegistry.put("guest", GuestAuthToken.class);
-        authTypeRegistry.put("app", AppAuthToken.class);
     }
 
     private final Gson gson;

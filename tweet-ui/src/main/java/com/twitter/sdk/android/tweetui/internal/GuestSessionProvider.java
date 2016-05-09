@@ -17,7 +17,7 @@
 
 package com.twitter.sdk.android.tweetui.internal;
 
-import com.twitter.sdk.android.core.AppSession;
+import com.twitter.sdk.android.core.GuestSession;
 import com.twitter.sdk.android.core.AuthToken;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -68,9 +68,9 @@ public class GuestSessionProvider extends SessionProvider {
     }
 
     /*
-     * Wrapper callback which converts the AppSession to a general Session.
+     * Wrapper callback which converts the GuestSession to a general Session.
      */
-    class AppSessionCallback extends Callback<AppSession> {
+    class AppSessionCallback extends Callback<GuestSession> {
         private final Callback<Session> cb;
 
         /*
@@ -82,7 +82,7 @@ public class GuestSessionProvider extends SessionProvider {
         }
 
         @Override
-        public void success(Result<AppSession> result) {
+        public void success(Result<GuestSession> result) {
             cb.success(new Result<Session>(result.data, result.response));
         }
 

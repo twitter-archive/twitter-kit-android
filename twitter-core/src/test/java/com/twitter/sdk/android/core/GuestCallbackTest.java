@@ -35,17 +35,17 @@ import static org.mockito.Mockito.*;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class GuestCallbackTest  {
 
-    SessionManager<AppSession> mockAppSessionManager;
+    SessionManager<GuestSession> mockGuestSessionManager;
 
     @Before
     public void setUp() throws Exception {
-        mockAppSessionManager = mock(SessionManager.class);
+        mockGuestSessionManager = mock(SessionManager.class);
     }
 
     @Test
     public void testSuccess_callsCallback() {
         final Callback<Tweet> developerCallback = mock(Callback.class);
-        final GuestCallback<Tweet> guestCallback = new GuestCallback<>(mockAppSessionManager,
+        final GuestCallback<Tweet> guestCallback = new GuestCallback<>(mockGuestSessionManager,
                 developerCallback);
         guestCallback.success(mock(Result.class));
         verify(developerCallback).success(any(Result.class));
@@ -53,7 +53,8 @@ public class GuestCallbackTest  {
 
     @Test
     public void testSuccess_handlesNullCallback() {
-        final GuestCallback<Tweet> guestCallback = new GuestCallback<>(mockAppSessionManager, null);
+        final GuestCallback<Tweet> guestCallback =
+                new GuestCallback<>(mockGuestSessionManager, null);
         try {
             guestCallback.success(mock(Result.class));
         } catch (NullPointerException e) {
@@ -64,7 +65,7 @@ public class GuestCallbackTest  {
     @Test
     public void testFailure_callsCallback() {
         final Callback<Tweet> developerCallback = mock(Callback.class);
-        final GuestCallback<Tweet> guestCallback = new GuestCallback<>(mockAppSessionManager,
+        final GuestCallback<Tweet> guestCallback = new GuestCallback<>(mockGuestSessionManager,
                 developerCallback);
         guestCallback.failure(mock(TwitterApiException.class));
         verify(developerCallback).failure(any(TwitterApiException.class));
@@ -72,7 +73,8 @@ public class GuestCallbackTest  {
 
     @Test
     public void testFailure_handlesNullCallback() {
-        final GuestCallback<Tweet> guestCallback = new GuestCallback<>(mockAppSessionManager, null);
+        final GuestCallback<Tweet> guestCallback =
+                new GuestCallback<>(mockGuestSessionManager, null);
         try {
             guestCallback.failure(mock(TwitterApiException.class));
         } catch (NullPointerException e) {
@@ -82,46 +84,46 @@ public class GuestCallbackTest  {
 
     @Test
     public void testGuestAuthFailure_clearsAppSession() {
-        final GuestCallback<Tweet> guestCallback = new GuestCallback<Tweet>(mockAppSessionManager,
+        final GuestCallback<Tweet> guestCallback = new GuestCallback<Tweet>(mockGuestSessionManager,
                 mock(Callback.class));
         final TwitterApiException guestAuthException = mock(TwitterApiException.class);
         when(guestAuthException.getErrorCode()).thenReturn(
                 TwitterApiConstants.Errors.GUEST_AUTH_ERROR_CODE);
         guestCallback.failure(guestAuthException);
-        verify(mockAppSessionManager).clearSession(TwitterSession.LOGGED_OUT_USER_ID);
+        verify(mockGuestSessionManager).clearSession(TwitterSession.LOGGED_OUT_USER_ID);
     }
 
     @Test
     public void testAppAuthFailure_clearsAppSession() {
-        final GuestCallback<Tweet> guestCallback = new GuestCallback<Tweet>(mockAppSessionManager,
+        final GuestCallback<Tweet> guestCallback = new GuestCallback<Tweet>(mockGuestSessionManager,
                 mock(Callback.class));
         final TwitterApiException appAuthException = mock(TwitterApiException.class);
         when(appAuthException.getErrorCode()).thenReturn(
                 TwitterApiConstants.Errors.APP_AUTH_ERROR_CODE);
         guestCallback.failure(appAuthException);
-        verify(mockAppSessionManager).clearSession(TwitterSession.LOGGED_OUT_USER_ID);
+        verify(mockGuestSessionManager).clearSession(TwitterSession.LOGGED_OUT_USER_ID);
     }
 
     @Test
     public void testOtherFailure_doesNotClearAppSession() {
-        final GuestCallback<Tweet> guestCallback = new GuestCallback<Tweet>(mockAppSessionManager,
+        final GuestCallback<Tweet> guestCallback = new GuestCallback<Tweet>(mockGuestSessionManager,
                 mock(Callback.class));
         final TwitterApiException otherApiException = mock(TwitterApiException.class);
         when(otherApiException.getErrorCode()).thenReturn(
                 TwitterApiConstants.Errors.LEGACY_ERROR);
         guestCallback.failure(otherApiException);
-        verifyZeroInteractions(mockAppSessionManager);
+        verifyZeroInteractions(mockGuestSessionManager);
     }
 
     // should handle TwitterExceptions that are not TwitterApiExceptions
     @Test
     public void testFailure_handleTwitterException() {
-        final GuestCallback<Tweet> guestCallback = new GuestCallback<Tweet>(mockAppSessionManager,
+        final GuestCallback<Tweet> guestCallback = new GuestCallback<Tweet>(mockGuestSessionManager,
                 mock(Callback.class));
         final TwitterException twitterException = mock(TwitterException.class);
         try {
             guestCallback.failure(twitterException);
-            verifyZeroInteractions(mockAppSessionManager);
+            verifyZeroInteractions(mockGuestSessionManager);
         } catch (ClassCastException e) {
             Assert.fail("Should have handled TwitterException which is not a TwitterApiException");
         }
@@ -130,7 +132,7 @@ public class GuestCallbackTest  {
     @Test
     public void testFailure_callsCallbackOnTwitterException() {
         final Callback<Tweet> developerCallback = mock(Callback.class);
-        final GuestCallback<Tweet> guestCallback = new GuestCallback<>(mockAppSessionManager,
+        final GuestCallback<Tweet> guestCallback = new GuestCallback<>(mockGuestSessionManager,
                 developerCallback);
         final TwitterException twitterException = mock(TwitterException.class);
         guestCallback.failure(twitterException);

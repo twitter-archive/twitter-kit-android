@@ -17,7 +17,7 @@
 
 package com.twitter.sdk.android.core.internal;
 
-import com.twitter.sdk.android.core.AppSession;
+import com.twitter.sdk.android.core.GuestSession;
 import com.twitter.sdk.android.core.AuthToken;
 import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.TestFixtures;
@@ -26,7 +26,6 @@ import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.internal.oauth.GuestAuthToken;
 import com.twitter.sdk.android.core.internal.oauth.OAuth2Service;
-import com.twitter.sdk.android.core.internal.oauth.OAuth2Token;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -72,21 +71,8 @@ public class TwitterRequestHeadersTest  {
     }
 
     @Test
-    public void testGetHeaders_appAuthToken() {
-        final AppSession sessionAppAuthToken = mock(AppSession.class);
-         when(sessionAppAuthToken.getAuthToken()).thenReturn(new OAuth2Token(null, ACCESS_TOKEN));
-
-        final TwitterRequestHeaders requestHeaders = new TwitterRequestHeaders(GET,
-                TEST_URL, authConfig, sessionAppAuthToken, userAgent, null);
-        final Map<String, String> headers = requestHeaders.getHeaders();
-        assertMinimumHeaders(headers);
-        assertEquals(OAuth2Service.getAuthorizationHeader(sessionAppAuthToken.getAuthToken()),
-                headers.get(OAuth2Token.HEADER_AUTHORIZATION));
-    }
-
-    @Test
     public void testGetHeaders_guestAuthToken() {
-        final AppSession sessionGuestAuthToken = mock(AppSession.class);
+        final GuestSession sessionGuestAuthToken = mock(GuestSession.class);
         when(sessionGuestAuthToken.getAuthToken())
                 .thenReturn(new GuestAuthToken(null, ACCESS_TOKEN, GUEST_TOKEN));
         final TwitterRequestHeaders requestHeaders = new TwitterRequestHeaders(GET,

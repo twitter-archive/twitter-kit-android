@@ -17,8 +17,8 @@
 
 package com.twitter.sdk.android.core;
 
+import com.twitter.sdk.android.core.internal.oauth.GuestAuthToken;
 import com.twitter.sdk.android.core.internal.oauth.OAuth2Service;
-import com.twitter.sdk.android.core.internal.oauth.OAuth2Token;
 
 /**
  * Client for requesting guest auth.
@@ -40,10 +40,11 @@ class GuestAuthClient {
 
     /**
      * Request guest authentication token be set on the app session manager via the OAuth2Service.
-     * @param callback callback receiving an AppSession on success
-     * @throws java.lang.IllegalArgumentException if appSessionManager is null
+     * @param callback callback receiving an GuestSession on success
+     * @throws java.lang.IllegalArgumentException if guestSessionManager is null
      */
-    void authorize(SessionManager<AppSession> appSessionManager, Callback<AppSession> callback) {
+    void authorize(SessionManager<GuestSession> appSessionManager,
+                   Callback<GuestSession> callback) {
         if (appSessionManager == null) {
             throw new IllegalArgumentException("SessionManager must not be null");
         }
@@ -53,19 +54,19 @@ class GuestAuthClient {
     /**
      * Callback to OAuth2Service wrapping a developer's logInGuest callback
      */
-    class CallbackWrapper extends Callback<OAuth2Token> {
-        private final SessionManager<AppSession> appSessionManager;
-        private final Callback<AppSession> callback;
+    class CallbackWrapper extends Callback<GuestAuthToken> {
+        private final SessionManager<GuestSession> appSessionManager;
+        private final Callback<GuestSession> callback;
 
-        CallbackWrapper(SessionManager<AppSession> appSessionManager,
-                Callback<AppSession> callback) {
+        CallbackWrapper(SessionManager<GuestSession> appSessionManager,
+                Callback<GuestSession> callback) {
             this.appSessionManager = appSessionManager;
             this.callback = callback;
         }
 
         @Override
-        public void success(Result<OAuth2Token> result) {
-            final AppSession session = new AppSession(result.data);
+        public void success(Result<GuestAuthToken> result) {
+            final GuestSession session = new GuestSession(result.data);
             // set session in manager, manager makes session active if there is no active session
             appSessionManager.setSession(session.getId(), session);
             if (callback != null) {

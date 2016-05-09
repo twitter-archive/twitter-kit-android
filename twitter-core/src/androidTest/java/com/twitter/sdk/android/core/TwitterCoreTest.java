@@ -96,7 +96,7 @@ public class TwitterCoreTest extends FabricAndroidTestCase {
     }
 
     public void testLogInGuest_noSdkStart() {
-        final Callback<AppSession> mockCallback = mock(Callback.class);
+        final Callback<GuestSession> mockCallback = mock(Callback.class);
         try {
             TwitterCore.getInstance().logInGuest(mockCallback);
             fail("Should fail if Fabric is not instantiated.");
@@ -107,7 +107,7 @@ public class TwitterCoreTest extends FabricAndroidTestCase {
 
     public void testLogInGuest_sdkStartNoTwitterKit() throws Exception {
         FabricTestUtils.with(getContext(), new KitStub<Result>());
-        final Callback<AppSession> mockCallback = mock(Callback.class);
+        final Callback<GuestSession> mockCallback = mock(Callback.class);
 
         try {
             TwitterCore.getInstance().logInGuest(mockCallback);
@@ -158,13 +158,13 @@ public class TwitterCoreTest extends FabricAndroidTestCase {
 
     public void testGetAppSessionManager() throws Exception {
         FabricTestUtils.with(getContext(), twitterCore);
-        assertNotNull(twitterCore.getAppSessionManager());
+        assertNotNull(twitterCore.getGuestSessionManager());
     }
 
     public void testGetAppSessionManager_twitterNotInitialized() throws Exception {
         FabricTestUtils.with(getContext(), new KitStub());
         try {
-            twitterCore.getAppSessionManager();
+            twitterCore.getGuestSessionManager();
             fail("Should fail if Twitter is not instantiated with Fabric.");
         } catch (IllegalStateException ex) {
             assertEquals(TWITTER_NOT_INIT_ERROR_MSG, ex.getMessage());

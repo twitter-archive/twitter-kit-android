@@ -18,14 +18,13 @@
 package com.twitter.sdk.android.tweetui.internal;
 
 import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.GuestSession;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.internal.SessionProvider;
 import com.twitter.sdk.android.core.Session;
-import com.twitter.sdk.android.core.AppSession;
 import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.internal.oauth.AppAuthToken;
 import com.twitter.sdk.android.core.internal.oauth.GuestAuthToken;
 import com.twitter.sdk.android.tweetui.BuildConfig;
 
@@ -48,7 +47,7 @@ public class GuestSessionProviderTest {
     private SessionProvider sessionProvider;
     private List<SessionManager<? extends Session>> sessionManagers;
     private SessionManager<TwitterSession> mockSessionManager;
-    private SessionManager<AppSession> mockAppSessionManager;
+    private SessionManager<GuestSession> mockAppSessionManager;
 
     @Before
     public void setUp() throws Exception {
@@ -79,22 +78,11 @@ public class GuestSessionProviderTest {
     @Test
     public void testGetActionSession_guestAuthTokenSessionAllowed() {
         final GuestAuthToken guestAuthToken = mock(GuestAuthToken.class);
-        final AppSession guestSession = mock(AppSession.class);
+        final GuestSession guestSession = mock(GuestSession.class);
         when(guestSession.getAuthToken()).thenReturn(guestAuthToken);
         when(mockAppSessionManager.getActiveSession()).thenReturn(guestSession);
         sessionManagers.add(mockAppSessionManager);
         sessionProvider = new GuestSessionProvider(mockTwitterCore, sessionManagers);
         assertEquals(guestSession, sessionProvider.getActiveSession());
-    }
-
-    @Test
-    public void testGetActionSession_appAuthTokenSessionReturnsNull() {
-        final AppAuthToken appAuthToken = mock(AppAuthToken.class);
-        final AppSession appSession = mock(AppSession.class);
-        when(appSession.getAuthToken()).thenReturn(appAuthToken);
-        when(mockAppSessionManager.getActiveSession()).thenReturn(appSession);
-        sessionManagers.add(mockAppSessionManager);
-        sessionProvider = new GuestSessionProvider(mockTwitterCore, sessionManagers);
-        assertNull(sessionProvider.getActiveSession());
     }
 }

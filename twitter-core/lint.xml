@@ -32,8 +32,6 @@
     <issue id="PackageManagerGetSignatures" severity="ignore"/>
     <issue id="ParcelCreator" severity="error">
         <ignore
-            path="src/main/java/com/twitter/sdk/android/core/internal/oauth/AppAuthToken.java"/>
-        <ignore
             path="src/main/java/com/twitter/sdk/android/core/internal/oauth/GuestAuthToken.java"/>
         <ignore
             path="src/main/java/com/twitter/sdk/android/core/identity/ShareEmailResultReceiver.java"/>

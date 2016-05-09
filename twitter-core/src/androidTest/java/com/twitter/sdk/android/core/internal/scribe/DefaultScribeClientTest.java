@@ -29,7 +29,7 @@ import io.fabric.sdk.android.services.settings.Settings;
 import io.fabric.sdk.android.services.settings.SettingsData;
 import io.fabric.sdk.android.services.settings.TestSettingsController;
 
-import com.twitter.sdk.android.core.AppSession;
+import com.twitter.sdk.android.core.GuestSession;
 import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
@@ -76,13 +76,13 @@ public class DefaultScribeClientTest extends FabricAndroidTestCase {
         Fabric.with(getContext(), new TwitterCore(new TwitterAuthConfig("", "")), new ExampleKit());
         testKit = Fabric.getKit(ExampleKit.class);
 
-        final SessionManager<AppSession> mockAppSessionManager = mock(SessionManager.class);
+        final SessionManager<GuestSession> mockGuestSessionManager = mock(SessionManager.class);
         final SessionManager<TwitterSession> mockTwitterSessionManager
                 = mock(SessionManager.class);
 
         sessionManagers = new ArrayList<>();
         sessionManagers.add(mockTwitterSessionManager);
-        sessionManagers.add(mockAppSessionManager);
+        sessionManagers.add(mockGuestSessionManager);
 
         scribeClient = new DefaultScribeClient(testKit,
                 TEST_SCRIBE_KIT_NAME, sessionManagers, mock(IdManager.class));
@@ -193,7 +193,7 @@ public class DefaultScribeClientTest extends FabricAndroidTestCase {
     }
 
     public void testGetActiveSession_activeSessionSecondManager() {
-        final AppSession mockSession = mock(AppSession.class);
+        final GuestSession mockSession = mock(GuestSession.class);
         when(sessionManagers.get(1).getActiveSession()).thenReturn(mockSession);
         assertSame(mockSession, scribeClient.getActiveSession());
     }

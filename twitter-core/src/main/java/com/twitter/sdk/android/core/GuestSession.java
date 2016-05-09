@@ -22,33 +22,28 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.twitter.sdk.android.core.internal.oauth.GuestAuthToken;
-import com.twitter.sdk.android.core.internal.oauth.OAuth2Token;
 
 import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.services.persistence.SerializationStrategy;
 
-public class AppSession extends Session<OAuth2Token> {
+public class GuestSession extends Session<GuestAuthToken> {
 
-    AppSession(OAuth2Token authToken) {
+    GuestSession(GuestAuthToken authToken) {
         super(authToken, TwitterSession.LOGGED_OUT_USER_ID);
     }
 
-    AppSession(GuestAuthToken authToken) {
-        super(authToken, TwitterSession.LOGGED_OUT_USER_ID);
-    }
-
-    static class Serializer implements SerializationStrategy<AppSession> {
+    static class Serializer implements SerializationStrategy<GuestSession> {
 
         private final Gson gson;
 
         public Serializer() {
             this.gson = new GsonBuilder()
-                    .registerTypeAdapter(OAuth2Token.class, new AuthTokenAdapter())
+                    .registerTypeAdapter(GuestAuthToken.class, new AuthTokenAdapter())
                     .create();
         }
 
         @Override
-        public String serialize(AppSession session) {
+        public String serialize(GuestSession session) {
             if (session != null && session.getAuthToken() != null) {
                 try {
                     return gson.toJson(session);
@@ -61,10 +56,10 @@ public class AppSession extends Session<OAuth2Token> {
         }
 
         @Override
-        public AppSession deserialize(String serializedSession) {
+        public GuestSession deserialize(String serializedSession) {
             if (!TextUtils.isEmpty(serializedSession)) {
                 try {
-                    return gson.fromJson(serializedSession, AppSession.class);
+                    return gson.fromJson(serializedSession, GuestSession.class);
                 } catch (Exception e) {
                     Fabric.getLogger().d(TwitterCore.TAG,
                             "Failed to deserialize session " + e.getMessage());

@@ -20,7 +20,6 @@ package com.twitter.sdk.android.core;
 import com.twitter.sdk.android.core.internal.TwitterApi;
 import com.twitter.sdk.android.core.internal.oauth.GuestAuthToken;
 import com.twitter.sdk.android.core.internal.oauth.OAuth2Service;
-import com.twitter.sdk.android.core.internal.oauth.OAuth2Token;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -47,16 +46,16 @@ public class GuestAuthClientTest  {
     private TwitterApi mockTwitterApi;
     private SSLSocketFactory mockSslSocketFactory;
     private OAuth2Service fakeOAuth2Service;
-    private SessionManager<AppSession> appSessionManager;
+    private SessionManager<GuestSession> guestSessionManager;
     private GuestAuthClient guestAuthClient;
-    private Callback<AppSession> mockCallback;
+    private Callback<GuestSession> mockCallback;
 
     @Before
     public void setUp() throws Exception {
 
         mockTwitterCore = mock(TwitterCore.class);
         mockTwitterApi = new TwitterApi();
-        appSessionManager = new SimpleSessionManager<>();
+        guestSessionManager = new SimpleSessionManager<>();
         mockCallback = mock(Callback.class);
         mockSslSocketFactory = mock(SSLSocketFactory.class);
     }
@@ -89,10 +88,10 @@ public class GuestAuthClientTest  {
         fakeOAuth2Service =
                 new FakeSuccessOAuth2Service(mockTwitterCore, mockSslSocketFactory, mockTwitterApi);
         guestAuthClient = new GuestAuthClient(fakeOAuth2Service);
-        assertNull(appSessionManager.getActiveSession());
-        guestAuthClient.authorize(appSessionManager, mockCallback);
-        // assert an AppSession was set in the AppSessionManager and made primary
-        assertNotNull(appSessionManager.getActiveSession());
+        assertNull(guestSessionManager.getActiveSession());
+        guestAuthClient.authorize(guestSessionManager, mockCallback);
+        // assert an GuestSession was set in the AppSessionManager and made primary
+        assertNotNull(guestSessionManager.getActiveSession());
         // assert that GuestAuthClient invokes the success callback with a Result
         verify(mockCallback, times(1)).success(any(Result.class));
     }
@@ -102,10 +101,10 @@ public class GuestAuthClientTest  {
         fakeOAuth2Service =
                 new FakeSuccessOAuth2Service(mockTwitterCore, mockSslSocketFactory, mockTwitterApi);
         guestAuthClient = new GuestAuthClient(fakeOAuth2Service);
-        assertNull(appSessionManager.getActiveSession());
-        guestAuthClient.authorize(appSessionManager, null);
-        // assert an AppSession was set in the AppSessionManager and made primary
-        assertNotNull(appSessionManager.getActiveSession());
+        assertNull(guestSessionManager.getActiveSession());
+        guestAuthClient.authorize(guestSessionManager, null);
+        // assert an GuestSession was set in the AppSessionManager and made primary
+        assertNotNull(guestSessionManager.getActiveSession());
         // assert that GuestAuthClient does NOT call the success method on a null callback
         verifyZeroInteractions(mockCallback);
     }
@@ -115,7 +114,7 @@ public class GuestAuthClientTest  {
         fakeOAuth2Service =
                 new FakeFailureOAuth2Service(mockTwitterCore, mockSslSocketFactory, mockTwitterApi);
         guestAuthClient = new GuestAuthClient(fakeOAuth2Service);
-        guestAuthClient.authorize(appSessionManager, mockCallback);
+        guestAuthClient.authorize(guestSessionManager, mockCallback);
         // assert that GuestAuthClient invokes the failure callback when service fails to get auth
         verify(mockCallback, times(1)).failure(any(TwitterException.class));
     }
@@ -125,7 +124,7 @@ public class GuestAuthClientTest  {
         fakeOAuth2Service =
                 new FakeFailureOAuth2Service(mockTwitterCore, mockSslSocketFactory, mockTwitterApi);
         guestAuthClient = new GuestAuthClient(fakeOAuth2Service);
-        guestAuthClient.authorize(appSessionManager, null);
+        guestAuthClient.authorize(guestSessionManager, null);
         // assert that GuestAuthClient does NOT call the failure method on a null callback
         verifyZeroInteractions(mockCallback);
     }
@@ -141,9 +140,9 @@ public class GuestAuthClientTest  {
         }
 
         @Override
-        public void requestGuestAuthToken(Callback<OAuth2Token> callback) {
+        public void requestGuestAuthToken(Callback<GuestAuthToken> callback) {
             final GuestAuthToken guestAuthToken = mock(GuestAuthToken.class);
-            callback.success(new Result<OAuth2Token>(guestAuthToken, null));
+            callback.success(new Result<>(guestAuthToken, null));
         }
     }
 
@@ -158,7 +157,7 @@ public class GuestAuthClientTest  {
         }
 
         @Override
-        public void requestGuestAuthToken(Callback<OAuth2Token> callback) {
+        public void requestGuestAuthToken(Callback<GuestAuthToken> callback) {
             callback.failure(new TwitterException("fake exception"));
         }
     }

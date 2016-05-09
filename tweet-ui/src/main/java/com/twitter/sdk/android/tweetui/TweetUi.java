@@ -85,7 +85,7 @@ public class TweetUi extends Kit<Boolean> {
 
         guestSessionManagers = new ArrayList<>(2);
         guestSessionManagers.add(twitterCore.getSessionManager());
-        guestSessionManagers.add(twitterCore.getAppSessionManager());
+        guestSessionManagers.add(twitterCore.getGuestSessionManager());
         guestSessionProvider = new GuestSessionProvider(twitterCore, guestSessionManagers);
         guestAuthQueue = new TweetUiAuthRequestQueue(twitterCore, guestSessionProvider);
 

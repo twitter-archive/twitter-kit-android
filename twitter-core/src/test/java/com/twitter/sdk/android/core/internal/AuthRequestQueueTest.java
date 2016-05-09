@@ -17,7 +17,7 @@
 
 package com.twitter.sdk.android.core.internal;
 
-import com.twitter.sdk.android.core.AppSession;
+import com.twitter.sdk.android.core.GuestSession;
 import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -27,7 +27,6 @@ import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.internal.oauth.GuestAuthToken;
-import com.twitter.sdk.android.core.internal.oauth.OAuth2Token;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -43,7 +42,6 @@ import static org.mockito.Mockito.*;
 public class AuthRequestQueueTest {
     private SessionProvider mockSessionProvider;
     private GuestAuthToken mockGuestAuthToken;
-    private OAuth2Token mockAppAuthToken;
     private Callback<Session> mockRequest;
     private Session mockSession;
 
@@ -53,7 +51,6 @@ public class AuthRequestQueueTest {
         doNothing().when(mockSessionProvider).requestAuth(any(Callback.class));
 
         mockGuestAuthToken = mock(GuestAuthToken.class);
-        mockAppAuthToken = mock(OAuth2Token.class);
         mockRequest = mock(Callback.class);
         mockSession = mock(Session.class);
     }
@@ -104,7 +101,7 @@ public class AuthRequestQueueTest {
      */
     @Test
     public void testAddRequest_notAwaitingSessionHasSessionNoToken() {
-        final AuthRequestQueue authRequestQueue = setupQueue(mock(AppSession.class));
+        final AuthRequestQueue authRequestQueue = setupQueue(mock(GuestSession.class));
         authRequestQueue.awaitingSession.set(false);
         authRequestQueue.addRequest(mockRequest);
         // asserts that:
@@ -135,9 +132,9 @@ public class AuthRequestQueueTest {
      */
     @Test
     public void testAddRequest_withAuth() {
-        final AppSession appSession = mock(AppSession.class);
-        when(appSession.getAuthToken()).thenReturn(mockGuestAuthToken);
-        final AuthRequestQueue authRequestQueue = setupQueue(appSession);
+        final GuestSession guestSession = mock(GuestSession.class);
+        when(guestSession.getAuthToken()).thenReturn(mockGuestAuthToken);
+        final AuthRequestQueue authRequestQueue = setupQueue(guestSession);
         authRequestQueue.flushQueueOnSuccess(mockSession);
         authRequestQueue.addRequest(mockRequest);
         // asserts that we skip the queue and add it straight to the net
@@ -200,21 +197,13 @@ public class AuthRequestQueueTest {
 
     @Test
     public void testHasValidSession_hasAppSessionNoAuthToken() {
-        final AuthRequestQueue authRequestQueue = setupQueue(mock(AppSession.class));
+        final AuthRequestQueue authRequestQueue = setupQueue(mock(GuestSession.class));
         assertNull(authRequestQueue.getValidSession());
     }
 
     @Test
-    public void testHasValidSession_hasAppAuthToken() {
-        final AppSession session = mock(AppSession.class);
-        when(session.getAuthToken()).thenReturn(mockAppAuthToken);
-        final AuthRequestQueue authRequestQueue = setupQueue(session);
-        assertNotNull(authRequestQueue.getValidSession());
-    }
-
-    @Test
     public void testHasValidSession_hasGuestAuthToken() {
-        final AppSession session = mock(AppSession.class);
+        final GuestSession session = mock(GuestSession.class);
         when(session.getAuthToken()).thenReturn(mockGuestAuthToken);
         final AuthRequestQueue authRequestQueue = setupQueue(session);
         assertNotNull(authRequestQueue.getValidSession());
@@ -231,7 +220,7 @@ public class AuthRequestQueueTest {
     @Test
     public void testSessionRestored_validSessionQueueNotEmpty() {
         final AuthRequestQueue authRequestQueue = setupQueue(null);
-        final AppSession session = mock(AppSession.class);
+        final GuestSession session = mock(GuestSession.class);
         when(session.getAuthToken()).thenReturn(mockGuestAuthToken);
         final Callback mockCallback = mock(Callback.class);
         authRequestQueue.addRequest(mockCallback);
@@ -246,7 +235,7 @@ public class AuthRequestQueueTest {
     @Test
     public void testSessionRestored_validSessionQueueEmpty() {
         final AuthRequestQueue authRequestQueue = setupQueue(null);
-        final AppSession session = mock(AppSession.class);
+        final GuestSession session = mock(GuestSession.class);
         when(session.getAuthToken()).thenReturn(mockGuestAuthToken);
 
         authRequestQueue.sessionRestored(session);

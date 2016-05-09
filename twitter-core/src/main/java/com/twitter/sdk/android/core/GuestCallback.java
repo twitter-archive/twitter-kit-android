@@ -22,16 +22,16 @@ import com.twitter.sdk.android.core.internal.TwitterApiConstants;
 import io.fabric.sdk.android.Fabric;
 
 /**
- * GuestCallback is a wrapper callback which clears the AppSession on app or guest auth token
+ * GuestCallback is a wrapper callback which clears the GuestSession on app or guest auth token
  * errors. GuestCallback should be used when making requests using guest auth.
  * @param <T> success result type (e.g. Tweet, List&lt;Tweet&gt;, etc.)
  */
 public class GuestCallback<T> extends Callback<T> {
-    protected SessionManager<AppSession> appSessionManager;
+    protected SessionManager<GuestSession> appSessionManager;
     protected Callback<T> cb;
 
     /**
-     * Constructs a wrapper callback which clears the AppSession on failures due to token
+     * Constructs a wrapper callback which clears the GuestSession on failures due to token
      * exceptions.
      * @param cb Callback to be wrapped.
      */
@@ -40,10 +40,10 @@ public class GuestCallback<T> extends Callback<T> {
     }
 
     GuestCallback(TwitterCore twitterCore, Callback<T> cb) {
-        this(twitterCore.getAppSessionManager(), cb);
+        this(twitterCore.getGuestSessionManager(), cb);
     }
 
-    GuestCallback(SessionManager<AppSession> sessionManager, Callback<T> cb) {
+    GuestCallback(SessionManager<GuestSession> sessionManager, Callback<T> cb) {
         this.appSessionManager = sessionManager;
         this.cb = cb;
     }
@@ -60,7 +60,7 @@ public class GuestCallback<T> extends Callback<T> {
     }
 
     /**
-     * Checks the exception and handles token expiration errors by clearing the AppSession from the
+     * Checks the exception and handles token expiration errors by clearing the GuestSession from the
      * TwitterCore AppSessionManager.
      * Derived classes should call through to the base implementation.
      * @param exception A Twitter Error.
