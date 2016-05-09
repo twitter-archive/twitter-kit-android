@@ -76,7 +76,6 @@ ext.projectDependencies = [
         ':sdk:twitter:twitter-core' : 'com.twitter.sdk.android:twitter-core:+@aar',
         ':sdk:twitter:tweet-ui' : 'com.twitter.sdk.android:tweet-ui:+@aar',
         ':sdk:twitter:tweet-composer' : 'com.twitter.sdk.android:tweet-composer:+@aar',
-        ':sdk:digits:digits' : 'com.digits.sdk.android:digits:+@aar',
         ':sdk:fabric:fabric' : 'io.fabric.sdk.android:fabric:+@aar'
 ]
 

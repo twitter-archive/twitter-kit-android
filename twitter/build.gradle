@@ -77,7 +77,6 @@ dependencies {
         compile projectOrBinary(path: path, binary: binary)
     }
 
-    compile rootProject.digits
     compile rootProject.fabric
 
     testCompile rootProject.mockito

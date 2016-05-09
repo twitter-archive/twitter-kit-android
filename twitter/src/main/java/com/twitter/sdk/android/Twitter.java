@@ -19,7 +19,6 @@ package com.twitter.sdk.android;
 
 import android.app.Activity;
 
-import com.digits.sdk.android.Digits;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
@@ -48,7 +47,6 @@ public class Twitter extends Kit implements KitGroup {
     public final TwitterCore core;
     public final TweetUi tweetUi;
     public final TweetComposer tweetComposer;
-    public final Digits digits;
     public final Collection<? extends Kit> kits;
 
     public static Twitter getInstance() {
@@ -65,9 +63,7 @@ public class Twitter extends Kit implements KitGroup {
         core = new TwitterCore(config);
         tweetUi = new TweetUi();
         tweetComposer = new TweetComposer();
-        digits = new Digits();
-        kits = Collections.unmodifiableCollection(Arrays.asList(core, tweetUi, tweetComposer,
-                digits));
+        kits = Collections.unmodifiableCollection(Arrays.asList(core, tweetUi, tweetComposer));
     }
 
     @Override

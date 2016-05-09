@@ -29,7 +29,7 @@ import org.robolectric.annotation.Config;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class TwitterTest extends AndroidTestCase {
-    private static final int KIT_COUNT = 4;
+    private static final int KIT_COUNT = 3;
 
     private Twitter twitter;
 
@@ -62,11 +62,6 @@ public class TwitterTest extends AndroidTestCase {
     }
 
     @Test
-    public void testDigits() {
-        assertNotNull(twitter.digits);
-    }
-
-    @Test
     public void testGetKits_notNull() {
         assertNotNull(twitter.getKits());
     }
@@ -89,10 +84,5 @@ public class TwitterTest extends AndroidTestCase {
     @Test
     public void testGetKits_containsTweetComposer() {
         assertTrue(twitter.getKits().contains(twitter.tweetComposer));
-    }
-
-    @Test
-    public void testGetKits_containsDigits() {
-        assertTrue(twitter.getKits().contains(twitter.digits));
     }
 }
