@@ -89,6 +89,7 @@ Follow [@Fabric](http://twitter.com/fabric) on Twitter for updates.
 * [Eric Frohnhoefer](https://twitter.com/ericfrohnhoefer)
 * [Lien Mamitsuka](https://twitter.com/lientm)
 * [Ty Smith](https://twitter.com/tsmith)
+* [Vamsi Kancharla](https://twitter.com/vam_si)
 
 Thanks for assistance and contributions:
 
