@@ -73,7 +73,7 @@ task wrapper(type: Wrapper) {
 
 ext {
     enableTestCodeCoverage = true
-    compileSdkVersion = 22
+    compileSdkVersion = 23
     targetSdkVersion = 22
     buildToolsVersion = '23.0.3'
     buildNumber = 'dev'

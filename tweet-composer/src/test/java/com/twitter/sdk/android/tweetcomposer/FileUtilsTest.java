@@ -25,11 +25,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
+import org.robolectric.internal.ShadowExtractor;
 import org.robolectric.shadows.ShadowMimeTypeMap;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.robolectric.Shadows.shadowOf;
 
 import java.io.File;
 
@@ -40,7 +40,8 @@ public class FileUtilsTest {
 
     @Before
     public void setUp() {
-        final ShadowMimeTypeMap mimeTypeMap = shadowOf(MimeTypeMap.getSingleton());
+        final ShadowMimeTypeMap mimeTypeMap = (ShadowMimeTypeMap) ShadowExtractor
+                .extract(MimeTypeMap.getSingleton());
         mimeTypeMap.addExtensionMimeTypMapping("jpg", "image/jpeg");
         mimeTypeMap.addExtensionMimeTypMapping("jpeg", "image/jpeg");
         mimeTypeMap.addExtensionMimeTypMapping("png", "image/png");
