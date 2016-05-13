@@ -82,7 +82,7 @@ ext {
     fabric = 'io.fabric.sdk.android:fabric:1.3.+@aar'
     fabricTest = 'io.fabric.sdk.android:fabric-test:0.0.+@aar'
     digits = 'com.digits.sdk.android:digits:1.7.+@aar'
-    mopub = 'com.mopub:mopub-sdk:4.3.0@aar'
+    mopub = 'com.mopub:mopub-sdk:4.6.0@aar'
 
     // Sample App
     leakCanary = 'com.squareup.leakcanary:leakcanary-android:1.3.1'
