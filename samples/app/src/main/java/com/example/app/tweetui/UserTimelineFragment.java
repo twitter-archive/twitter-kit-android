@@ -47,6 +47,8 @@ public class UserTimelineFragment extends ListFragment {
         return new UserTimelineFragment();
     }
 
+    private MoPubAdAdapter moPubAdAdapter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,17 +74,24 @@ public class UserTimelineFragment extends ListFragment {
                 .setOnActionCallback(actionCallback)
                 .build();
 
-        final MoPubAdAdapter wrapped = new TwitterMoPubAdAdapter(getActivity(), adapter);
-        TwitterStaticNativeAdRenderer adRenderer = new TwitterStaticNativeAdRenderer();
-        wrapped.registerAdRenderer(adRenderer);
-        wrapped.loadAds(BuildConfig.MOPUB_AD_UNIT_ID);
+        moPubAdAdapter = new TwitterMoPubAdAdapter(getActivity(), adapter);
+        final TwitterStaticNativeAdRenderer adRenderer = new TwitterStaticNativeAdRenderer();
+        moPubAdAdapter.registerAdRenderer(adRenderer);
+        moPubAdAdapter.loadAds(BuildConfig.MOPUB_AD_UNIT_ID);
 
-        setListAdapter(wrapped);
+        setListAdapter(moPubAdAdapter);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.tweetui_timeline, container, false);
+    }
+
+    @Override
+    public void onDestroy() {
+        // You must call this or the ad adapter may cause a memory leak
+        moPubAdAdapter.destroy();
+        super.onDestroy();
     }
 }
