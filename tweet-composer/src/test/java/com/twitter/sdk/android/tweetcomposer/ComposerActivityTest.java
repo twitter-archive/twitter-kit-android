@@ -31,6 +31,7 @@ import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -39,6 +40,7 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
 public class ComposerActivityTest {
+    private static final String ANY_HASHTAG = "#hashtag";
     private Context mockContext;
     private TwitterSession mockSession;
     private TwitterAuthToken mockAuthToken;
@@ -123,6 +125,36 @@ public class ComposerActivityTest {
                 .session(mockSession)
                 .createIntent();
         assertEquals(R.style.ComposerLight, intent.getIntExtra(ComposerActivity.EXTRA_THEME, -1));
+    }
+
+    @Test
+    public void testBuilder_emptyArray() {
+        final Intent intent = new ComposerActivity.Builder(mockContext)
+                .session(mockSession)
+                .hashtags(new String[0])
+                .createIntent();
+
+        assertNull(intent.getStringExtra(ComposerActivity.EXTRA_HASHTAGS));
+    }
+
+    @Test
+    public void testBuilder_validHashtags() {
+        final Intent intent = new ComposerActivity.Builder(mockContext)
+                .session(mockSession)
+                .hashtags(ANY_HASHTAG)
+                .createIntent();
+
+        assertEquals(" " + ANY_HASHTAG, intent.getStringExtra(ComposerActivity.EXTRA_HASHTAGS));
+    }
+
+    @Test
+    public void testBuilder_invalidHashtags() {
+        final Intent intent = new ComposerActivity.Builder(mockContext)
+                .session(mockSession)
+                .hashtags("NotHashtag")
+                .createIntent();
+
+        assertNull(intent.getStringExtra(ComposerActivity.EXTRA_HASHTAGS));
     }
 
     @Test

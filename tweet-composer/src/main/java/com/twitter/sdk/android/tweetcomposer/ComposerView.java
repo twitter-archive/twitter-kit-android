@@ -169,10 +169,6 @@ public class ComposerView extends LinearLayout {
         tweetEditView.setText(text);
     }
 
-    void setCursorAtEnd() {
-        tweetEditView.setSelection(getTweetText().length());
-    }
-
     void setCharCount(int remainingCount) {
         charCountView.setText(String.format(Locale.getDefault(), "%d", remainingCount));
     }

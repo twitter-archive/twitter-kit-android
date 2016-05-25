@@ -103,6 +103,7 @@ public class TweetComposerMainActivity extends BaseActivity {
         final Intent intent = new ComposerActivity.Builder(TweetComposerMainActivity.this)
                 .session(session)
                 .card(card)
+                .hashtags("#fabric")
                 .createIntent();
         startActivity(intent);
     }
