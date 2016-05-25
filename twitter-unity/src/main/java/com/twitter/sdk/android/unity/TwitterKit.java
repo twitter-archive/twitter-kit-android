@@ -76,7 +76,7 @@ public class TwitterKit {
      * @param session the user session
      * @param config card settings
      */
-    public static void compose(String session, String config) {
+    public static void compose(String session, String config, String[] hashtags) {
         final Activity currentActivity = UnityPlayer.currentActivity;
         final CardConfig cardConfig = new Gson().fromJson(config, CardConfig.class);
         final Card card = new Card.AppCardBuilder(currentActivity)
@@ -89,6 +89,7 @@ public class TwitterKit {
         final Intent intent = new ComposerActivity.Builder(currentActivity)
                 .session(TwitterSessionHelper.deserialize(session))
                 .card(card)
+                .hashtags(hashtags)
                 .createIntent();
         currentActivity.startActivity(intent);
     }
