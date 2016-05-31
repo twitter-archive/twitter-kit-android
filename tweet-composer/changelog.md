@@ -4,6 +4,11 @@
 
 ## Unreleased
 
+## v1.0.4
+
+* Updated Fabric Base dependency
+* Updated composer to accept #hashtags
+
 ## v1.0.3
 
 ## v1.0.2

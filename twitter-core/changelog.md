@@ -3,6 +3,10 @@
 
 ## Unreleased
 
+## v1.6.7
+
+* Updated Fabric Base dependency
+
 ## v1.6.6
 * Fixed security issue where certificate pinning wasn't happening for some requests.
 

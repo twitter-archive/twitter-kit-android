@@ -3,6 +3,10 @@
 
 ## Unreleased
 
+## v1.10.2
+
+* Updated Fabric Base dependency
+
 ## v1.10.1
 * Added HLS playback support. Removed WebM playback support.
 * Added loading and buffering spinners to video player.
