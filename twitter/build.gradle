@@ -110,7 +110,7 @@ internal {
         minBuild = 0
         maxBuild = Integer.MAX_VALUE
         minPlatformVersion {
-            apiVersion "8"
+            apiVersion "9"
         }
         docsUrl = "https://docs.fabric.io/javadocs/twitter-core/${project.version}/index.html"
         twitterHandle = "@twitterdev"
