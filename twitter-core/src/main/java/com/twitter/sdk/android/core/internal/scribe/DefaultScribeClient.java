@@ -65,15 +65,12 @@ public class DefaultScribeClient extends ScribeClient {
         this(kit, kitName, getGson(), sessionManagers, idManager);
     }
 
-    public DefaultScribeClient(Kit kit, String kitName, Gson gson,
+    DefaultScribeClient(Kit kit, String kitName, Gson gson,
             List<SessionManager<? extends Session>> sessionManagers, IdManager idManager) {
-        super(kit, getExecutor(),
-                getScribeConfig(Settings.getInstance().awaitSettingsData(),
-                        getUserAgent(kitName, kit)),
-                new ScribeEvent.Transform(gson),
-                TwitterCore.getInstance().getAuthConfig(),
-                sessionManagers, TwitterCore.getInstance().getSSLSocketFactory(),
-                idManager);
+        super(kit, getExecutor(), getScribeConfig(Settings.getInstance().awaitSettingsData(),
+                getUserAgent(kitName, kit)), new ScribeEvent.Transform(gson),
+                TwitterCore.getInstance().getAuthConfig(), sessionManagers,
+                TwitterCore.getInstance().getSSLSocketFactory(), idManager);
 
         this.sessionManagers = sessionManagers;
         this.kit = kit;
