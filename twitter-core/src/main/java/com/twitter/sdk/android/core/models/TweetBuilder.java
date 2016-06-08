@@ -17,6 +17,7 @@
 
 package com.twitter.sdk.android.core.models;
 
+import java.util.Collections;
 import java.util.List;
 
 public class TweetBuilder {
@@ -44,10 +45,11 @@ public class TweetBuilder {
     private Tweet retweetedStatus;
     private String source;
     private String text;
+    private List<Integer> displayTextRange = Collections.EMPTY_LIST;
     private boolean truncated;
     private User user;
     private boolean withheldCopyright;
-    private List<String> withheldInCountries;
+    private List<String> withheldInCountries = Collections.EMPTY_LIST;
     private String withheldScope;
     private Card card;
 
@@ -171,6 +173,11 @@ public class TweetBuilder {
         return this;
     }
 
+    public TweetBuilder setDisplayTextRange(List<Integer> displayTextRange) {
+        this.displayTextRange = displayTextRange;
+        return this;
+    }
+
     public TweetBuilder setTruncated(boolean truncated) {
         this.truncated = truncated;
         return this;
@@ -226,6 +233,7 @@ public class TweetBuilder {
         this.retweetedStatus = tweet.retweetedStatus;
         this.source = tweet.source;
         this.text = tweet.text;
+        this.displayTextRange = tweet.displayTextRange;
         this.truncated = tweet.truncated;
         this.user = tweet.user;
         this.withheldCopyright = tweet.withheldCopyright;
@@ -240,7 +248,7 @@ public class TweetBuilder {
                 favoriteCount, favorited, filterLevel, id, idStr, inReplyToScreenName,
                 inReplyToStatusId, inReplyToStatusIdStr, inReplyToUserId, inReplyToUserIdStr,
                 lang, place, possiblySensitive, scopes, retweetCount, retweeted,
-                retweetedStatus, source, text, truncated, user, withheldCopyright,
+                retweetedStatus, source, text, displayTextRange, truncated, user, withheldCopyright,
                 withheldInCountries, withheldScope, card);
     }
 }

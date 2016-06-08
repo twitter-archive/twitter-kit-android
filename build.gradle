@@ -105,7 +105,7 @@ ext {
     supportV4 = 'com.android.support:support-v4:22.2.0'
     retrofit = 'com.squareup.retrofit:retrofit:1.8.0'
     retrofitMock = 'com.squareup.retrofit:retrofit-mock:1.8.0'
-    gson = 'com.google.code.gson:gson:2.2.4'
+    gson = 'com.google.code.gson:gson:2.4'
     okHttp = 'com.squareup.okhttp:okhttp:2.3.0'
     okHttpUrlConnection = 'com.squareup.okhttp:okhttp-urlconnection:2.3.0'
     design = 'com.android.support:design:22.2.0'

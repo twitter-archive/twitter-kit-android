@@ -19,6 +19,7 @@ package com.twitter.sdk.android.core.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -188,7 +189,6 @@ public class Tweet implements Identifiable {
      * original tweet. (Users can also unretweet a retweet they created by deleting their retweet.)
      */
     @SerializedName("retweeted_status")
-
     public final Tweet retweetedStatus;
 
     /**
@@ -202,8 +202,16 @@ public class Tweet implements Identifiable {
      * The actual UTF-8 text of the status update. See twitter-text for details on what is currently
      * considered valid characters.
      */
-    @SerializedName("text")
+    @SerializedName(value = "text", alternate = {"full_text"})
     public final String text;
+
+
+    /**
+     * An array of two unicode code point indices, identifying the inclusive start and exclusive end
+     * of the displayable content of the Tweet.
+     */
+    @SerializedName("display_text_range")
+    public final List<Integer> displayTextRange;
 
     /**
      * Indicates whether the value of the text parameter was truncated, for example, as a result of
@@ -287,7 +295,8 @@ public class Tweet implements Identifiable {
                 favorited, filterLevel, id, idStr, inReplyToScreenName, inReplyToStatusId,
                 inReplyToStatusIdStr, inReplyToUserId, inReplyToUserIdStr, lang, place,
                 possiblySensitive, scopes, retweetCount, retweeted, retweetedStatus, source,
-                text, truncated, user, withheldCopyright, withheldInCountries, withheldScope, null);
+                text, Collections.EMPTY_LIST, truncated, user, withheldCopyright,
+                withheldInCountries, withheldScope, null);
     }
 
     public Tweet(Coordinates coordinates, String createdAt, Object currentUserRetweet,
@@ -296,9 +305,9 @@ public class Tweet implements Identifiable {
             String inReplyToScreenName, long inReplyToStatusId, String inReplyToStatusIdStr,
             long inReplyToUserId, String inReplyToUserIdStr, String lang, Place place,
             boolean possiblySensitive, Object scopes, int retweetCount, boolean retweeted,
-            Tweet retweetedStatus, String source, String text, boolean truncated, User user,
-            boolean withheldCopyright, List<String> withheldInCountries, String withheldScope,
-            Card card) {
+            Tweet retweetedStatus, String source, String text, List<Integer> displayTextRange,
+            boolean truncated, User user, boolean withheldCopyright,
+            List<String> withheldInCountries, String withheldScope, Card card) {
         this.coordinates = coordinates;
         this.createdAt = createdAt;
         this.currentUserRetweet = currentUserRetweet;
@@ -323,6 +332,7 @@ public class Tweet implements Identifiable {
         this.retweetedStatus = retweetedStatus;
         this.source = source;
         this.text = text;
+        this.displayTextRange = displayTextRange;
         this.truncated = truncated;
         this.user = user;
         this.withheldCopyright = withheldCopyright;

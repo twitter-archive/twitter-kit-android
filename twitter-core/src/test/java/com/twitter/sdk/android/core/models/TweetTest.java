@@ -34,8 +34,11 @@ import org.robolectric.annotation.Config;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = 21)
@@ -44,6 +47,7 @@ public class TweetTest {
     private static final String EXPECTED_CREATED_AT = "Wed Jun 06 20:07:10 +0000 2012";
     private static final long EXPECTED_ID = 210462857140252672L;
     private static final String EXPECTED_TEXT = "Along with our new #Twitterbird, we've also updated our Display Guidelines: https://t.co/Ed4omjYs  ^JC";
+    private static final Integer[] EXPECTED_DISPLAY_TEXT_RANGE = {0, 102};
 
     @Rule
     public final TestResources testResources = new TestResources();
@@ -66,10 +70,15 @@ public class TweetTest {
             // verify parsing of the individual objects.
             assertEquals(EXPECTED_CREATED_AT, tweet.createdAt);
             assertNotNull(tweet.entities);
+            assertNotNull(tweet.user);
+            assertTrue(tweet.retweeted);
             assertEquals(EXPECTED_ID, tweet.id);
             assertEquals(EXPECTED_ID, tweet.getId());
+            assertNotNull(tweet.text);
             assertEquals(EXPECTED_TEXT, tweet.text);
-            assertNotNull(tweet.user);
+            assertNotNull(tweet.displayTextRange);
+            assertFalse(tweet.truncated);
+            assertArrayEquals(EXPECTED_DISPLAY_TEXT_RANGE, tweet.displayTextRange.toArray());
         } finally {
             CommonUtils.closeQuietly(reader);
         }
