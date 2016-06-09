@@ -15,7 +15,8 @@
   ~
   -->
 
-<resources>
+<resources
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!--Accessibility strings-->
     <string name="tw__loading_tweet">Loading Tweet</string>
@@ -30,6 +31,9 @@
     <string name="tw__share_tweet">Share Tweet</string>
     <string name="tw__share_subject_format">Tweet from %1$s (@%2$s)</string>
     <string name="tw__share_content_format">Check out @%1$s\'s Tweet: https://twitter.com/%1$s/status/%2$s</string>
+
+    <!--Vine refers to the brand "Vine" and should not be translated-->
+    <string tools:ignore="UnusedResources" name="tw__cta_text">Open in Vine</string>
 
     <!--Video player accessibility strings-->
     <string name="tw__play">play</string>
