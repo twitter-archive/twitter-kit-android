@@ -37,13 +37,16 @@ public final class TestUtils {
         // Private constructor
     }
 
-    public static void setupTwitterInstalled(Context mockContext, String signature)
+    public static void setupTwitterInstalled(Context mockContext, String... signatures)
             throws PackageManager.NameNotFoundException {
         final PackageManager mockPm = mock(PackageManager.class);
         final PackageInfo mockPackageInfo = mock(PackageInfo.class);
-        mockPackageInfo.signatures = new Signature[] {
-                new Signature(signature)
-        };
+        mockPackageInfo.signatures = new Signature[signatures.length];
+
+        for (int i = 0; i < signatures.length; i++) {
+            mockPackageInfo.signatures[i] = new Signature(signatures[i]);
+        }
+
         when(mockContext.getPackageManager()).thenReturn(mockPm);
         when(mockPm.getPackageInfo(SSOAuthHandler.TWITTER_PACKAGE_NAME,
             PackageManager.GET_SIGNATURES)).thenReturn(mockPackageInfo);

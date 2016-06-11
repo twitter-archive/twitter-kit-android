@@ -163,10 +163,10 @@ class SSOAuthHandler extends AuthHandler {
             return false;
         }
         for (Signature s : p.signatures) {
-            if (requiredSignature.equals(s.toCharsString())) {
-                return true;
+            if (!requiredSignature.equals(s.toCharsString())) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 }

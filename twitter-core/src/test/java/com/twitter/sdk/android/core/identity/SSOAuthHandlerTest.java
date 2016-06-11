@@ -75,6 +75,15 @@ public class SSOAuthHandlerTest  {
     }
 
     @Test
+    public void testIsAvailable_twitterInstalledWithValidAndInvalidSignature()
+            throws PackageManager.NameNotFoundException {
+        final Context mockContext = mock(Context.class);
+        TestUtils.setupTwitterInstalled(mockContext, SSOAuthHandler.TWITTER_SIGNATURE,
+                INVALID_SIGNATURE);
+        assertFalse(SSOAuthHandler.isAvailable(mockContext));
+    }
+
+    @Test
     public void testIsAvailable_twitterDogfoodInstalled()
             throws PackageManager.NameNotFoundException {
         final Context mockContext = mock(Context.class);
