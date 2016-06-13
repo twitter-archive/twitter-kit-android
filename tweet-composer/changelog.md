@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+* Updated Twitter Core dependency
+
 ## v1.0.4
 
 * Updated Fabric Base dependency

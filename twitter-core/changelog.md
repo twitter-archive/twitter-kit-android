@@ -3,6 +3,8 @@
 
 ## Unreleased
 
+* Fixed Fake ID exploit
+
 ## v1.6.7
 
 * Updated Fabric Base dependency
