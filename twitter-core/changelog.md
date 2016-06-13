@@ -3,8 +3,6 @@
 
 ## Unreleased
 
-## v1.6.8
-
 * Fixed Fake ID exploit
 
 ## v1.6.7

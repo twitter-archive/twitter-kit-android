@@ -3,8 +3,6 @@
 
 ## Unreleased
 
-## v1.10.3
-
 * Updated Twitter Core dependency
 
 ## v1.10.2
