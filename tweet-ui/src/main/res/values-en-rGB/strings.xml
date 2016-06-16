@@ -18,6 +18,7 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__cta_text">Open in Vine</string>
     <string name="tw__like_tweet">Like Tweet</string>
     <string name="tw__liked_tweet">Undo Like</string>
     <string name="tw__loading_tweet">Loading Tweet</string>

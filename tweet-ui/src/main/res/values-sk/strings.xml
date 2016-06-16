@@ -18,6 +18,7 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__cta_text">Otvoriť vo Vine</string>
     <string name="tw__like_tweet">Obľúbiť si Tweet</string>
     <string name="tw__liked_tweet">Zrušiť označenie Páči sa mi to</string>
     <string name="tw__loading_tweet">Načítava sa Tweet</string>

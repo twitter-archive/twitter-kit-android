@@ -18,6 +18,7 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__cta_text">Buksan sa Vine</string>
     <string name="tw__like_tweet">Gustuhin ang Tweet</string>
     <string name="tw__liked_tweet">I-undo ang Gusto</string>
     <string name="tw__loading_tweet">Naglo-load ng Tweet</string>

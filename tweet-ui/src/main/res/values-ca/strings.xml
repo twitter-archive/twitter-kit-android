@@ -18,6 +18,7 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__cta_text">Obre\'l al Vine</string>
     <string name="tw__like_tweet">Fes M\'agrada al tuit</string>
     <string name="tw__liked_tweet">Desfés el M\'agrada</string>
     <string name="tw__loading_tweet">S\'està carregant el tuit</string>

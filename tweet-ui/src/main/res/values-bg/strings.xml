@@ -18,6 +18,7 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__cta_text">Отваряне във Vine</string>
     <string name="tw__like_tweet">Харесване на туита</string>
     <string name="tw__liked_tweet">Отмяна на харесването</string>
     <string name="tw__loading_tweet">Туитът се зарежда</string>

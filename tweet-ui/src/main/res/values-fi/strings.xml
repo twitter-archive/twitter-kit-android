@@ -18,6 +18,7 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__cta_text">Avaa Vinessä</string>
     <string name="tw__like_tweet">Tykkää twiitistä</string>
     <string name="tw__liked_tweet">Kumoa tykkäys</string>
     <string name="tw__loading_tweet">Ladataan twiittiä</string>

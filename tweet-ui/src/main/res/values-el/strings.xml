@@ -18,6 +18,7 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__cta_text">Άνοιγμα στην εφαρμογή Vine</string>
     <string name="tw__like_tweet">Μου αρέσει αυτό το Tweet</string>
     <string name="tw__liked_tweet">Αναίρεση επιλογής \"Μου αρέσει\"</string>
     <string name="tw__loading_tweet">Φόρτωση Tweet</string>
