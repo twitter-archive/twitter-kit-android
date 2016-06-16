@@ -24,7 +24,7 @@ apply plugin: io.fabric.gradle.weaving.FabricPropertiesPlugin
 apply plugin: io.fabric.gradle.release.FabricKitReleasePlugin
 
 repositories {
-    maven { url 'https://maven.fabric.io/public' }
+    jcenter()
 }
 
 android {

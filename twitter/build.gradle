@@ -24,6 +24,10 @@ applyInternal from: rootProject.deployScript
 applyInternal plugin: 'io.fabric.gradle.weaving.ArtifactSizePlugin'
 applyInternal plugin: 'io.fabric.gradle.weaving.FabricPropertiesPlugin'
 
+repositories {
+    jcenter()
+}
+
 android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
