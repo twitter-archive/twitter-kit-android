@@ -19,7 +19,6 @@ package com.twitter.sdk.android.core.internal.scribe;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -38,6 +37,12 @@ public class SyndicationClientEvent extends ScribeEvent {
     public final String language;
 
     /**
+     * Can be set to a free form String. Typically used by clients to record api errors.
+     */
+    @SerializedName("event_info")
+    public final String eventInfo;
+
+    /**
      * External Ids can contain other external ids (e.g. Facebook) but in our case we will only
      * scribe the advertising id.
      * Optional field.
@@ -45,15 +50,11 @@ public class SyndicationClientEvent extends ScribeEvent {
     @SerializedName("external_ids")
     public final ExternalIds externalIds;
 
-    public SyndicationClientEvent(EventNamespace eventNamespace, long timestamp, String language,
-                           String adId) {
-        this(eventNamespace, timestamp, language, adId, Collections.<ScribeItem>emptyList());
-    }
-
-    public SyndicationClientEvent(EventNamespace eventNamespace, long timestamp, String language,
-            String adId, List<ScribeItem> items) {
+    public SyndicationClientEvent(EventNamespace eventNamespace,  String eventInfo, long timestamp,
+                                  String language, String adId, List<ScribeItem> items) {
         super(SCRIBE_CATEGORY, eventNamespace, timestamp, items);
         this.language = language;
+        this.eventInfo = eventInfo;
         externalIds = new ExternalIds(adId);
     }
 

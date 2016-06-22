@@ -84,24 +84,31 @@ public class DefaultScribeClient extends ScribeClient {
     }
 
     public void scribe(EventNamespace namespace, List<ScribeItem> items) {
-        final String language;
-        if (kit.getContext() != null) {
-            language = kit.getContext().getResources().getConfiguration().locale.getLanguage();
-        } else {
-            language = "";
-        }
+        final String language = getLanguageFromKit();
         final long timestamp = System.currentTimeMillis();
         /*
          * The advertising ID may be null if this method is called before doInBackground completes.
          * It also may be null depending on the users preferences and if Google Play Services has
          * been installed on the device.
          */
-        scribe(ScribeEventFactory.newScribeEvent(namespace, timestamp, language, advertisingId,
+        scribe(ScribeEventFactory.newScribeEvent(namespace, "", timestamp, language, advertisingId,
                 items));
     }
 
     public void scribe(ScribeEvent event) {
         super.scribe(event, getScribeSessionId(getActiveSession()));
+    }
+
+    public void scribe(EventNamespace namespace, String eventInfo) {
+        final String language = getLanguageFromKit();
+        final long timestamp = System.currentTimeMillis();
+        /*
+         * The advertising ID may be null if this method is called before doInBackground completes.
+         * It also may be null depending on the users preferences and if Google Play Services has
+         * been installed on the device.
+         */
+        scribe(ScribeEventFactory.newScribeEvent(namespace, eventInfo, timestamp, language,
+                advertisingId, Collections.<ScribeItem>emptyList()));
     }
 
     // visible for tests
@@ -128,6 +135,16 @@ public class DefaultScribeClient extends ScribeClient {
             scribeSessionId = TwitterSession.LOGGED_OUT_USER_ID;
         }
         return scribeSessionId;
+    }
+
+    private String getLanguageFromKit(){
+        final String language;
+        if (kit.getContext() != null) {
+            language = kit.getContext().getResources().getConfiguration().locale.getLanguage();
+        } else {
+            language = "";
+        }
+        return language;
     }
 
     private static Gson getGson() {
