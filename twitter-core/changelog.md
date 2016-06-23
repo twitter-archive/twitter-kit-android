@@ -3,6 +3,10 @@
 
 ## Unreleased
 
+## v1.7.0
+* Added support for Vine in Tweets
+* Enabled extended Tweet display
+
 ## v1.6.8
 
 * Fixed Fake ID exploit

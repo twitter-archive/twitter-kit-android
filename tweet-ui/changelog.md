@@ -3,6 +3,9 @@
 
 ## Unreleased
 
+## v1.11.0
+* Added support for Vine in Tweets
+
 ## v1.10.3
 
 * Updated Twitter Core dependency
