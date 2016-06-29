@@ -34,11 +34,24 @@ public class TwitterApiException extends TwitterException {
     public static final int DEFAULT_ERROR_CODE = 0;
     private final ApiError apiError;
     private final TwitterRateLimit twitterRateLimit;
+    private final int code;
+    private final Response response;
 
-    TwitterApiException(Response response) {
-        super(createExceptionMessage(response));
-        apiError = readApiError(response);
-        twitterRateLimit = new TwitterRateLimit(response.headers());
+    public TwitterApiException(Response response) {
+        this(response, readApiError(response), readApiRateLimit(response), response.code());
+    }
+
+    TwitterApiException(Response response, ApiError apiError, TwitterRateLimit twitterRateLimit,
+            int code) {
+        super(createExceptionMessage(code));
+        this.apiError = apiError;
+        this.twitterRateLimit = twitterRateLimit;
+        this.code = code;
+        this.response = response;
+    }
+
+    public int getStatusCode() {
+        return code;
     }
 
     /**
@@ -63,9 +76,19 @@ public class TwitterApiException extends TwitterException {
         return twitterRateLimit;
     }
 
+    public Response getResponse() {
+        return response;
+    }
+
+    public static TwitterRateLimit readApiRateLimit(Response response) {
+        return new TwitterRateLimit(response.headers());
+    }
+
     public static ApiError readApiError(Response response) {
         try {
-            final String body = response.errorBody().string();
+            // The response buffer can only be read once, so we clone the underlying buffer so the
+            // response can be consumed down stream if necessary.
+            final String body = response.errorBody().source().buffer().clone().readUtf8();
             if (!TextUtils.isEmpty(body)) {
                 return parseApiError(body);
             }
@@ -89,7 +112,7 @@ public class TwitterApiException extends TwitterException {
         return null;
     }
 
-    static String createExceptionMessage(Response response) {
-        return "HTTP request failed, Status: " + response.code();
+    static String createExceptionMessage(int code) {
+        return "HTTP request failed, Status: " + code;
     }
 }
