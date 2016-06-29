@@ -30,6 +30,7 @@ public class SearchTimelineTest extends TweetUiTestCase {
     private static final String ILLEGAL_TWEET_UI_MESSAGE = "TweetUi instance must not be null";
     private static final String TEST_QUERY = "twitterflock";
     private static final String TEST_FILTER_QUERY = "from:twitter";
+    private static final String TEST_RESULT_TYPE = "popular";
     private static final String TEST_LANG = "en";
     private static final Integer REQUIRED_DEFAULT_ITEMS_PER_REQUEST = 30;
     private static final Integer TEST_ITEMS_PER_REQUEST = 100;
@@ -39,8 +40,8 @@ public class SearchTimelineTest extends TweetUiTestCase {
 
 
     public void testConstructor() {
-        final SearchTimeline timeline = new SearchTimeline(tweetUi, TEST_QUERY, TEST_LANG,
-                TEST_ITEMS_PER_REQUEST);
+        final SearchTimeline timeline = new SearchTimeline(tweetUi, TEST_QUERY, TEST_RESULT_TYPE,
+                TEST_LANG, TEST_ITEMS_PER_REQUEST);
         assertEquals(tweetUi, timeline.tweetUi);
         assertEquals(TEST_QUERY + SearchTimeline.FILTER_RETWEETS, timeline.query);
         assertEquals(TEST_LANG, timeline.languageCode);
@@ -49,7 +50,7 @@ public class SearchTimelineTest extends TweetUiTestCase {
 
     public void testConstructor_nullTweetUi() {
         try {
-            new SearchTimeline(null, null, null, null);
+            new SearchTimeline(null, null, null, null, null);
             fail("Expected IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
             assertEquals(ILLEGAL_TWEET_UI_MESSAGE, e.getMessage());
@@ -58,7 +59,7 @@ public class SearchTimelineTest extends TweetUiTestCase {
 
     // most api arguments should default to Null to allow the backend to determine default behavior
     public void testConstructor_defaults() {
-        final SearchTimeline timeline = new SearchTimeline(tweetUi, null, null, null);
+        final SearchTimeline timeline = new SearchTimeline(tweetUi, null, null, null, null);
         assertEquals(tweetUi, timeline.tweetUi);
         assertNull(timeline.query);
         assertNull(timeline.languageCode);
@@ -68,24 +69,25 @@ public class SearchTimelineTest extends TweetUiTestCase {
     // FILTER_RETWEETS modifier should be added to the end of the non-null search queries
 
     public void testFilterRetweets() {
-        final SearchTimeline timeline = new SearchTimeline(tweetUi, TEST_QUERY, null, null);
+        final SearchTimeline timeline = new SearchTimeline(tweetUi, TEST_QUERY, null, null, null);
         assertTrue(timeline.query.endsWith(SearchTimeline.FILTER_RETWEETS));
     }
 
     public void testAddFilterRetweets() {
-        final SearchTimeline timeline = new SearchTimeline(tweetUi, TEST_FILTER_QUERY, null, null);
+        final SearchTimeline timeline = new SearchTimeline(tweetUi, TEST_FILTER_QUERY, null, null,
+                null);
         assertEquals("from:twitter -filter:retweets", timeline.query);
     }
 
     public void testFilterRetweets_nullQuery() {
         // handle null queries, do not append FILTER_RETWEETS
-        final SearchTimeline timeline = new SearchTimeline(tweetUi, null, null, null);
+        final SearchTimeline timeline = new SearchTimeline(tweetUi, null, null, null, null);
         assertNull(timeline.query);
     }
 
     public void testNext_createsCorrectRequest() {
-        final SearchTimeline timeline = spy(new TestSearchTimeline(tweetUi, TEST_QUERY, TEST_LANG,
-                TEST_ITEMS_PER_REQUEST));
+        final SearchTimeline timeline = spy(new TestSearchTimeline(tweetUi, TEST_QUERY,
+                TEST_RESULT_TYPE, TEST_LANG, TEST_ITEMS_PER_REQUEST));
         timeline.next(TEST_SINCE_ID, mock(Callback.class));
         verify(timeline).createSearchRequest(eq(TEST_SINCE_ID),
                 isNull(Long.class), any(Callback.class));
@@ -93,8 +95,8 @@ public class SearchTimelineTest extends TweetUiTestCase {
     }
 
     public void testPrevious_createsCorrectRequest() {
-        final SearchTimeline timeline = spy(new TestSearchTimeline(tweetUi, TEST_QUERY, TEST_LANG,
-                TEST_ITEMS_PER_REQUEST));
+        final SearchTimeline timeline = spy(new TestSearchTimeline(tweetUi, TEST_QUERY,
+                TEST_RESULT_TYPE, TEST_LANG, TEST_ITEMS_PER_REQUEST));
         timeline.previous(TEST_MAX_ID, mock(Callback.class));
         // intentionally decrementing the maxId which is passed through to the request
         verify(timeline).createSearchRequest(isNull(Long.class),
@@ -104,8 +106,8 @@ public class SearchTimelineTest extends TweetUiTestCase {
 
     public void testCreateSearchRequest() {
         // build a timeline with test params
-        final SearchTimeline timeline = new SearchTimeline(tweetUi, TEST_QUERY, TEST_LANG,
-                TEST_ITEMS_PER_REQUEST);
+        final SearchTimeline timeline = spy(new TestSearchTimeline(tweetUi, TEST_QUERY,
+                TEST_RESULT_TYPE, TEST_LANG, TEST_ITEMS_PER_REQUEST));
         // create a request (Callback<TwitterApiClient>) directly
         final Callback<TwitterApiClient> request = timeline.createSearchRequest(TEST_SINCE_ID,
                 TEST_MAX_ID, mock(Callback.class));
@@ -119,7 +121,7 @@ public class SearchTimelineTest extends TweetUiTestCase {
         // assert searchTimeline call is made with the correct arguments
         verify(mockSearchService).tweets(eq(TEST_QUERY + SearchTimeline.FILTER_RETWEETS),
                 isNull(Geocode.class), eq(TEST_LANG), isNull(String.class),
-                eq(SearchTimeline.RESULT_TYPE), eq(TEST_ITEMS_PER_REQUEST), isNull(String.class),
+                eq(TEST_RESULT_TYPE), eq(TEST_ITEMS_PER_REQUEST), isNull(String.class),
                 eq(TEST_SINCE_ID), eq(TEST_MAX_ID), eq(true), any(GuestCallback.class));
     }
 
@@ -135,9 +137,11 @@ public class SearchTimelineTest extends TweetUiTestCase {
                 .query(TEST_QUERY)
                 .languageCode(TEST_LANG)
                 .maxItemsPerRequest(TEST_ITEMS_PER_REQUEST)
+                .resultType(SearchTimeline.ResultType.POPULAR)
                 .build();
         assertEquals(tweetUi, timeline.tweetUi);
         assertEquals(TEST_QUERY + SearchTimeline.FILTER_RETWEETS, timeline.query);
+        assertEquals(TEST_RESULT_TYPE, timeline.resultType);
         assertEquals(TEST_LANG, timeline.languageCode);
         assertEquals(TEST_ITEMS_PER_REQUEST, timeline.maxItemsPerRequest);
     }

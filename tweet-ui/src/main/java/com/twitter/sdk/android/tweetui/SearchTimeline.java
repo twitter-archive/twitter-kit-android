@@ -34,17 +34,19 @@ import io.fabric.sdk.android.Fabric;
  */
 public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
     static final String FILTER_RETWEETS = " -filter:retweets";   // leading whitespace intentional
-    static final String RESULT_TYPE = "filtered";
     private static final String SCRIBE_SECTION = "search";
 
     final String query;
+    final String resultType;
     final String languageCode;
     final Integer maxItemsPerRequest;
 
-    SearchTimeline(TweetUi tweetUi, String query, String languageCode, Integer maxItemsPerRequest) {
+    SearchTimeline(TweetUi tweetUi, String query, String resultType, String languageCode,
+            Integer maxItemsPerRequest) {
         super(tweetUi);
         this.languageCode = languageCode;
         this.maxItemsPerRequest = maxItemsPerRequest;
+        this.resultType = resultType;
         // if the query is non-null append the filter Retweets modifier
         this.query = query == null ? null : query + FILTER_RETWEETS;
     }
@@ -83,7 +85,7 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
         return new LoggingCallback<TwitterApiClient>(cb, Fabric.getLogger()) {
             @Override
             public void success(Result<TwitterApiClient> result) {
-                result.data.getSearchService().tweets(query, null, languageCode, null, RESULT_TYPE,
+                result.data.getSearchService().tweets(query, null, languageCode, null, resultType,
                         maxItemsPerRequest, null, sinceId, maxId, true,
                         new GuestCallback<>(new SearchCallback(cb)));
             }
@@ -122,6 +124,19 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
         }
     }
 
+    public enum ResultType {
+        RECENT("recent"),
+        POPULAR("popular"),
+        MIXED("mixed"),
+        FILTERED("filtered");
+
+        final String type;
+
+        ResultType(String type) {
+            this.type = type;
+        }
+    }
+
     /**
      * SearchTimeline Builder
      */
@@ -129,6 +144,7 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
         private TweetUi tweetUi;
         private String query;
         private String lang;
+        private String resultType = ResultType.FILTERED.type;
         private Integer maxItemsPerRequest = 30;
 
         /**
@@ -150,6 +166,7 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
             this.tweetUi = tweetUi;
         }
 
+
         /**
          * Sets the query for the SearchTimeline.
          * @param query A UTF-8, URL-encoded search query of 500 characters maximum, including
@@ -159,6 +176,18 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
             this.query = query;
             return this;
         }
+
+        /**
+         *  The result_type parameter allows one to choose if the result set will be represented by
+         *  recent or popular Tweets, or a mix of both.
+         *
+         * @param resultType possible options include recent, popular, mixed, or filtered.
+         */
+        public Builder resultType(ResultType resultType) {
+            this.resultType = resultType.type;
+            return this;
+        }
+
 
         /**
          * Sets the languageCode for the SearchTimeline.
@@ -189,7 +218,7 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
             if (query == null) {
                 throw new IllegalStateException("query must not be null");
             }
-            return new SearchTimeline(tweetUi, query, lang, maxItemsPerRequest);
+            return new SearchTimeline(tweetUi, query, resultType, lang, maxItemsPerRequest);
         }
     }
 }

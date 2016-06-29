@@ -23,8 +23,9 @@ import com.twitter.sdk.android.core.models.Tweet;
 
 public class TestSearchTimeline extends SearchTimeline {
 
-    TestSearchTimeline(TweetUi tweetUi, String query, String lang, Integer count) {
-        super(tweetUi, query, lang, count);
+    TestSearchTimeline(TweetUi tweetUi, String query, String resultType, String lang,
+            Integer count) {
+        super(tweetUi, query, resultType, lang, count);
     }
 
     @Override
