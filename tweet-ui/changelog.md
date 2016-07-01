@@ -3,6 +3,9 @@
 
 ## Unreleased
 
+## v1.11.1
+* Allow non-filtered search results for SearchTimeline
+
 ## v1.11.0
 * Added support for Vine in Tweets
 
