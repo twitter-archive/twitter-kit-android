@@ -48,6 +48,7 @@ public class TweetTest {
     private static final long EXPECTED_ID = 210462857140252672L;
     private static final String EXPECTED_TEXT = "Along with our new #Twitterbird, we've also updated our Display Guidelines: https://t.co/Ed4omjYs  ^JC";
     private static final Integer[] EXPECTED_DISPLAY_TEXT_RANGE = {0, 102};
+    private static final String EXPECTED_WITHHELD_IN_COUNTRIES = "XY";
 
     @Rule
     public final TestResources testResources = new TestResources();
@@ -79,6 +80,9 @@ public class TweetTest {
             assertNotNull(tweet.displayTextRange);
             assertFalse(tweet.truncated);
             assertArrayEquals(EXPECTED_DISPLAY_TEXT_RANGE, tweet.displayTextRange.toArray());
+            assertNotNull(tweet.withheldInCountries);
+            assertEquals(1, tweet.withheldInCountries.size());
+            assertEquals(EXPECTED_WITHHELD_IN_COUNTRIES, tweet.withheldInCountries.get(0));
         } finally {
             CommonUtils.closeQuietly(reader);
         }

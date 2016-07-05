@@ -143,5 +143,8 @@
         "description": {
             "urls": []
         }
-    }
+    },
+  "withheld_in_countries": [
+    "XY"
+  ]
 }

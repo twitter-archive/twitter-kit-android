@@ -48,6 +48,7 @@ public class UserTest {
     private static final String EXPECTED_PROFILE_IMAGE_URL_HTTPS
             = "https://si0.twimg.com/profile_images/1777569006/image1327396628_normal.png";
     private static final boolean EXPECTED_VERIFIED = false;
+    private static final String EXPECTED_WITHHELD_IN_COUNTRIES = "XY";
 
     @Rule
     public final TestResources testResources = new TestResources();
@@ -77,6 +78,9 @@ public class UserTest {
             assertEquals(EXPECTED_PROFILE_IMAGE_URL_HTTPS, user.profileImageUrlHttps);
             assertEquals(EXPECTED_VERIFIED, user.verified);
             assertNotNull(user.status);
+            assertNotNull(user.withheldInCountries);
+            assertEquals(1, user.withheldInCountries.size());
+            assertEquals(EXPECTED_WITHHELD_IN_COUNTRIES, user.withheldInCountries.get(0));
         } finally {
             CommonUtils.closeQuietly(reader);
         }

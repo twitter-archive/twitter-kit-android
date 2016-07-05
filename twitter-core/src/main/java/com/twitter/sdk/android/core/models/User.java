@@ -20,6 +20,7 @@ package com.twitter.sdk.android.core.models;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Users can be anyone or anything. They tweet, follow, create lists, have a home_timeline, can be
@@ -306,7 +307,7 @@ public class User implements Serializable, Identifiable {
      * withheld from.
      */
     @SerializedName("withheld_in_countries")
-    public final String withheldInCountries;
+    public final List<String> withheldInCountries;
 
     /**
      * When present, indicates whether the content being withheld is the "status" or a "user."
@@ -326,7 +327,7 @@ public class User implements Serializable, Identifiable {
             String profileSidebarFillColor, String profileTextColor,
             boolean profileUseBackgroundImage, boolean protectedUser, String screenName,
             boolean showAllInlineMedia, Tweet status, int statusesCount, String timeZone,
-            String url, int utcOffset, boolean verified, String withheldInCountries,
+            String url, int utcOffset, boolean verified, List<String> withheldInCountries,
             String withheldScope) {
         this.contributorsEnabled = contributorsEnabled;
         this.createdAt = createdAt;

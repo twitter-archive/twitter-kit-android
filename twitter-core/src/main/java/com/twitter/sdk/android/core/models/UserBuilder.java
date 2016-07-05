@@ -17,6 +17,8 @@
 
 package com.twitter.sdk.android.core.models;
 
+import java.util.List;
+
 public class UserBuilder {
     private boolean contributorsEnabled;
     private String createdAt;
@@ -58,7 +60,7 @@ public class UserBuilder {
     private String url;
     private int utcOffset;
     private boolean verified;
-    private String withheldInCountries;
+    private List<String> withheldInCountries;
     private String withheldScope;
 
     public UserBuilder setContributorsEnabled(boolean contributorsEnabled) {
@@ -261,7 +263,7 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder setWithheldInCountries(String withheldInCountries) {
+    public UserBuilder setWithheldInCountries(List<String> withheldInCountries) {
         this.withheldInCountries = withheldInCountries;
         return this;
     }
