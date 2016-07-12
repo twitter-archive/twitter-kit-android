@@ -148,6 +148,6 @@ public class ScribeItemTest {
 
     private MediaEntity createTestEntity(String type) {
         return new MediaEntity(null, null, null, 0, 0, TEST_MEDIA_ID, null, null, null, null, 0,
-                null, type, null);
+                null, type, null, "");
     }
 }

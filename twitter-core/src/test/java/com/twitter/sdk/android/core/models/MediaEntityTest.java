@@ -64,6 +64,7 @@ public class MediaEntityTest  {
     private static final int TEST_ASPECT_HEIGHT = 9;
     private static final long TEST_DURATION = 30024;
     private static final int TEST_TOTAL_VARIANTS = 2;
+    private static final String TEST_ALT_TEXT = "A Twitter employee";
     private static final String TEST_URL_0 = "https://video.twimg.com/ext_tw_video/606527664086781952/pu/vid/640x360/jdAs88NgP4N3Iqtu.mp4";
     private static final VideoInfo.Variant TEST_VARIANT_0 =
             new VideoInfo.Variant(832000, "video/mp4", TEST_URL_0);
@@ -111,6 +112,7 @@ public class MediaEntityTest  {
             assertEquals(TEST_TOTAL_VARIANTS, entity.videoInfo.variants.size());
             assertVariantEquals(TEST_VARIANT_0, entity.videoInfo.variants.get(0));
             assertVariantEquals(TEST_VARIANT_1, entity.videoInfo.variants.get(1));
+            assertEquals(TEST_ALT_TEXT, entity.altText);
         } finally {
             CommonUtils.closeQuietly(reader);
         }

@@ -92,9 +92,13 @@ public class MediaEntity extends UrlEntity {
     @SerializedName("video_info")
     public final VideoInfo videoInfo;
 
+    @SerializedName("ext_alt_text")
+    public final String altText;
+
     public MediaEntity(String url, String expandedUrl, String displayUrl, int start, int end,
             long id, String idStr, String mediaUrl, String mediaUrlHttps, Sizes sizes,
-            long sourceStatusId, String sourceStatusIdStr, String type, VideoInfo videoInfo) {
+            long sourceStatusId, String sourceStatusIdStr, String type, VideoInfo videoInfo,
+            String altText) {
         super(url, expandedUrl, displayUrl, start, end);
         this.id = id;
         this.idStr = idStr;
@@ -105,6 +109,7 @@ public class MediaEntity extends UrlEntity {
         this.sourceStatusIdStr = sourceStatusIdStr;
         this.type = type;
         this.videoInfo = videoInfo;
+        this.altText = altText;
     }
 
     public static class Sizes implements Serializable {
