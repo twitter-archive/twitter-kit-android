@@ -711,9 +711,9 @@ public abstract class BaseTweetView extends LinearLayout {
             mediaView.setOverlayDrawable(getContext().getResources()
                     .getDrawable(R.drawable.tw__player_overlay));
             mediaBadgeView.setMediaEntity(mediaEntity);
+            setAltText(mediaEntity.altText);
             setMediaLauncher(displayTweet, mediaEntity);
             setMediaImage(mediaEntity.mediaUrlHttps, getAspectRatio(mediaEntity));
-
             scribeMediaEntityImpression(displayTweet.id, mediaEntity);
         } else if (TweetMediaUtils.hasPhoto(displayTweet)) {
             final MediaEntity mediaEntity = TweetMediaUtils.getPhotoEntity(displayTweet);
@@ -722,10 +722,17 @@ public abstract class BaseTweetView extends LinearLayout {
             // in the corner of the view
             mediaContainerView.setVisibility(ImageView.VISIBLE);
             mediaBadgeView.setMediaEntity(mediaEntity);
+            setAltText(mediaEntity.altText);
             setPhotoLauncher(displayTweet, mediaEntity);
             setMediaImage(mediaEntity.mediaUrlHttps, getAspectRatio(mediaEntity));
         } else {
             mediaContainerView.setVisibility(ImageView.GONE);
+        }
+    }
+
+    void setAltText(String description) {
+        if (!TextUtils.isEmpty(description)) {
+            mediaView.setContentDescription(description);
         }
     }
 
@@ -838,6 +845,7 @@ public abstract class BaseTweetView extends LinearLayout {
         mediaView.setOverlayDrawable(null);
         mediaView.setOnClickListener(null);
         mediaView.setClickable(false);
+        mediaView.setContentDescription(getResources().getString(R.string.tw__tweet_media));
     }
 
     /**

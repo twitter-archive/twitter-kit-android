@@ -77,7 +77,7 @@
         <com.twitter.sdk.android.tweetui.internal.TweetMediaView
             android:id="@+id/tw__tweet_media"
             style="@style/tw__TweetMedia"
-            tools:ignore="ContentDescription" />
+            android:contentDescription="@string/tw__tweet_media"/>
 
         <com.twitter.sdk.android.tweetui.internal.MediaBadgeView
             android:id="@+id/tw__tweet_media_badge"

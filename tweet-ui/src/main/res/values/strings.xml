@@ -38,5 +38,6 @@
     <string name="tw__play">play</string>
     <string name="tw__pause">pause</string>
     <string name="tw__replay">replay</string>
+    <string name="tw__tweet_media">Tweet Media</string>
 
 </resources>

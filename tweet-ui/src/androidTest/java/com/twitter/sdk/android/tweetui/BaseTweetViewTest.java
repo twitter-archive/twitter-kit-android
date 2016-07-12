@@ -32,6 +32,7 @@ import com.twitter.sdk.android.core.models.Card;
 import com.twitter.sdk.android.core.models.ImageValue;
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.tweetui.internal.TweetMediaView;
 
 import org.mockito.ArgumentCaptor;
 
@@ -45,6 +46,7 @@ import static org.mockito.Mockito.*;
 public abstract class BaseTweetViewTest extends TweetUiTestCase {
     private static final String REQUIRED_RETWEETED_BY_TEXT = "Retweeted by Mr Retweets";
     protected static final double DELTA = 0.001f;
+    protected static final String ALT_TEXT = "ALT_TEXT";
 
     protected Context context;
     private Resources resources;
@@ -542,5 +544,27 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
         assertEquals(TestFixtures.TEST_FORMATTED_SCREEN_NAME, view.screenNameView.getText());
         assertEquals(TestFixtures.TEST_STATUS, view.contentView.getText().toString());
         assertEquals(View.VISIBLE, view.mediaBadgeView.getVisibility());
+    }
+
+    public void testClearMediaView() {
+        final BaseTweetView view = createViewWithMocks(context, null);
+        view.mediaView = mock(TweetMediaView.class);
+
+        view.clearMediaView();
+
+        verify(view.mediaView).setOverlayDrawable(null);
+        verify(view.mediaView).setOnClickListener(null);
+        verify(view.mediaView).setClickable(false);
+        verify(view.mediaView)
+                .setContentDescription(getResources().getString(R.string.tw__tweet_media));
+    }
+
+    public void testSetAltText() {
+        final BaseTweetView view = createViewWithMocks(context, null);
+        view.mediaView = mock(TweetMediaView.class);
+
+        view.setAltText(ALT_TEXT);
+
+        verify(view.mediaView).setContentDescription(ALT_TEXT);
     }
 }
