@@ -168,6 +168,27 @@ public class Tweet implements Identifiable {
     public final Object scopes;
 
     /**
+     * This field only surfaces when the Tweet is a quote Tweet. This field contains the
+     * integer value Tweet ID of the quoted Tweet.
+     */
+    @SerializedName("quoted_status_id")
+    public final long quotedStatusId;
+
+    /**
+     * This field only surfaces when the Tweet is a quote Tweet. This is the string representation
+     * Tweet ID of the quoted Tweet.
+     */
+    @SerializedName("quoted_status_id_str")
+    public final String quotedStatusIdStr;
+
+    /**
+     * This field only surfaces when the Tweet is a quote Tweet. This attribute contains the
+     * Tweet object of the original Tweet that was quoted.
+     */
+    @SerializedName("quoted_status")
+    public final Tweet quotedStatus;
+
+    /**
      * Number of times this Tweet has been retweeted. This field is no longer capped at 99 and will
      * not turn into a String for "100+"
      */
@@ -264,10 +285,11 @@ public class Tweet implements Identifiable {
             boolean favorited, String filterLevel, long id, String idStr,
             String inReplyToScreenName, long inReplyToStatusId, String inReplyToStatusIdStr,
             long inReplyToUserId, String inReplyToUserIdStr, String lang, Place place,
-            boolean possiblySensitive, Object scopes, int retweetCount, boolean retweeted,
-            Tweet retweetedStatus, String source, String text, List<Integer> displayTextRange,
-            boolean truncated, User user, boolean withheldCopyright,
-            List<String> withheldInCountries, String withheldScope, Card card) {
+            boolean possiblySensitive, Object scopes, long quotedStatusId, String quotedStatusIdStr,
+            Tweet quotedStatus, int retweetCount, boolean retweeted, Tweet retweetedStatus,
+            String source, String text, List<Integer> displayTextRange, boolean truncated,
+            User user, boolean withheldCopyright, List<String> withheldInCountries,
+            String withheldScope, Card card) {
         this.coordinates = coordinates;
         this.createdAt = createdAt;
         this.currentUserRetweet = currentUserRetweet;
@@ -287,6 +309,9 @@ public class Tweet implements Identifiable {
         this.place = place;
         this.possiblySensitive = possiblySensitive;
         this.scopes = scopes;
+        this.quotedStatusId = quotedStatusId;
+        this.quotedStatusIdStr = quotedStatusIdStr;
+        this.quotedStatus = quotedStatus;
         this.retweetCount = retweetCount;
         this.retweeted = retweeted;
         this.retweetedStatus = retweetedStatus;

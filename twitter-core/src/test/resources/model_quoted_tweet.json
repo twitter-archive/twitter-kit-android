@@ -1,0 +1,284 @@
+{
+  "contributors": null,
+  "coordinates": null,
+  "created_at": "Wed Jun 22 19:00:06 +0000 2016",
+  "entities": {
+    "hashtags": [
+      {
+        "indices": [
+          77,
+          88
+        ],
+        "text": "HelloWorld"
+      }
+    ],
+    "symbols": [],
+    "urls": [
+      {
+        "display_url": "twitter.com/krausefx/statu\u2026",
+        "expanded_url": "https://twitter.com/krausefx/status/745634624466911232",
+        "indices": [
+          90,
+          113
+        ],
+        "url": "https://t.co/V1xjPPBkML"
+      }
+    ],
+    "user_mentions": [
+      {
+        "id": 50055757,
+        "id_str": "50055757",
+        "indices": [
+          10,
+          19
+        ],
+        "name": "Felix Krause",
+        "screen_name": "KrauseFx"
+      },
+      {
+        "id": 3065602373,
+        "id_str": "3065602373",
+        "indices": [
+          54,
+          66
+        ],
+        "name": "swift.berlin",
+        "screen_name": "swiftberlin"
+      }
+    ]
+  },
+  "favorite_count": 8,
+  "favorited": false,
+  "geo": null,
+  "id": 745692860763148288,
+  "id_str": "745692860763148288",
+  "in_reply_to_screen_name": null,
+  "in_reply_to_status_id": null,
+  "in_reply_to_status_id_str": null,
+  "in_reply_to_user_id": null,
+  "in_reply_to_user_id_str": null,
+  "is_quote_status": true,
+  "lang": "en",
+  "place": null,
+  "possibly_sensitive": false,
+  "possibly_sensitive_appealable": false,
+  "quoted_status": {
+    "contributors": null,
+    "coordinates": null,
+    "created_at": "Wed Jun 22 15:08:42 +0000 2016",
+    "entities": {
+      "hashtags": [
+        {
+          "indices": [
+            77,
+            88
+          ],
+          "text": "HelloWorld"
+        }
+      ],
+      "symbols": [],
+      "urls": [
+        {
+          "display_url": "meetup.com/swift-berlin/e\u2026",
+          "expanded_url": "http://www.meetup.com/swift-berlin/events/231935850/",
+          "indices": [
+            53,
+            76
+          ],
+          "url": "https://t.co/T1trfUOhr8"
+        }
+      ],
+      "user_mentions": []
+    },
+    "favorite_count": 26,
+    "favorited": false,
+    "geo": null,
+    "id": 745634624466911232,
+    "id_str": "745634624466911232",
+    "in_reply_to_screen_name": null,
+    "in_reply_to_status_id": null,
+    "in_reply_to_status_id_str": null,
+    "in_reply_to_user_id": null,
+    "in_reply_to_user_id_str": null,
+    "is_quote_status": false,
+    "lang": "en",
+    "place": {
+      "attributes": {},
+      "bounding_box": {
+        "coordinates": [
+          [
+            [
+              -122.42284884,
+              37.76893497
+            ],
+            [
+              -122.3964,
+              37.76893497
+            ],
+            [
+              -122.3964,
+              37.78752897
+            ],
+            [
+              -122.42284884,
+              37.78752897
+            ]
+          ]
+        ],
+        "type": "Polygon"
+      },
+      "contained_within": [],
+      "country": "United States",
+      "country_code": "US",
+      "full_name": "SoMa, San Francisco",
+      "id": "2b6ff8c22edd9576",
+      "name": "SoMa",
+      "place_type": "neighborhood",
+      "url": "https://api.twitter.com/1.1/geo/id/2b6ff8c22edd9576.json"
+    },
+    "possibly_sensitive": false,
+    "possibly_sensitive_appealable": false,
+    "retweet_count": 3,
+    "retweeted": false,
+    "source": "<a href=\"http://tapbots.com/tweetbot\" rel=\"nofollow\">Tweetbot for i\u039fS</a>",
+    "text": "I'll be speaking in Berlin next week, come join us \ud83c\udf89 https://t.co/T1trfUOhr8 #HelloWorld",
+    "truncated": false,
+    "user": {
+      "contributors_enabled": false,
+      "created_at": "Tue Jun 23 18:24:14 +0000 2009",
+      "default_profile": true,
+      "default_profile_image": false,
+      "description": "Professional iOS Code Signing Issue Resolver -\nDeveloper of https://t.co/k5gVM2dNjD @twitter",
+      "entities": {
+        "description": {
+          "urls": [
+            {
+              "display_url": "fastlane.tools",
+              "expanded_url": "http://fastlane.tools",
+              "indices": [
+                60,
+                83
+              ],
+              "url": "https://t.co/k5gVM2dNjD"
+            }
+          ]
+        },
+        "url": {
+          "urls": [
+            {
+              "display_url": "krausefx.com",
+              "expanded_url": "https://krausefx.com",
+              "indices": [
+                0,
+                23
+              ],
+              "url": "https://t.co/fiyZ0Bpisl"
+            }
+          ]
+        }
+      },
+      "favourites_count": 4369,
+      "follow_request_sent": false,
+      "followers_count": 8699,
+      "following": false,
+      "friends_count": 612,
+      "geo_enabled": true,
+      "has_extended_profile": false,
+      "id": 50055757,
+      "id_str": "50055757",
+      "is_translation_enabled": false,
+      "is_translator": false,
+      "lang": "en",
+      "listed_count": 353,
+      "location": "San Francisco",
+      "name": "Felix Krause",
+      "notifications": false,
+      "profile_background_color": "C0DEED",
+      "profile_background_image_url": "http://abs.twimg.com/images/themes/theme1/bg.png",
+      "profile_background_image_url_https": "https://abs.twimg.com/images/themes/theme1/bg.png",
+      "profile_background_tile": false,
+      "profile_banner_url": "https://pbs.twimg.com/profile_banners/50055757/1446216297",
+      "profile_image_url": "http://pbs.twimg.com/profile_images/544860475218227200/hNv93t_P_normal.jpeg",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/544860475218227200/hNv93t_P_normal.jpeg",
+      "profile_link_color": "0084B4",
+      "profile_sidebar_border_color": "C0DEED",
+      "profile_sidebar_fill_color": "DDEEF6",
+      "profile_text_color": "333333",
+      "profile_use_background_image": true,
+      "protected": false,
+      "screen_name": "KrauseFx",
+      "statuses_count": 14423,
+      "time_zone": "Pacific Time (US & Canada)",
+      "url": "https://t.co/fiyZ0Bpisl",
+      "utc_offset": -25200,
+      "verified": false
+    }
+  },
+  "quoted_status_id": 745634624466911232,
+  "quoted_status_id_str": "745634624466911232",
+  "retweet_count": 2,
+  "retweeted": false,
+  "source": "<a href=\"http://twitter.com/download/iphone\" rel=\"nofollow\">Twitter for iPhone</a>",
+  "text": "Come join @KrauseFx and our International DevRel team @swiftberlin next week!#HelloWorld  https://t.co/V1xjPPBkML",
+  "truncated": false,
+  "user": {
+    "contributors_enabled": false,
+    "created_at": "Sat Dec 14 04:35:55 +0000 2013",
+    "default_profile": false,
+    "default_profile_image": false,
+    "description": "Developer and Platform Relations @Twitter. We are developer advocates. We can't answer all your questions, but we listen to all of them!",
+    "entities": {
+      "description": {
+        "urls": []
+      },
+      "url": {
+        "urls": [
+          {
+            "display_url": "dev.twitter.com",
+            "expanded_url": "https://dev.twitter.com/",
+            "indices": [
+              0,
+              23
+            ],
+            "url": "https://t.co/66w26cua1O"
+          }
+        ]
+      }
+    },
+    "favourites_count": 1636,
+    "follow_request_sent": false,
+    "followers_count": 423978,
+    "following": false,
+    "friends_count": 1532,
+    "geo_enabled": true,
+    "has_extended_profile": false,
+    "id": 2244994945,
+    "id_str": "2244994945",
+    "is_translation_enabled": false,
+    "is_translator": false,
+    "lang": "en",
+    "listed_count": 931,
+    "location": "Internet",
+    "name": "TwitterDev",
+    "notifications": false,
+    "profile_background_color": "FFFFFF",
+    "profile_background_image_url": "http://abs.twimg.com/images/themes/theme1/bg.png",
+    "profile_background_image_url_https": "https://abs.twimg.com/images/themes/theme1/bg.png",
+    "profile_background_tile": false,
+    "profile_banner_url": "https://pbs.twimg.com/profile_banners/2244994945/1396995246",
+    "profile_image_url": "http://pbs.twimg.com/profile_images/530814764687949824/npQQVkq8_normal.png",
+    "profile_image_url_https": "https://pbs.twimg.com/profile_images/530814764687949824/npQQVkq8_normal.png",
+    "profile_link_color": "0084B4",
+    "profile_sidebar_border_color": "FFFFFF",
+    "profile_sidebar_fill_color": "DDEEF6",
+    "profile_text_color": "333333",
+    "profile_use_background_image": false,
+    "protected": false,
+    "screen_name": "TwitterDev",
+    "statuses_count": 2437,
+    "time_zone": "Pacific Time (US & Canada)",
+    "url": "https://t.co/66w26cua1O",
+    "utc_offset": -25200,
+    "verified": true
+  }
+}
