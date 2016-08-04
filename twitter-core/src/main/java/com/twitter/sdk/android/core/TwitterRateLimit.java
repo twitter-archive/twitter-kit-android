@@ -17,8 +17,6 @@
 
 package com.twitter.sdk.android.core;
 
-import io.fabric.sdk.android.services.common.CurrentTimeProvider;
-import io.fabric.sdk.android.services.common.SystemCurrentTimeProvider;
 import okhttp3.Headers;
 
 /**
@@ -37,10 +35,6 @@ class TwitterRateLimit  {
     private long resetSeconds;
 
     TwitterRateLimit(final Headers headers) {
-        this(headers, new SystemCurrentTimeProvider());
-    }
-
-    TwitterRateLimit(final Headers headers, CurrentTimeProvider timeProvider) {
         if (headers == null) {
             throw new IllegalArgumentException("headers must not be null");
         }
