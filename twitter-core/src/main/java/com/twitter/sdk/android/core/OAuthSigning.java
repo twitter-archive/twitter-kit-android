@@ -25,7 +25,7 @@ import com.twitter.sdk.android.core.internal.oauth.OAuth1aHeaders;
 import java.util.Map;
 
 /**
- * Provides convenience methods for generating OAuth Headers for Twitter
+ * Provides convenience methods for generating OAuth headers for Twitter
  **/
 public class OAuthSigning {
     static final String VERIFY_CREDENTIALS_URL = TwitterApi.BASE_HOST_URL +
@@ -45,7 +45,7 @@ public class OAuthSigning {
         this(authConfig, authToken, new OAuth1aHeaders());
     }
 
-    public OAuthSigning(TwitterAuthConfig authConfig, TwitterAuthToken authToken,
+    OAuthSigning(TwitterAuthConfig authConfig, TwitterAuthToken authToken,
             OAuth1aHeaders oAuth1aHeaders) {
         if (authConfig == null) {
             throw new IllegalArgumentException("authConfig must not be null");
@@ -57,6 +57,19 @@ public class OAuthSigning {
         this.authConfig = authConfig;
         this.authToken = authToken;
         this.oAuth1aHeaders = oAuth1aHeaders;
+    }
+
+    /**
+     * Gets authorization header for inclusion in HTTP request headers.
+     *
+     * @param method The HTTP method.
+     * @param url The url.
+     * @param postParams The post parameters.
+     */
+    public String getAuthorizationHeader(String method, String url,
+            Map<String, String> postParams) {
+        return oAuth1aHeaders.getAuthorizationHeader(authConfig, authToken, null, method, url,
+                postParams);
     }
 
     /**

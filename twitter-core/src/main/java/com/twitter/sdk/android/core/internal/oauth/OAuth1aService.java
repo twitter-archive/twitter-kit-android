@@ -19,7 +19,6 @@ package com.twitter.sdk.android.core.internal.oauth;
 
 import android.net.Uri;
 
-import io.fabric.sdk.android.services.network.HttpMethod;
 import io.fabric.sdk.android.services.network.UrlUtils;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -33,8 +32,6 @@ import com.twitter.sdk.android.core.internal.TwitterApi;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.util.Map;
 import java.util.TreeMap;
 
 import javax.net.ssl.SSLSocketFactory;
@@ -133,20 +130,6 @@ public class OAuth1aService extends OAuthService {
                 .appendQueryParameter(OAuthConstants.PARAM_TOKEN, requestToken.token)
                 .build()
                 .toString();
-    }
-
-    /**
-     * Signs the {@code HttpURLConnection} request using the specified access token.
-     *
-     * @param accessToken The access token to use to sign the request.
-     * @param request The request to sign.
-     */
-    public static void signRequest(TwitterAuthConfig config, TwitterAuthToken accessToken,
-            HttpURLConnection request, Map<String, String> postParams) {
-        final String authHeader = new OAuth1aHeaders().getAuthorizationHeader(config, accessToken,
-                null, HttpMethod.valueOf(request.getRequestMethod()).name(),
-                request.getURL().toString(), postParams);
-        request.setRequestProperty(OAuthConstants.HEADER_AUTHORIZATION, authHeader);
     }
 
     /**

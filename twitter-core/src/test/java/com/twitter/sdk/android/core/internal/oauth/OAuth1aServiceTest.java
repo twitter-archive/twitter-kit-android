@@ -17,8 +17,6 @@
 
 package com.twitter.sdk.android.core.internal.oauth;
 
-import io.fabric.sdk.android.services.network.HttpRequest;
-
 import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -35,9 +33,6 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import javax.net.ssl.SSLSocketFactory;
 
@@ -84,21 +79,6 @@ public class OAuth1aServiceTest {
     @Test
     public void testGetAccessTokenUrl() throws NoSuchMethodException {
         assertEquals("https://api.twitter.com/oauth/access_token", service.getAccessTokenUrl());
-    }
-
-    @Test
-    public void testSignRequest() throws MalformedURLException {
-        final TwitterAuthConfig config = new TwitterAuthConfig("consumerKey", "consumerSecret");
-        final TwitterAuthToken accessToken = new TwitterAuthToken("token", "tokenSecret");
-
-        final HttpURLConnection connection = mock(HttpURLConnection.class);
-        when(connection.getRequestMethod()).thenReturn("GET");
-        when(connection.getURL())
-                .thenReturn(new URL("https://api.twitter.com/1.1/statuses/home_timeline.json"));
-
-        OAuth1aService.signRequest(config, accessToken, connection, null);
-        verify(connection)
-                .setRequestProperty(eq(HttpRequest.HEADER_AUTHORIZATION), any(String.class));
     }
 
     @Test

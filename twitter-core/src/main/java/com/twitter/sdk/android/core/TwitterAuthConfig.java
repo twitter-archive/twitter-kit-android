@@ -20,11 +20,6 @@ package com.twitter.sdk.android.core;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.twitter.sdk.android.core.internal.oauth.OAuth1aService;
-
-import java.net.HttpURLConnection;
-import java.util.Map;
-
 /**
  * Authorization configuration details.
  */
@@ -68,28 +63,6 @@ public class TwitterAuthConfig implements Parcelable {
     private TwitterAuthConfig(Parcel in) {
         consumerKey = in.readString();
         consumerSecret = in.readString();
-    }
-
-    /**
-     * Signs the {@code HttpURLConnection} request using the specified access token.
-     *
-     * @param accessToken The access token to use to sign the request.
-     * @param request The request to sign.
-     */
-    public void signRequest(TwitterAuthToken accessToken, HttpURLConnection request) {
-        OAuth1aService.signRequest(this, accessToken, request, null);
-    }
-
-    /**
-     * Signs the {@code HttpURLConnection} request using the specified access token.
-     *
-     * @param accessToken The access token to use to sign the request.
-     * @param request The request to sign.
-     * @param postParams The post parameters for the request.
-     */
-    public void signRequest(TwitterAuthToken accessToken, HttpURLConnection request,
-            Map<String, String> postParams) {
-        OAuth1aService.signRequest(this, accessToken, request, postParams);
     }
 
     /**

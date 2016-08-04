@@ -20,13 +20,6 @@ package com.twitter.sdk.android.core;
 import android.os.Parcel;
 
 import io.fabric.sdk.android.FabricAndroidTestCase;
-import io.fabric.sdk.android.services.network.HttpRequest;
-
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 public class TwitterAuthConfigTest extends FabricAndroidTestCase {
     private static final String NO_PARAM_ERROR_MSG =
@@ -49,50 +42,6 @@ public class TwitterAuthConfigTest extends FabricAndroidTestCase {
                 = TwitterAuthConfig.CREATOR.createFromParcel(parcel);
         assertEquals(TestFixtures.KEY, parceledAuthConfig.getConsumerKey());
         assertEquals(TestFixtures.SECRET, parceledAuthConfig.getConsumerSecret());
-    }
-
-    public void testSignRequest() throws IOException {
-        final TwitterAuthToken accessToken = new TwitterAuthToken(TestFixtures.TOKEN,
-                TestFixtures.SECRET);
-        HttpURLConnection connection = null;
-        try {
-            connection = setupSignRequestTest(
-                    "https://api.twitter.com/1.1/statuses/home_timeline.json", "GET");
-            authConfig.signRequest(accessToken, connection);
-            // Verify that request contains authorization header.
-            assertNotNull(connection.getRequestProperty(HttpRequest.HEADER_AUTHORIZATION));
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
-    }
-
-    public void testSignRequest_postParameters() throws IOException {
-        final TwitterAuthToken accessToken = new TwitterAuthToken(TestFixtures.TOKEN,
-                TestFixtures.SECRET);
-        HttpURLConnection connection = null;
-        try {
-            connection = setupSignRequestTest("https://api.twitter.com/1/statuses/update.json",
-                    "POST");
-            final Map<String, String> postParams = new HashMap<>();
-            postParams.put("status", "testSignRequest_postParameters");
-            authConfig.signRequest(accessToken, connection, postParams);
-            // Verify that request contains authorization header.
-            assertNotNull(connection.getRequestProperty(HttpRequest.HEADER_AUTHORIZATION));
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
-        }
-    }
-
-    private HttpURLConnection setupSignRequestTest(String urlStr, String method)
-            throws IOException {
-        final URL url = new URL(urlStr);
-        final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod(method);
-        return connection;
     }
 
     public void testGetRequestCode() {

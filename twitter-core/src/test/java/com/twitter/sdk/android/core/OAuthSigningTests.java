@@ -77,6 +77,15 @@ public class OAuthSigningTests  {
     }
 
     @Test
+    public void testGetAuthorizationHeader() {
+        authSigning.getAuthorizationHeader(HttpMethod.POST.name(),
+                VERIFY_CREDENTIALS_URL, null);
+
+        verify(oAuthHeaders).getAuthorizationHeader(authConfig, authToken, null,
+                HttpMethod.POST.name(), VERIFY_CREDENTIALS_URL, null);
+    }
+
+    @Test
     public void testGetOAuthEchoHeaders() {
         authSigning.getOAuthEchoHeaders(HttpMethod.POST.name(),
                 VERIFY_CREDENTIALS_URL, null);
