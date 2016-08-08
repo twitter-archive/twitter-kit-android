@@ -195,8 +195,8 @@ public class TimelineDelegate<T extends Identifiable> {
      * Subclass methods must call through to the parent method after their custom implementation.
      */
     class DefaultCallback extends Callback<TimelineResult<T>> {
-        protected final Callback<TimelineResult<T>> developerCallback;
-        protected final TimelineStateHolder timelineStateHolder;
+        final Callback<TimelineResult<T>> developerCallback;
+        final TimelineStateHolder timelineStateHolder;
 
         DefaultCallback(Callback<TimelineResult<T>> developerCb,
                         TimelineStateHolder timelineStateHolder) {

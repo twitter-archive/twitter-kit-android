@@ -224,7 +224,7 @@ public final class TestFixtures {
     }
 
     public static VideoInfo createVideoInfoWithVariant(VideoInfo.Variant variant) {
-        return new VideoInfo(null, 0, Arrays.asList(variant));
+        return new VideoInfo(null, 0, Collections.singletonList(variant));
     }
 
 
@@ -248,7 +248,6 @@ public final class TestFixtures {
         final Map<String, Object> testValues = new HashMap<>();
         testValues.put("site", testUser);
 
-        final BindingValues bindingValues = new BindingValues(testValues);
-        return bindingValues;
+        return new BindingValues(testValues);
     }
 }

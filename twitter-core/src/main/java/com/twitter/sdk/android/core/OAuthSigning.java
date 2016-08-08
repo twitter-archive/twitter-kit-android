@@ -31,9 +31,9 @@ public class OAuthSigning {
     static final String VERIFY_CREDENTIALS_URL = TwitterApi.BASE_HOST_URL +
             "/1.1/account/verify_credentials.json";
 
-    protected final TwitterAuthConfig authConfig;
-    protected final TwitterAuthToken authToken;
-    protected final OAuth1aHeaders oAuth1aHeaders;
+    final TwitterAuthConfig authConfig;
+    final TwitterAuthToken authToken;
+    final OAuth1aHeaders oAuth1aHeaders;
 
     /**
      * Constructs OAuthSigning with TwitterAuthConfig and TwitterAuthToken

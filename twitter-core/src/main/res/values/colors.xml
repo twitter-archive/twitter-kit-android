@@ -22,7 +22,5 @@
     <color name="tw__blue_pressed">#FF4186C8</color>
     <color name="tw__blue_pressed_light">#ffe1e8ed</color>
     <color name="tw__solid_white">#FFFFFFFF</color>
-    <!--suppress UnusedResources -->
-    <color name="tw__medium_gray">#8899a6</color>
     <color name="tw__light_gray">#ccd6dd</color>
 </resources>

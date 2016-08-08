@@ -29,11 +29,7 @@ public class VineCardUtils {
     private VineCardUtils() {}
 
     public static boolean isVine(Card card) {
-        if ((PLAYER_CARD.equals(card.name) || VINE_CARD.equals(card.name)) && isVineUser(card)) {
-            return true;
-        }
-
-        return false;
+        return (PLAYER_CARD.equals(card.name) || VINE_CARD.equals(card.name)) && isVineUser(card);
     }
 
     private static boolean isVineUser(Card card) {

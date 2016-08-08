@@ -74,11 +74,7 @@ public class MigrationHelper {
 
         @Override
         public boolean accept(File file, String filename) {
-            if (filename.startsWith(prefix)) {
-                return true;
-            }
-
-            return false;
+            return filename.startsWith(prefix);
         }
     }
 }

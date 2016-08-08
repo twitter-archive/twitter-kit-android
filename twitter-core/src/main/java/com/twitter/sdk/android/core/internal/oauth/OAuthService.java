@@ -43,7 +43,7 @@ abstract class OAuthService {
     private final String userAgent;
     private final Retrofit retrofit;
 
-    public OAuthService(TwitterCore twitterCore, SSLSocketFactory sslSocketFactory,
+    OAuthService(TwitterCore twitterCore, SSLSocketFactory sslSocketFactory,
             TwitterApi api) {
         this.twitterCore = twitterCore;
         this.api = api;

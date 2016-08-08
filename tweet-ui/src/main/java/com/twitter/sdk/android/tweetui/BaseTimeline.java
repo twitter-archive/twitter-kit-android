@@ -60,7 +60,7 @@ abstract class BaseTimeline {
      * Wrapper callback which unpacks a list of Tweets into a TimelineResult (cursor and items).
      */
     static class TweetsCallback extends Callback<List<Tweet>> {
-        protected final Callback<TimelineResult<Tweet>> cb;
+        final Callback<TimelineResult<Tweet>> cb;
 
         /**
          * Constructs a TweetsCallback

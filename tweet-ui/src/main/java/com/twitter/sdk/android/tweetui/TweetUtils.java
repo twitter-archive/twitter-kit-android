@@ -34,7 +34,6 @@ import io.fabric.sdk.android.Fabric;
  * sign in flow.
  */
 public final class TweetUtils {
-    private static final String TAG = TweetUi.LOGTAG;
     private static final String PERMALINK_FORMAT = "https://twitter.com/%s/status/%d";
     private static final String UNKNOWN_SCREEN_NAME = "twitter_unknown";
     static final String LOAD_TWEET_DEBUG = "loadTweet failure for Tweet Id %d.";

@@ -155,9 +155,8 @@ public class VideoView extends SurfaceView
                     height = width * mVideoHeight / mVideoWidth;
                 }
             }
-        } else {
-            // no size yet, just adopt the given spec sizes
         }
+
         setMeasuredDimension(width, height);
     }
 
@@ -235,7 +234,6 @@ public class VideoView extends SurfaceView
             mCurrentState = STATE_ERROR;
             mTargetState = STATE_ERROR;
             mErrorListener.onError(mMediaPlayer, MediaPlayer.MEDIA_ERROR_UNKNOWN, 0);
-            return;
         }
     }
 

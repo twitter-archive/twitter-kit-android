@@ -236,5 +236,5 @@ public class TwitterAuthClient {
                     exception);
             callback.failure(exception);
         }
-    };
+    }
 }

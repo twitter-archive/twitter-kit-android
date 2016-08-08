@@ -32,6 +32,7 @@ import retrofit2.Response;
 import retrofit2.mock.Calls;
 
 import com.twitter.sdk.android.core.BuildConfig;
+import com.twitter.sdk.android.core.GuestSession;
 import com.twitter.sdk.android.core.GuestSessionProvider;
 import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.TestResources;
@@ -121,7 +122,7 @@ public class ScribeFilesSenderTest {
                 ANY_SCRIBE_PATH_TYPE, null, ANY_USER_AGENT, ScribeConfig.DEFAULT_MAX_FILES_TO_KEEP,
                 ScribeConfig.DEFAULT_SEND_INTERVAL_SECONDS);
         filesSender = new ScribeFilesSender(context, scribeConfig,
-                ScribeConstants.LOGGED_OUT_USER_ID, mock(TwitterAuthConfig.class), mockSessionMgr,
+                GuestSession.LOGGED_OUT_USER_ID, mock(TwitterAuthConfig.class), mockSessionMgr,
                 mockGuestSessionProvider, (SSLSocketFactory) SSLSocketFactory.getDefault(),
                 mock(ExecutorService.class), mockIdManager);
         filesSender.setScribeService(mockService);
@@ -173,7 +174,7 @@ public class ScribeFilesSenderTest {
                 ScribeConfig.DEFAULT_MAX_FILES_TO_KEEP, ScribeConfig.DEFAULT_SEND_INTERVAL_SECONDS);
 
         filesSender = new ScribeFilesSender(context, config,
-                ScribeConstants.LOGGED_OUT_USER_ID, mock(TwitterAuthConfig.class), mockSessionMgr,
+                GuestSession.LOGGED_OUT_USER_ID, mock(TwitterAuthConfig.class), mockSessionMgr,
                 mockGuestSessionProvider, mock(SSLSocketFactory.class), mock(ExecutorService.class),
                 mock(IdManager.class));
         filesSender.setScribeService(mockService);

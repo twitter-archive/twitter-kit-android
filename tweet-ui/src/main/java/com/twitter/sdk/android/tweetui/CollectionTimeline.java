@@ -92,7 +92,7 @@ public class CollectionTimeline extends BaseTimeline implements Timeline<Tweet> 
      * Wrapper callback which unpacks a TwitterCollection into a TimelineResult (cursor and items).
      */
     class CollectionCallback extends Callback<TwitterCollection> {
-        private final Callback<TimelineResult<Tweet>> cb;
+        final Callback<TimelineResult<Tweet>> cb;
 
         /**
          * Constructs a CollectionCallback

@@ -21,7 +21,7 @@ import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.internal.scribe.SyndicatedSdkImpressionEvent;
 import com.twitter.sdk.android.core.internal.scribe.SyndicationClientEvent;
 
-public class ScribeConstants {
+final class ScribeConstants {
     private ScribeConstants() {}
 
     // tfw client event specific names

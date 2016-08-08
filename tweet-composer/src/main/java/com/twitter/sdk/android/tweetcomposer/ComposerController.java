@@ -32,10 +32,10 @@ import com.twitter.sdk.android.core.internal.TwitterApiConstants;
 import com.twitter.sdk.android.core.models.User;
 
 class ComposerController {
-    ComposerView composerView;
-    TwitterSession session;
-    Card card;
-    ComposerActivity.Finisher finisher;
+    final ComposerView composerView;
+    final TwitterSession session;
+    final Card card;
+    final ComposerActivity.Finisher finisher;
     final DependencyProvider dependencyProvider;
 
     ComposerController(final ComposerView composerView, TwitterSession session, Card card,

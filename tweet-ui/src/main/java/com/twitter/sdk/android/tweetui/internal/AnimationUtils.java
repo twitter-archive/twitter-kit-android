@@ -22,7 +22,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
 
-public class AnimationUtils {
+class AnimationUtils {
     public static ViewPropertyAnimator fadeOut(final View from, int duration) {
         if (from.getVisibility() == View.VISIBLE) {
             from.clearAnimation();

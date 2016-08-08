@@ -20,7 +20,10 @@ package com.twitter.sdk.android.tweetcomposer;
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
 
-class ScribeConstants {
+final class ScribeConstants {
+
+    private ScribeConstants() {}
+
     // namespaces with client "tfw" become SyndicationClientEvent scribes to /logs/tfw_client_event
     static final String SCRIBE_TFW_CLIENT = "tfw";
 

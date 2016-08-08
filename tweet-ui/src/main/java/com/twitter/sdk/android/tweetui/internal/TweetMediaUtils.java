@@ -94,19 +94,12 @@ final public class TweetMediaUtils {
     }
 
     static boolean isPhotoType(MediaEntity mediaEntity) {
-        if (PHOTO_TYPE.equals(mediaEntity.type)) {
-            return true;
-        }
+        return PHOTO_TYPE.equals(mediaEntity.type);
 
-        return false;
     }
 
     static boolean isVideoType(MediaEntity mediaEntity) {
-        if (VIDEO_TYPE.equals(mediaEntity.type) || GIF_TYPE.equals(mediaEntity.type)) {
-            return true;
-        }
-
-        return false;
+        return VIDEO_TYPE.equals(mediaEntity.type) || GIF_TYPE.equals(mediaEntity.type);
     }
 
     static public VideoInfo.Variant getSupportedVariant(MediaEntity mediaEntity) {
@@ -120,11 +113,7 @@ final public class TweetMediaUtils {
     }
 
     static public boolean isLooping(MediaEntity mediaEntity) {
-        if (GIF_TYPE.equals(mediaEntity.type)) {
-            return true;
-        }
-
-        return false;
+        return GIF_TYPE.equals(mediaEntity.type);
     }
 
     static boolean isVariantSupported(VideoInfo.Variant variant) {
