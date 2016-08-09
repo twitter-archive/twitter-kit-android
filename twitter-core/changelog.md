@@ -3,7 +3,17 @@
 
 ## Unreleased
 
+* Dropped support for API versions before API 14 (ICS).
+* Migrated to Retrofit 2.0 and OkHttp 3.2.
+* TwitterApiClient now automatically refreshes expired guest tokens.
+* Removed previously deprecated methods and classes.
+* Removed all public reference to Application Authentication.
+* Fixed issue parsing withheldInCountries field in User object.
+* Added altText field to MediaEntity object.
+* Added Quote Tweet to Tweet object.
+
 ## v1.7.0
+
 * Added support for Vine in Tweets
 * Enabled extended Tweet display
 
@@ -16,9 +26,11 @@
 * Updated Fabric Base dependency
 
 ## v1.6.6
+
 * Fixed security issue where certificate pinning wasn't happening for some requests.
 
 ## v1.6.5
+
  * Removed Verisign Class 3 Certificate from pinning list.
  * Fixed JavaDocs.
 

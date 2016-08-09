@@ -3,6 +3,8 @@
 
 ## Unreleased
 
+* Dropped support for API versions before API 14 (ICS).
+
 ## v1.0.0
 
  * Initial release.

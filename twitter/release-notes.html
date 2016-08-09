@@ -1,5 +1,16 @@
 <h2>Twitter</h2>
 
+<h3>2.0.0</h3>
+- Dropped support for API versions before API 14 (ICS).<br/>
+- Migrated to Retrofit 2.0 and OkHttp 3.2.<br/>
+- TwitterApiClient now automatically refreshes expired guest tokens.<br/>
+- Removed previously deprecated methods and classes.<br/>
+- Removed all public reference to Application Authentication.<br/>
+- Fixed issue parsing withheldInCountries field in User object.<br/>
+- Added altText field to MediaEntity object.<br/>
+- Added contentDescription for media based on altText field.<br/>
+- Added Quote Tweet to Tweet object.<br/>
+
 <h3>1.14.1</h3>
 - Bump Digits and tweet-ui dependencies
 

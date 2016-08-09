@@ -3,10 +3,17 @@
 
 ## Unreleased
 
+* Dropped support for API versions before API 14 (ICS).
+* Updated Twitter Core dependency.
+* Removed previously deprecated methods and classes.
+* Added contentDescription for media based on altText field.
+
 ## v1.11.1
+
 * Allow non-filtered search results for SearchTimeline
 
 ## v1.11.0
+
 * Added support for Vine in Tweets
 
 ## v1.10.3
@@ -18,11 +25,13 @@
 * Updated Fabric Base dependency
 
 ## v1.10.1
+
 * Added HLS playback support. Removed WebM playback support.
 * Added loading and buffering spinners to video player.
 * Only show play button and media badge if playback is supported.
 
 ## v1.10.0
+
 * Added click listeners on Tweet views for URL and media clicks.
 * Fixed click listeners on Tweet text so multiple events are not generated.
 * Fixed JavaDocs.
