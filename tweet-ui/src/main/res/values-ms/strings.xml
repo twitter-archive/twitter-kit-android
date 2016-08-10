@@ -18,6 +18,7 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__cta_text">Buka dalam Vine</string>
     <string name="tw__like_tweet">Suka Tweet</string>
     <string name="tw__liked_tweet">Batal Suka</string>
     <string name="tw__loading_tweet">Memuatkan Tweet</string>
@@ -29,4 +30,5 @@
     <string name="tw__share_subject_format">Tweet daripada %1$s (\@%2$s)</string>
     <string name="tw__share_tweet">Kongsi Tweet</string>
     <string name="tw__tweet_content_description">%1$s. %2$s. %3$s.</string>
+    <string name="tw__tweet_media">Media Tweet</string>
 </resources>

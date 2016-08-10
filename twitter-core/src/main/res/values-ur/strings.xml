@@ -21,5 +21,6 @@
     <string name="tw__allow_btn_txt">اجازت دیں</string>
     <string name="tw__login_btn_txt">ٹوئٹر سے لاگ ان کریں</string>
     <string name="tw__not_now_btn_txt">ابھی نہیں</string>
+    <string name="tw__share_email_desc">%1$s کو اپنے ٹوئٹر اکاؤنٹ ‎\@%2$s کے ساتھ منسلک شدہ ای میل ایڈریس تک رسائی حاصل کرنے کی اجازت دیں تاکہ %1$s اسے اس کی پرائیویسی پالیسی کے مطابق استعمال کر سکے۔ مثال کے طور پر، %1$s اس ایڈریس پر آپ کو اپ ڈیٹس اور دیگر معلومات بھیج سکتے ہیں۔</string>
     <string name="tw__share_email_title">اپنا ای میل ایڈریس شیئر کریں</string>
 </resources>

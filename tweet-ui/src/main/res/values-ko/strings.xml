@@ -30,4 +30,5 @@
     <string name="tw__share_subject_format">%1$s (\@%2$s) 님의 트윗</string>
     <string name="tw__share_tweet">트윗 공유하기</string>
     <string name="tw__tweet_content_description">%1$s. %2$s. %3$s.</string>
+    <string name="tw__tweet_media">트윗 미디어</string>
 </resources>

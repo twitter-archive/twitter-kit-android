@@ -18,6 +18,7 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__cta_text">Deschide în Vine</string>
     <string name="tw__like_tweet">Apreciază Tweetul</string>
     <string name="tw__liked_tweet">Anulează aprecierea</string>
     <string name="tw__loading_tweet">Se încarcă Tweetul</string>
@@ -29,4 +30,5 @@
     <string name="tw__share_subject_format">Tweet de la %1$s (\@%2$s)</string>
     <string name="tw__share_tweet">Distribuie Tweetul</string>
     <string name="tw__tweet_content_description">%1$s. %2$s. %3$s.</string>
+    <string name="tw__tweet_media">Tweet cu conținut media</string>
 </resources>

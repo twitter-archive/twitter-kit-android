@@ -18,6 +18,7 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__cta_text">Vine-এ খুলুন</string>
     <string name="tw__like_tweet">টুইট পছন্দ করুন</string>
     <string name="tw__liked_tweet">পছন্দ ফিরিয়ে নিন</string>
     <string name="tw__loading_tweet">টুইট লোড হচ্ছে</string>
@@ -29,4 +30,5 @@
     <string name="tw__share_subject_format">%1$s (\@%2$s) থেকে টুইট</string>
     <string name="tw__share_tweet">টুইট ভাগ করুন</string>
     <string name="tw__tweet_content_description">%1$s. %2$s. %3$s.</string>
+    <string name="tw__tweet_media">টুইট মিডিয়া</string>
 </resources>

@@ -18,6 +18,7 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__cta_text">Otvori na servisu Vine</string>
     <string name="tw__like_tweet">Označi Tweet oznakom \"sviđa mi se\"</string>
     <string name="tw__liked_tweet">Poništi oznaku \"sviđa mi se\"</string>
     <string name="tw__loading_tweet">Učitavanje tweeta</string>
@@ -29,4 +30,5 @@
     <string name="tw__share_subject_format">Tweet korisnika/ce %1$s (\@%2$s)</string>
     <string name="tw__share_tweet">Podijeli Tweet</string>
     <string name="tw__tweet_content_description">%1$s. %2$s. %3$s.</string>
+    <string name="tw__tweet_media">Medijski sadržaji u tweetu</string>
 </resources>

@@ -21,6 +21,9 @@
     <string name="tw__allow_btn_txt">Izinkan</string>
     <string name="tw__login_btn_txt">Masuk dengan Twitter</string>
     <string name="tw__not_now_btn_txt">Jangan sekarang</string>
-    <string name="tw__share_email_desc">Izinkan %1$s mengakses alamat email yang terkait dengan akun Twitter Anda \@%2$s sehingga %1$s dapat menggunakannya sesuai dengan kebijakan privasi. Sebagai contoh, %1$s dapat mengirimi Anda  pembaruan dan informasi lainnya dari alamat tersebut.</string>
+    <string name="tw__share_email_desc">Izinkan %1$s mengakses alamat email yang terkait dengan akun Twitter Anda \@%2$s \
+sehingga %1$s dapat menggunakannya sesuai dengan kebijakan privasi. \
+Sebagai contoh, %1$s dapat mengirimi Anda  pembaruan dan informasi lainnya\
+ dari alamat tersebut.</string>
     <string name="tw__share_email_title">Sebarkan alamat email Anda</string>
 </resources>

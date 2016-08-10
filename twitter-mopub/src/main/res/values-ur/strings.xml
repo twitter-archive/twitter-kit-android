@@ -17,4 +17,7 @@
   ~
   -->
 
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"/>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__privacy_icon_content_desc">پرائیویسی آئیکن</string>
+    <string name="tw__sponsored">یہ اسپانسرشدہ اشتہار ہے</string>
+</resources>

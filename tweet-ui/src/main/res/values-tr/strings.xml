@@ -18,6 +18,7 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__cta_text">Vine\'da aç</string>
     <string name="tw__like_tweet">Tweet Beğen</string>
     <string name="tw__liked_tweet">Beğenmekten Vazgeç</string>
     <string name="tw__loading_tweet">Tweet Yükleniyor</string>
@@ -29,4 +30,5 @@
     <string name="tw__share_subject_format">Tweet gönderen: %1$s (\@%2$s)</string>
     <string name="tw__share_tweet">Tweet Paylaş</string>
     <string name="tw__tweet_content_description">%1$s. %2$s. %3$s.</string>
+    <string name="tw__tweet_media">Tweet Medyası</string>
 </resources>

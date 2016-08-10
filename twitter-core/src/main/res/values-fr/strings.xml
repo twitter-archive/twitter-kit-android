@@ -20,7 +20,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="tw__allow_btn_txt">Autoriser</string>
     <string name="tw__login_btn_txt">Se connecter avec Twitter</string>
-    <string name="tw__not_now_btn_txt">Pas maintenant</string>
+    <string name="tw__not_now_btn_txt">Plus tard</string>
     <string name="tw__share_email_desc">Autoriser %1$s à accéder à l\'adresse email associée à votre compte Twitter \@%2$s afin que %1$s puisse  l\'utiliser conformément à la politique de confidentialité. Par exemple, %1$s pourra vous envoyer des actualités et d\'autres informations à cette adresse.</string>
     <string name="tw__share_email_title">Partagez votre adresse email</string>
 </resources>

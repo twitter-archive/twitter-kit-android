@@ -30,4 +30,5 @@
     <string name="tw__share_subject_format">Twiitti käyttäjältä %1$s (\@%2$s)</string>
     <string name="tw__share_tweet">Jaa twiitti</string>
     <string name="tw__tweet_content_description">%1$s. %2$s. %3$s.</string>
+    <string name="tw__tweet_media">Twiitin mediasisältö</string>
 </resources>

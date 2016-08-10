@@ -18,6 +18,7 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__cta_text">เปิดใน Vine</string>
     <string name="tw__like_tweet">ชื่นชอบทวีต</string>
     <string name="tw__liked_tweet">เลิกชื่นชอบ</string>
     <string name="tw__loading_tweet">กำลังโหลดทวีต</string>
@@ -29,4 +30,5 @@
     <string name="tw__share_subject_format">ทวีตจาก %1$s (\@%2$s)</string>
     <string name="tw__share_tweet">แบ่งปันทวีต</string>
     <string name="tw__tweet_content_description">%1$s. %2$s. %3$s.</string>
+    <string name="tw__tweet_media">ทวีตสื่อ</string>
 </resources>

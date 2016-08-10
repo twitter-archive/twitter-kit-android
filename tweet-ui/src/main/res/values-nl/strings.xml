@@ -18,9 +18,10 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__cta_text">Openen in Vine</string>
     <string name="tw__like_tweet">Tweet leuk vinden</string>
     <string name="tw__liked_tweet">Niet meer leuk</string>
-    <string name="tw__loading_tweet">Tweet laden</string>
+    <string name="tw__loading_tweet">Tweet laden…</string>
     <string name="tw__pause">pauzeren</string>
     <string name="tw__play">afspelen</string>
     <string name="tw__replay">opnieuw afspelen</string>
@@ -29,4 +30,5 @@
     <string name="tw__share_subject_format">Tweet van %1$s (\@%2$s)</string>
     <string name="tw__share_tweet">Tweet delen</string>
     <string name="tw__tweet_content_description">%1$s. %2$s. %3$s.</string>
+    <string name="tw__tweet_media">Tweetmedia</string>
 </resources>

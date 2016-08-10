@@ -19,8 +19,8 @@
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="tw__cta_text">Obre\'l al Vine</string>
-    <string name="tw__like_tweet">Fes M\'agrada al tuit</string>
-    <string name="tw__liked_tweet">Desfés el M\'agrada</string>
+    <string name="tw__like_tweet">M\'agrada el tuit</string>
+    <string name="tw__liked_tweet">Desfés l\'agradament</string>
     <string name="tw__loading_tweet">S\'està carregant el tuit</string>
     <string name="tw__pause">atura temporalment</string>
     <string name="tw__play">reprodueix</string>
@@ -30,4 +30,5 @@
     <string name="tw__share_subject_format">Tuit de %1$s (\@%2$s)</string>
     <string name="tw__share_tweet">Comparteix el tuit</string>
     <string name="tw__tweet_content_description">%1$s. %2$s. %3$s.</string>
+    <string name="tw__tweet_media">Tuit amb contingut multimèdia</string>
 </resources>

@@ -30,4 +30,5 @@
     <string name="tw__share_subject_format">Tweet de %1$s (\@%2$s)</string>
     <string name="tw__share_tweet">Partager le Tweet</string>
     <string name="tw__tweet_content_description">%1$s. %2$s. %3$s.</string>
+    <string name="tw__tweet_media">Média du Tweet</string>
 </resources>

@@ -18,6 +18,7 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__cta_text">在 Vine 中打开</string>
     <string name="tw__like_tweet">喜欢推文</string>
     <string name="tw__liked_tweet">取消喜欢</string>
     <string name="tw__loading_tweet">加载推文</string>
@@ -29,4 +30,5 @@
     <string name="tw__share_subject_format">来自 %1$s 的推文 (\@%2$s)</string>
     <string name="tw__share_tweet">分享推文</string>
     <string name="tw__tweet_content_description">%1$s. %2$s. %3$s.</string>
+    <string name="tw__tweet_media">推文媒体</string>
 </resources>
