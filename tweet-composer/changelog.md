@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+## v2.0.0
+
 * Dropped support for API versions before API 14 (ICS).
 * Updated Twitter Core Dependency
 

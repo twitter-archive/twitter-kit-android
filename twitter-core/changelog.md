@@ -3,6 +3,8 @@
 
 ## Unreleased
 
+## v2.0.0
+
 * Dropped support for API versions before API 14 (ICS).
 * Migrated to Retrofit 2.0 and OkHttp 3.2.
 * TwitterApiClient now automatically refreshes expired guest tokens.
