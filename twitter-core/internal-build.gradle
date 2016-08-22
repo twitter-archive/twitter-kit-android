@@ -15,7 +15,6 @@
  *
  */
 
-apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.library'
 apply from: rootProject.qualityScript
 apply from: rootProject.deployScript

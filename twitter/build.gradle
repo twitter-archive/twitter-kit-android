@@ -15,7 +15,6 @@
  *
  */
 
-apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.library'
 
 apply plugin: 'io.fabric.gradle.release.kit-release'
@@ -23,10 +22,6 @@ applyInternal from: rootProject.qualityScript
 applyInternal from: rootProject.deployScript
 applyInternal plugin: 'io.fabric.gradle.weaving.ArtifactSizePlugin'
 applyInternal plugin: 'io.fabric.gradle.weaving.FabricPropertiesPlugin'
-
-repositories {
-    jcenter()
-}
 
 android {
     compileSdkVersion rootProject.compileSdkVersion

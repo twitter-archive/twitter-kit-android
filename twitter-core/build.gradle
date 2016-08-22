@@ -15,8 +15,6 @@
  *
  */
 
-
-apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.library'
 
 apply from: rootProject.commonPlugins
