@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
+import com.twitter.sdk.android.tweetui.internal.SwipeToDismissTouchListener;
 
 import java.io.Serializable;
 
@@ -43,7 +44,20 @@ public class PlayerActivity extends Activity {
 
         final PlayerItem item = (PlayerItem) getIntent().getSerializableExtra(PLAYER_ITEM);
         final View rootView = findViewById(android.R.id.content);
-        playerController = new PlayerController(rootView);
+        playerController = new PlayerController(rootView,
+                new SwipeToDismissTouchListener.Callback(){
+
+            @Override
+            public void onDismiss() {
+                PlayerActivity.this.finish();
+                overridePendingTransition(0, R.anim.tw__slide_out);
+            }
+
+            @Override
+            public void onMove(float translationY) {
+
+            }
+        });
         playerController.prepare(item);
 
         final ScribeItem scribeItem = (ScribeItem) getIntent().getSerializableExtra(SCRIBE_ITEM);
@@ -66,6 +80,12 @@ public class PlayerActivity extends Activity {
     public void onDestroy() {
         playerController.onDestroy();
         super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(0, R.anim.tw__slide_out);
     }
 
     private void scribeCardPlayImpression(ScribeItem scribeItem) {

@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.twitter.sdk.android.tweetui.internal.SwipeToDismissTouchListener;
 import com.twitter.sdk.android.tweetui.internal.VideoControlView;
 import com.twitter.sdk.android.tweetui.internal.VideoView;
 
@@ -34,6 +35,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
@@ -62,6 +64,8 @@ public class PlayerControllerTest {
     TextView callToActionView;
     @Mock
     View rootView;
+    @Mock
+    SwipeToDismissTouchListener.Callback callback;
     @Captor
     private ArgumentCaptor<View.OnClickListener> clickListenerCaptor;
     @Captor
@@ -75,9 +79,9 @@ public class PlayerControllerTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        subject = spy(
-                new PlayerController(rootView, videoView, videoControlView,
-                        videoProgressView, callToActionView));
+        when(videoView.getContext()).thenReturn(RuntimeEnvironment.application);
+        subject = spy(new PlayerController(rootView, videoView, videoControlView,
+                videoProgressView, callToActionView, callback));
         playerItem = new PlayerActivity.PlayerItem(TEST_CONTENT_URL, false);
     }
 
@@ -87,6 +91,7 @@ public class PlayerControllerTest {
         subject.prepare(playerItem);
 
         verify(subject).setUpMediaControl(false);
+        verify(videoView).setOnTouchListener(any(View.OnTouchListener.class));
         verify(videoView).setVideoURI(TEST_URI, false);
         verify(videoView).requestFocus();
         verify(videoView).setOnPreparedListener(any(MediaPlayer.OnPreparedListener.class));

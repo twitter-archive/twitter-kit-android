@@ -25,6 +25,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.twitter.sdk.android.core.IntentUtils;
+import com.twitter.sdk.android.tweetui.internal.SwipeToDismissTouchListener;
 import com.twitter.sdk.android.tweetui.internal.VideoControlView;
 import com.twitter.sdk.android.tweetui.internal.VideoView;
 
@@ -39,29 +40,36 @@ class PlayerController {
     View rootView;
     int seekPosition = 0;
     boolean isPlaying = true;
+    final SwipeToDismissTouchListener.Callback callback;
 
-    PlayerController(View rootView) {
+    PlayerController(View rootView, SwipeToDismissTouchListener.Callback callback) {
         this.rootView = rootView;
         this.videoView = (VideoView) rootView.findViewById(R.id.video_view);
         this.videoControlView = (VideoControlView) rootView.findViewById(R.id.video_control_view);
         this.videoProgressView = (ProgressBar) rootView.findViewById(R.id.video_progress_view);
         this.callToActionView = (TextView) rootView.findViewById(R.id.call_to_action_view);
+        this.callback = callback;
     }
 
     // Unit testing purposes
     PlayerController(View rootView, VideoView videoView, VideoControlView videoControlView,
-                     ProgressBar videoProgressView, TextView callToActionView) {
+            ProgressBar videoProgressView, TextView callToActionView,
+            SwipeToDismissTouchListener.Callback callback) {
         this.rootView = rootView;
         this.videoView = videoView;
         this.videoControlView = videoControlView;
         this.videoProgressView = videoProgressView;
         this.callToActionView = callToActionView;
+        this.callback = callback;
     }
 
     void prepare(PlayerActivity.PlayerItem item) {
         try {
             setUpCallToAction(item);
             setUpMediaControl(item.looping);
+            final View.OnTouchListener listener = SwipeToDismissTouchListener
+                    .createFromView(videoView, callback);
+            videoView.setOnTouchListener(listener);
             videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mediaPlayer) {

@@ -19,10 +19,12 @@ package com.twitter.sdk.android.tweetui;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 
 import com.squareup.picasso.Picasso;
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.tweetui.internal.MultiTouchImageView;
+import com.twitter.sdk.android.tweetui.internal.SwipeToDismissTouchListener;
 
 public class GalleryActivity extends Activity {
     static final String MEDIA_ENTITY = "MEDIA_ENTITY";
@@ -36,6 +38,28 @@ public class GalleryActivity extends Activity {
         final MediaEntity entity = (MediaEntity) getIntent().getSerializableExtra(MEDIA_ENTITY);
         final MultiTouchImageView imageView = (MultiTouchImageView) findViewById(R.id.image_view);
 
+        final View.OnTouchListener touchListener =
+                SwipeToDismissTouchListener.createFromView(imageView,
+                        new SwipeToDismissTouchListener.Callback() {
+            @Override
+            public void onDismiss() {
+                finish();
+                overridePendingTransition(0, R.anim.tw__slide_out);
+            }
+
+            @Override
+            public void onMove(float translationY) {
+
+            }
+        });
+        imageView.setOnTouchListener(touchListener);
+
         Picasso.with(this).load(entity.mediaUrlHttps).into(imageView);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(0, R.anim.tw__slide_out);
     }
 }

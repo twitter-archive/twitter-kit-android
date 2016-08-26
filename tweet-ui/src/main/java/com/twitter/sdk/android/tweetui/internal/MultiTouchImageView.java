@@ -30,7 +30,8 @@ import android.view.ViewParent;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 
-public class MultiTouchImageView extends ImageView {
+public class MultiTouchImageView extends ImageView
+        implements SwipeToDismissTouchListener.SwipeableViewProvider {
     private final static long SCALE_ANIMATION_DURATION = 300L;
     private final static float DOUBLE_TAP_SCALE_FACTOR = 2.0f;
     private final static float MINIMUM_SCALE_FACTOR = 1.0f;
@@ -240,5 +241,10 @@ public class MultiTouchImageView extends ImageView {
             }
         });
         animator.start();
+    }
+
+    @Override
+    public boolean canBeSwiped() {
+        return getScale() == 1f;
     }
 }

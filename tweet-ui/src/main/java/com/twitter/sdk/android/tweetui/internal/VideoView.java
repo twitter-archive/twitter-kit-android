@@ -31,6 +31,7 @@ import android.media.MediaPlayer.OnInfoListener;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -167,6 +168,7 @@ public class VideoView extends SurfaceView
         getHolder().setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         setFocusable(true);
         setFocusableInTouchMode(true);
+        setClickable(true);
         requestFocus();
         mCurrentState = STATE_IDLE;
         mTargetState = STATE_IDLE;
@@ -355,6 +357,23 @@ public class VideoView extends SurfaceView
                 }
             };
 
+    private GestureDetector gestureDetector = new GestureDetector(getContext(),
+            new GestureDetector.SimpleOnGestureListener() {
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            if (isInPlaybackState() && mMediaController != null) {
+                toggleMediaControlsVisiblity();
+            }
+            return false;
+        }
+    });
+
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        final boolean retVal = gestureDetector.onTouchEvent(ev);
+        return retVal || super.onTouchEvent(ev);
+    }
+
     /**
      * Register a callback to be invoked when the media file
      * is loaded and ready to go.
@@ -441,22 +460,6 @@ public class VideoView extends SurfaceView
                 mTargetState = STATE_IDLE;
             }
         }
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent ev) {
-        if (isInPlaybackState() && mMediaController != null) {
-            toggleMediaControlsVisiblity();
-        }
-        return super.onTouchEvent(ev);
-    }
-
-    @Override
-    public boolean onTrackballEvent(MotionEvent ev) {
-        if (isInPlaybackState() && mMediaController != null) {
-            toggleMediaControlsVisiblity();
-        }
-        return super.onTrackballEvent(ev);
     }
 
     @Override

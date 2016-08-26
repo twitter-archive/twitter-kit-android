@@ -88,6 +88,15 @@ public class MultiTouchImageViewTest extends FabricAndroidTestCase {
         assertEquals(TEST_BASE_MATRIX, view.baseMatrix);
     }
 
+    public void testCanBeSwiped_withScaleEqualOne() {
+        assertTrue(view.canBeSwiped());
+    }
+
+    public void testCanBeSwiped_withScaleGreaterThanOne() {
+        view.setScale(2, 0, 0);
+        assertFalse(view.canBeSwiped());
+    }
+
     static class MatrixBuilder {
         private final Matrix matrix = new Matrix();
 
