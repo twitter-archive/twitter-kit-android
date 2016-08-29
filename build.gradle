@@ -21,7 +21,7 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.3'
+        classpath 'com.android.tools.build:gradle:2.1.2'
         classpath 'io.fabric.gradle.unity:unity:0.0.1'
         classpath 'io.fabric.gradle.weaving:projectOrBinary:0.0.1'
         classpath 'io.fabric.gradle.release:kit-release:0.0.4'
@@ -63,7 +63,7 @@ subprojects { Project subproject ->
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.14.1'
+    gradleVersion = '2.12'
 }
 
 ext {
