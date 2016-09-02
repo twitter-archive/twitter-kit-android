@@ -27,7 +27,7 @@ import java.io.Serializable;
 
 public class PlayerActivity extends Activity {
 
-    static final String PLAYER_ITEM = "PLAYER_ITEM";
+    public static final String PLAYER_ITEM = "PLAYER_ITEM";
 
     static final String SCRIBE_ITEM = "SCRIBE_ITEM";
 
