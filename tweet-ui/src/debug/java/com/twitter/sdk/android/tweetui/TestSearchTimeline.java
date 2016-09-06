@@ -24,8 +24,8 @@ import retrofit2.Call;
 public class TestSearchTimeline extends SearchTimeline {
 
     TestSearchTimeline(TweetUi tweetUi, String query, String resultType, String lang,
-            Integer count) {
-        super(tweetUi, query, resultType, lang, count);
+            Integer count, String untilDate) {
+        super(tweetUi, query, resultType, lang, count, untilDate);
     }
 
     @Override

@@ -24,7 +24,10 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Search;
 import com.twitter.sdk.android.core.models.Tweet;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 
@@ -34,17 +37,21 @@ import retrofit2.Call;
 public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
     static final String FILTER_RETWEETS = " -filter:retweets";   // leading whitespace intentional
     private static final String SCRIBE_SECTION = "search";
+    private static final SimpleDateFormat QUERY_DATE =
+            new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
     final String query;
     final String resultType;
     final String languageCode;
     final Integer maxItemsPerRequest;
+    final String untilDate;
 
     SearchTimeline(TweetUi tweetUi, String query, String resultType, String languageCode,
-            Integer maxItemsPerRequest) {
+            Integer maxItemsPerRequest, String untilDate) {
         super(tweetUi);
         this.languageCode = languageCode;
         this.maxItemsPerRequest = maxItemsPerRequest;
+        this.untilDate = untilDate;
         this.resultType = resultType;
         // if the query is non-null append the filter Retweets modifier
         this.query = query == null ? null : query + FILTER_RETWEETS;
@@ -81,7 +88,8 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
 
     Call<Search> createSearchRequest(final Long sinceId, final Long maxId) {
         return TwitterCore.getInstance().getApiClient().getSearchService().tweets(query, null,
-                languageCode, null, resultType, maxItemsPerRequest, null, sinceId, maxId, true);
+                languageCode, null, resultType, maxItemsPerRequest, untilDate, sinceId, maxId,
+                true);
     }
 
     /**
@@ -138,6 +146,7 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
         private String lang;
         private String resultType = ResultType.FILTERED.type;
         private Integer maxItemsPerRequest = 30;
+        private String untilDate;
 
         /**
          * Constructs a Builder.
@@ -202,6 +211,17 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
         }
 
         /**
+         * Returns tweets generated before the given date. Date should be formatted as YYYY-MM-DD.
+         * Keep in mind that the search index may not go back as far as the date you specify here.
+         *
+         * @param date Date before which the tweets were created.
+         */
+        public Builder untilDate(Date date) {
+            untilDate = QUERY_DATE.format(date);
+            return this;
+        }
+
+        /**
          * Builds a SearchTimeline from the Builder parameters.
          * @return a SearchTimeline.
          * @throws java.lang.IllegalStateException if query is not set (is null).
@@ -210,7 +230,8 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
             if (query == null) {
                 throw new IllegalStateException("query must not be null");
             }
-            return new SearchTimeline(tweetUi, query, resultType, lang, maxItemsPerRequest);
+            return new SearchTimeline(tweetUi, query, resultType, lang, maxItemsPerRequest,
+                    untilDate);
         }
     }
 }
