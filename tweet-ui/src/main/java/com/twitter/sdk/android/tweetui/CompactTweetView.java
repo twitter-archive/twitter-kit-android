@@ -28,6 +28,7 @@ public class CompactTweetView extends BaseTweetView {
     private static final double SQUARE_ASPECT_RATIO = 1.0;
     private static final double MAX_LANDSCAPE_ASPECT_RATIO = 3.0;
     private static final double MIN_LANDSCAPE_ASPECT_RATIO = 4.0 / 3.0;
+    private static final double DEFAULT_ASPECT_RATIO_MEDIA_CONTAINER = 16.0 / 10.0;
 
     public CompactTweetView(Context context, Tweet tweet) {
         super(context, tweet);
@@ -62,6 +63,12 @@ public class CompactTweetView extends BaseTweetView {
         screenNameView.requestLayout();
     }
 
+    @Override
+    protected void applyStyles() {
+        super.applyStyles();
+        tweetMediaView.setRoundedCorners(true);
+    }
+
     /**
      * Returns the desired aspect ratio of the Tweet media entity according to "sizes" metadata
      * and the aspect ratio display rules.
@@ -84,6 +91,17 @@ public class CompactTweetView extends BaseTweetView {
             // landscape photos between 3:1 to 4:3 present the original width to height ratio
             return ratio;
         }
+    }
+
+    /**
+     * Returns the desired aspect ratio for Tweet that contains photo entities
+     *
+     * @param photoCount total count of photo entities
+     * @return the target image and bitmap width to height aspect ratio
+     */
+    @Override
+    protected double getAspectRatioForPhotoEntity(int photoCount) {
+        return DEFAULT_ASPECT_RATIO_MEDIA_CONTAINER;
     }
 
     @Override

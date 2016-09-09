@@ -27,15 +27,20 @@ import com.twitter.sdk.android.tweetui.internal.SwipeToDismissTouchListener;
 import java.util.Collections;
 import java.util.List;
 
+import java.io.Serializable;
+
 public class GalleryActivity extends Activity {
+    public static final String GALLERY_ITEM = "GALLERY_ITEM";
     static final String MEDIA_ENTITY = "MEDIA_ENTITY";
-    static final String MEDIA_ENTITIES = "MEDIA_ENTITIES";
     static final String TWEET_ID = "TWEET_ID";
+    GalleryItem galleryItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tw__gallery_activity);
+
+        galleryItem = getGalleryItem();
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.tw__view_pager);
         final int marginPixels =
@@ -55,23 +60,42 @@ public class GalleryActivity extends Activity {
 
             }
         });
-        adapter.addAll(getEntities());
+
+        adapter.addAll(galleryItem.mediaEntities);
         viewPager.setAdapter(adapter);
+        viewPager.setCurrentItem(galleryItem.mediaEntityIndex);
     }
 
     // For backwards compatibility we need to support single entity or list of entities.
-    List<MediaEntity> getEntities() {
+    GalleryItem getGalleryItem() {
         final MediaEntity entity = (MediaEntity) getIntent().getSerializableExtra(MEDIA_ENTITY);
         if (entity != null) {
-            return Collections.singletonList(entity);
+            return new GalleryItem(0, Collections.singletonList(entity));
         }
 
-        return (List<MediaEntity>) getIntent().getSerializableExtra(MEDIA_ENTITIES);
+        return (GalleryItem) getIntent().getSerializableExtra(GALLERY_ITEM);
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(0, R.anim.tw__slide_out);
+    }
+
+    public static class GalleryItem implements Serializable {
+        public long tweetId;
+        public int mediaEntityIndex;
+        public List<MediaEntity> mediaEntities;
+
+        public GalleryItem(int mediaEntityIndex, List<MediaEntity> mediaEntities) {
+            this.mediaEntityIndex = mediaEntityIndex;
+            this.mediaEntities = mediaEntities;
+        }
+
+        public GalleryItem(long tweetId, int mediaEntityIndex, List<MediaEntity> mediaEntities) {
+            this.tweetId = tweetId;
+            this.mediaEntityIndex = mediaEntityIndex;
+            this.mediaEntities = mediaEntities;
+        }
     }
 }

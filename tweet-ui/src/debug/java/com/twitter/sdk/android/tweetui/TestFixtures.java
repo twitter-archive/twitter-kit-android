@@ -98,6 +98,8 @@ public final class TestFixtures {
             TEST_TIMESTAMP, true);
     public static final Tweet TEST_PHOTO_TWEET = createPhotoTweet(2L, TEST_USER, TEST_STATUS,
             TEST_TIMESTAMP, TEST_PHOTO_URL);
+    public static final Tweet TEST_MULTIPLE_PHOTO_TWEET = createMultiplePhotosTweet(4, 2L, TEST_USER, TEST_STATUS,
+            TEST_TIMESTAMP, TEST_PHOTO_URL);
     // Empty Tweet has empty string name, username, status, and timestamp fields
     public static final Tweet EMPTY_TWEET = createTweet(-1L, EMPTY_USER, EMPTY_STATUS,
             EMPTY_TIMESTAMP, false);
@@ -155,6 +157,26 @@ public final class TestFixtures {
                 .setText(text)
                 .setCreatedAt(timestamp)
                 .setEntities(entities)
+                .setExtendedEntities(entities)
+                .build();
+    }
+
+    static Tweet createMultiplePhotosTweet(int count, long id, User user, String text,
+                                                  String timestamp, String photoUrlHttps) {
+        final ArrayList<MediaEntity> mediaEntities = new ArrayList<>();
+        for (int x = 0; x < count; x++) {
+            final MediaEntity photoEntity = new MediaEntity(null, null, null, 0, 0, 0L, null, null,
+                    photoUrlHttps, createMediaEntitySizes(100, 100), 0L, null, "photo", null, "");
+            mediaEntities.add(photoEntity);
+        }
+        final TweetEntities entities = new TweetEntities(null, null, mediaEntities, null);
+        return new TweetBuilder()
+                .setId(id)
+                .setUser(user)
+                .setText(text)
+                .setCreatedAt(timestamp)
+                .setEntities(entities)
+                .setExtendedEntities(entities)
                 .build();
     }
 
@@ -197,6 +219,15 @@ public final class TestFixtures {
             tweets.add(TestFixtures.createTweet(1000 + i));
         }
         return tweets;
+    }
+
+    public static List<MediaEntity> createMultipleMediaEntitiesWithPhoto(int count, int w, int h) {
+        final List<MediaEntity> mediaEntities = new ArrayList<>(count);
+        for (int i = 0; i < count; i++) {
+            final MediaEntity mediaEntityWithPhoto = createMediaEntityWithPhoto(w, h);
+            mediaEntities.add(mediaEntityWithPhoto);
+        }
+        return mediaEntities;
     }
 
     public static MediaEntity createMediaEntityWithPhoto(int width, int height) {

@@ -58,9 +58,12 @@
     <dimen name="tw__tweet_action_share_padding">14dp</dimen>
 
     <!--Tweet Media-->
-    <item name="tw__tweet_media_aspect_ratio" format="float" type="dimen">1.777777</item>
     <dimen name="tw__tweet_media_badge_margin">4dp</dimen>
     <dimen name="tw__badge_padding">4dp</dimen>
+    <dimen name="tw__media_view_divider_size">1dp</dimen>
+    <dimen name="tw__media_view_radius">5dp</dimen>
+
+    <!-- CTA -->
     <dimen name="tw__cta_margin_top">12dp</dimen>
     <dimen name="tw__cta_padding">8dp</dimen>
     <dimen name="tw__cta_border_size">1dp</dimen>

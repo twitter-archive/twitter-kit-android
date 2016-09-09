@@ -54,4 +54,9 @@ public final class TestUtils {
         final ColorDrawable drawable = (ColorDrawable) imageView.getDrawable();
         return drawable.getColor();
     }
+
+    public static int getBackgroundColor(ImageView imageView) {
+        final ColorDrawable drawable = (ColorDrawable) imageView.getBackground();
+        return drawable.getColor();
+    }
 }

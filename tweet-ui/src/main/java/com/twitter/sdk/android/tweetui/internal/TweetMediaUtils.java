@@ -21,6 +21,7 @@ import android.os.Build;
 
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.core.models.TweetEntities;
 import com.twitter.sdk.android.core.models.VideoInfo;
 
 import java.util.ArrayList;
@@ -51,6 +52,30 @@ final public class TweetMediaUtils {
             }
         }
         return null;
+    }
+
+    /**
+     * This method gets the all the photos from the tweet, which are used to display inline
+     *
+     * @param tweet The Tweet
+     * @return Photo entities of Tweet
+     */
+    static public List<MediaEntity> getPhotoEntities(Tweet tweet) {
+        final List<MediaEntity> photoEntities = new ArrayList<>();
+        final TweetEntities extendedEntities = tweet.extendedEtities;
+
+        if (extendedEntities != null && extendedEntities.media != null
+                && extendedEntities.media.size() > 0) {
+            for (int i = 0; i <= extendedEntities.media.size() - 1; i++) {
+                final MediaEntity entity = extendedEntities.media.get(i);
+                if (entity.type != null && isPhotoType(entity)) {
+                    photoEntities.add(entity);
+                }
+            }
+            return photoEntities;
+        }
+
+        return photoEntities;
     }
 
     /**

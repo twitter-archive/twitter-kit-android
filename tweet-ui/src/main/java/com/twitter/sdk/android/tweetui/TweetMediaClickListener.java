@@ -24,6 +24,7 @@ import com.twitter.sdk.android.core.models.Tweet;
  * Interface to be invoked when media is clicked.
  */
 public interface TweetMediaClickListener {
+
     /**
      * Called when media clicked.
      * @param tweet The Tweet that was clicked.

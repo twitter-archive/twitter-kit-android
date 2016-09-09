@@ -131,7 +131,7 @@ public class TweetUi extends Kit<Boolean> {
         this.tweetRepository = tweetRepository;
     }
 
-    Picasso getImageLoader() {
+    public Picasso getImageLoader() {
         return imageLoader;
     }
 

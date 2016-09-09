@@ -18,111 +18,363 @@
 package com.twitter.sdk.android.tweetui.internal;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
+import android.graphics.Color;
+import android.graphics.Path;
+import android.graphics.RectF;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
+import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.twitter.sdk.android.core.internal.util.AspectRatioImageView;
+import com.squareup.picasso.Picasso;
+import com.twitter.sdk.android.core.IntentUtils;
+import com.twitter.sdk.android.core.models.MediaEntity;
+import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.tweetui.GalleryActivity;
+import com.twitter.sdk.android.tweetui.R;
+import com.twitter.sdk.android.tweetui.TweetMediaClickListener;
+import com.twitter.sdk.android.tweetui.TweetUi;
 
-/**
- * An ImageView subclass that take a {@link android.graphics.drawable.Drawable} and draws it on top
- * the ImageView content.
- */
-public class TweetMediaView extends AspectRatioImageView {
-    Overlay overlay = new Overlay(null);
+import java.lang.ref.WeakReference;
+import java.util.Collections;
+import java.util.List;
+
+public class TweetMediaView extends ViewGroup implements View.OnClickListener {
+
+    static final int MAX_IMAGE_VIEW_COUNT = 4;
+    static final String SIZED_IMAGE_SMALL = ":small";
+
+    private final ImageView[] imageViews = new ImageView[MAX_IMAGE_VIEW_COUNT];
+    private List<MediaEntity> mediaEntities = Collections.emptyList();
+    private final Path path = new Path();
+    private final RectF rect = new RectF();
+    private ColorDrawable mediaBg = new ColorDrawable(Color.BLACK);
+    private final int mediaDividerSize;
+    private int imageCount;
+    int photoErrorResId;
+    final DependencyProvider dependencyProvider;
+    boolean roundedCornersEnabled;
+    TweetMediaClickListener tweetMediaClickListener;
+    Tweet tweet;
 
     public TweetMediaView(Context context) {
-        super(context);
+        this(context, null);
     }
 
     public TweetMediaView(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        dependencyProvider =  new DependencyProvider();
+        mediaDividerSize = getResources().getDimensionPixelSize
+                (R.dimen.tw__media_view_divider_size);
+        photoErrorResId = R.drawable.tw__ic_tweet_photo_error_dark;
+    }
+
+    public void setRoundedCorners(boolean enabled) {
+        this.roundedCornersEnabled = enabled;
+    }
+
+    public void setMediaBackground(ColorDrawable mediaBg) {
+        this.mediaBg = mediaBg;
+    }
+
+    public void setTweetMediaClickListener(TweetMediaClickListener tweetMediaClickListener) {
+        this.tweetMediaClickListener = tweetMediaClickListener;
+    }
+
+    public void setPhotoErrorResId(int photoErrorResId) {
+        this.photoErrorResId = photoErrorResId;
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        overlay.draw(canvas);
-    }
-
-    @Override
-    protected void drawableStateChanged() {
-        super.drawableStateChanged();
-        overlay.setDrawableState(getDrawableState());
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        if (imageCount > 0) {
+            layoutImages();
+        }
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        overlay.setDrawableBounds(getMeasuredWidth(), getMeasuredHeight());
-    }
-
-    @Override
-    protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
-        super.onSizeChanged(width, height, oldWidth, oldHeight);
-        overlay.setDrawableBounds(width, height);
-    }
-
-    @Override
-    public void invalidateDrawable(Drawable drawable) {
-        if (drawable == overlay.drawable) {
-            invalidate();
+        final Size size;
+        if (imageCount > 0) {
+            size = measureImages(widthMeasureSpec, heightMeasureSpec);
         } else {
-            super.invalidateDrawable(drawable);
+            size = Size.EMPTY;
+        }
+        setMeasuredDimension(size.width, size.height);
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        path.reset();
+        rect.set(0, 0, w, h);
+        final int mediaViewRadius =
+                getResources().getDimensionPixelSize(R.dimen.tw__media_view_radius);
+        path.addRoundRect(rect, mediaViewRadius, mediaViewRadius,
+                Path.Direction.CW);
+        path.close();
+    }
+
+    @Override
+    protected void dispatchDraw(Canvas canvas) {
+        if (roundedCornersEnabled) {
+            final int saveState = canvas.save();
+            canvas.clipPath(path);
+            super.dispatchDraw(canvas);
+            canvas.restoreToCount(saveState);
+        } else {
+            super.dispatchDraw(canvas);
         }
     }
 
-    /*
-     * Sets the drawable to be drawn on top the ImageView content.
-     *
-     * @param drawable The drawable
-     */
-    public void setOverlayDrawable(Drawable drawable) {
-        overlay.cleanupDrawable(this);
-        if (drawable != null) {
-            drawable.setCallback(this);
+    @Override
+    public void onClick(View view) {
+        final Integer mediaEntityIndex = (Integer) view.getTag(R.id.tw__entity_index);
+        if (tweetMediaClickListener != null) {
+            final MediaEntity mediaEntity = mediaEntities.get(mediaEntityIndex);
+            if (mediaEntity != null && tweet != null) {
+                tweetMediaClickListener.onMediaEntityClick(tweet, mediaEntity);
+            }
+        } else {
+            final Intent intent = new Intent(getContext(), GalleryActivity.class);
+            final GalleryActivity.GalleryItem item =
+                    new GalleryActivity.GalleryItem(tweet.id, mediaEntityIndex, mediaEntities);
+            intent.putExtra(GalleryActivity.GALLERY_ITEM, item);
+            IntentUtils.safeStartActivity(getContext(), intent);
+        }
+    }
+
+    public void setTweetMediaEntities(Tweet tweet, List<MediaEntity> mediaEntities) {
+        if (tweet == null || mediaEntities == null || mediaEntities.isEmpty() ||
+                this.mediaEntities.equals(mediaEntities)) {
+            return;
         }
 
-        overlay = new Overlay(drawable);
-        overlay.setDrawableState(getDrawableState());
+        initMediaViews(mediaEntities);
+        this.tweet = tweet;
+        this.mediaEntities = mediaEntities;
+        loadMediaEntities(mediaEntities);
+    }
+
+    private void initMediaViews(List<MediaEntity> mediaEntities) {
+        final int imageCount = Math.min(MAX_IMAGE_VIEW_COUNT, mediaEntities.size());
+
         requestLayout();
+        clearMedia();
+        initImageViews(imageCount);
+    }
+
+    Size measureImages(int widthMeasureSpec, int heightMeasureSpec) {
+        final int width = MeasureSpec.getSize(widthMeasureSpec);
+        final int height = MeasureSpec.getSize(heightMeasureSpec);
+        final int halfWidth = (width - mediaDividerSize) / 2;
+        final int halfHeight = (height - mediaDividerSize) / 2;
+        switch (imageCount) {
+            case 1:
+                measureImageView(0, width, height);
+                break;
+            case 2:
+                measureImageView(0, halfWidth, height);
+                measureImageView(1, halfWidth, height);
+                break;
+            case 3:
+                measureImageView(0, halfWidth, height);
+                measureImageView(1, halfWidth, halfHeight);
+                measureImageView(2, halfWidth, halfHeight);
+                break;
+            case 4:
+                measureImageView(0, halfWidth, halfHeight);
+                measureImageView(1, halfWidth, halfHeight);
+                measureImageView(2, halfWidth, halfHeight);
+                measureImageView(3, halfWidth, halfHeight);
+                break;
+            default:
+                break;
+        }
+        return Size.fromSize(width, height);
+    }
+
+    void measureImageView(int i, int width, int height) {
+        imageViews[i].measure(
+                MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
+                MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
+    }
+
+    void layoutImages() {
+        final int width = getMeasuredWidth();
+        final int height = getMeasuredHeight();
+        final int halfWidth = (width - mediaDividerSize) / 2;
+        final int halfHeight = (height - mediaDividerSize) / 2;
+        final int middle = halfWidth + mediaDividerSize;
+        switch (imageCount) {
+            case 1:
+                layoutImage(0, 0, 0, width, height);
+                break;
+            case 2:
+                layoutImage(0, 0, 0, halfWidth, height);
+                layoutImage(1, halfWidth + mediaDividerSize, 0, width, height);
+                break;
+            case 3:
+                layoutImage(0, 0, 0, halfWidth, height);
+                layoutImage(1, middle, 0, width, halfHeight);
+                layoutImage(2, middle, halfHeight + mediaDividerSize, width, height);
+                break;
+            case 4:
+                layoutImage(0, 0, 0, halfWidth, halfHeight);
+                layoutImage(2, 0, halfHeight + mediaDividerSize, halfWidth, height);
+                layoutImage(1, middle, 0, width, halfHeight);
+                layoutImage(3, middle, halfHeight + mediaDividerSize, width, height);
+                break;
+            default:
+                break;
+        }
+    }
+
+    void layoutImage(int i, int left, int top, int right, int bottom) {
+        final ImageView view = imageViews[i];
+        if (view.getLeft() == left && view.getTop() == top && view.getRight() == right
+                && view.getBottom() == bottom) {
+            return;
+        }
+
+        view.layout(left, top, right, bottom);
+    }
+
+    void clearMedia() {
+        mediaEntities = Collections.EMPTY_LIST;
+        tweet = null;
+        final int newImageCount = imageCount;
+        for (int index = 0; index < newImageCount; index++) {
+            final ImageView imageView = imageViews[index];
+            imageView.setVisibility(GONE);
+            imageView.setOnClickListener(null);
+            imageView.setTag(R.id.tw__entity_index, null);
+            imageView.setContentDescription(getResources().getString(R.string.tw__tweet_media));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                imageView.setBackground(mediaBg);
+            } else {
+                imageView.setBackgroundDrawable(mediaBg);
+            }
+        }
+        imageCount = 0;
+    }
+
+    private void initImageViews(int imageCount) {
+        this.imageCount = imageCount;
+        if (imageCount != 0) {
+            for (int index = 0; index < imageCount; index++) {
+                ImageView imageView = imageViews[index];
+                if (imageViews[index] == null) {
+                    imageView = new ImageView(getContext());
+                    final LayoutParams layoutParams = generateDefaultLayoutParams();
+                    imageView.setLayoutParams(layoutParams);
+                    imageViews[index] = imageView;
+                    addView(imageView, index);
+                } else {
+                    measureImageView(index, 0, 0);
+                    imageView.layout(0, 0, 0, 0);
+                }
+                imageView.setOnClickListener(this);
+                imageView.setVisibility(VISIBLE);
+            }
+        }
+    }
+
+    private void loadMediaEntities(List<MediaEntity> mediaEntities) {
+        int imageIndex = 0;
+        for (final MediaEntity mediaEntity : mediaEntities) {
+            final ImageView imageView = imageViews[imageIndex];
+            imageView.setTag(R.id.tw__entity_index, imageIndex);
+            final String imagePath = getSizedImagePath(mediaEntity);
+            setMediaImage(imageView, imagePath);
+            setAltText(imageView, mediaEntity.altText);
+            imageIndex++;
+        }
+    }
+
+    private String getSizedImagePath(MediaEntity mediaEntity) {
+        if (imageCount > 1) {
+           return mediaEntity.mediaUrlHttps + SIZED_IMAGE_SMALL;
+        }
+        return mediaEntity.mediaUrlHttps;   // defaults to :medium
+    }
+
+    private void setAltText(ImageView imageView, String description) {
+        if (!TextUtils.isEmpty(description)) {
+            imageView.setContentDescription(description);
+        }
+    }
+
+    void setMediaImage(ImageView imageView, String imagePath) {
+        final Picasso imageLoader = dependencyProvider.getImageLoader();
+        if (imageLoader == null) return;
+
+        imageLoader.load(imagePath)
+                .fit()
+                .centerCrop()
+                .error(photoErrorResId)
+                .into(imageView, new PicassoCallback(imageView));
     }
 
     /**
-     * Takes a {@link android.graphics.drawable.Drawable} and draws it on top the ImageView content.
-     * The overlay drawable will respect the view's current state so a selector can be passed in.
+     * Picasso Callback which clears the ImageView's background onSuccess. This is done to reduce
+     * overdraw. A weak reference is used to avoid leaking the Activity context because the Callback
+     * will be strongly referenced by Picasso.
      */
-    static protected class Overlay {
-        final Drawable drawable;
+    static class PicassoCallback implements com.squareup.picasso.Callback {
+        final WeakReference<ImageView> imageViewWeakReference;
 
-        Overlay(Drawable drawable) {
-            this.drawable = drawable;
+        PicassoCallback(ImageView imageView) {
+            imageViewWeakReference = new WeakReference<>(imageView);
         }
 
-        protected void cleanupDrawable(ImageView imageView) {
-            if (drawable != null) {
-                drawable.setCallback(null);
-                imageView.unscheduleDrawable(drawable);
+        @Override
+        public void onSuccess() {
+            final ImageView imageView = imageViewWeakReference.get();
+            if (imageView != null) {
+                imageView.setBackgroundResource(android.R.color.transparent);
             }
         }
 
-        protected void setDrawableBounds(int width, int height) {
-            if (drawable != null) {
-                drawable.setBounds(0, 0, width, height);
-            }
+        @Override
+        public void onError() { /* intentionally blank */ }
+    }
+
+    static class Size {
+        static final Size EMPTY = new Size();
+        final int width;
+        final int height;
+
+        private Size() {
+            this(0, 0);
         }
 
-        protected void setDrawableState(int[] state) {
-            if (drawable != null && drawable.isStateful()) {
-                drawable.setState(state);
-            }
+        private Size(int width, int height) {
+            this.width = width;
+            this.height = height;
         }
 
-        protected void draw(Canvas canvas) {
-            if (drawable != null) {
-                drawable.draw(canvas);
-            }
+        static Size fromSize(int w, int h) {
+            final int boundedWidth = Math.max(w, 0);
+            final int boundedHeight = Math.max(h, 0);
+            return boundedWidth != 0 || boundedHeight != 0 ?
+                    new Size(boundedWidth, boundedHeight) : EMPTY;
+        }
+    }
+
+    static class DependencyProvider {
+        /**
+         * Can be null if run before TweetUi#doInBackground completes
+         */
+        Picasso getImageLoader() {
+            return TweetUi.getInstance().getImageLoader();
         }
     }
 }

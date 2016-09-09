@@ -17,127 +17,83 @@
 
 package com.twitter.sdk.android.tweetui.internal;
 
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
+import android.content.Context;
+import android.view.View;
 import android.widget.ImageView;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
+import com.twitter.sdk.android.core.models.MediaEntity;
+import com.twitter.sdk.android.tweetui.TestFixtures;
+import com.twitter.sdk.android.tweetui.TweetUi;
+import com.twitter.sdk.android.tweetui.TweetUiTestCase;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class TweetMediaViewTest extends FabricAndroidTestCase {
-    public final int[] TEST_STATE = new int[]{0, 0};
-    public final int TEST_HEIGHT = 2;
-    public final int TEST_WIDTH = 4;
+import io.fabric.sdk.android.Fabric;
 
-    public void testOnDraw() {
-        final TweetMediaView tweetMediaView = new TweetMediaView(getContext());
-        final TweetMediaView.Overlay overlay = mock(TweetMediaView.Overlay.class);
-        final Canvas canvas = new Canvas();
-        tweetMediaView.overlay = overlay;
-        tweetMediaView.draw(canvas);
+public class TweetMediaViewTest extends TweetUiTestCase {
 
-        verify(overlay).draw(canvas);
+    protected TweetMediaView tweetMediaView;
+    protected Context context;
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+
+        context = Fabric.getKit(TweetUi.class).getContext();
+        tweetMediaView = new TweetMediaView(context);
     }
 
-    public void testDrawableStateChanged() {
-        final TweetMediaView tweetMediaView = new TweetMediaView(getContext());
-        final TweetMediaView.Overlay overlay = mock(TweetMediaView.Overlay.class);
-        tweetMediaView.overlay = overlay;
-        tweetMediaView.drawableStateChanged();
-
-        verify(overlay).setDrawableState(any(int[].class));
+    public void testInitialViewState() {
+        for (int x = 0; x < TweetMediaView.MAX_IMAGE_VIEW_COUNT; x++) {
+            final ImageView imageView = (ImageView) tweetMediaView.getChildAt(x);
+            assertNull(imageView);
+        }
     }
 
-    public void testOnMeasure() {
-        final TweetMediaView tweetMediaView = new TweetMediaView(getContext());
-        final TweetMediaView.Overlay overlay = mock(TweetMediaView.Overlay.class);
-        tweetMediaView.overlay = overlay;
-        tweetMediaView.measure(0, 0);
+    public void testSetMediaEntities_withEmptyList() {
+        final List<MediaEntity> emptyMediaEntities = Collections.EMPTY_LIST;
+        tweetMediaView.setTweetMediaEntities(TestFixtures.TEST_TWEET, emptyMediaEntities);
 
-        verify(overlay).setDrawableBounds(anyInt(), anyInt());
+        for (int x = 0; x < TweetMediaView.MAX_IMAGE_VIEW_COUNT; x++) {
+            final ImageView imageView = (ImageView) tweetMediaView.getChildAt(x);
+            assertNull(imageView);
+        }
     }
 
-    public void testOnSizeChanged() {
-        final TweetMediaView tweetMediaView = new TweetMediaView(getContext());
-        final TweetMediaView.Overlay overlay = mock(TweetMediaView.Overlay.class);
-        tweetMediaView.overlay = overlay;
-        tweetMediaView.onSizeChanged(TEST_WIDTH, TEST_HEIGHT, 0, 0);
+    public void testSetMediaEntities_withSingleEntity() {
+        final MediaEntity entity = TestFixtures.createMediaEntityWithPhoto(100, 100);
+        final List<MediaEntity> mediaEntities = new ArrayList<>();
+        mediaEntities.add(entity);
+        tweetMediaView.setTweetMediaEntities(TestFixtures.TEST_TWEET, mediaEntities);
 
-        verify(overlay).setDrawableBounds(TEST_WIDTH, TEST_HEIGHT);
+        final ImageView imageView = (ImageView) tweetMediaView.getChildAt(0);
+        assertEquals(View.VISIBLE, imageView.getVisibility());
+        assertNull(tweetMediaView.getChildAt(1));
+        assertNull(tweetMediaView.getChildAt(2));
+        assertNull(tweetMediaView.getChildAt(3));
     }
 
-    public void testSetOverlayDrawable() {
-        final TweetMediaView tweetMediaView = new TweetMediaView(getContext());
-        final TweetMediaView.Overlay overlay = mock(TweetMediaView.Overlay.class);
-        tweetMediaView.overlay = overlay;
-        final Drawable drawable = mock(Drawable.class);
-        tweetMediaView.setOverlayDrawable(drawable);
+    public void testSetMediaEntities_withMultipleEntities() {
+        final List<MediaEntity> mediaEntities = TestFixtures.createMultipleMediaEntitiesWithPhoto
+                (TweetMediaView.MAX_IMAGE_VIEW_COUNT, 100, 100);
+        tweetMediaView.setTweetMediaEntities(TestFixtures.TEST_TWEET, mediaEntities);
 
-        verify(overlay).cleanupDrawable(tweetMediaView);
-        assertNotNull(tweetMediaView.overlay);
-        assertEquals(drawable, tweetMediaView.overlay.drawable);
+        for (int x = 0; x < TweetMediaView.MAX_IMAGE_VIEW_COUNT; x++) {
+            final ImageView imageView = (ImageView) tweetMediaView.getChildAt(x);
+            assertEquals(View.VISIBLE, imageView.getVisibility());
+        }
     }
 
-    public void testSetOverlayDrawable_nullDrawable() {
-        final TweetMediaView tweetMediaView = new TweetMediaView(getContext());
-        final TweetMediaView.Overlay overlay = mock(TweetMediaView.Overlay.class);
-        tweetMediaView.overlay = overlay;
-        tweetMediaView.setOverlayDrawable(null);
-
-        verify(overlay).cleanupDrawable(tweetMediaView);
-        assertNotNull(tweetMediaView.overlay);
-        assertNull(tweetMediaView.overlay.drawable);
-    }
-
-    public void testOverlayDraw() {
-        final Drawable drawable = mock(Drawable.class);
-        final TweetMediaView.Overlay overlay = new TweetMediaView.Overlay(drawable);
-        final Canvas canvas = new Canvas();
-        overlay.draw(canvas);
-
-        verify(drawable).draw(canvas);
-    }
-
-    public void testOverlaySetDrawableState() {
-        final Drawable drawable = mock(Drawable.class);
-        when(drawable.isStateful()).thenReturn(true);
-        final TweetMediaView.Overlay overlay = new TweetMediaView.Overlay(drawable);
-        overlay.setDrawableState(TEST_STATE);
-
-        verify(drawable).isStateful();
-        verify(drawable).setState(TEST_STATE);
-    }
-
-    public void testOverlaySetDrawableState_drawableNotStateful() {
-        final Drawable drawable = mock(Drawable.class);
-        when(drawable.isStateful()).thenReturn(false);
-        final TweetMediaView.Overlay overlay = new TweetMediaView.Overlay(drawable);
-        overlay.setDrawableState(TEST_STATE);
-
-        verify(drawable).isStateful();
-        verifyNoMoreInteractions(drawable);
-    }
-
-    public void testOverlaySetDrawableBounds() {
-        final Drawable drawable = mock(Drawable.class);
-        final TweetMediaView.Overlay overlay = new TweetMediaView.Overlay(drawable);
-        overlay.setDrawableBounds(TEST_WIDTH, TEST_HEIGHT);
-
-        verify(drawable).setBounds(0, 0, TEST_WIDTH, TEST_HEIGHT);
-    }
-
-    public void testCleanupDrawable() {
-        final ImageView imageView = mock(ImageView.class);
-        final Drawable drawable = mock(Drawable.class);
-        final TweetMediaView.Overlay overlay = new TweetMediaView.Overlay(drawable);
-        overlay.cleanupDrawable(imageView);
-
-        verify(imageView).unscheduleDrawable(drawable);
+    public void testClearMedia() {
+        final List<MediaEntity> mediaEntities = TestFixtures.createMultipleMediaEntitiesWithPhoto
+                (TweetMediaView.MAX_IMAGE_VIEW_COUNT, 100, 100);
+        tweetMediaView.setTweetMediaEntities(TestFixtures.TEST_TWEET, mediaEntities);
+        tweetMediaView.clearMedia();
+        for (int x = 0; x < TweetMediaView.MAX_IMAGE_VIEW_COUNT; x++) {
+            final ImageView imageView = (ImageView) tweetMediaView.getChildAt(x);
+            assertEquals(View.GONE, imageView.getVisibility());
+        }
     }
 }

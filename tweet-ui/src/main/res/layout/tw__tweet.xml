@@ -22,23 +22,27 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <FrameLayout
-        android:id="@+id/tw__tweet_media_container"
+    <com.twitter.sdk.android.tweetui.internal.AspectRatioFrameLayout
+        android:id="@+id/tw__aspect_ratio_media_container"
         style="@style/tw__TweetMediaContainer">
 
-        <com.twitter.sdk.android.tweetui.internal.TweetMediaView
-            android:id="@+id/tw__tweet_media"
-            style="@style/tw__TweetMedia"
-            android:contentDescription="@string/tw__tweet_media" />
+        <com.twitter.sdk.android.tweetui.internal.TweetImageView
+            android:id="@+id/tw__tweet_image"
+            style="@style/tw__TweetImage"
+            android:contentDescription="@string/tw__tweet_media"/>
 
         <com.twitter.sdk.android.tweetui.internal.MediaBadgeView
             android:id="@+id/tw__tweet_media_badge"
             style="@style/tw__TweetBadge" />
-    </FrameLayout>
+
+        <com.twitter.sdk.android.tweetui.internal.TweetMediaView
+            android:id="@+id/tweet_media_view"
+            style="@style/tw__TweetMedia"/>
+    </com.twitter.sdk.android.tweetui.internal.AspectRatioFrameLayout>
 
     <TextView
         android:id="@+id/tw__tweet_retweeted_by"
-        android:layout_below="@id/tw__tweet_media_container"
+        android:layout_below="@id/tw__aspect_ratio_media_container"
         style="@style/tw__TweetRetweetedBy"
         tools:text="retweeted by"/>
 

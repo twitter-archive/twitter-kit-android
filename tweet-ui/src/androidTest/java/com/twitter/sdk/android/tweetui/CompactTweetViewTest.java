@@ -62,7 +62,6 @@ public class CompactTweetViewTest extends BaseTweetViewTest {
     }
 
     // Layout
-
     public void testLayout() {
         final CompactTweetView compactView = createView(context, TestFixtures.TEST_TWEET);
         assertEquals(R.layout.tw__tweet_compact, compactView.getLayout());
@@ -101,9 +100,15 @@ public class CompactTweetViewTest extends BaseTweetViewTest {
 
         final CompactTweetView tv = createViewWithMocks(context, TestFixtures.TEST_PHOTO_TWEET,
                 R.style.tw__TweetLightStyle, mockDependencyProvider);
-        // assert 2 loads, once for profile photo and once for compact tweet photo
-        verify(mockPicasso, times(2)).load(anyString());
-        // assert fit is called once when the compact tweet photo is loaded
-        verify(mockRequestCreator, times(1)).fit();
+        // assert 1 load for profile photo, tweet photo loaded in TweetMediaView
+        verify(mockPicasso, times(1)).load(anyString());
+    }
+
+    public void testGetAspectRatioForPhotoEntity() {
+        final CompactTweetView compactView = createView(context, TestFixtures.TEST_PHOTO_TWEET);
+        assertEquals(1.6, compactView.getAspectRatioForPhotoEntity(1));
+        assertEquals(1.6, compactView.getAspectRatioForPhotoEntity(2));
+        assertEquals(1.6, compactView.getAspectRatioForPhotoEntity(3));
+        assertEquals(1.6, compactView.getAspectRatioForPhotoEntity(4));
     }
 }

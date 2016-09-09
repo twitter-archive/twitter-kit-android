@@ -25,6 +25,8 @@ import com.twitter.sdk.android.core.models.Tweet;
 
 public class TweetView extends BaseTweetView {
     private static final String VIEW_TYPE_NAME = "default";
+    private static final double SQUARE_ASPECT_RATIO = 1.0;
+    private static final double DEFAULT_ASPECT_RATIO_MEDIA_CONTAINER = 3.0 / 2.0;
 
     public TweetView(Context context, Tweet tweet) {
         super(context, tweet);
@@ -61,6 +63,21 @@ public class TweetView extends BaseTweetView {
     void render() {
         super.render();
         setVerifiedCheck(tweet);
+    }
+
+    /**
+     * Returns the desired aspect ratio for Tweet that contains photo entities
+     *
+     * @param photoCount total count of photo entities
+     * @return the target image and bitmap width to height aspect ratio
+     */
+    @Override
+    protected double getAspectRatioForPhotoEntity(int photoCount) {
+        if (photoCount == 4) {
+            return SQUARE_ASPECT_RATIO;
+        } else {
+            return DEFAULT_ASPECT_RATIO_MEDIA_CONTAINER;
+        }
     }
 
     /**

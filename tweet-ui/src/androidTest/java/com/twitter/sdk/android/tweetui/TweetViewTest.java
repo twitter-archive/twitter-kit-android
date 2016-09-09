@@ -60,23 +60,22 @@ public class TweetViewTest extends BaseTweetViewTest {
     public void testInit() {
         super.testInit();
         final TweetView view = createView(context, TestFixtures.TEST_TWEET);
-        assertEquals(ImageView.GONE, view.mediaContainerView.getVisibility());
+        assertEquals(ImageView.GONE, view.mediaContainer.getVisibility());
     }
 
     @Override
     public void testInit_withEmptyTweet() {
         super.testInit();
         final TweetView view = createView(context, TestFixtures.TEST_TWEET);
-        assertEquals(ImageView.GONE, view.mediaContainerView.getVisibility());
+        assertEquals(ImageView.GONE, view.mediaContainer.getVisibility());
     }
 
     public void testInit_withPhotoTweet() {
         final TweetView view = createView(context, TestFixtures.TEST_PHOTO_TWEET);
-        assertEquals(ImageView.VISIBLE, view.mediaContainerView.getVisibility());
+        assertEquals(ImageView.VISIBLE, view.mediaContainer.getVisibility());
     }
 
     // Layout
-
     public void testLayout() {
         final TweetView tweetView = new TweetView(context, TestFixtures.TEST_TWEET);
         assertEquals(R.layout.tw__tweet, tweetView.getLayout());
@@ -91,5 +90,14 @@ public class TweetViewTest extends BaseTweetViewTest {
                 TestFixtures.createMediaEntityWithPhoto(100, 200)), DELTA);
         assertEquals(2, view.getAspectRatio(
                 TestFixtures.createMediaEntityWithPhoto(200, 100)), DELTA);
+    }
+
+    public void testGetAspectRatioForPhotoEntity() {
+        final TweetView tweetView = createView(context, TestFixtures.TEST_PHOTO_TWEET);
+
+        assertEquals(1.5, tweetView.getAspectRatioForPhotoEntity(1));
+        assertEquals(1.5, tweetView.getAspectRatioForPhotoEntity(2));
+        assertEquals(1.5, tweetView.getAspectRatioForPhotoEntity(3));
+        assertEquals(1.0, tweetView.getAspectRatioForPhotoEntity(4));
     }
 }
