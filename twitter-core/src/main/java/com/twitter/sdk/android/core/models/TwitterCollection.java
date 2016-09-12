@@ -15,11 +15,9 @@
  *
  */
 
-package com.twitter.sdk.android.core.internal;
+package com.twitter.sdk.android.core.models;
 
 import com.google.gson.annotations.SerializedName;
-import com.twitter.sdk.android.core.models.Tweet;
-import com.twitter.sdk.android.core.models.User;
 
 import java.util.List;
 import java.util.Map;

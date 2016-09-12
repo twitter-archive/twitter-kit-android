@@ -21,7 +21,7 @@ import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
-import com.twitter.sdk.android.core.internal.TwitterCollection;
+import com.twitter.sdk.android.core.models.TwitterCollection;
 import com.twitter.sdk.android.core.models.User;
 import com.twitter.sdk.android.core.models.UserBuilder;
 

@@ -17,7 +17,7 @@
 
 package com.twitter.sdk.android.tweetui;
 
-import com.twitter.sdk.android.core.internal.TwitterCollection;
+import com.twitter.sdk.android.core.models.TwitterCollection;
 
 import retrofit2.Call;
 

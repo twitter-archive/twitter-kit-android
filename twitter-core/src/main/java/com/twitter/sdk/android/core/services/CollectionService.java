@@ -17,7 +17,7 @@
 
 package com.twitter.sdk.android.core.services;
 
-import com.twitter.sdk.android.core.internal.TwitterCollection;
+import com.twitter.sdk.android.core.models.TwitterCollection;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

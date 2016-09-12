@@ -15,7 +15,7 @@
  *
  */
 
-package com.twitter.sdk.android.core.internal;
+package com.twitter.sdk.android.core.models;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
