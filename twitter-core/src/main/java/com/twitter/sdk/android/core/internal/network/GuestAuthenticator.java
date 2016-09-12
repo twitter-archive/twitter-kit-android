@@ -25,6 +25,7 @@ import com.twitter.sdk.android.core.internal.oauth.OAuthConstants;
 import java.io.IOException;
 
 import okhttp3.Authenticator;
+import okhttp3.Headers;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.Route;
@@ -59,10 +60,15 @@ public class GuestAuthenticator implements Authenticator {
     }
 
     GuestAuthToken getExpiredToken(Response response) {
-        final String auth = response.request().header(OAuthConstants.HEADER_AUTHORIZATION);
-        final String guest = response.request().header(OAuthConstants.HEADER_GUEST_TOKEN);
+        final Headers headers = response.request().headers();
+        final String auth = headers.get(OAuthConstants.HEADER_AUTHORIZATION);
+        final String guest = headers.get(OAuthConstants.HEADER_GUEST_TOKEN);
 
-        return new GuestAuthToken("bearer", auth.replace("bearer ", ""), guest);
+        if (auth != null && guest != null) {
+            return new GuestAuthToken("bearer", auth.replace("bearer ", ""), guest);
+        }
+
+        return null;
     }
 
     Request resign(Request request, GuestAuthToken token) {

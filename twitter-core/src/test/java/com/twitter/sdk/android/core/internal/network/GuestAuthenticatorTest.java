@@ -36,6 +36,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.when;
@@ -90,6 +91,23 @@ public class GuestAuthenticatorTest {
 
         assertEquals(TEST_GUEST_TOKEN, token.getGuestToken());
         assertEquals(TEST_ACCESS_TOKEN, token.getAccessToken());
+    }
+
+    @Test
+    public void testGetExpiredToken_emptyHeaders() {
+        request = new Request.Builder()
+                .url(TEST_URL)
+                .build();
+
+        response = new Response.Builder()
+                .code(401)
+                .protocol(Protocol.HTTP_1_1)
+                .request(request)
+                .build();
+
+        final GuestAuthToken token = authenticator.getExpiredToken(response);
+
+        assertNull(token);
     }
 
     @Test

@@ -20,9 +20,12 @@ package com.twitter.sdk.android.core;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.twitter.sdk.android.core.models.ApiError;
 import com.twitter.sdk.android.core.models.ApiErrors;
+import com.twitter.sdk.android.core.models.SafeListAdapter;
+import com.twitter.sdk.android.core.models.SafeMapAdapter;
 
 import io.fabric.sdk.android.Fabric;
 import retrofit2.Response;
@@ -100,7 +103,10 @@ public class TwitterApiException extends TwitterException {
     }
 
     static ApiError parseApiError(String body) {
-        final Gson gson = new Gson();
+        final Gson gson = new GsonBuilder()
+                .registerTypeAdapterFactory(new SafeListAdapter())
+                .registerTypeAdapterFactory(new SafeMapAdapter())
+                .create();
         try {
             final ApiErrors apiErrors = gson.fromJson(body, ApiErrors.class);
             if (!apiErrors.errors.isEmpty()) {

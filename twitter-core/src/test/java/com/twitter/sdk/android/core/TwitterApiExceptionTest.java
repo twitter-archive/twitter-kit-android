@@ -40,6 +40,7 @@ public class TwitterApiExceptionTest  {
             "\"code\":239}]}\n";
     private static final String API_ERROR_NO_ERROR_CODE = "{\"errors\":[{\"message\":\"Bad " +
             "guest token\"}]}\n";
+    private static final String API_ERROR_NO_ERRORS = "{\"errors\": null}\n";
     private static final String API_ERROR_NO_ERROR_MESSAGE = "{\"errors\":[{\"code\":239}]}\n";
     private static final String API_ERROR_NON_JSON = "not a json";
 
@@ -60,6 +61,12 @@ public class TwitterApiExceptionTest  {
         final ApiError apiError = TwitterApiException.parseApiError(API_ERROR_NO_ERROR_CODE);
         assertEquals(DEFAULT_ERROR_CODE, apiError.code);
         assertEquals(API_ERROR_MESSAGE, apiError.message);
+    }
+
+    @Test
+    public void testParseError_noErrors() throws Exception {
+        final ApiError apiError = TwitterApiException.parseApiError(API_ERROR_NO_ERRORS);
+        assertNull(apiError);
     }
 
     @Test
