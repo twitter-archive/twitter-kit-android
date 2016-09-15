@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!--
   ~ Copyright (C) 2015 Twitter, Inc.
   ~
@@ -16,13 +17,9 @@
   ~
   -->
 
-<lint>
-    <issue id="IconMissingDensityFolder" severity="ignore">
-        <!-- Suppress lint warning on xxxhdpi, which "is necessary only to provide a launcher icon
-        that can appear larger than usual on an xxhdpi device. You do not need to provide xxxhdpi
-        assets for all your app's images." -->
-        <ignore path="src/main/res/drawable-xxxhdpi"/>
-    </issue>
-    <issue id="InvalidPackage" severity="ignore"/>
-    <issue id="WrongRegion" severity="ignore" />
-</lint>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="tw__composer_hint">Điều gì đang Xảy ra?</string>
+    <string name="tw__install">Cài đặt</string>
+    <string name="tw__max_tweet_chars">140</string>
+    <string name="tw__post_tweet">Tweet</string>
+</resources>

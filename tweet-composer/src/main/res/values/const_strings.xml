@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="tw__play_store">Google Play</string>
+    <string name="tw__play_store" translatable="false">Google Play</string>
 </resources>
