@@ -26,6 +26,7 @@ import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
+import android.view.ViewParent;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 
@@ -45,6 +46,8 @@ public class MultiTouchImageView extends ImageView {
     // Used to avoid allocating new objects
     final RectF drawRect = new RectF();
     final float[] matrixValues = new float[9];
+
+    boolean allowIntercept = false;
 
     public MultiTouchImageView(Context context) {
         this(context, null);
@@ -82,6 +85,11 @@ public class MultiTouchImageView extends ImageView {
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float dx, float dy) {
                 setTranslate(-dx, -dy);
                 setImageMatrix();
+
+                if (allowIntercept && !scaleGestureDetector.isInProgress()) {
+                    requestDisallowInterceptTouchEvent(false);
+                }
+
                 return true;
             }
 
@@ -133,11 +141,18 @@ public class MultiTouchImageView extends ImageView {
         }
 
         // Do not allow touch events to be intercepted (usually for gallery swipes) by default
-        getParent().requestDisallowInterceptTouchEvent(true);
+        requestDisallowInterceptTouchEvent(true);
 
         boolean retVal = scaleGestureDetector.onTouchEvent(event);
         retVal = gestureDetector.onTouchEvent(event) || retVal;
         return retVal || super.onTouchEvent(event);
+    }
+
+    void requestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+        final ViewParent parent = getParent();
+        if (parent != null) {
+            parent.requestDisallowInterceptTouchEvent(disallowIntercept);
+        }
     }
 
     void setScale(float ds, float px, float py) {
@@ -171,11 +186,16 @@ public class MultiTouchImageView extends ImageView {
         }
 
         if (rect.width() <= viewRect.width()) {
+            allowIntercept = true;
             dx = (viewRect.width() - rect.width()) / 2 - rect.left;
         } else if (rect.left > 0) {
+            allowIntercept = true;
             dx = -rect.left;
         } else if (rect.right < viewRect.width()) {
+            allowIntercept = true;
             dx = viewRect.width() - rect.right;
+        } else {
+            allowIntercept = false;
         }
 
         setTranslate(dx, dy);
