@@ -19,15 +19,17 @@ package com.twitter.sdk.android.tweetui;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
+import android.support.v4.view.ViewPager;
 
-import com.squareup.picasso.Picasso;
 import com.twitter.sdk.android.core.models.MediaEntity;
-import com.twitter.sdk.android.tweetui.internal.MultiTouchImageView;
 import com.twitter.sdk.android.tweetui.internal.SwipeToDismissTouchListener;
+
+import java.util.Collections;
+import java.util.List;
 
 public class GalleryActivity extends Activity {
     static final String MEDIA_ENTITY = "MEDIA_ENTITY";
+    static final String MEDIA_ENTITIES = "MEDIA_ENTITIES";
     static final String TWEET_ID = "TWEET_ID";
 
     @Override
@@ -35,12 +37,13 @@ public class GalleryActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tw__gallery_activity);
 
-        final MediaEntity entity = (MediaEntity) getIntent().getSerializableExtra(MEDIA_ENTITY);
-        final MultiTouchImageView imageView = (MultiTouchImageView) findViewById(R.id.image_view);
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.tw__view_pager);
+        final int marginPixels =
+                getResources().getDimensionPixelSize(R.dimen.tw__gallery_page_margin);
+        viewPager.setPageMargin(marginPixels);
 
-        final View.OnTouchListener touchListener =
-                SwipeToDismissTouchListener.createFromView(imageView,
-                        new SwipeToDismissTouchListener.Callback() {
+        final GalleryAdapter adapter =
+                new GalleryAdapter(this, new SwipeToDismissTouchListener.Callback() {
             @Override
             public void onDismiss() {
                 finish();
@@ -52,9 +55,18 @@ public class GalleryActivity extends Activity {
 
             }
         });
-        imageView.setOnTouchListener(touchListener);
+        adapter.addAll(getEntities());
+        viewPager.setAdapter(adapter);
+    }
 
-        Picasso.with(this).load(entity.mediaUrlHttps).into(imageView);
+    // For backwards compatibility we need to support single entity or list of entities.
+    List<MediaEntity> getEntities() {
+        final MediaEntity entity = (MediaEntity) getIntent().getSerializableExtra(MEDIA_ENTITY);
+        if (entity != null) {
+            return Collections.singletonList(entity);
+        }
+
+        return (List<MediaEntity>) getIntent().getSerializableExtra(MEDIA_ENTITIES);
     }
 
     @Override

@@ -19,8 +19,8 @@
        android:layout_width="match_parent"
        android:layout_height="match_parent">
 
-    <com.twitter.sdk.android.tweetui.internal.MultiTouchImageView
-        android:id="@+id/image_view"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/tw__view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 </merge>

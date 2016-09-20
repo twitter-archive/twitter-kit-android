@@ -115,4 +115,6 @@
     <dimen name="tw__video_control_height">32dp</dimen>
     <dimen name="tw__video_control_text_size">13sp</dimen>
 
+    <!-- Gallery sizes -->
+    <dimen name="tw__gallery_page_margin">12dp</dimen>
 </resources>
