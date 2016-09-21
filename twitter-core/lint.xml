@@ -28,7 +28,6 @@
             path="src/main/java/com/twitter/sdk/android/core/identity/OAuthActivity.java"/>
     </issue>
     <issue id="TrulyRandom" severity="ignore" />
-    <issue id="WrongRegion" severity="ignore" />
     <issue id="PackageManagerGetSignatures" severity="ignore"/>
     <issue id="ParcelCreator" severity="error">
         <ignore

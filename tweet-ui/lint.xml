@@ -28,7 +28,6 @@
     <issue id="MissingQuantity" severity="ignore" />
     <issue id="ImpliedQuantity" severity="ignore" />
     <issue id="UnusedQuantity" severity="ignore" />
-    <issue id="WrongRegion" severity="ignore" />
     <issue id="IconDensities" severity="ignore">
         <ignore path="src/main/res/drawable-mdpi/tw__heart_animation_detail_60fps*"/>
         <ignore path="src/main/res/drawable-hdpi/tw__heart_animation_detail_60fps*"/>

@@ -16,7 +16,4 @@
   ~
   -->
 
-<lint>
-    <!-- ignore translation errors for now -->
-    <issue id="WrongRegion" severity="ignore" />
-</lint>
+<lint/>

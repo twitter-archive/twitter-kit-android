@@ -24,5 +24,4 @@
         <ignore path="src/main/res/drawable-xxxhdpi"/>
     </issue>
     <issue id="InvalidPackage" severity="ignore"/>
-    <issue id="WrongRegion" severity="ignore" />
 </lint>
