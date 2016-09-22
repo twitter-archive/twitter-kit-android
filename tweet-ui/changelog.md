@@ -3,7 +3,9 @@
 
 ## Unreleased
 
-* Removed pseudo locales from translations.
+## v2.0.1
+
+Removed pseudo locales from translations.
 
 ## v2.0.0
 

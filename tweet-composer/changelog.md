@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+## v2.0.1
+
 * Added translations.
 * Removed pseudo locales from translations.
 

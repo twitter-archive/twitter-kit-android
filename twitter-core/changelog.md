@@ -3,6 +3,8 @@
 
 ## Unreleased
 
+## v2.0.1
+
 * Updated proguard rules for Okhttp3 and Retrofit2.
 * Removed pseudo locales from translations.
 * Moved TwitterCollection from internal package to models.
