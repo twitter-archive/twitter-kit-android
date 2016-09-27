@@ -465,18 +465,6 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
         verify(scribeClient).click(TestFixtures.TEST_TWEET, view.getViewTypeName());
     }
 
-    public void testSetErrorImage_handlesNullPicasso() {
-        when(mockDependencyProvider.getImageLoader()).thenReturn(null);
-        final BaseTweetView tweetView = createViewWithMocks(context, TestFixtures.TEST_TWEET,
-                R.style.tw__TweetDarkStyle, mockDependencyProvider);
-
-        try {
-            tweetView.setErrorImage();
-        } catch (NullPointerException e) {
-            fail("Should have handled null error image");
-        }
-    }
-
     public void testSetProfilePhotoView_handlesNullPicasso() {
         when(mockDependencyProvider.getImageLoader()).thenReturn(null);
 

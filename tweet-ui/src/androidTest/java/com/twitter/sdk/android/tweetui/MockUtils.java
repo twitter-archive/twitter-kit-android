@@ -48,6 +48,7 @@ public final class MockUtils {
         when(picasso.load(anyString())).thenReturn(requestCreator);
         when(picasso.load(anyInt())).thenReturn(requestCreator);
         when(requestCreator.centerCrop()).thenReturn(requestCreator);
+        when(requestCreator.error(anyInt())).thenReturn(requestCreator);
         when(requestCreator.fit()).thenReturn(requestCreator);
         when(requestCreator.placeholder(any(Drawable.class)))
                 .thenReturn(requestCreator);

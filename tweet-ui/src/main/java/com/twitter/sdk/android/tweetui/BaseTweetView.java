@@ -56,6 +56,7 @@ import com.twitter.sdk.android.tweetui.internal.SpanClickHandler;
 import com.twitter.sdk.android.tweetui.internal.TweetMediaUtils;
 import com.twitter.sdk.android.tweetui.internal.TweetMediaView;
 
+import java.lang.ref.WeakReference;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -810,10 +811,10 @@ public abstract class BaseTweetView extends LinearLayout {
         mediaView.resetSize();
         mediaView.setAspectRatio(aspectRatio);
         imageLoader.load(imagePath)
-                .placeholder(mediaBg)
+                .error(photoErrorResId)
                 .fit()
                 .centerCrop()
-                .into(mediaView, new PicassoCallback());
+                .into(mediaView, new PicassoCallback(mediaView));
     }
 
     protected double getAspectRatio(MediaEntity photoEntity) {
@@ -837,9 +838,9 @@ public abstract class BaseTweetView extends LinearLayout {
     protected void clearMediaView() {
         // Clear out the background behind any potential error images that we had
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            mediaView.setBackground(null);
+            mediaView.setBackground(mediaBg);
         } else {
-            mediaView.setBackgroundDrawable(null);
+            mediaView.setBackgroundDrawable(mediaBg);
         }
 
         mediaView.setOverlayDrawable(null);
@@ -849,35 +850,27 @@ public abstract class BaseTweetView extends LinearLayout {
     }
 
     /**
-     * Picasso Callback which asynchronously sets the error bitmap onError.
+     * Picasso Callback which clears the ImageView's background onSuccess. This is done to reduce
+     * overdraw. A weak reference is used to avoid leaking the Activity context because the Callback
+     * will be strongly referenced by Picasso.
      */
-    class PicassoCallback implements com.squareup.picasso.Callback {
-        @Override
-        public void onSuccess() { /* intentionally blank */ }
+    static class PicassoCallback implements com.squareup.picasso.Callback {
+        final WeakReference<ImageView> imageViewWeakReference;
 
-        @Override
-        public void onError() {
-            setErrorImage();
+        PicassoCallback(ImageView imageView) {
+            imageViewWeakReference = new WeakReference<>(imageView);
         }
-    }
 
-    protected void setErrorImage() {
-        // async load the error image and set the proper background color behind it once it's loaded
-        // this does incur the necessity of clearing the background on each load of an image however
-        final Picasso imageLoader = dependencyProvider.getImageLoader();
+        @Override
+        public void onSuccess() {
+            final ImageView imageView = imageViewWeakReference.get();
+            if (imageView != null) {
+                imageView.setBackgroundResource(android.R.color.transparent);
+            }
+        }
 
-        if (imageLoader == null) return;
-
-        imageLoader.load(photoErrorResId)
-                .into(mediaView, new com.squareup.picasso.Callback() {
-                    @Override
-                    public void onSuccess() {
-                        mediaView.setBackgroundColor(mediaBgColor);
-                    }
-
-                    @Override
-                    public void onError() { /* intentionally blank */ }
-                });
+        @Override
+        public void onError() { /* intentionally blank */ }
     }
 
     /**
