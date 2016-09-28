@@ -29,7 +29,7 @@ android {
     defaultConfig {
         versionCode 1
         versionName version
-        minSdkVersion 14
+        minSdkVersion rootProject.minSdkVersion.twitter
         consumerProguardFiles 'proguard.txt'
     }
 
@@ -64,8 +64,8 @@ android {
     publishNonDefault true
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility rootProject.sourceCompatibilityVersion
+        targetCompatibility rootProject.targetCompatibilityVersion
     }
 
     // Forcibly add debug and the generated "R" files onto the test classpath
@@ -90,21 +90,21 @@ dependencies {
         releaseCompile projectOrBinary(path: path, configuration: 'release', binary: binary)
     }
 
-    compile rootProject.picasso
-    compile rootProject.supportV4
+    compile dependency.picasso
+    compile dependency.supportV4
 
-    androidTestCompile rootProject.retrofitMock
-    androidTestCompile rootProject.mockito
-    androidTestCompile rootProject.dexmakerMockito
+    androidTestCompile dependency.retrofitMock
+    androidTestCompile dependency.mockito
+    androidTestCompile dependency.dexmakerMockito
 
-    testCompile rootProject.fabricTest
-    testCompile rootProject.mockito
-    testCompile rootProject.junit
-    testCompile(rootProject.robolectric) {
+    testCompile dependency.fabricTest
+    testCompile dependency.mockito
+    testCompile dependency.junit
+    testCompile(dependency.robolectric) {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
-    testCompile (rootProject.junitAddons) {
+    testCompile (dependency.junitAddons) {
         transitive = false
     }
 }

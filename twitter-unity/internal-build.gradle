@@ -30,7 +30,7 @@ android {
     defaultConfig {
         versionCode 1
         versionName version
-        minSdkVersion 14
+        minSdkVersion rootProject.minSdkVersion.twitter
         consumerProguardFiles 'proguard.txt'
     }
 
@@ -65,14 +65,8 @@ android {
     publishNonDefault true
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
-    }
-
-    // Forcibly add debug and the generated "R" files onto the test classpath
-    sourceSets {
-        test.java.srcDirs += "build/generated/source/r/debug"
-        test.java.srcDirs += "src/debug"
+        sourceCompatibility rootProject.sourceCompatibilityVersion
+        targetCompatibility rootProject.targetCompatibilityVersion
     }
 
     testOptions {

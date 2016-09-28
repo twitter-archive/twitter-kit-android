@@ -29,7 +29,7 @@ android {
     defaultConfig {
         versionCode 1
         versionName version
-        minSdkVersion 14
+        minSdkVersion rootProject.minSdkVersion.twitter
     }
 
     lintOptions {
@@ -58,8 +58,8 @@ android {
     publishNonDefault true
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility rootProject.sourceCompatibilityVersion
+        targetCompatibility rootProject.targetCompatibilityVersion
     }
 
     testOptions {
@@ -80,10 +80,9 @@ dependencies {
         releaseCompile projectOrBinary(path: path, configuration: 'release', binary: binary)
     }
 
-    testCompile rootProject.mockito
-    testCompile rootProject.junit
-    testCompile rootProject.mavenAntTasks
-    testCompile(rootProject.robolectric) {
+    testCompile dependency.mockito
+    testCompile dependency.junit
+    testCompile(dependency.robolectric) {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }

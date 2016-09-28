@@ -29,7 +29,7 @@ android {
     defaultConfig {
         versionCode 1
         versionName version
-        minSdkVersion 14
+        minSdkVersion rootProject.minSdkVersion.twitter
     }
 
     buildTypes {
@@ -63,8 +63,8 @@ android {
     publishNonDefault true
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility rootProject.sourceCompatibilityVersion
+        targetCompatibility rootProject.targetCompatibilityVersion
     }
 
     testOptions {
@@ -82,14 +82,14 @@ dependencies {
         debugCompile project(path: path, configuration: 'debug')
         releaseCompile projectOrBinary(path: path, configuration: 'release', binary: binary)
     }
-    compile rootProject.picasso
-    compile rootProject.tweetText
+    compile dependency.picasso
+    compile dependency.tweetText
 
-    testCompile rootProject.fabricTest
-    testCompile rootProject.mockito
-    testCompile rootProject.junit
-    testCompile rootProject.retrofitMock
-    testCompile(rootProject.robolectric) {
+    testCompile dependency.fabricTest
+    testCompile dependency.mockito
+    testCompile dependency.junit
+    testCompile dependency.retrofitMock
+    testCompile(dependency.robolectric) {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }

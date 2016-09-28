@@ -29,7 +29,7 @@ android {
     defaultConfig {
         versionCode 1
         versionName version
-        minSdkVersion 14
+        minSdkVersion rootProject.minSdkVersion.twitter
         consumerProguardFiles 'proguard.txt'
     }
 
@@ -82,8 +82,8 @@ android {
     publishNonDefault true
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility rootProject.sourceCompatibilityVersion
+        targetCompatibility rootProject.targetCompatibilityVersion
     }
 }
 
@@ -97,26 +97,26 @@ dependencies {
         releaseCompile projectOrBinary(path: path, configuration: 'release', binary: binary)
     }
 
-    compile rootProject.retrofit
-    compile rootProject.retrofitGsonConverter
-    compile rootProject.gson
-    compile rootProject.okHttp
+    compile dependency.retrofit
+    compile dependency.retrofitGsonConverter
+    compile dependency.gson
+    compile dependency.okHttp
 
-    androidTestCompile rootProject.mockito
-    androidTestCompile rootProject.dexmakerMockito
-    androidTestCompile (rootProject.junitAddons) {
+    androidTestCompile dependency.mockito
+    androidTestCompile dependency.dexmakerMockito
+    androidTestCompile (dependency.junitAddons) {
         transitive = false
     }
 
-    testCompile rootProject.fabricTest
-    testCompile rootProject.mockito
-    testCompile rootProject.junit
-    testCompile rootProject.retrofitMock
-    testCompile(rootProject.robolectric) {
+    testCompile dependency.fabricTest
+    testCompile dependency.mockito
+    testCompile dependency.junit
+    testCompile dependency.retrofitMock
+    testCompile(dependency.robolectric) {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
-    testCompile (rootProject.junitAddons) {
+    testCompile (dependency.junitAddons) {
         transitive = false
     }
 }
