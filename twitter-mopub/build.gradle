@@ -17,8 +17,6 @@
 
 apply plugin: 'com.android.library'
 
-apply from: rootProject.commonPlugins
-
 android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
@@ -26,7 +24,7 @@ android {
     defaultConfig {
         versionCode 1
         versionName version
-        minSdkVersion 14
+        minSdkVersion rootProject.minSdkVersion.twitter
         consumerProguardFiles 'proguard.txt'
     }
 
@@ -52,8 +50,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility rootProject.sourceCompatibilityVersion
+        targetCompatibility rootProject.targetCompatibilityVersion
     }
 
     // Forcibly add debug and the generated "R" files onto the test classpath
@@ -67,30 +65,19 @@ android {
     }
 }
 
-internal {
-    dexMethodCount {
-        packageFilter = "com.twitter.sdk.android.mopub"
-    }
-}
-
-ext.projectDependencies = []
-
 dependencies {
-    projectDependencies.each { path, binary ->
-        compile projectOrBinary(path: path, binary: binary)
-    }
 
-    compile (rootProject.mopub) {
+    compile (dependency.mopub) {
         transitive = true;
     }
 
-    testCompile rootProject.mockito
-    testCompile rootProject.junit
-    testCompile(rootProject.robolectric) {
+    testCompile dependency.mockito
+    testCompile dependency.junit
+    testCompile(dependency.robolectric) {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
-    testCompile (rootProject.junitAddons) {
+    testCompile (dependency.junitAddons) {
         transitive = false
     }
 }

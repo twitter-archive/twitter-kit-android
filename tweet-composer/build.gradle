@@ -17,8 +17,6 @@
 
 apply plugin: 'com.android.library'
 
-apply from: rootProject.commonPlugins
-
 android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
@@ -26,7 +24,7 @@ android {
     defaultConfig {
         versionCode 1
         versionName version
-        minSdkVersion 14
+        minSdkVersion rootProject.minSdkVersion.twitter
     }
 
     buildTypes {
@@ -52,8 +50,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility rootProject.sourceCompatibilityVersion
+        targetCompatibility rootProject.targetCompatibilityVersion
     }
 
     testOptions {
@@ -61,30 +59,18 @@ android {
     }
 }
 
-internal {
-    dexMethodCount {
-        packageFilter = "com.twitter.sdk.android.tweetcomposer"
-    }
-}
-
-ext.projectDependencies = [
-        ':twitter-core' : 'com.twitter.sdk.android:twitter-core:+@aar'
-]
-
 dependencies {
-    projectDependencies.each { path, binary ->
-        compile projectOrBinary(path: path, binary: binary)
-    }
+    compile project(':twitter-core')
 
-    compile rootProject.fabric
-    compile rootProject.picasso
-    compile rootProject.tweetText
+    compile dependency.fabric
+    compile dependency.picasso
+    compile dependency.tweetText
 
-    testCompile rootProject.fabricTest
-    testCompile rootProject.mockito
-    testCompile rootProject.junit
-    testCompile rootProject.retrofitMock
-    testCompile(rootProject.robolectric) {
+    testCompile dependency.fabricTest
+    testCompile dependency.mockito
+    testCompile dependency.junit
+    testCompile dependency.retrofitMock
+    testCompile(dependency.robolectric) {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }

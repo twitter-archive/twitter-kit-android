@@ -1,6 +1,0 @@
-applyInternal from: rootProject.deployScript
-applyInternal from: rootProject.qualityScript
-applyInternal plugin: 'io.fabric.gradle.weaving.ArtifactSizePlugin'
-applyInternal plugin: 'io.fabric.gradle.weaving.FabricPropertiesPlugin'
-applyInternal plugin: 'io.fabric.gradle.weaving.DexMethodCountPlugin'
-
