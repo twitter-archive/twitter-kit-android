@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 
+import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.tweetui.internal.SwipeToDismissTouchListener;
 
@@ -32,8 +33,10 @@ import java.io.Serializable;
 public class GalleryActivity extends Activity {
     public static final String GALLERY_ITEM = "GALLERY_ITEM";
     static final String MEDIA_ENTITY = "MEDIA_ENTITY";
-    static final String TWEET_ID = "TWEET_ID";
     GalleryItem galleryItem;
+
+    final GalleryScribeClient galleryScribeClient =
+            new GalleryScribeClientImpl(TweetUi.getInstance());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,28 +45,64 @@ public class GalleryActivity extends Activity {
 
         galleryItem = getGalleryItem();
 
+        // Only scribe show event when view is first created
+        if (savedInstanceState == null) {
+            scribeShowEvent();
+        }
+
+        final GalleryAdapter adapter = new GalleryAdapter(this, getSwipeToDismissCallback());
+        adapter.addAll(galleryItem.mediaEntities);
+
         final ViewPager viewPager = (ViewPager) findViewById(R.id.tw__view_pager);
         final int marginPixels =
                 getResources().getDimensionPixelSize(R.dimen.tw__gallery_page_margin);
         viewPager.setPageMargin(marginPixels);
-
-        final GalleryAdapter adapter =
-                new GalleryAdapter(this, new SwipeToDismissTouchListener.Callback() {
-            @Override
-            public void onDismiss() {
-                finish();
-                overridePendingTransition(0, R.anim.tw__slide_out);
-            }
-
-            @Override
-            public void onMove(float translationY) {
-
-            }
-        });
-
-        adapter.addAll(galleryItem.mediaEntities);
+        viewPager.addOnPageChangeListener(getOnPageChangeListener());
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(galleryItem.mediaEntityIndex);
+    }
+
+    ViewPager.OnPageChangeListener getOnPageChangeListener() {
+        return new ViewPager.OnPageChangeListener() {
+            int galleryPosition = -1;
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset,
+                                       int positionOffsetPixels) {
+                // Initial on tap of entity at position 0, which is not invoked by onPageSelected()
+                if (galleryPosition == -1 && position == 0 && positionOffset == 0.0) {
+                    scribeImpressionEvent(position);
+                    galleryPosition++;
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (galleryPosition >= 0) {
+                    scribeNavigateEvent();
+                }
+                galleryPosition++;
+
+                scribeImpressionEvent(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) { /* intentionally blank */ }
+        };
+    }
+
+    SwipeToDismissTouchListener.Callback getSwipeToDismissCallback() {
+       return new SwipeToDismissTouchListener.Callback() {
+           @Override
+           public void onDismiss() {
+               scribeDismissEvent();
+               finish();
+               overridePendingTransition(0, R.anim.tw__slide_out);
+           }
+
+           @Override
+           public void onMove(float translationY) { /* intentionally blank */ }
+       };
     }
 
     // For backwards compatibility we need to support single entity or list of entities.
@@ -78,18 +117,36 @@ public class GalleryActivity extends Activity {
 
     @Override
     public void onBackPressed() {
+        scribeDismissEvent();
         super.onBackPressed();
         overridePendingTransition(0, R.anim.tw__slide_out);
     }
 
+    void scribeShowEvent() {
+        galleryScribeClient.show();
+    }
+
+    void scribeDismissEvent() {
+        galleryScribeClient.dismiss();
+    }
+
+    void scribeImpressionEvent(int mediaEntityPosition) {
+        final MediaEntity mediaEntity = galleryItem.mediaEntities.get(mediaEntityPosition);
+        final ScribeItem scribeItem = ScribeItem.fromMediaEntity(galleryItem.tweetId, mediaEntity);
+        galleryScribeClient.impression(scribeItem);
+    }
+
+    void scribeNavigateEvent() {
+        galleryScribeClient.navigate();
+    }
+
     public static class GalleryItem implements Serializable {
-        public long tweetId;
-        public int mediaEntityIndex;
-        public List<MediaEntity> mediaEntities;
+        public final long tweetId;
+        public final int mediaEntityIndex;
+        public final List<MediaEntity> mediaEntities;
 
         public GalleryItem(int mediaEntityIndex, List<MediaEntity> mediaEntities) {
-            this.mediaEntityIndex = mediaEntityIndex;
-            this.mediaEntities = mediaEntities;
+            this(0L, mediaEntityIndex, mediaEntities);
         }
 
         public GalleryItem(long tweetId, int mediaEntityIndex, List<MediaEntity> mediaEntities) {
