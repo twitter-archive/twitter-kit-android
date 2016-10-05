@@ -26,8 +26,8 @@
     <string name="tw__play">відтворити</string>
     <string name="tw__replay">повторити</string>
     <string name="tw__retweeted_by_format">Ретвітнуто користувачем(кою) %1$s</string>
-    <string name="tw__share_content_format">Перегляньте твіт користувача(ки) \@%1$s: https://twitter.com/%1$s/status/%2$s</string>
-    <string name="tw__share_subject_format">Твіт від користувача(ки) %1$s (\@%2$s)</string>
+    <string name="tw__share_content_format">Подивіться-но твіт від \@%1$s: https://twitter.com/%1$s/status/%2$s</string>
+    <string name="tw__share_subject_format">Твіт від %1$s (\@%2$s)</string>
     <string name="tw__share_tweet">Поділитися твітом</string>
     <string name="tw__tweet_content_description">%1$s. %2$s. %3$s.</string>
     <string name="tw__tweet_media">Медіафайли твітів</string>
