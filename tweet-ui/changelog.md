@@ -3,9 +3,12 @@
 
 ## Unreleased
 
+* Added multi-photo support for inline views and the fullscreen gallery view.
+* Updated Twitter Core dependency to version 2.1.0.
+
 ## v2.0.1
 
-Removed pseudo locales from translations.
+* Removed pseudo locales from translations.
 
 ## v2.0.0
 

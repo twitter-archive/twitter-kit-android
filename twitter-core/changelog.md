@@ -3,6 +3,8 @@
 
 ## Unreleased
 
+* Fixed IllegalArgumentException in GuestAuthenticator.
+
 ## v2.0.1
 
 * Updated proguard rules for Okhttp3 and Retrofit2.

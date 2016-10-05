@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+* Updated Twitter Core dependency to version 2.1.0.
+
 ## v2.0.1
 
 * Added translations.
@@ -12,7 +14,7 @@
 ## v2.0.0
 
 * Dropped support for API versions before API 14 (ICS).
-* Updated Twitter Core Dependency
+* Updated Twitter Core dependency
 
 ## v1.0.5
 
