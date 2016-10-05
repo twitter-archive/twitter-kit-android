@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+## v2.1.0
+
 * Updated Twitter Core dependency to version 2.1.0.
 
 ## v2.0.1

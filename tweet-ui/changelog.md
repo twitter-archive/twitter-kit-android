@@ -3,6 +3,8 @@
 
 ## Unreleased
 
+## v2.1.0
+
 * Added multi-photo support for inline views and the fullscreen gallery view.
 * Updated Twitter Core dependency to version 2.1.0.
 

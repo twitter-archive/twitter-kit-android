@@ -3,6 +3,8 @@
 
 ## Unreleased
 
+## v2.1.0
+
 * Fixed IllegalArgumentException in GuestAuthenticator.
 
 ## v2.0.1
