@@ -49,7 +49,7 @@ public class GuestAuthenticator implements Authenticator {
     Request reauth(Response response) {
         if (canRetry(response)) {
             final GuestSession session = guestSessionProvider
-                    .refreshCurrentSession(new GuestSession(getExpiredToken(response)));
+                    .refreshCurrentSession(getExpiredSession(response));
             final GuestAuthToken token = session == null ? null : session.getAuthToken();
             if (token != null) {
                 return resign(response.request(), token);
@@ -59,13 +59,15 @@ public class GuestAuthenticator implements Authenticator {
         return null;
     }
 
-    GuestAuthToken getExpiredToken(Response response) {
+    GuestSession getExpiredSession(Response response) {
         final Headers headers = response.request().headers();
         final String auth = headers.get(OAuthConstants.HEADER_AUTHORIZATION);
         final String guest = headers.get(OAuthConstants.HEADER_GUEST_TOKEN);
 
         if (auth != null && guest != null) {
-            return new GuestAuthToken("bearer", auth.replace("bearer ", ""), guest);
+            final GuestAuthToken token =
+                    new GuestAuthToken("bearer", auth.replace("bearer ", ""), guest);
+            return new GuestSession(token);
         }
 
         return null;

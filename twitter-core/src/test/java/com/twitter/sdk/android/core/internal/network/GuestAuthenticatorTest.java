@@ -18,6 +18,7 @@
 package com.twitter.sdk.android.core.internal.network;
 
 import com.twitter.sdk.android.core.BuildConfig;
+import com.twitter.sdk.android.core.GuestSession;
 import com.twitter.sdk.android.core.GuestSessionProvider;
 import com.twitter.sdk.android.core.internal.oauth.GuestAuthToken;
 import com.twitter.sdk.android.core.internal.oauth.OAuth2Token;
@@ -87,8 +88,9 @@ public class GuestAuthenticatorTest {
 
     @Test
     public void testGetExpiredToken() {
-        final GuestAuthToken token = authenticator.getExpiredToken(response);
+        final GuestSession session = authenticator.getExpiredSession(response);
 
+        final GuestAuthToken token = session.getAuthToken();
         assertEquals(TEST_GUEST_TOKEN, token.getGuestToken());
         assertEquals(TEST_ACCESS_TOKEN, token.getAccessToken());
     }
@@ -105,9 +107,25 @@ public class GuestAuthenticatorTest {
                 .request(request)
                 .build();
 
-        final GuestAuthToken token = authenticator.getExpiredToken(response);
+        final GuestSession session = authenticator.getExpiredSession(response);
 
-        assertNull(token);
+        assertNull(session);
+    }
+
+    @Test
+    public void testReauth_emptyHeaders() {
+        request = new Request.Builder()
+                .url(TEST_URL)
+                .build();
+
+        response = new Response.Builder()
+                .code(401)
+                .protocol(Protocol.HTTP_1_1)
+                .request(request)
+                .build();
+
+        final Request request = authenticator.reauth(response);
+        assertNull(request);
     }
 
     @Test
