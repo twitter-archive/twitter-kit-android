@@ -23,8 +23,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
@@ -53,7 +51,7 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
     private List<MediaEntity> mediaEntities = Collections.emptyList();
     private final Path path = new Path();
     private final RectF rect = new RectF();
-    private ColorDrawable mediaBg = new ColorDrawable(Color.BLACK);
+    private int mediaBgColor = Color.BLACK;
     private final int mediaDividerSize;
     private int imageCount;
     int photoErrorResId;
@@ -79,8 +77,8 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
         this.roundedCornersEnabled = enabled;
     }
 
-    public void setMediaBackground(ColorDrawable mediaBg) {
-        this.mediaBg = mediaBg;
+    public void setMediaBgColor(int mediaBgColor) {
+        this.mediaBgColor = mediaBgColor;
     }
 
     public void setTweetMediaClickListener(TweetMediaClickListener tweetMediaClickListener) {
@@ -257,11 +255,6 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
             imageView.setOnClickListener(null);
             imageView.setTag(R.id.tw__entity_index, null);
             imageView.setContentDescription(getResources().getString(R.string.tw__tweet_media));
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                imageView.setBackground(mediaBg);
-            } else {
-                imageView.setBackgroundDrawable(mediaBg);
-            }
         }
         imageCount = 0;
     }
@@ -281,6 +274,7 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
                     measureImageView(index, 0, 0);
                     imageView.layout(0, 0, 0, 0);
                 }
+                imageView.setBackgroundColor(mediaBgColor);
                 imageView.setOnClickListener(this);
                 imageView.setVisibility(VISIBLE);
             }

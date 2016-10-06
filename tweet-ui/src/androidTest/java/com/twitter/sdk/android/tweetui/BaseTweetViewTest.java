@@ -20,7 +20,6 @@ package com.twitter.sdk.android.tweetui;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -369,7 +368,6 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
                 R.color.tw__tweet_dark_container_bg_color);
         final int color = ColorUtils.calculateOpacityTransform(
                 BaseTweetView.MEDIA_BG_DARK_OPACITY, Color.WHITE, containerColor);
-        final ColorDrawable drawable = new ColorDrawable(color);
 
         final MediaEntity entity = TestFixtures.createMediaEntityWithPhoto(100, 100);
         final List<MediaEntity> mediaEntities = new ArrayList<>();

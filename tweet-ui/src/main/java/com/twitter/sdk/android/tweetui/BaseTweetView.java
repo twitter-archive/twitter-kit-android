@@ -120,7 +120,8 @@ public abstract class BaseTweetView extends LinearLayout {
     int retweetIconResId;
     boolean tweetActionsEnabled;
     // styled drawables for images
-    ColorDrawable mediaBg;
+    ColorDrawable avatarMediaBg;
+    ColorDrawable tweetImageMediaBg;
 
     /**
      * Constructs a view from the given Tweet.
@@ -318,7 +319,8 @@ public abstract class BaseTweetView extends LinearLayout {
                 containerBgColor
         );
 
-        mediaBg = new ColorDrawable(mediaBgColor);
+        avatarMediaBg = new ColorDrawable(mediaBgColor);
+        tweetImageMediaBg = new ColorDrawable(mediaBgColor);
     }
 
     /**
@@ -586,14 +588,14 @@ public abstract class BaseTweetView extends LinearLayout {
      */
     protected void applyStyles() {
         containerView.setBackgroundColor(containerBgColor);
-        avatarView.setImageDrawable(mediaBg);
+        avatarView.setImageDrawable(avatarMediaBg);
         fullNameView.setTextColor(primaryTextColor);
         screenNameView.setTextColor(secondaryTextColor);
         contentView.setTextColor(primaryTextColor);
         timestampView.setTextColor(secondaryTextColor);
         twitterLogoView.setImageResource(birdLogoResId);
         retweetedByView.setTextColor(secondaryTextColor);
-        tweetMediaView.setMediaBackground(mediaBg);
+        tweetMediaView.setMediaBgColor(mediaBgColor);
         tweetMediaView.setPhotoErrorResId(photoErrorResId);
     }
 
@@ -679,7 +681,7 @@ public abstract class BaseTweetView extends LinearLayout {
                     UserUtils.AvatarSize.REASONABLY_SMALL);
         }
 
-        imageLoader.load(url).placeholder(mediaBg).into(avatarView);
+        imageLoader.load(url).placeholder(avatarMediaBg).into(avatarView);
     }
 
     final void setTweetMedia(Tweet displayTweet) {
@@ -831,9 +833,9 @@ public abstract class BaseTweetView extends LinearLayout {
     protected void clearTweetMedia() {
         // Clear out the background behind any potential error images that we had
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            tweetImageView.setBackground(mediaBg);
+            tweetImageView.setBackground(tweetImageMediaBg);
         } else {
-            tweetImageView.setBackgroundDrawable(mediaBg);
+            tweetImageView.setBackgroundDrawable(tweetImageMediaBg);
         }
 
         tweetImageView.setOverlayDrawable(null);
