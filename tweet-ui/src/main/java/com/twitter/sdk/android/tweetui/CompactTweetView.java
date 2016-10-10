@@ -66,7 +66,8 @@ public class CompactTweetView extends BaseTweetView {
     @Override
     protected void applyStyles() {
         super.applyStyles();
-        tweetMediaView.setRoundedCorners(true);
+
+         tweetMediaView.setRoundedCorners(true);
     }
 
     /**
