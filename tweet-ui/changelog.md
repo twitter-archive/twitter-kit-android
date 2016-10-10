@@ -3,6 +3,8 @@
 
 ## Unreleased
 
+## v2.1.1
+
 * Fixed UnsupportedOperationException when rendering multiple photos API 17 and below.
 
 ## v2.1.0
