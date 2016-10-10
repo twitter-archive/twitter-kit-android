@@ -3,6 +3,8 @@
 
 ## Unreleased
 
+* Fixed UnsupportedOperationException when rendering multiple photos API 17 and below.
+
 ## v2.1.0
 
 * Added multi-photo support for inline views and the fullscreen gallery view.
