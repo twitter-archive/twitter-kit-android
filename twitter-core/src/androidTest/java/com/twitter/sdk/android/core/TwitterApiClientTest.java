@@ -17,17 +17,32 @@
 
 package com.twitter.sdk.android.core;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
-import io.fabric.sdk.android.FabricTestUtils;
-import okhttp3.OkHttpClient;
-
 import com.twitter.sdk.android.core.internal.TwitterApi;
 import com.twitter.sdk.android.core.services.FavoriteService;
 import com.twitter.sdk.android.core.services.StatusesService;
 
+import io.fabric.sdk.android.FabricAndroidTestCase;
+import io.fabric.sdk.android.FabricTestUtils;
+import okhttp3.OkHttpClient;
+
 import static org.mockito.Mockito.mock;
 
 public class TwitterApiClientTest extends FabricAndroidTestCase {
+
+    private TwitterCore twitterCore;
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        twitterCore = new TwitterCore(new TwitterAuthConfig("", ""));
+        FabricTestUtils.with(getContext(), twitterCore);
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        FabricTestUtils.resetFabric();
+    }
 
     public void testGetService_sdkNotStarted() {
         try {
@@ -41,15 +56,10 @@ public class TwitterApiClientTest extends FabricAndroidTestCase {
 
     public void testConstructor_noSession() throws Exception {
         try {
-            final TwitterCore twitterCore = TwitterCoreTestUtils.createTwitterCore(
-                    new TwitterAuthConfig("", ""), null, null);
-            FabricTestUtils.with(getContext(), twitterCore);
-            new TwitterApiClient(null);
+            new TwitterApiClient((TwitterSession) null);
             fail();
         } catch (IllegalArgumentException ie) {
             assertEquals("Session must not be null.", ie.getMessage());
-        } finally {
-            FabricTestUtils.resetFabric();
         }
     }
 
@@ -65,7 +75,27 @@ public class TwitterApiClientTest extends FabricAndroidTestCase {
         assertNotSame(service, client.getService(StatusesService.class));
     }
 
+    public void testApiClient_cachedGuestAuthClient() throws Exception {
+        final TwitterApiClient customApiClient = new TwitterApiClient(newOkHttpClient());
+        TwitterCore.getInstance().addGuestApiClient(customApiClient);
+
+        assertEquals(customApiClient, TwitterCore.getInstance().getGuestApiClient());
+    }
+
+    public void testApiClient_cachedUserAuthApiClient() throws Exception {
+        final TwitterSession mockUserSession = mock(TwitterSession.class);
+        final TwitterApiClient customApiClient =
+                new TwitterApiClient(mockUserSession, newOkHttpClient());
+        TwitterCore.getInstance().addApiClient(mockUserSession, customApiClient);
+
+        assertEquals(customApiClient, TwitterCore.getInstance().getApiClient(mockUserSession));
+    }
+
     private TwitterApiClient newTwitterApiClient() {
         return new TwitterApiClient(mock(OkHttpClient.class), new TwitterApi());
+    }
+
+    private OkHttpClient newOkHttpClient() {
+        return new OkHttpClient.Builder().build();
     }
 }

@@ -264,6 +264,44 @@ public class TwitterCore extends Kit<Boolean> {
     }
 
     /**
+     * Add custom {@link com.twitter.sdk.android.core.TwitterApiClient} for guest auth access.
+     *
+     * Only adds guest auth client if it's not already defined. Caches internally for efficient
+     * access and storing it in TwitterCore's singleton.
+     *
+     * @param customTwitterApiClient the custom twitter api client
+     *
+     * @throws java.lang.IllegalStateException if {@link io.fabric.sdk.android.Fabric}
+     *          or {@link TwitterCore} has not been initialized.
+     */
+    public void addGuestApiClient(TwitterApiClient customTwitterApiClient) {
+        checkInitialized();
+        if (guestClient == null) {
+            createGuestClient(customTwitterApiClient);
+        }
+    }
+
+    /**
+     * Add custom {@link com.twitter.sdk.android.core.TwitterApiClient} for authenticated
+     * {@link com.twitter.sdk.android.core.Session} access.
+     *
+     * Only adds session auth client if it's not already defined. Caches internally for efficient
+     * access and storing it in TwitterCore's singleton.
+     *
+     * @param session the session
+     * @param customTwitterApiClient the custom twitter api client
+     *
+     * @throws java.lang.IllegalStateException if {@link io.fabric.sdk.android.Fabric}
+     *          or {@link TwitterCore} has not been initialized.
+     */
+    public void addApiClient(TwitterSession session, TwitterApiClient customTwitterApiClient) {
+        checkInitialized();
+        if (!apiClients.containsKey(session)) {
+            apiClients.putIfAbsent(session, customTwitterApiClient);
+        }
+    }
+
+    /**
      * Creates {@link com.twitter.sdk.android.core.TwitterApiClient} using guest authentication.
      *
      * Caches internally for efficient access.
@@ -283,6 +321,12 @@ public class TwitterCore extends Kit<Boolean> {
     private synchronized void createGuestClient() {
         if (guestClient == null) {
             guestClient = new TwitterApiClient();
+        }
+    }
+
+    private synchronized void createGuestClient(TwitterApiClient twitterApiClient) {
+        if (guestClient == null) {
+            guestClient = twitterApiClient;
         }
     }
 }

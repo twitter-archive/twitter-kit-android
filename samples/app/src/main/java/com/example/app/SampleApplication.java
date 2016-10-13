@@ -23,10 +23,15 @@ import android.util.Log;
 
 import io.fabric.sdk.android.DefaultLogger;
 import io.fabric.sdk.android.Fabric;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 import com.squareup.leakcanary.LeakCanary;
 import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterSession;
 
 public class SampleApplication extends Application {
     private static final String TAG = SampleApplication.class.getSimpleName();
@@ -57,5 +62,22 @@ public class SampleApplication extends Application {
                 .build();
 
         Fabric.with(fabric);
+
+        final HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+        final OkHttpClient customClient = new OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor).build();
+
+        final TwitterSession activeSession = TwitterCore.getInstance()
+                .getSessionManager().getActiveSession();
+
+        final TwitterApiClient customApiClient;
+        if (activeSession != null) {
+            customApiClient = new TwitterApiClient(activeSession, customClient);
+            TwitterCore.getInstance().addApiClient(activeSession, customApiClient);
+        } else {
+            customApiClient = new TwitterApiClient(customClient);
+            TwitterCore.getInstance().addGuestApiClient(customApiClient);
+        }
     }
 }

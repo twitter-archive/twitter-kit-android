@@ -34,11 +34,7 @@ public class OkHttpClientHelper {
 
     public static OkHttpClient.Builder getOkHttpClientBuilder(
             GuestSessionProvider guestSessionProvider, SSLSocketFactory sslSocketFactory) {
-        return new OkHttpClient.Builder()
-                .sslSocketFactory(sslSocketFactory)
-                .authenticator(new GuestAuthenticator(guestSessionProvider))
-                .addInterceptor(new GuestAuthInterceptor(guestSessionProvider))
-                .addNetworkInterceptor(new GuestAuthNetworkInterceptor());
+        return addGuestAuth(new OkHttpClient.Builder(), guestSessionProvider, sslSocketFactory);
     }
 
     public static OkHttpClient getOkHttpClient(Session<? extends TwitterAuthToken> session,
@@ -53,8 +49,51 @@ public class OkHttpClientHelper {
             throw new IllegalArgumentException("Session must not be null.");
         }
 
-        return new OkHttpClient.Builder()
-                .sslSocketFactory(sslSocketFactory)
+        return addSessionAuth(new OkHttpClient.Builder(), session, authConfig, sslSocketFactory);
+    }
+
+    public static OkHttpClient getCustomOkHttpClient(OkHttpClient httpClient,
+            GuestSessionProvider guestSessionProvider,
+            SSLSocketFactory sslSocketFactory) {
+        if (httpClient == null) {
+            throw new IllegalArgumentException("HttpClient must not be null.");
+        }
+
+        return addGuestAuth(httpClient.newBuilder(), guestSessionProvider, sslSocketFactory)
+                .build();
+    }
+
+    public static OkHttpClient getCustomOkHttpClient(
+            OkHttpClient httpClient,
+            Session<? extends TwitterAuthToken> session,
+            TwitterAuthConfig authConfig,
+            SSLSocketFactory sslSocketFactory) {
+        if (session == null) {
+            throw new IllegalArgumentException("Session must not be null.");
+        }
+
+        if (httpClient == null) {
+            throw new IllegalArgumentException("HttpClient must not be null.");
+        }
+
+        return addSessionAuth(httpClient.newBuilder(), session, authConfig, sslSocketFactory)
+                .build();
+    }
+
+    static OkHttpClient.Builder addGuestAuth(OkHttpClient.Builder builder,
+                                             GuestSessionProvider guestSessionProvider,
+                                             SSLSocketFactory sslSocketFactory) {
+        return builder.sslSocketFactory(sslSocketFactory)
+                .authenticator(new GuestAuthenticator(guestSessionProvider))
+                .addInterceptor(new GuestAuthInterceptor(guestSessionProvider))
+                .addNetworkInterceptor(new GuestAuthNetworkInterceptor());
+    }
+
+    static OkHttpClient.Builder addSessionAuth(OkHttpClient.Builder builder,
+                                               Session<? extends TwitterAuthToken> session,
+                                               TwitterAuthConfig authConfig,
+                                               SSLSocketFactory sslSocketFactory) {
+        return builder.sslSocketFactory(sslSocketFactory)
                 .addInterceptor(new OAuth1aInterceptor(session, authConfig));
     }
 }

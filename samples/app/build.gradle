@@ -70,6 +70,7 @@ dependencies {
     compile project(':twitter-mopub')
     compile dependency.appCompat
     compile dependency.design
+    compile dependency.okHttpInterceptor
 
     debugCompile dependency.leakCanary
     releaseCompile dependency.leakCanaryNoOp
