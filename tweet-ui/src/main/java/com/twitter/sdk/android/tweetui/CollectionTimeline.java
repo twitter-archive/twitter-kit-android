@@ -28,7 +28,6 @@ import com.twitter.sdk.android.core.models.User;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -134,21 +133,28 @@ public class CollectionTimeline extends BaseTimeline implements Timeline<Tweet> 
             return Collections.emptyList();
         }
         final List<Tweet> tweets = new ArrayList<>();
-        final Map<Long, Tweet> tweetMap = new HashMap<>();
-        for (Tweet trimmedTweet: collection.contents.tweetMap.values()) {
-            // read user id from the trimmed Tweet
-            final Long userId = trimmedTweet.user.id;
-            // lookup User in the collection response's UserMap
-            final User user = collection.contents.userMap.get(userId);
-            // build the Tweet with the hydrated User
-            final Tweet tweet = new TweetBuilder().copy(trimmedTweet).setUser(user).build();
-            tweetMap.put(tweet.id, tweet);
-        }
         for (TwitterCollection.TimelineItem item: collection.metadata.timelineItems) {
-            final Tweet tweet = tweetMap.get(item.tweetItem.id);
+            final Tweet trimmedTweet =  collection.contents.tweetMap.get(item.tweetItem.id);
+            final Tweet tweet = mapTweetToUsers(trimmedTweet, collection.contents.userMap);
             tweets.add(tweet);
         }
         return tweets;
+    }
+
+    static Tweet mapTweetToUsers(Tweet trimmedTweet, Map<Long, User> userMap) {
+        // read user id from the trimmed Tweet
+        final Long userId = trimmedTweet.user.id;
+        // lookup User in the collection response's UserMap
+        final User user = userMap.get(userId);
+        // build the Tweet with the User
+        final TweetBuilder builder = new TweetBuilder().copy(trimmedTweet).setUser(user);
+        // Repeat process for any quote tweets
+        if (trimmedTweet.quotedStatus != null) {
+            final Tweet quoteStatus = mapTweetToUsers(trimmedTweet.quotedStatus, userMap);
+            builder.setQuotedStatus(quoteStatus);
+        }
+
+        return builder.build();
     }
 
     static TimelineCursor getTimelineCursor(TwitterCollection twitterCollection) {

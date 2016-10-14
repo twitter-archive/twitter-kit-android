@@ -52,6 +52,9 @@ public class CollectionTimelineTest extends TweetUiTestCase {
             = new TweetBuilder().setId(5858L).setUser(TEST_USER_1).build();
     private static final Tweet TEST_TWEET_2
             = new TweetBuilder().setId(8585L).setUser(TEST_USER_1).build();
+    private static final Tweet TEST_TWEET_QUOTE
+            = new TweetBuilder().setId(858909L).setUser(TEST_USER_1).setQuotedStatus(TEST_TWEET_2)
+            .build();
 
     private Map<Long, Tweet> testTweetMap = new HashMap<>();
     private Map<Long, User> testUserMap = new HashMap<>();
@@ -65,12 +68,17 @@ public class CollectionTimelineTest extends TweetUiTestCase {
         testUserMap.put(TEST_USER_2.id, TEST_USER_2);
         testTweetMap.put(TEST_TWEET_1.id, TEST_TWEET_1);
         testTweetMap.put(TEST_TWEET_2.id, TEST_TWEET_2);
+        testTweetMap.put(TEST_TWEET_QUOTE.id, TEST_TWEET_QUOTE);
         // testItems order Test Tweet 1, then 2
         testItems.add(new TwitterCollection.TimelineItem(
                 new TwitterCollection.TimelineItem.TweetItem(5858L)));
         testItems.add(new TwitterCollection.TimelineItem(
                 new TwitterCollection.TimelineItem.TweetItem(8585L)));
+        testItems.add(new TwitterCollection.TimelineItem(
+                new TwitterCollection.TimelineItem.TweetItem(858909L)));
         // testItemsRev orders Test Tweet 2, then 1
+        testItemsRev.add(new TwitterCollection.TimelineItem(
+                new TwitterCollection.TimelineItem.TweetItem(858909L)));
         testItemsRev.add(new TwitterCollection.TimelineItem(
                 new TwitterCollection.TimelineItem.TweetItem(8585L)));
         testItemsRev.add(new TwitterCollection.TimelineItem(
@@ -135,9 +143,10 @@ public class CollectionTimelineTest extends TweetUiTestCase {
                 = new TwitterCollection.Metadata("", TEST_POSITION, testItems);
         final List<Tweet> tweets = CollectionTimeline.getOrderedTweets(
                 new TwitterCollection(contents, metadata));
-        assertEquals(2, tweets.size());
+        assertEquals(3, tweets.size());
         assertEquals(TEST_TWEET_1, tweets.get(0));
         assertEquals(TEST_TWEET_2, tweets.get(1));
+        assertEquals(TEST_TWEET_QUOTE, tweets.get(2));
     }
 
     public void testGetOrderedTweets_respectsTimelineItemsOrder() {
@@ -147,9 +156,10 @@ public class CollectionTimelineTest extends TweetUiTestCase {
                 TEST_POSITION, testItemsRev);
         final List<Tweet> tweets = CollectionTimeline.getOrderedTweets(
                 new TwitterCollection(contents, metadata));
-        assertEquals(2, tweets.size());
-        assertEquals(TEST_TWEET_2, tweets.get(0));
-        assertEquals(TEST_TWEET_1, tweets.get(1));
+        assertEquals(3, tweets.size());
+        assertEquals(TEST_TWEET_QUOTE, tweets.get(0));
+        assertEquals(TEST_TWEET_2, tweets.get(1));
+        assertEquals(TEST_TWEET_1, tweets.get(2));
     }
 
     public void testGetOrderedTweets_handlesNull() {
