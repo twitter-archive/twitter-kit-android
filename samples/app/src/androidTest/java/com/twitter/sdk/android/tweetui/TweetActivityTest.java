@@ -75,7 +75,7 @@ public class TweetActivityTest extends ActivityInstrumentationTestCase2<TweetAct
         onView(withId(R.id.jack_compact_tweet)).perform(scrollTo());
         TweetAsserts.assertTweetText(R.id.jack_compact_tweet, EXPECTED_TEXT);
         TweetAsserts.assertTweetTimestamp(R.id.jack_compact_tweet, EXPECTED_TIMESTAMP);
-        TweetAsserts.assertNoVerifiedBadge(R.id.jack_compact_tweet);
+        TweetAsserts.assertNonVerifiedUser(R.id.jack_compact_tweet);
         TweetAsserts.assertActionsEnabled(R.id.jack_compact_tweet);
 
         Spoon.screenshot(activity, TAG);

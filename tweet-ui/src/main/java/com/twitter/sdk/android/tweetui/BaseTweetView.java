@@ -95,7 +95,6 @@ public abstract class BaseTweetView extends LinearLayout {
     ImageView avatarView;
     TextView fullNameView;
     TextView screenNameView;
-    ImageView verifiedCheckView;
     TweetImageView tweetImageView;
     AspectRatioFrameLayout mediaContainer;
     TweetMediaView tweetMediaView;
@@ -391,7 +390,6 @@ public abstract class BaseTweetView extends LinearLayout {
         avatarView = (ImageView) findViewById(R.id.tw__tweet_author_avatar);
         fullNameView = (TextView) findViewById(R.id.tw__tweet_author_full_name);
         screenNameView = (TextView) findViewById(R.id.tw__tweet_author_screen_name);
-        verifiedCheckView = (ImageView) findViewById(R.id.tw__tweet_author_verified);
         tweetImageView = (TweetImageView) findViewById(R.id.tw__tweet_image);
         mediaContainer =
                 (AspectRatioFrameLayout) findViewById(R.id.tw__aspect_ratio_media_container);

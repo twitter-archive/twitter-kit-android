@@ -44,11 +44,14 @@
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="tw__TweetFullNameBase" parent="tw__AttributionText">
+    <style name="tw__TweetFullNameBase" parent="tw__AttributionText" tools:ignore="NewApi">
         <item name="android:layout_marginTop">@dimen/tw__tweet_full_name_margin_top</item>
+        <item name="android:layout_marginRight">@dimen/tw__tweet_full_name_margin_right</item>
         <item name="android:textSize">@dimen/tw__text_size_large</item>
         <item name="android:textColor">@color/tw__tweet_light_primary_text_color</item>
+        <item name="android:drawablePadding">@dimen/tw__tweet_full_name_drawable_padding</item>
         <item name="android:focusable">false</item>
+        <item name="android:importantForAccessibility">no</item>
     </style>
 
     <style name="tw__TweetFullName" parent="tw__TweetFullNameBase">
@@ -109,6 +112,7 @@
 
     <style name="tw__TweetFullName.Compact">
         <item name="android:layout_marginTop">@dimen/tw__compact_tweet_full_name_margin_top</item>
+        <item name="android:layout_marginRight">@dimen/tw__compact_tweet_full_name_margin_right</item>
         <item name="android:ellipsize">none</item>
     </style>
 

@@ -44,13 +44,15 @@
         android:id="@+id/tw__tweet_retweeted_by"
         android:layout_below="@id/tw__aspect_ratio_media_container"
         style="@style/tw__TweetRetweetedBy"
-        tools:text="retweeted by"/>
+        tools:text="Retweeted by Jack"
+        tools:visibility="visible"/>
 
     <ImageView
         tools:ignore="ContentDescription"
         android:id="@+id/tw__tweet_author_avatar"
         style="@style/tw__TweetAvatar"
-        android:layout_below="@id/tw__tweet_retweeted_by"/>
+        android:layout_below="@id/tw__tweet_retweeted_by"
+        tools:src="#CCCCCC"/>
 
     <TextView
         android:id="@+id/tw__tweet_author_full_name"
@@ -58,17 +60,9 @@
         android:layout_below="@id/tw__tweet_retweeted_by"
         android:layout_toRightOf="@id/tw__tweet_author_avatar"
         android:layout_toEndOf="@id/tw__tweet_author_avatar"
+        tools:drawableRight="@drawable/tw__ic_tweet_verified"
+        tools:drawableEnd="@drawable/tw__ic_tweet_verified"
         tools:text="Jack"/>
-
-    <ImageView
-        tools:ignore="ContentDescription"
-        android:id="@+id/tw__tweet_author_verified"
-        style="@style/tw__TweetVerifiedCheck"
-        android:layout_toRightOf="@id/tw__tweet_author_full_name"
-        android:layout_toEndOf="@id/tw__tweet_author_full_name"
-        android:layout_alignBottom="@id/tw__tweet_author_full_name"
-        android:visibility="gone"
-        tools:visibility="visible"/>
 
     <ImageView
         tools:ignore="ContentDescription"

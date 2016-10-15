@@ -26,13 +26,15 @@
         android:id="@+id/tw__tweet_retweeted_by"
         android:layout_alignLeft="@+id/tw__author_attribution"
         style="@style/tw__TweetRetweetedBy.Compact"
-        tools:text="retweeted by"/>
+        tools:text="Retweeted by Jack"
+        tools:visibility="visible"/>
 
     <ImageView
         tools:ignore="ContentDescription"
         android:id="@+id/tw__tweet_author_avatar"
         android:layout_below="@id/tw__tweet_retweeted_by"
-        style="@style/tw__TweetAvatar.Compact"/>
+        style="@style/tw__TweetAvatar.Compact"
+        tools:src="#CCCCCC"/>
 
     <!--Name and timestamp don't ellipsize, but @username in the middle does ellipsize-->
     <LinearLayout

@@ -20,7 +20,6 @@
 
     <style name="tw__TweetFullName" parent="tw__TweetFullNameBase">
         <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:importantForAccessibility">no</item>
     </style>
 
 </resources>

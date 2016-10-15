@@ -17,9 +17,18 @@
 
 package com.twitter.sdk.android.tweetui;
 
+import android.graphics.drawable.Drawable;
+import android.support.test.espresso.matcher.BoundedMatcher;
+import android.view.View;
+import android.widget.TextView;
+
 import com.example.app.R;
 
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+
 import java.lang.SuppressWarnings;
+import java.util.Locale;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.*;
@@ -45,23 +54,16 @@ public abstract class TweetAsserts {
 
     @SuppressWarnings("PrivateResource")
     public static void assertVerifiedUser(int tweetResId) {
-        onView(allOf(withId(R.id.tw__tweet_author_verified),
+        onView(allOf(withId(R.id.tw__tweet_author_full_name),
                 isDescendantOfA(withId(tweetResId))))
-                .check(matches(isDisplayed()));
+                .check(matches(hasCompoundDrawable(0, 0, R.drawable.tw__ic_tweet_verified, 0)));
     }
 
     @SuppressWarnings("PrivateResource")
     public static void assertNonVerifiedUser(int tweetResId) {
-        onView(allOf(withId(R.id.tw__tweet_author_verified),
+        onView(allOf(withId(R.id.tw__tweet_author_full_name),
                 isDescendantOfA(withId(tweetResId))))
-                .check(matches(not(isDisplayed())));
-    }
-
-    @SuppressWarnings("PrivateResource")
-    public static void assertNoVerifiedBadge(int tweetResId) {
-        onView(allOf(withId(R.id.tw__tweet_author_verified),
-                isDescendantOfA(withId(tweetResId))))
-                .check(doesNotExist());
+                .check(matches(hasCompoundDrawable(0, 0, 0, 0)));
     }
 
     @SuppressWarnings("PrivateResource")
@@ -91,5 +93,39 @@ public abstract class TweetAsserts {
         onView(allOf(withId(R.id.tw__tweet_action_bar),
                 isDescendantOfA(withId(tweetResId))))
                 .check(matches(not(isDisplayed())));
+    }
+
+    public static Matcher<View> hasCompoundDrawable(final int start, final int top,
+                                                         final int end, final int bottom) {
+        return new BoundedMatcher<View, TextView>(TextView.class){
+            @Override
+            public void describeTo(Description description) {
+                final String formatted =
+                        String.format(Locale.getDefault(),
+                                "has Compound Drawable: start=%d, top=%d, end=%d, bottom=%d",
+                                start, top, end, bottom);
+                description.appendText(formatted);
+            }
+
+            @Override
+            public boolean matchesSafely(TextView view) {
+                // We cannot verify the actual drawable, but we can verify one has been set.
+                final Drawable [] drawables = view.getCompoundDrawables();
+                if (drawables[0] != null && start == 0) {
+                    return false;
+                }
+                if (drawables[1] != null && top == 0) {
+                    return false;
+                }
+                if (drawables[2] != null && end == 0) {
+                    return false;
+                }
+                if (drawables[3] != null && bottom == 0) {
+                    return false;
+                }
+
+                return true;
+            }
+        };
     }
 }

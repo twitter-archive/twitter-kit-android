@@ -19,7 +19,6 @@ package com.twitter.sdk.android.tweetui;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
 import com.twitter.sdk.android.core.models.Tweet;
 
@@ -82,13 +81,14 @@ public class TweetView extends BaseTweetView {
 
     /**
      * Sets the verified check if the User is verified. If the User is not verified or if the
-     * verification data is unavailable, sets the check visibility to gone.
+     * verification data is unavailable, remove the check.
      */
     private void setVerifiedCheck(Tweet tweet) {
         if (tweet != null && tweet.user != null && tweet.user.verified) {
-            verifiedCheckView.setVisibility(ImageView.VISIBLE);
+            fullNameView.setCompoundDrawablesWithIntrinsicBounds(0, 0,
+                    R.drawable.tw__ic_tweet_verified, 0);
         } else {
-            verifiedCheckView.setVisibility(ImageView.GONE);
+            fullNameView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }
     }
 

@@ -38,9 +38,9 @@
     <dimen name="tw__tweet_logo_margin_top">18dp</dimen>
     <dimen name="tw__tweet_logo_margin_right">20dp</dimen>
     <!--Tweet Author Attribution-->
+    <dimen name="tw__tweet_full_name_margin_right">36dp</dimen>
     <dimen name="tw__tweet_full_name_margin_top">15dp</dimen>
-    <dimen name="tw__tweet_verified_margin_bottom">3dp</dimen>
-    <dimen name="tw__tweet_verified_check_padding_left">3dp</dimen>
+    <dimen name="tw__tweet_full_name_drawable_padding">3dp</dimen>
     <dimen name="tw__tweet_screen_name_margin_top">-4dp</dimen>
     <dimen name="tw__tweet_screen_name_margin_bottom">1dp</dimen>
     <dimen name="tw__tweet_timestamp_margin_top">-4dp</dimen>
@@ -87,6 +87,7 @@
     <dimen name="tw__compact_tweet_logo_margin_top">5dp</dimen>
     <dimen name="tw__compact_tweet_logo_margin_right">12dp</dimen>
     <!--Tweet Author Attribution-->
+    <dimen name="tw__compact_tweet_full_name_margin_right">0dp</dimen>
     <dimen name="tw__compact_tweet_attribution_line_margin_right">36dp</dimen>
     <dimen name="tw__compact_tweet_full_name_margin_top">0dp</dimen>
     <dimen name="tw__compact_tweet_screen_name_layout_width">0dp</dimen>
