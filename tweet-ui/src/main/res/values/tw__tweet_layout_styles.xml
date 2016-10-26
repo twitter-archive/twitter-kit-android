@@ -22,12 +22,4 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="tw__TweetContainer" parent="tw__TweetFillWidth">
-        <item name="android:paddingTop">@dimen/tw__tweet_container_padding_top</item>
-    </style>
-
-    <style name="tw__CompactTweetContainer" parent="tw__TweetFillWidth">
-        <item name="android:paddingTop">@dimen/tw__compact_tweet_container_padding_top</item>
-    </style>
-
 </resources>

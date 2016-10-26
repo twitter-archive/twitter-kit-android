@@ -59,7 +59,8 @@ public class CompactTweetView extends BaseTweetView {
     @Override
     void render() {
         super.render();
-        // Redraw screen name on recycle
+
+        // Redraw screen name on recycle, because TextView doesn't resize when text length changes
         screenNameView.requestLayout();
     }
 
@@ -67,7 +68,10 @@ public class CompactTweetView extends BaseTweetView {
     protected void applyStyles() {
         super.applyStyles();
 
-         tweetMediaView.setRoundedCorners(true);
+        final int paddingTop = getResources()
+                .getDimensionPixelSize(R.dimen.tw__compact_tweet_container_padding_top);
+        setPadding(0, paddingTop, 0, 0);
+        tweetMediaView.setRoundedCorners(true);
     }
 
     /**

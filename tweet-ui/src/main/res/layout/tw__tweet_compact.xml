@@ -16,11 +16,10 @@
   -->
 
 <!--Tweet container-->
-<RelativeLayout
-    android:id="@+id/tw__tweet_view"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/tw__CompactTweetContainer">
+    style="@style/tw__TweetFillWidth"
+    tools:parentTag="RelativeLayout">
 
     <TextView
         android:id="@+id/tw__tweet_retweeted_by"
@@ -112,4 +111,4 @@
         android:layout_height="@dimen/tw__compact_tweet_container_bottom_separator"
         android:layout_below="@id/tw__tweet_text"/>
 
-</RelativeLayout>
+</merge>

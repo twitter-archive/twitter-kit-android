@@ -15,12 +15,10 @@
   ~
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/tw__tweet_view"
-    style="@style/tw__TweetContainer"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    style="@style/tw__TweetFillWidth"
+    tools:parentTag="RelativeLayout">
 
     <com.twitter.sdk.android.tweetui.internal.AspectRatioFrameLayout
         android:id="@+id/tw__aspect_ratio_media_container"
@@ -111,4 +109,4 @@
         android:layout_height="@dimen/tw__tweet_container_bottom_separator"
         android:layout_below="@id/tw__tweet_text"/>
 
-</RelativeLayout>
+</merge>

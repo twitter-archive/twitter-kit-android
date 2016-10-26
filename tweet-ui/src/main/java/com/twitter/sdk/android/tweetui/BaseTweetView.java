@@ -30,7 +30,6 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -64,7 +63,7 @@ import java.util.List;
 import java.util.Locale;
 
 @SuppressWarnings({"TooManyMethods", "TooManyFields"})
-public abstract class BaseTweetView extends LinearLayout {
+public abstract class BaseTweetView extends RelativeLayout {
     private static final String TAG = TweetUi.LOGTAG;
     private static final int DEFAULT_STYLE = R.style.tw__TweetLightStyle;
     private static final String EMPTY_STRING = "";
@@ -91,7 +90,6 @@ public abstract class BaseTweetView extends LinearLayout {
     int styleResId;
 
     // layout views
-    RelativeLayout containerView;
     ImageView avatarView;
     TextView fullNameView;
     TextView screenNameView;
@@ -313,14 +311,7 @@ public abstract class BaseTweetView extends LinearLayout {
      * @param context The Context the view is running in.
      */
     private void inflateView(Context context) {
-        final LayoutInflater localInflater = LayoutInflater.from(context);
-        final View v = localInflater.inflate(getLayout(), null, false);
-        // work around a bug(?) in Android that makes it so that our inflated view doesn't
-        // pick up layout params correctly from its style
-        final LayoutParams layoutParams =
-                new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-        v.setLayoutParams(layoutParams);
-        this.addView(v);
+        LayoutInflater.from(context).inflate(getLayout(), this, true);
     }
 
     /**
@@ -371,7 +362,6 @@ public abstract class BaseTweetView extends LinearLayout {
      */
     void findSubviews() {
         // Tweet attribution (avatar, name, screen name, etc.)
-        containerView = (RelativeLayout) findViewById(R.id.tw__tweet_view);
         avatarView = (ImageView) findViewById(R.id.tw__tweet_author_avatar);
         fullNameView = (TextView) findViewById(R.id.tw__tweet_author_full_name);
         screenNameView = (TextView) findViewById(R.id.tw__tweet_author_screen_name);
@@ -567,7 +557,7 @@ public abstract class BaseTweetView extends LinearLayout {
      * findSubviews.
      */
     protected void applyStyles() {
-        containerView.setBackgroundColor(containerBgColor);
+        setBackgroundColor(containerBgColor);
         avatarView.setImageDrawable(avatarMediaBg);
         fullNameView.setTextColor(primaryTextColor);
         screenNameView.setTextColor(secondaryTextColor);
