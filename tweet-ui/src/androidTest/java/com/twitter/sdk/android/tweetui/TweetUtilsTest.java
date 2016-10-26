@@ -23,13 +23,10 @@ import io.fabric.sdk.android.FabricAndroidTestCase;
 import io.fabric.sdk.android.FabricTestUtils;
 import io.fabric.sdk.android.KitStub;
 
-import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.core.models.UserBuilder;
-
-import static org.mockito.Mockito.*;
 
 public class TweetUtilsTest extends FabricAndroidTestCase {
     private static final String A_FULL_PERMALINK = "https://twitter.com/jack/status/20";
@@ -43,7 +40,7 @@ public class TweetUtilsTest extends FabricAndroidTestCase {
         FabricTestUtils.resetFabric();
         try {
             FabricTestUtils.with(getContext(), new KitStub<TwitterCore>());
-            TweetUtils.loadTweet(TestFixtures.TEST_TWEET_ID, (Callback) null);
+            TweetUtils.loadTweet(TestFixtures.TEST_TWEET_ID, null);
             fail("IllegalStateException not thrown");
         } catch (IllegalStateException e) {
             assertEquals(TweetUi.NOT_STARTED_ERROR, e.getMessage());
@@ -58,7 +55,7 @@ public class TweetUtilsTest extends FabricAndroidTestCase {
         FabricTestUtils.resetFabric();
         try {
             FabricTestUtils.with(getContext(), new KitStub<TwitterCore>());
-            TweetUtils.loadTweets(TestFixtures.TWEET_IDS, (Callback) null);
+            TweetUtils.loadTweets(TestFixtures.TWEET_IDS, null);
             fail("IllegalStateException not thrown");
         } catch (IllegalStateException e) {
             assertEquals(TweetUi.NOT_STARTED_ERROR, e.getMessage());

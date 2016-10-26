@@ -171,21 +171,7 @@ public abstract class BaseTweetView extends LinearLayout {
      * @throws IllegalArgumentException if the Tweet id is invalid.
      */
     public BaseTweetView(Context context, AttributeSet attrs) {
-        this(context, attrs, new DependencyProvider());
-    }
-
-    /**
-     * Constructs a view from xml with the given dependency provider
-     * @param context the context of the view
-     * @param attrs the attributes of the XML tag that is inflating the TweetView
-     * @param dependencyProvider the dependency provider
-     * @throws java.lang.IllegalAccessError if the Tweet id is invalid
-     */
-    BaseTweetView(Context context, AttributeSet attrs, DependencyProvider dependencyProvider) {
-        super(context, attrs);
-        this.dependencyProvider = dependencyProvider;
-        initXmlAttributes(context, attrs);
-        inflateView(context);
+        this(context, attrs, 0, new DependencyProvider());
     }
 
     /**
@@ -339,7 +325,6 @@ public abstract class BaseTweetView extends LinearLayout {
 
     /**
      * Finalize inflating a view from XML.
-     * @throws IllegalArgumentException
      */
     @Override
     protected void onFinishInflate() {
@@ -428,7 +413,6 @@ public abstract class BaseTweetView extends LinearLayout {
      * the Tweet, invalidate the subview value (e.g. text views set to empty string) for view
      * recycling. Cannot be called before inflation has completed.
      * @param tweet Tweet data
-     * @throws IllegalArgumentException
      */
     public void setTweet(Tweet tweet) {
         this.tweet = tweet;
@@ -472,7 +456,6 @@ public abstract class BaseTweetView extends LinearLayout {
      * Render the Tweet by updating the subviews. For any data that is missing from the Tweet,
      * invalidate the subview value (e.g. text views set to empty string) for view recycling.
      * Do not call with render true until inflation has completed.
-     * @throws IllegalArgumentException
      */
     void render() {
         final Tweet displayTweet = TweetUtils.getDisplayTweet(tweet);
@@ -501,7 +484,6 @@ public abstract class BaseTweetView extends LinearLayout {
     /**
      * LoadTweet will trigger a request to the Twitter API and hydrate the view with the result.
      * In the event of an error it will call the listener that was provided to setOnTwitterApiError.
-     * @throws java.lang.IllegalStateException If there is no auth configured for the Twitter API
      */
     private void loadTweet() {
         final long tweetId = getTweetId();
