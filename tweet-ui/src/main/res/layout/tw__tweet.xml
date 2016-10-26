@@ -91,17 +91,22 @@
         tools:text="just setting up my twttr"
         tools:visibility="visible"/>
 
+    <FrameLayout
+        android:id="@+id/quote_tweet_holder"
+        style="@style/tw__QuoteTweetContainer"
+        android:layout_below="@id/tw__tweet_text"/>
+
     <include
         style="@style/tw__TweetActionButtonBar"
         layout="@layout/tw__action_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tw__tweet_text"/>
+        android:layout_below="@id/quote_tweet_holder"/>
 
     <View
         android:id="@+id/bottom_separator"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tw__tweet_container_bottom_separator"
-        android:layout_below="@id/tw__tweet_text"/>
+        android:layout_below="@id/quote_tweet_holder"/>
 
 </merge>

@@ -43,12 +43,29 @@
     </style>
 
     <style name="tw__TweetMediaContainer.Compact">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">@dimen/tw__compact_tweet_media_margin_top</item>
         <item name="android:layout_marginBottom">@dimen/tw__compact_tweet_media_margin_bottom</item>
         <item name="android:layout_marginRight">@dimen/tw__compact_tweet_media_margin_right</item>
+    </style>
+
+    <style name="tw__TweetMediaContainer.Quote">
+        <item name="android:layout_marginBottom">@dimen/tw__quote_tweet_media_margin_bottom</item>
+        <item name="android:layout_marginRight">@dimen/tw__quote_tweet_media_margin_horizontal</item>
+        <item name="android:layout_marginLeft">@dimen/tw__quote_tweet_media_margin_horizontal</item>
+    </style>
+
+    <style name="tw__QuoteTweetContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:visibility">gone</item>
+        <item name="android:layout_marginRight">@dimen/tw__tweet_quote_tweet_margin_horizontal</item>
+        <item name="android:layout_marginLeft">@dimen/tw__tweet_quote_tweet_margin_horizontal</item>
+        <item name="android:layout_marginTop">@dimen/tw__tweet_quote_tweet_margin_top</item>
+    </style>
+
+    <style name="tw__QuoteTweetContainer.Compact">
+        <item name="android:layout_marginRight">@dimen/tw__compact_tweet_quote_tweet_margin_right</item>
+        <item name="android:layout_marginLeft">@dimen/tw__compact_tweet_quote_tweet_margin_left</item>
     </style>
 
     <style name="tw__TweetMedia">

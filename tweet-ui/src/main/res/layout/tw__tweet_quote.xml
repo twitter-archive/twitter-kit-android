@@ -1,0 +1,67 @@
+<!--
+  ~ Copyright (C) 2015 Twitter, Inc.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<!--Tweet container-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/tw__TweetFillWidth"
+    tools:parentTag="RelativeLayout">
+
+    <!--Name doesn't ellipsize, but @username does ellipsize-->
+    <LinearLayout
+        android:id="@+id/tw__author_attribution"
+        style="@style/tw__QuoteAttributionLine"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:id="@+id/tw__tweet_author_full_name"
+            style="@style/tw__TweetFullName.Compact"
+            tools:text="Jack" />
+
+        <TextView
+            android:id="@+id/tw__tweet_author_screen_name"
+            style="@style/tw__TweetScreenName.Compact"
+            tools:text="\@jack" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tw__tweet_text"
+        style="@style/tw__TweetText.Quote"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tw__author_attribution"
+        tools:text="just setting up my twttr" />
+
+    <com.twitter.sdk.android.tweetui.internal.AspectRatioFrameLayout
+        android:id="@+id/tw__aspect_ratio_media_container"
+        style="@style/tw__TweetMediaContainer.Quote"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/tw__tweet_text">
+
+        <com.twitter.sdk.android.tweetui.internal.TweetMediaView
+            android:id="@+id/tweet_media_view"
+            style="@style/tw__TweetMedia" />
+
+        <com.twitter.sdk.android.tweetui.internal.MediaBadgeView
+            android:id="@+id/tw__tweet_media_badge"
+            style="@style/tw__TweetBadge" />
+    </com.twitter.sdk.android.tweetui.internal.AspectRatioFrameLayout>
+
+</merge>

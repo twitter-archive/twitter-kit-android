@@ -142,8 +142,23 @@
         <item name="android:layout_marginTop">@dimen/tw__compact_tweet_text_margin_top</item>
         <item name="android:layout_marginLeft">@dimen/tw__compact_tweet_text_margin_left</item>
         <item name="android:layout_marginRight">@dimen/tw__compact_tweet_text_margin_right</item>
-        <item name="android:fontFamily">sans-serif-light</item>
-        <item name="android:textSize">@dimen/tw__text_size_large</item>
     </style>
 
+    <!-- Quote Tweet Styles -->
+    <style name="tw__QuoteAttributionLine"
+        tools:ignore="NewApi">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:importantForAccessibility">noHideDescendants</item>
+        <item name="android:layout_marginTop">@dimen/tw__quote_tweet_attribution_text_margin_top</item>
+        <item name="android:layout_marginLeft">@dimen/tw__quote_tweet_attribution_text_margin_horizontal</item>
+        <item name="android:layout_marginRight"> @dimen/tw__quote_tweet_attribution_text_margin_horizontal</item>
+    </style>
+
+    <style name="tw__TweetText.Quote" tools:ignore="NewApi">
+        <item name="android:layout_marginTop">@dimen/tw__compact_tweet_text_margin_top</item>
+        <item name="android:layout_marginBottom">@dimen/tw__quote_tweet_text_margin_bottom</item>
+        <item name="android:layout_marginLeft">@dimen/tw__quote_tweet_text_margin_horizontal</item>
+        <item name="android:layout_marginRight"> @dimen/tw__quote_tweet_text_margin_horizontal</item>
+    </style>
 </resources>

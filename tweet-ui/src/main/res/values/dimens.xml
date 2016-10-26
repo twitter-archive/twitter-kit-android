@@ -68,6 +68,10 @@
     <dimen name="tw__cta_border_size">1dp</dimen>
     <dimen name="tw__cta_radius">14dp</dimen>
 
+    <!-- Quote Tweet container -->
+    <dimen name="tw__tweet_quote_tweet_margin_horizontal">20dp</dimen>
+    <dimen name="tw__tweet_quote_tweet_margin_top">8dp</dimen>
+
     <!--CompactTweetView-->
     <!--Container-->
     <dimen name="tw__compact_tweet_container_padding_top">10.5dp</dimen>
@@ -104,6 +108,18 @@
     <dimen name="tw__compact_tweet_text_margin_right">12dp</dimen>
     <!--Tweet actions-->
     <dimen name="tw__compact_tweet_action_bar_offset_left">-12dp</dimen>
+    <!-- Quote Tweet container -->
+    <dimen name="tw__compact_tweet_quote_tweet_margin_left">0dp</dimen>
+    <dimen name="tw__compact_tweet_quote_tweet_margin_right">12dp</dimen>
+
+    <!-- Quote Tweet -->
+    <dimen name="tw__quote_tweet_media_margin_horizontal">1dp</dimen>
+    <dimen name="tw__quote_tweet_media_margin_bottom">1dp</dimen>
+    <dimen name="tw__quote_tweet_text_margin_horizontal">8dp</dimen>
+    <dimen name="tw__quote_tweet_text_margin_bottom">8dp</dimen>
+    <dimen name="tw__quote_tweet_attribution_text_margin_horizontal">8dp</dimen>
+    <dimen name="tw__quote_tweet_attribution_text_margin_top">7dp</dimen>
+    <dimen name="tw__quote_tweet_border_width">1dp</dimen>
 
     <!-- Text sizes -->
     <!--density-independent(micro 10sp, small 12sp, medium 14sp, large 16sp)-->
