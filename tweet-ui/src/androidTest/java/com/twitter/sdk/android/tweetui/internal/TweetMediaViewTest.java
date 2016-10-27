@@ -17,47 +17,51 @@
 
 package com.twitter.sdk.android.tweetui.internal;
 
-import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.twitter.sdk.android.core.models.MediaEntity;
+import com.twitter.sdk.android.tweetui.R;
 import com.twitter.sdk.android.tweetui.TestFixtures;
-import com.twitter.sdk.android.tweetui.TweetUi;
 import com.twitter.sdk.android.tweetui.TweetUiTestCase;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import io.fabric.sdk.android.Fabric;
-
 public class TweetMediaViewTest extends TweetUiTestCase {
 
-    protected TweetMediaView tweetMediaView;
-    protected Context context;
+    TweetMediaView tweetMediaView;
+    CharSequence contentDescription;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
 
-        context = Fabric.getKit(TweetUi.class).getContext();
-        tweetMediaView = new TweetMediaView(context);
+        tweetMediaView = new TweetMediaView(getContext());
+        contentDescription = getContext().getResources().getString(R.string.tw__tweet_media);
     }
 
     public void testInitialViewState() {
-        for (int x = 0; x < TweetMediaView.MAX_IMAGE_VIEW_COUNT; x++) {
-            final ImageView imageView = (ImageView) tweetMediaView.getChildAt(x);
+        for (int index = 0; index < TweetMediaView.MAX_IMAGE_VIEW_COUNT; index++) {
+            final ImageView imageView = (ImageView) tweetMediaView.getChildAt(index);
             assertNull(imageView);
         }
+    }
+
+    public void testCreateImageView() {
+        final ImageView imageView = tweetMediaView.createImageView(2);
+
+        assertNotNull(imageView);
+        assertEquals(2, imageView.getTag(R.id.tw__entity_index));
     }
 
     public void testSetMediaEntities_withEmptyList() {
         final List<MediaEntity> emptyMediaEntities = Collections.EMPTY_LIST;
         tweetMediaView.setTweetMediaEntities(TestFixtures.TEST_TWEET, emptyMediaEntities);
 
-        for (int x = 0; x < TweetMediaView.MAX_IMAGE_VIEW_COUNT; x++) {
-            final ImageView imageView = (ImageView) tweetMediaView.getChildAt(x);
+        for (int index = 0; index < TweetMediaView.MAX_IMAGE_VIEW_COUNT; index++) {
+            final ImageView imageView = (ImageView) tweetMediaView.getChildAt(index);
             assertNull(imageView);
         }
     }
@@ -80,19 +84,21 @@ public class TweetMediaViewTest extends TweetUiTestCase {
                 (TweetMediaView.MAX_IMAGE_VIEW_COUNT, 100, 100);
         tweetMediaView.setTweetMediaEntities(TestFixtures.TEST_TWEET, mediaEntities);
 
-        for (int x = 0; x < TweetMediaView.MAX_IMAGE_VIEW_COUNT; x++) {
-            final ImageView imageView = (ImageView) tweetMediaView.getChildAt(x);
+        for (int index = 0; index < TweetMediaView.MAX_IMAGE_VIEW_COUNT; index++) {
+            final ImageView imageView = (ImageView) tweetMediaView.getChildAt(index);
             assertEquals(View.VISIBLE, imageView.getVisibility());
+            assertEquals(index, imageView.getTag(R.id.tw__entity_index));
+            assertEquals(contentDescription, imageView.getContentDescription());
         }
     }
 
-    public void testClearMedia() {
+    public void testClearImageViews() {
         final List<MediaEntity> mediaEntities = TestFixtures.createMultipleMediaEntitiesWithPhoto
                 (TweetMediaView.MAX_IMAGE_VIEW_COUNT, 100, 100);
         tweetMediaView.setTweetMediaEntities(TestFixtures.TEST_TWEET, mediaEntities);
-        tweetMediaView.clearMedia();
-        for (int x = 0; x < TweetMediaView.MAX_IMAGE_VIEW_COUNT; x++) {
-            final ImageView imageView = (ImageView) tweetMediaView.getChildAt(x);
+        tweetMediaView.clearImageViews();
+        for (int index = 0; index < TweetMediaView.MAX_IMAGE_VIEW_COUNT; index++) {
+            final ImageView imageView = (ImageView) tweetMediaView.getChildAt(index);
             assertEquals(View.GONE, imageView.getVisibility());
         }
     }

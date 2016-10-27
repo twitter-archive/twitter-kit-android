@@ -156,18 +156,13 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
             return;
         }
 
-        initMediaViews(mediaEntities);
         this.tweet = tweet;
         this.mediaEntities = mediaEntities;
-        loadMediaEntities(mediaEntities);
-    }
 
-    private void initMediaViews(List<MediaEntity> mediaEntities) {
-        final int imageCount = Math.min(MAX_IMAGE_VIEW_COUNT, mediaEntities.size());
+        clearImageViews();
+        initializeImageViews(mediaEntities);
 
         requestLayout();
-        clearMedia();
-        initImageViews(imageCount);
     }
 
     Size measureImages(int widthMeasureSpec, int heightMeasureSpec) {
@@ -246,64 +241,60 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
         view.layout(left, top, right, bottom);
     }
 
-    void clearMedia() {
-        mediaEntities = Collections.EMPTY_LIST;
-        tweet = null;
-        final int newImageCount = imageCount;
-        for (int index = 0; index < newImageCount; index++) {
+    void clearImageViews() {
+        for (int index = 0; index < imageCount; index++) {
             final ImageView imageView = imageViews[index];
-            imageView.setVisibility(GONE);
-            imageView.setOnClickListener(null);
-            imageView.setTag(R.id.tw__entity_index, null);
-            imageView.setContentDescription(getResources().getString(R.string.tw__tweet_media));
-        }
-        imageCount = 0;
-    }
-
-    private void initImageViews(int imageCount) {
-        this.imageCount = imageCount;
-        if (imageCount != 0) {
-            for (int index = 0; index < imageCount; index++) {
-                ImageView imageView = imageViews[index];
-                if (imageViews[index] == null) {
-                    imageView = new ImageView(getContext());
-                    final LayoutParams layoutParams = generateDefaultLayoutParams();
-                    imageView.setLayoutParams(layoutParams);
-                    imageViews[index] = imageView;
-                    addView(imageView, index);
-                } else {
-                    measureImageView(index, 0, 0);
-                    imageView.layout(0, 0, 0, 0);
-                }
-                imageView.setBackgroundColor(mediaBgColor);
-                imageView.setOnClickListener(this);
-                imageView.setVisibility(VISIBLE);
+            if (imageView != null) {
+                imageView.setVisibility(GONE);
             }
         }
     }
 
-    private void loadMediaEntities(List<MediaEntity> mediaEntities) {
-        int imageIndex = 0;
-        for (final MediaEntity mediaEntity : mediaEntities) {
-            final ImageView imageView = imageViews[imageIndex];
-            imageView.setTag(R.id.tw__entity_index, imageIndex);
-            final String imagePath = getSizedImagePath(mediaEntity);
-            setMediaImage(imageView, imagePath);
+    void initializeImageViews(List<MediaEntity> mediaEntities) {
+        imageCount = Math.min(MAX_IMAGE_VIEW_COUNT, mediaEntities.size());
+
+        for (int index = 0; index < imageCount; index++) {
+            ImageView imageView = imageViews[index];
+            if (imageView == null) {
+                imageView = createImageView(index);
+                imageViews[index] = imageView;
+                addView(imageView, index);
+            } else {
+                measureImageView(index, 0, 0);
+                imageView.layout(0, 0, 0, 0);
+            }
+
+            imageView.setVisibility(VISIBLE);
+            imageView.setBackgroundColor(mediaBgColor);
+
+            final MediaEntity mediaEntity = mediaEntities.get(index);
             setAltText(imageView, mediaEntity.altText);
-            imageIndex++;
+            setMediaImage(imageView, getSizedImagePath(mediaEntity));
         }
     }
 
-    private String getSizedImagePath(MediaEntity mediaEntity) {
+    ImageView createImageView(int index) {
+        final ImageView imageView = new ImageView(getContext());
+        imageView.setLayoutParams(generateDefaultLayoutParams());
+        imageView.setOnClickListener(this);
+        imageView.setTag(R.id.tw__entity_index, index);
+
+        return imageView;
+    }
+
+
+    String getSizedImagePath(MediaEntity mediaEntity) {
         if (imageCount > 1) {
            return mediaEntity.mediaUrlHttps + SIZED_IMAGE_SMALL;
         }
         return mediaEntity.mediaUrlHttps;   // defaults to :medium
     }
 
-    private void setAltText(ImageView imageView, String description) {
+    void setAltText(ImageView imageView, String description) {
         if (!TextUtils.isEmpty(description)) {
             imageView.setContentDescription(description);
+        } else {
+            imageView.setContentDescription(getResources().getString(R.string.tw__tweet_media));
         }
     }
 
