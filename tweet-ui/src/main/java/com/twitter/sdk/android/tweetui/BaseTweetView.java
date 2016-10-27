@@ -48,16 +48,14 @@ import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.core.internal.UserUtils;
-import com.twitter.sdk.android.core.models.VideoInfo;
 import com.twitter.sdk.android.tweetui.internal.AspectRatioFrameLayout;
 import com.twitter.sdk.android.tweetui.internal.MediaBadgeView;
 import com.twitter.sdk.android.tweetui.internal.SpanClickHandler;
 import com.twitter.sdk.android.tweetui.internal.TweetMediaUtils;
-import com.twitter.sdk.android.tweetui.internal.TweetImageView;
 import com.twitter.sdk.android.tweetui.internal.TweetMediaView;
 
-import java.lang.ref.WeakReference;
 import java.text.DateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -93,7 +91,6 @@ public abstract class BaseTweetView extends RelativeLayout {
     ImageView avatarView;
     TextView fullNameView;
     TextView screenNameView;
-    TweetImageView tweetImageView;
     AspectRatioFrameLayout mediaContainer;
     TweetMediaView tweetMediaView;
     TextView contentView;
@@ -365,7 +362,6 @@ public abstract class BaseTweetView extends RelativeLayout {
         avatarView = (ImageView) findViewById(R.id.tw__tweet_author_avatar);
         fullNameView = (TextView) findViewById(R.id.tw__tweet_author_full_name);
         screenNameView = (TextView) findViewById(R.id.tw__tweet_author_screen_name);
-        tweetImageView = (TweetImageView) findViewById(R.id.tw__tweet_image);
         mediaContainer =
                 (AspectRatioFrameLayout) findViewById(R.id.tw__aspect_ratio_media_container);
         tweetMediaView = (TweetMediaView) findViewById(R.id.tweet_media_view);
@@ -662,123 +658,45 @@ public abstract class BaseTweetView extends RelativeLayout {
         }
 
         if (displayTweet.card != null && VineCardUtils.isVine(displayTweet.card)) {
-            setViewsForVideoEntity();
-
-            final Card vineCard = displayTweet.card;
-            tweetImageView.setOverlayDrawable(getContext().getResources()
-                    .getDrawable(R.drawable.tw__player_overlay));
-            mediaBadgeView.setCard(vineCard);
-            setVineCardLauncher(displayTweet.id, vineCard);
-
-            final ImageValue imageValue = VineCardUtils.getImageValue(vineCard);
-            if (imageValue != null) {
-                setMediaImage(imageValue.url, getAspectRatio(imageValue));
+            final Card card = displayTweet.card;
+            final ImageValue imageValue = VineCardUtils.getImageValue(card);
+            final String playerStreamUrl = VineCardUtils.getStreamUrl(card);
+            // Make sure we have required bindings for Vine card
+            if (imageValue != null && !TextUtils.isEmpty(playerStreamUrl)) {
+                setViewsForMedia(getAspectRatio(imageValue));
+                tweetMediaView.setVineCard(displayTweet);
+                mediaBadgeView.setVisibility(View.VISIBLE);
+                mediaBadgeView.setCard(card);
+                scribeCardImpression(displayTweet.id, card);
+                setTweetMediaListener();
             }
-            scribeCardImpression(displayTweet.id, vineCard);
         } else if (TweetMediaUtils.hasSupportedVideo(displayTweet)) {
             final MediaEntity mediaEntity = TweetMediaUtils.getVideoEntity(displayTweet);
-            setViewsForVideoEntity();
-
-            tweetImageView.setOverlayDrawable(getContext().getResources()
-                    .getDrawable(R.drawable.tw__player_overlay));
+            setViewsForMedia(getAspectRatio(mediaEntity));
+            tweetMediaView.setTweetMediaEntities(tweet, Collections.singletonList(mediaEntity));
+            mediaBadgeView.setVisibility(View.VISIBLE);
             mediaBadgeView.setMediaEntity(mediaEntity);
-            setAltText(mediaEntity.altText);
-            setVideoMediaLauncher(mediaEntity);
-            setMediaImage(mediaEntity.mediaUrlHttps, getAspectRatio(mediaEntity));
             scribeMediaEntityImpression(displayTweet.id, mediaEntity);
+            setTweetMediaListener();
         } else if (TweetMediaUtils.hasPhoto(displayTweet)) {
             final List<MediaEntity> mediaEntities = TweetMediaUtils.getPhotoEntities(displayTweet);
-            setViewsForPhotoEntity(mediaEntities.size());
+            setViewsForMedia(getAspectRatioForPhotoEntity(mediaEntities.size()));
             tweetMediaView.setTweetMediaEntities(displayTweet, mediaEntities);
-            setPhotoMediaLauncher();
+            mediaBadgeView.setVisibility(View.GONE);
+            setTweetMediaListener();
         }
     }
 
-    void setViewsForVideoEntity() {
+    void setViewsForMedia(double aspectRatio) {
         mediaContainer.setVisibility(ImageView.VISIBLE);
-        tweetImageView.setVisibility(View.VISIBLE);
-        mediaBadgeView.setVisibility(View.VISIBLE);
-        tweetMediaView.setVisibility(View.GONE);
-    }
-
-    void setViewsForPhotoEntity(int mediaEntitiesCount) {
-        mediaContainer.setVisibility(ImageView.VISIBLE);
-        mediaContainer.setAspectRatio(getAspectRatioForPhotoEntity(mediaEntitiesCount));
+        mediaContainer.setAspectRatio(aspectRatio);
         tweetMediaView.setVisibility(View.VISIBLE);
-        tweetImageView.setVisibility(View.GONE);
-        mediaBadgeView.setVisibility(View.GONE);
     }
 
-    void setAltText(String description) {
-        if (!TextUtils.isEmpty(description)) {
-            tweetImageView.setContentDescription(description);
-        }
-    }
-
-    private void setPhotoMediaLauncher() {
+    private void setTweetMediaListener() {
         if (tweetMediaClickListener != null) {
             tweetMediaView.setTweetMediaClickListener(tweetMediaClickListener);
         }
-    }
-
-    private void setVideoMediaLauncher(final MediaEntity entity) {
-        tweetImageView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (tweetMediaClickListener != null) {
-                    tweetMediaClickListener.onMediaEntityClick(tweet, entity);
-                } else {
-                    final VideoInfo.Variant variant = TweetMediaUtils.getSupportedVariant(entity);
-                    if (variant != null) {
-
-                        final Intent intent = new Intent(getContext(), PlayerActivity.class);
-                        final boolean looping = TweetMediaUtils.isLooping(entity);
-                        final String url = TweetMediaUtils.getSupportedVariant(entity).url;
-                        final PlayerActivity.PlayerItem item =
-                                new PlayerActivity.PlayerItem(url, looping);
-                        intent.putExtra(PlayerActivity.PLAYER_ITEM, item);
-
-                        IntentUtils.safeStartActivity(getContext(), intent);
-                    }
-                }
-            }
-        });
-    }
-
-    private void setVineCardLauncher(final Long tweetId, final Card vineCard) {
-        tweetImageView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Intent intent = new Intent(getContext(), PlayerActivity.class);
-                final String playerStreamUrl = VineCardUtils.getStreamUrl(vineCard);
-                final String callToActionUrl = VineCardUtils.getCallToActionUrl(vineCard);
-                final String callToActionText =
-                        getContext().getResources().getString(R.string.tw__cta_text);
-                final PlayerActivity.PlayerItem playerItem =
-                        new PlayerActivity.PlayerItem(playerStreamUrl, true,
-                                callToActionText, callToActionUrl);
-                intent.putExtra(PlayerActivity.PLAYER_ITEM, playerItem);
-
-                final ScribeItem scribeItem = ScribeItem.fromTweetCard(tweetId, vineCard);
-                intent.putExtra(PlayerActivity.SCRIBE_ITEM, scribeItem);
-
-                IntentUtils.safeStartActivity(getContext(), intent);
-            }
-        });
-    }
-
-    void setMediaImage(String imagePath, double aspectRatio) {
-        final Picasso imageLoader = dependencyProvider.getImageLoader();
-
-        if (imageLoader == null) return;
-
-        mediaContainer.resetSize();
-        mediaContainer.setAspectRatio(aspectRatio);
-        imageLoader.load(imagePath)
-                .error(photoErrorResId)
-                .fit()
-                .centerCrop()
-                .into(tweetImageView, new PicassoCallback(tweetImageView));
     }
 
     protected double getAspectRatio(MediaEntity photoEntity) {
@@ -801,42 +719,7 @@ public abstract class BaseTweetView extends RelativeLayout {
     abstract protected double getAspectRatioForPhotoEntity(int photoCount);
 
     protected void clearTweetMedia() {
-        // Clear out the background behind any potential error images that we had
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            tweetImageView.setBackground(tweetImageMediaBg);
-        } else {
-            tweetImageView.setBackgroundDrawable(tweetImageMediaBg);
-        }
-
-        tweetImageView.setOverlayDrawable(null);
-        tweetImageView.setOnClickListener(null);
-        tweetImageView.setClickable(false);
-        tweetImageView.setContentDescription(getResources().getString(R.string.tw__tweet_media));
         mediaContainer.setVisibility(ImageView.GONE);
-    }
-
-    /**
-     * Picasso Callback which clears the ImageView's background onSuccess. This is done to reduce
-     * overdraw. A weak reference is used to avoid leaking the Activity context because the Callback
-     * will be strongly referenced by Picasso.
-     */
-    static class PicassoCallback implements com.squareup.picasso.Callback {
-        final WeakReference<ImageView> imageViewWeakReference;
-
-        PicassoCallback(ImageView imageView) {
-            imageViewWeakReference = new WeakReference<>(imageView);
-        }
-
-        @Override
-        public void onSuccess() {
-            final ImageView imageView = imageViewWeakReference.get();
-            if (imageView != null) {
-                imageView.setBackgroundResource(android.R.color.transparent);
-            }
-        }
-
-        @Override
-        public void onError() { /* intentionally blank */ }
     }
 
     /**

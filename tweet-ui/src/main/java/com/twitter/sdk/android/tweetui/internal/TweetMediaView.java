@@ -32,9 +32,15 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 import com.twitter.sdk.android.core.IntentUtils;
+import com.twitter.sdk.android.core.internal.VineCardUtils;
+import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
+import com.twitter.sdk.android.core.models.Card;
+import com.twitter.sdk.android.core.models.ImageValue;
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.core.models.VideoInfo;
 import com.twitter.sdk.android.tweetui.GalleryActivity;
+import com.twitter.sdk.android.tweetui.PlayerActivity;
 import com.twitter.sdk.android.tweetui.R;
 import com.twitter.sdk.android.tweetui.TweetMediaClickListener;
 import com.twitter.sdk.android.tweetui.TweetUi;
@@ -48,16 +54,17 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
     static final int MAX_IMAGE_VIEW_COUNT = 4;
     static final String SIZED_IMAGE_SMALL = ":small";
 
-    private final ImageView[] imageViews = new ImageView[MAX_IMAGE_VIEW_COUNT];
+    private final OverlayImageView[] imageViews = new OverlayImageView[MAX_IMAGE_VIEW_COUNT];
     private List<MediaEntity> mediaEntities = Collections.emptyList();
-    private final float [] radii = new float[8];
     private final Path path = new Path();
     private final RectF rect = new RectF();
-    private int mediaBgColor = Color.BLACK;
     private final int mediaDividerSize;
     private int imageCount;
+    final float [] radii = new float[8];
+    int mediaBgColor = Color.BLACK;
     int photoErrorResId;
     final DependencyProvider dependencyProvider;
+    boolean internalRoundedCornersEnabled;
     TweetMediaClickListener tweetMediaClickListener;
     Tweet tweet;
 
@@ -66,9 +73,13 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
     }
 
     public TweetMediaView(Context context, AttributeSet attrs) {
+        this(context, attrs, new DependencyProvider());
+    }
+
+    TweetMediaView(Context context, AttributeSet attrs, DependencyProvider dependencyProvider) {
         super(context, attrs);
 
-        dependencyProvider =  new DependencyProvider();
+        this.dependencyProvider =  dependencyProvider;
         mediaDividerSize = getResources().getDimensionPixelSize
                 (R.dimen.tw__media_view_divider_size);
         photoErrorResId = R.drawable.tw__ic_tweet_photo_error_dark;
@@ -129,7 +140,8 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+        if (internalRoundedCornersEnabled &&
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             final int saveState = canvas.save();
             canvas.clipPath(path);
             super.dispatchDraw(canvas);
@@ -147,18 +159,60 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
             if (mediaEntity != null && tweet != null) {
                 tweetMediaClickListener.onMediaEntityClick(tweet, mediaEntity);
             }
+        } else if (!mediaEntities.isEmpty()) {
+            final MediaEntity mediaEntity = mediaEntities.get(mediaEntityIndex);
+            if (TweetMediaUtils.isVideoType(mediaEntity)) {
+                launchVideoPlayer(mediaEntity);
+            } else if (TweetMediaUtils.isPhotoType(mediaEntity)) {
+                launchPhotoGallery(mediaEntityIndex);
+            }
         } else {
-            final Intent intent = new Intent(getContext(), GalleryActivity.class);
-            final GalleryActivity.GalleryItem item =
-                    new GalleryActivity.GalleryItem(tweet.id, mediaEntityIndex, mediaEntities);
-            intent.putExtra(GalleryActivity.GALLERY_ITEM, item);
+            launchVideoPlayer(tweet);
+        }
+    }
+
+    public void launchVideoPlayer(MediaEntity entity) {
+        final VideoInfo.Variant variant = TweetMediaUtils.getSupportedVariant(entity);
+        if (variant != null) {
+            final Intent intent = new Intent(getContext(), PlayerActivity.class);
+            final boolean looping = TweetMediaUtils.isLooping(entity);
+            final String url = TweetMediaUtils.getSupportedVariant(entity).url;
+            final PlayerActivity.PlayerItem item = new PlayerActivity.PlayerItem(url, looping);
+            intent.putExtra(PlayerActivity.PLAYER_ITEM, item);
+
             IntentUtils.safeStartActivity(getContext(), intent);
         }
     }
 
+    public void launchVideoPlayer(Tweet tweet) {
+        final Card card = tweet.card;
+        final Intent intent = new Intent(getContext(), PlayerActivity.class);
+        final String playerStreamUrl = VineCardUtils.getStreamUrl(card);
+        final String callToActionUrl = VineCardUtils.getCallToActionUrl(card);
+        final String callToActionText =
+                getContext().getResources().getString(R.string.tw__cta_text);
+        final PlayerActivity.PlayerItem playerItem =
+                new PlayerActivity.PlayerItem(playerStreamUrl, true,
+                        callToActionText, callToActionUrl);
+        intent.putExtra(PlayerActivity.PLAYER_ITEM, playerItem);
+
+        final ScribeItem scribeItem = ScribeItem.fromTweetCard(tweet.id, card);
+        intent.putExtra(PlayerActivity.SCRIBE_ITEM, scribeItem);
+
+        IntentUtils.safeStartActivity(getContext(), intent);
+    }
+
+    public void launchPhotoGallery(int mediaEntityIndex) {
+        final Intent intent = new Intent(getContext(), GalleryActivity.class);
+        final GalleryActivity.GalleryItem item =
+                new GalleryActivity.GalleryItem(tweet.id, mediaEntityIndex, mediaEntities);
+        intent.putExtra(GalleryActivity.GALLERY_ITEM, item);
+        IntentUtils.safeStartActivity(getContext(), intent);
+    }
+
     public void setTweetMediaEntities(Tweet tweet, List<MediaEntity> mediaEntities) {
         if (tweet == null || mediaEntities == null || mediaEntities.isEmpty() ||
-                this.mediaEntities.equals(mediaEntities)) {
+                mediaEntities.equals(this.mediaEntities)) {
             return;
         }
 
@@ -167,6 +221,28 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
 
         clearImageViews();
         initializeImageViews(mediaEntities);
+
+        if (TweetMediaUtils.isPhotoType(mediaEntities.get(0))) {
+            internalRoundedCornersEnabled = true;
+        } else {
+            internalRoundedCornersEnabled = false;
+        }
+
+        requestLayout();
+    }
+
+    public void setVineCard(Tweet tweet) {
+        if (tweet == null || tweet.card == null || !VineCardUtils.isVine(tweet.card)) {
+            return;
+        }
+
+        this.tweet = tweet;
+        this.mediaEntities = Collections.emptyList();;
+
+        clearImageViews();
+        initializeImageViews(tweet.card);
+
+        internalRoundedCornersEnabled = false;
 
         requestLayout();
     }
@@ -254,35 +330,48 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
                 imageView.setVisibility(GONE);
             }
         }
+        imageCount = 0;
     }
 
     void initializeImageViews(List<MediaEntity> mediaEntities) {
         imageCount = Math.min(MAX_IMAGE_VIEW_COUNT, mediaEntities.size());
 
         for (int index = 0; index < imageCount; index++) {
-            ImageView imageView = imageViews[index];
-            if (imageView == null) {
-                imageView = createImageView(index);
-                imageViews[index] = imageView;
-                addView(imageView, index);
-            } else {
-                measureImageView(index, 0, 0);
-                imageView.layout(0, 0, 0, 0);
-            }
-
-            imageView.setVisibility(VISIBLE);
-            imageView.setBackgroundColor(mediaBgColor);
+            final OverlayImageView imageView = getOrCreateImageView(index);
 
             final MediaEntity mediaEntity = mediaEntities.get(index);
             setAltText(imageView, mediaEntity.altText);
             setMediaImage(imageView, getSizedImagePath(mediaEntity));
+            setOverlayImage(imageView, TweetMediaUtils.isVideoType(mediaEntity));
         }
     }
 
-    ImageView createImageView(int index) {
-        final ImageView imageView = new ImageView(getContext());
-        imageView.setLayoutParams(generateDefaultLayoutParams());
-        imageView.setOnClickListener(this);
+    void initializeImageViews(Card card) {
+        imageCount = 1;
+
+        final OverlayImageView imageView = getOrCreateImageView(0);
+
+        final ImageValue imageValue = VineCardUtils.getImageValue(card);
+        setAltText(imageView, imageValue.alt);
+        setMediaImage(imageView, imageValue.url);
+        setOverlayImage(imageView, true);
+    }
+
+    OverlayImageView getOrCreateImageView(int index) {
+        OverlayImageView imageView = imageViews[index];
+        if (imageView == null) {
+            imageView = new OverlayImageView(getContext());
+            imageView.setLayoutParams(generateDefaultLayoutParams());
+            imageView.setOnClickListener(this);
+            imageViews[index] = imageView;
+            addView(imageView, index);
+        } else {
+            measureImageView(index, 0, 0);
+            layoutImage(index, 0, 0, 0, 0);
+        }
+
+        imageView.setVisibility(VISIBLE);
+        imageView.setBackgroundColor(mediaBgColor);
         imageView.setTag(R.id.tw__entity_index, index);
 
         return imageView;
@@ -301,6 +390,15 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
             imageView.setContentDescription(description);
         } else {
             imageView.setContentDescription(getResources().getString(R.string.tw__tweet_media));
+        }
+    }
+
+    void setOverlayImage(OverlayImageView imageView, boolean isVideo) {
+        if (isVideo) {
+            imageView.setOverlayDrawable(getContext().getResources()
+                    .getDrawable(R.drawable.tw__player_overlay));
+        } else {
+            imageView.setOverlayDrawable(null);
         }
     }
 

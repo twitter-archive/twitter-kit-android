@@ -20,6 +20,7 @@ package com.twitter.sdk.android.tweetui;
 import com.twitter.sdk.android.core.internal.VineCardUtils;
 import com.twitter.sdk.android.core.models.BindingValues;
 import com.twitter.sdk.android.core.models.Card;
+import com.twitter.sdk.android.core.models.ImageValue;
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
@@ -188,7 +189,7 @@ public final class TestFixtures {
                 .build();
     }
 
-    static Tweet createTweetWithVineCard(long id, User user, String text, Card card) {
+    public static Tweet createTweetWithVineCard(long id, User user, String text, Card card) {
         return new TweetBuilder()
                 .setId(id)
                 .setCard(card)
@@ -278,6 +279,10 @@ public final class TestFixtures {
         final UserValue testUser = new UserValue(TEST_VINE_USER_ID);
         final Map<String, Object> testValues = new HashMap<>();
         testValues.put("site", testUser);
+
+        final ImageValue imageValue = new ImageValue(10, 10, TEST_PHOTO_URL, "");
+        testValues.put("player_image", imageValue);
+        testValues.put("player_stream_url", TEST_URL);
 
         return new BindingValues(testValues);
     }

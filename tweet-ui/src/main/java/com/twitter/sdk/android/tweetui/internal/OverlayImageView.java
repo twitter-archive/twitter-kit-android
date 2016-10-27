@@ -27,14 +27,14 @@ import android.widget.ImageView;
  * An ImageView subclass that take a {@link android.graphics.drawable.Drawable} and draws it on top
  * the ImageView content.
  */
-public class TweetImageView extends ImageView {
+public class OverlayImageView extends ImageView {
     Overlay overlay = new Overlay(null);
 
-    public TweetImageView(Context context) {
+    public OverlayImageView(Context context) {
         super(context);
     }
 
-    public TweetImageView(Context context, AttributeSet attrs) {
+    public OverlayImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -77,14 +77,16 @@ public class TweetImageView extends ImageView {
      * @param drawable The drawable
      */
     public void setOverlayDrawable(Drawable drawable) {
-        overlay.cleanupDrawable(this);
-        if (drawable != null) {
-            drawable.setCallback(this);
-        }
+        if (drawable != overlay.drawable) {
+            overlay.cleanupDrawable(this);
+            if (drawable != null) {
+                drawable.setCallback(this);
+            }
 
-        overlay = new Overlay(drawable);
-        overlay.setDrawableState(getDrawableState());
-        requestLayout();
+            overlay = new Overlay(drawable);
+            overlay.setDrawableState(getDrawableState());
+            requestLayout();
+        }
     }
 
     /**

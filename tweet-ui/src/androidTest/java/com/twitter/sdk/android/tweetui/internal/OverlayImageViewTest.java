@@ -30,74 +30,72 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-public class TweetImageViewTest extends FabricAndroidTestCase {
+public class OverlayImageViewTest extends FabricAndroidTestCase {
     public final int[] TEST_STATE = new int[]{0, 0};
     public final int TEST_HEIGHT = 2;
     public final int TEST_WIDTH = 4;
 
     public void testOnDraw() {
-        final TweetImageView tweetImageView = new TweetImageView(getContext());
-        final TweetImageView.Overlay overlay = mock(TweetImageView.Overlay.class);
+        final OverlayImageView overlayImageView = new OverlayImageView(getContext());
+        final OverlayImageView.Overlay overlay = mock(OverlayImageView.Overlay.class);
         final Canvas canvas = new Canvas();
-        tweetImageView.overlay = overlay;
-        tweetImageView.draw(canvas);
+        overlayImageView.overlay = overlay;
+        overlayImageView.draw(canvas);
 
         verify(overlay).draw(canvas);
     }
 
     public void testDrawableStateChanged() {
-        final TweetImageView tweetImageView = new TweetImageView(getContext());
-        final TweetImageView.Overlay overlay = mock(TweetImageView.Overlay.class);
-        tweetImageView.overlay = overlay;
-        tweetImageView.drawableStateChanged();
+        final OverlayImageView overlayImageView = new OverlayImageView(getContext());
+        final OverlayImageView.Overlay overlay = mock(OverlayImageView.Overlay.class);
+        overlayImageView.overlay = overlay;
+        overlayImageView.drawableStateChanged();
 
         verify(overlay).setDrawableState(any(int[].class));
     }
 
     public void testOnMeasure() {
-        final TweetImageView tweetImageView = new TweetImageView(getContext());
-        final TweetImageView.Overlay overlay = mock(TweetImageView.Overlay.class);
-        tweetImageView.overlay = overlay;
-        tweetImageView.measure(0, 0);
+        final OverlayImageView overlayImageView = new OverlayImageView(getContext());
+        final OverlayImageView.Overlay overlay = mock(OverlayImageView.Overlay.class);
+        overlayImageView.overlay = overlay;
+        overlayImageView.measure(0, 0);
 
         verify(overlay).setDrawableBounds(anyInt(), anyInt());
     }
 
     public void testOnSizeChanged() {
-        final TweetImageView tweetImageView = new TweetImageView(getContext());
-        final TweetImageView.Overlay overlay = mock(TweetImageView.Overlay.class);
-        tweetImageView.overlay = overlay;
-        tweetImageView.onSizeChanged(TEST_WIDTH, TEST_HEIGHT, 0, 0);
+        final OverlayImageView overlayImageView = new OverlayImageView(getContext());
+        final OverlayImageView.Overlay overlay = mock(OverlayImageView.Overlay.class);
+        overlayImageView.overlay = overlay;
+        overlayImageView.onSizeChanged(TEST_WIDTH, TEST_HEIGHT, 0, 0);
 
         verify(overlay).setDrawableBounds(TEST_WIDTH, TEST_HEIGHT);
     }
 
     public void testSetOverlayDrawable() {
-        final TweetImageView tweetImageView = new TweetImageView(getContext());
-        final TweetImageView.Overlay overlay = mock(TweetImageView.Overlay.class);
-        tweetImageView.overlay = overlay;
+        final OverlayImageView overlayImageView = new OverlayImageView(getContext());
+        final OverlayImageView.Overlay overlay = mock(OverlayImageView.Overlay.class);
+        overlayImageView.overlay = overlay;
         final Drawable drawable = mock(Drawable.class);
-        tweetImageView.setOverlayDrawable(drawable);
+        overlayImageView.setOverlayDrawable(drawable);
 
-        verify(overlay).cleanupDrawable(tweetImageView);
-        assertNotNull(tweetImageView.overlay);
-        assertEquals(drawable, tweetImageView.overlay.drawable);
+        verify(overlay).cleanupDrawable(overlayImageView);
+        assertNotNull(overlayImageView.overlay);
+        assertEquals(drawable, overlayImageView.overlay.drawable);
     }
 
     public void testSetOverlayDrawable_nullDrawable() {
-        final TweetImageView tweetImageView = new TweetImageView(getContext());
-        final TweetImageView.Overlay overlay = mock(TweetImageView.Overlay.class);
-        tweetImageView.overlay = overlay;
-        tweetImageView.setOverlayDrawable(null);
+        final OverlayImageView overlayImageView = new OverlayImageView(getContext());
+        final OverlayImageView.Overlay overlay = mock(OverlayImageView.Overlay.class);
+        overlayImageView.overlay = overlay;
+        overlayImageView.setOverlayDrawable(null);
 
-        verify(overlay).cleanupDrawable(tweetImageView);
-        assertNotNull(tweetImageView.overlay);
-        assertNull(tweetImageView.overlay.drawable);
+        verifyNoMoreInteractions(overlay);
     }
 
     public void testOverlayDraw() {
         final Drawable drawable = mock(Drawable.class);
-        final TweetImageView.Overlay overlay = new TweetImageView.Overlay(drawable);
+        final OverlayImageView.Overlay overlay = new OverlayImageView.Overlay(drawable);
         final Canvas canvas = new Canvas();
         overlay.draw(canvas);
 
@@ -107,7 +105,7 @@ public class TweetImageViewTest extends FabricAndroidTestCase {
     public void testOverlaySetDrawableState() {
         final Drawable drawable = mock(Drawable.class);
         when(drawable.isStateful()).thenReturn(true);
-        final TweetImageView.Overlay overlay = new TweetImageView.Overlay(drawable);
+        final OverlayImageView.Overlay overlay = new OverlayImageView.Overlay(drawable);
         overlay.setDrawableState(TEST_STATE);
 
         verify(drawable).isStateful();
@@ -117,7 +115,7 @@ public class TweetImageViewTest extends FabricAndroidTestCase {
     public void testOverlaySetDrawableState_drawableNotStateful() {
         final Drawable drawable = mock(Drawable.class);
         when(drawable.isStateful()).thenReturn(false);
-        final TweetImageView.Overlay overlay = new TweetImageView.Overlay(drawable);
+        final OverlayImageView.Overlay overlay = new OverlayImageView.Overlay(drawable);
         overlay.setDrawableState(TEST_STATE);
 
         verify(drawable).isStateful();
@@ -126,7 +124,7 @@ public class TweetImageViewTest extends FabricAndroidTestCase {
 
     public void testOverlaySetDrawableBounds() {
         final Drawable drawable = mock(Drawable.class);
-        final TweetImageView.Overlay overlay = new TweetImageView.Overlay(drawable);
+        final OverlayImageView.Overlay overlay = new OverlayImageView.Overlay(drawable);
         overlay.setDrawableBounds(TEST_WIDTH, TEST_HEIGHT);
 
         verify(drawable).setBounds(0, 0, TEST_WIDTH, TEST_HEIGHT);
@@ -135,7 +133,7 @@ public class TweetImageViewTest extends FabricAndroidTestCase {
     public void testCleanupDrawable() {
         final ImageView imageView = mock(ImageView.class);
         final Drawable drawable = mock(Drawable.class);
-        final TweetImageView.Overlay overlay = new TweetImageView.Overlay(drawable);
+        final OverlayImageView.Overlay overlay = new OverlayImageView.Overlay(drawable);
         overlay.cleanupDrawable(imageView);
 
         verify(imageView).unscheduleDrawable(drawable);

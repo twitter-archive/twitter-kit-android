@@ -24,18 +24,13 @@
         android:id="@+id/tw__aspect_ratio_media_container"
         style="@style/tw__TweetMediaContainer">
 
-        <com.twitter.sdk.android.tweetui.internal.TweetImageView
-            android:id="@+id/tw__tweet_image"
-            style="@style/tw__TweetImage"
-            android:contentDescription="@string/tw__tweet_media"/>
+        <com.twitter.sdk.android.tweetui.internal.TweetMediaView
+            android:id="@+id/tweet_media_view"
+            style="@style/tw__TweetMedia"/>
 
         <com.twitter.sdk.android.tweetui.internal.MediaBadgeView
             android:id="@+id/tw__tweet_media_badge"
             style="@style/tw__TweetBadge" />
-
-        <com.twitter.sdk.android.tweetui.internal.TweetMediaView
-            android:id="@+id/tweet_media_view"
-            style="@style/tw__TweetMedia"/>
     </com.twitter.sdk.android.tweetui.internal.AspectRatioFrameLayout>
 
     <TextView
