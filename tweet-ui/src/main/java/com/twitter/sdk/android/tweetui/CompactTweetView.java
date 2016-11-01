@@ -71,7 +71,11 @@ public class CompactTweetView extends BaseTweetView {
         final int paddingTop = getResources()
                 .getDimensionPixelSize(R.dimen.tw__compact_tweet_container_padding_top);
         setPadding(0, paddingTop, 0, 0);
-        tweetMediaView.setRoundedCorners(true);
+
+        final int mediaViewRadius =
+                getResources().getDimensionPixelSize(R.dimen.tw__media_view_radius);
+        tweetMediaView.setRoundedCornersRadii(mediaViewRadius, mediaViewRadius,
+                mediaViewRadius, mediaViewRadius);
     }
 
     /**

@@ -50,6 +50,7 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
 
     private final ImageView[] imageViews = new ImageView[MAX_IMAGE_VIEW_COUNT];
     private List<MediaEntity> mediaEntities = Collections.emptyList();
+    private final float [] radii = new float[8];
     private final Path path = new Path();
     private final RectF rect = new RectF();
     private int mediaBgColor = Color.BLACK;
@@ -57,7 +58,6 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
     private int imageCount;
     int photoErrorResId;
     final DependencyProvider dependencyProvider;
-    boolean roundedCornersEnabled;
     TweetMediaClickListener tweetMediaClickListener;
     Tweet tweet;
 
@@ -74,8 +74,17 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
         photoErrorResId = R.drawable.tw__ic_tweet_photo_error_dark;
     }
 
-    public void setRoundedCorners(boolean enabled) {
-        this.roundedCornersEnabled = enabled;
+    public void setRoundedCornersRadii(int topLeft, int topRight, int bottomRight, int bottomLeft) {
+        radii[0] = topLeft;
+        radii[1] = topLeft;
+        radii[2] = topRight;
+        radii[3] = topRight;
+        radii[4] = bottomRight;
+        radii[5] = bottomRight;
+        radii[6] = bottomLeft;
+        radii[7] = bottomLeft;
+
+        requestLayout();
     }
 
     public void setMediaBgColor(int mediaBgColor) {
@@ -114,16 +123,13 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
 
         path.reset();
         rect.set(0, 0, w, h);
-        final int mediaViewRadius =
-                getResources().getDimensionPixelSize(R.dimen.tw__media_view_radius);
-        path.addRoundRect(rect, mediaViewRadius, mediaViewRadius,
-                Path.Direction.CW);
+        path.addRoundRect(rect, radii, Path.Direction.CW);
         path.close();
     }
 
     @Override
     protected void dispatchDraw(Canvas canvas) {
-        if (roundedCornersEnabled && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             final int saveState = canvas.save();
             canvas.clipPath(path);
             super.dispatchDraw(canvas);
