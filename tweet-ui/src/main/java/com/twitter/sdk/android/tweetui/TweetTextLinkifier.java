@@ -24,59 +24,57 @@ import android.text.style.CharacterStyle;
 import android.view.View;
 
 import com.twitter.sdk.android.tweetui.internal.ClickableLinkSpan;
+import com.twitter.sdk.android.tweetui.internal.TweetMediaUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Pattern;
 
 final class TweetTextLinkifier {
-    private static final String PHOTO_TYPE = "photo";
+    static final Pattern QUOTED_STATUS_URL =
+            Pattern.compile("^https?://twitter\\.com(/#!)?/\\w+/status/\\d+$");
+    static final Pattern VINE_URL =
+            Pattern.compile("^https?://vine\\.co(/#!)?/v/\\w+$");
 
     private TweetTextLinkifier() {}
 
     /**
      * Returns a charSequence with the display urls substituted in place of the t.co links. It will
-     * strip off the last photo entity in the text if stripLastPhotoEntity is true. The return
+     * strip off the last photo entity, quote Tweet, and Vine card urls in the text. The return
      * value can be set directly onto a text view.
      *
      * @param tweetText             The formatted and adjusted tweet wrapper
      * @param listener              A listener to handle link clicks
-     * @param stripLastPhotoEntity  If true will strip the last photo entity from the linkified text
      * @param linkColor             The link color
      * @param linkHighlightColor    The link background color when pressed
+     * @param stripVineCard         If true we should strip the Vine card URL
      * @return                      The Tweet text with displayUrls substituted in
      */
-    static CharSequence linkifyUrls(FormattedTweetText tweetText,
-            final LinkClickListener listener, boolean stripLastPhotoEntity, final int linkColor,
-            final int linkHighlightColor) {
+    static CharSequence linkifyUrls(FormattedTweetText tweetText, final LinkClickListener listener,
+                                    final int linkColor, final int linkHighlightColor,
+                                    boolean stripVineCard) {
         if (tweetText == null) return null;
 
         if (TextUtils.isEmpty(tweetText.text)) {
             return tweetText.text;
         }
 
-        final SpannableStringBuilder spannable
-                = new SpannableStringBuilder(tweetText.text);
-
+        final SpannableStringBuilder spannable = new SpannableStringBuilder(tweetText.text);
         final List<FormattedUrlEntity> urls = tweetText.urlEntities;
-
-        final List<FormattedMediaEntity> media
-                = tweetText.mediaEntities;
-        final FormattedMediaEntity lastPhoto;
-        if (stripLastPhotoEntity) {
-            lastPhoto = getLastPhotoEntity(tweetText);
-        } else {
-            lastPhoto = null;
-        }
+        final List<FormattedMediaEntity> media = tweetText.mediaEntities;
 
         /*
          * We combine and sort the entities here so that we can correctly calculate the offsets
          * into the text.
          */
         final List<FormattedUrlEntity> combined = mergeAndSortEntities(urls, media);
+        final FormattedUrlEntity strippedEntity = getEntityToStrip(tweetText.text, combined,
+                stripVineCard);
 
-        addUrlEntities(spannable, combined, lastPhoto, listener, linkColor, linkHighlightColor);
+        addUrlEntities(spannable, combined, strippedEntity, listener, linkColor,
+                linkHighlightColor);
         return spannable;
     }
 
@@ -115,14 +113,14 @@ final class TweetTextLinkifier {
      *
      * @param spannable          The final formatted text that we are building
      * @param entities           The combined list of media and url entities
-     * @param lastPhoto          If there is a final photo entity we should strip from the text
+     * @param strippedEntity     The trailing entity that we should strip from the text
      * @param listener           The link click listener to attach to the span
      * @param linkColor          The link color
      * @param linkHighlightColor The link background color when pressed
      */
     private static void addUrlEntities(final SpannableStringBuilder spannable,
             final List<FormattedUrlEntity> entities,
-            final FormattedMediaEntity lastPhoto,
+            final FormattedUrlEntity strippedEntity,
             final LinkClickListener listener, final int linkColor, final int linkHighlightColor) {
         if (entities == null || entities.isEmpty()) return;
 
@@ -137,7 +135,7 @@ final class TweetTextLinkifier {
                 // replace the last photo url with empty string, we can use the start indices as
                 // as simple check, since none of this will work anyways if we have overlapping
                 // entities
-                if (lastPhoto != null && lastPhoto.start == url.start) {
+                if (strippedEntity != null && strippedEntity.start == url.start) {
                     spannable.replace(start, end, "");
                     len = end - start;
                     end -= len;
@@ -162,21 +160,37 @@ final class TweetTextLinkifier {
         }
     }
 
-    private static FormattedMediaEntity getLastPhotoEntity(
-            final FormattedTweetText formattedTweetText) {
-        if (formattedTweetText == null) return null;
+    static FormattedUrlEntity getEntityToStrip(String tweetText, List<FormattedUrlEntity> combined,
+                                               boolean stripVineCard) {
+        if (combined.isEmpty()) return null;
 
-        final List<FormattedMediaEntity> mediaEntityList
-                = formattedTweetText.mediaEntities;
-        if (mediaEntityList.isEmpty()) return null;
-
-        FormattedMediaEntity entity;
-        for (int i = mediaEntityList.size() - 1; i >= 0; i--) {
-            entity = mediaEntityList.get(i);
-            if (PHOTO_TYPE.equals(entity.type)) {
-                return entity;
-            }
+        final FormattedUrlEntity urlEntity = combined.get(combined.size() - 1);
+        if (stripLtrMarker(tweetText).endsWith(urlEntity.url) && (isPhotoEntity(urlEntity) ||
+                isQuotedStatus(urlEntity) || (stripVineCard && isVineCard(urlEntity)))) {
+            return urlEntity;
         }
+
         return null;
+    }
+
+    static String stripLtrMarker(String tweetText) {
+        if (tweetText.endsWith(Character.toString('\u200E'))) {
+            return tweetText.substring(0, tweetText.length() - 1);
+        }
+
+        return tweetText;
+    }
+
+    static boolean isPhotoEntity(final FormattedUrlEntity urlEntity) {
+        return urlEntity instanceof FormattedMediaEntity &&
+                TweetMediaUtils.PHOTO_TYPE.equals(((FormattedMediaEntity) urlEntity).type);
+    }
+
+    static boolean isQuotedStatus(final FormattedUrlEntity urlEntity) {
+        return QUOTED_STATUS_URL.matcher(urlEntity.expandedUrl).find();
+    }
+
+    static boolean isVineCard(final FormattedUrlEntity urlEntity) {
+        return VINE_URL.matcher(urlEntity.expandedUrl).find();
     }
 }

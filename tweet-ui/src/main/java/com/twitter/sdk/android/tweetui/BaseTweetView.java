@@ -849,10 +849,11 @@ public abstract class BaseTweetView extends RelativeLayout {
 
         if (formattedText == null) return null;
 
-        final boolean stripPhotoEntity = TweetMediaUtils.hasPhoto(displayTweet);
+        final boolean stripVineCard = displayTweet.card != null
+                && VineCardUtils.isVine(displayTweet.card);
 
         return TweetTextLinkifier.linkifyUrls(formattedText, getLinkClickListener(),
-                stripPhotoEntity, actionColor, actionHighlightColor);
+                actionColor, actionHighlightColor, stripVineCard);
     }
 
     void setContentDescription(Tweet displayTweet) {

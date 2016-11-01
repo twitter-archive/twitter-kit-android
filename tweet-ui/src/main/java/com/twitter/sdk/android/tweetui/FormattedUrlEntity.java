@@ -24,11 +24,13 @@ class FormattedUrlEntity {
     int end;
     final String displayUrl;
     final String url;
+    final String expandedUrl;
 
     FormattedUrlEntity(UrlEntity entity) {
         this.start = entity.getStart();
         this.end = entity.getEnd();
         this.displayUrl = entity.displayUrl;
         this.url = entity.url;
+        this.expandedUrl = entity.expandedUrl;
     }
 }

@@ -38,11 +38,12 @@ import static org.mockito.Mockito.mock;
 @Config(constants = BuildConfig.class, sdk = 21)
 public class TweetTextLinkifierTest {
     static final String BASE_TEXT = "just setting up my twttr";
+    static final String TEST_RLT_STRING = "ייִדיש משלי https://t.co/sfb4Id7esk\u200E";
 
     @Test
     public void testLinkifyUrls_nullFormattedTweetText() {
         try {
-            TweetTextLinkifier.linkifyUrls(null, null, false, 0, 0);
+            TweetTextLinkifier.linkifyUrls(null, null, 0, 0, true);
         } catch (Exception e) {
             fail("threw unexpected exception");
         }
@@ -51,7 +52,7 @@ public class TweetTextLinkifierTest {
     @Test
     public void testLinkifyUrls_newFormattedTweetText() {
         try {
-            TweetTextLinkifier.linkifyUrls(new FormattedTweetText(), null, false, 0, 0);
+            TweetTextLinkifier.linkifyUrls(new FormattedTweetText(), null, 0, 0, true);
         } catch (Exception e) {
             fail("threw unexpected exception");
         }
@@ -70,7 +71,7 @@ public class TweetTextLinkifierTest {
         formattedText.urlEntities.add(new FormattedUrlEntity(urlEntity));
 
         final CharSequence linkifiedText
-                = TweetTextLinkifier.linkifyUrls(formattedText, null, false, 0, 0);
+                = TweetTextLinkifier.linkifyUrls(formattedText, null, 0, 0, true);
         final String displayUrlFromEntity =
                 linkifiedText.subSequence(urlEntity.getStart(), urlEntity.getEnd()).toString();
         assertEquals(urlEntity.displayUrl, displayUrlFromEntity);
@@ -85,7 +86,7 @@ public class TweetTextLinkifierTest {
         formattedText.urlEntities.add(new FormattedUrlEntity(urlEntity));
 
         final CharSequence linkifiedText
-                = TweetTextLinkifier.linkifyUrls(formattedText, null, false, 0, 0);
+                = TweetTextLinkifier.linkifyUrls(formattedText, null, 0, 0, true);
         assertEquals("", linkifiedText.toString());
     }
 
@@ -104,7 +105,7 @@ public class TweetTextLinkifierTest {
         formattedText.urlEntities.add(new FormattedUrlEntity(urlEntity));
 
         final SpannableStringBuilder linkifiedText = (SpannableStringBuilder)
-                TweetTextLinkifier.linkifyUrls(formattedText, mockClickListener, false, 0, 0);
+                TweetTextLinkifier.linkifyUrls(formattedText, mockClickListener, 0, 0, true);
         final ClickableSpan[] clickables =
                 linkifiedText.getSpans(urlEntity.getStart(), urlEntity.getEnd(),
                         ClickableSpan.class);
@@ -112,30 +113,62 @@ public class TweetTextLinkifierTest {
     }
 
     @Test
-    public void testLinkifyUrls_stripPhotoUrlTrue() {
+    public void testLinkifyUrls_verifyPhotoOnlyStrippedFromEnd() {
         final FormattedTweetText formattedText = setupPicTwitterEntities();
         final FormattedMediaEntity lastPhotoUrl = formattedText.mediaEntities.get(0);
         final CharSequence linkifiedText
-                = TweetTextLinkifier.linkifyUrls(formattedText, null, true, 0, 0);
+                = TweetTextLinkifier.linkifyUrls(formattedText, null, 0, 0, true);
 
         // make sure we are stripping out a photo entity since it is the only media entity
         // that we can render inline
         assertEquals("photo", lastPhotoUrl.type);
         // assert that we do not strip it here and display it in the middle
-        assertTrue(!linkifiedText.toString().contains(lastPhotoUrl.displayUrl));
+        assertTrue(linkifiedText.toString().contains(lastPhotoUrl.displayUrl));
     }
 
     @Test
-    public void testLinkifyUrls_stripPhotoUrlFalse() {
-        final FormattedTweetText formattedText = setupPicTwitterEntities();
-        final FormattedMediaEntity lastPhotoUrl = formattedText.mediaEntities.get(0);
-        final CharSequence linkifiedText
-                = TweetTextLinkifier.linkifyUrls(formattedText, null, false, 0, 0);
+    public void testGetEntityToStrip_withLtrMarker() {
+        final String result = TweetTextLinkifier.stripLtrMarker(TEST_RLT_STRING);
 
-        // make sure we are making assertions about the photo entity
-        assertEquals("photo", lastPhotoUrl.type);
-        // assert that we do not strip it here and display it in the middle
-        assertTrue(linkifiedText.toString().contains(lastPhotoUrl.displayUrl));
+        assertNotEquals(TEST_RLT_STRING, result);
+        assertFalse(result.endsWith(Character.toString('\u200E')));
+    }
+
+    @Test
+    public void testGetEntityToStrip_withoutLtrMarker() {
+        final String result = TweetTextLinkifier.stripLtrMarker(BASE_TEXT);
+
+        assertEquals(BASE_TEXT, result);
+        assertFalse(result.endsWith(Character.toString('\u200E')));
+    }
+
+    @Test
+    public void testIsPhotoEntity_withPhotoUrl() {
+        final MediaEntity mediaEntity = new MediaEntity("http://t.co/PFHCdlr4i0", null,
+                "pic.twitter.com/abc", 27, 49, 0L, null, null, null, null, 0L, null, "photo", null,
+                "");
+        final FormattedUrlEntity formattedUrlEntity = new FormattedMediaEntity(mediaEntity);
+
+        assertTrue(TweetTextLinkifier.isPhotoEntity(formattedUrlEntity));
+    }
+
+    @Test
+    public void testIsQuotedStatus_withQuotedStatusUrl() {
+        final UrlEntity urlEntity = new UrlEntity("https://t.co/kMXdOEnVMg",
+                "https://twitter.com/nasajpl/status/634475698174865408",
+                "twitter.com/nasajpl/status\u2026", 50, 72);
+        final FormattedUrlEntity formattedUrlEntity = new FormattedUrlEntity(urlEntity);
+
+        assertTrue(TweetTextLinkifier.isQuotedStatus(formattedUrlEntity));
+    }
+
+    @Test
+    public void testIsVineCard_withVineUrl() {
+        final UrlEntity urlEntity = new UrlEntity("https://t.co/NdpqweoNbi",
+                "https://vine.co/v/eVmZVXbeDK1", "vine.co/v/eVmZVXbeDK1", 1, 23);
+        final FormattedUrlEntity formattedUrlEntity = new FormattedUrlEntity(urlEntity);
+
+        assertTrue(TweetTextLinkifier.isVineCard(formattedUrlEntity));
     }
 
     private FormattedTweetText setupPicTwitterEntities() {
@@ -146,7 +179,7 @@ public class TweetTextLinkifierTest {
                 "pic.twitter.com/abc", 27, 49, 0L, null, null, null, null, 0L, null, "photo", null,
                 "");
 
-        final UrlEntity urlEntity = new UrlEntity("http://t.co/PFHCdlr4i0", null, "example.com", 50,
+        final UrlEntity urlEntity = new UrlEntity("http://t.co/V3hLRdFdeN", null, "example.com", 50,
                 72);
 
         final FormattedTweetText formattedText = new FormattedTweetText();

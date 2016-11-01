@@ -146,7 +146,7 @@ public final class TestFixtures {
 
     static Tweet createPhotoTweet(long id, User user, String text, String timestamp,
             String photoUrlHttps) {
-        final MediaEntity photoEntity = new MediaEntity(null, null, null, 0, 0, 0L, null, null,
+        final MediaEntity photoEntity = new MediaEntity("", "", "", 0, 0, 0L, null, null,
                 photoUrlHttps, createMediaEntitySizes(100, 100), 0L, null, "photo", null, "");
         final ArrayList<MediaEntity> mediaEntities = new ArrayList<>();
         mediaEntities.add(photoEntity);
@@ -165,7 +165,7 @@ public final class TestFixtures {
                                                   String timestamp, String photoUrlHttps) {
         final ArrayList<MediaEntity> mediaEntities = new ArrayList<>();
         for (int x = 0; x < count; x++) {
-            final MediaEntity photoEntity = new MediaEntity(null, null, null, 0, 0, 0L, null, null,
+            final MediaEntity photoEntity = new MediaEntity("", "", "", 0, 0, 0L, null, null,
                     photoUrlHttps, createMediaEntitySizes(100, 100), 0L, null, "photo", null, "");
             mediaEntities.add(photoEntity);
         }
