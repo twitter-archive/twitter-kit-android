@@ -190,6 +190,18 @@ public class TweetTextLinkifierTest {
         return formattedText;
     }
 
+    @Test
+    public void testTrimEnd_withoutTrailingSpace() {
+        assertSame(BASE_TEXT, TweetTextLinkifier.trimEnd(BASE_TEXT));
+    }
+
+    @Test
+    public void testTrimEnd_withTrailingSpace() {
+        final CharSequence result = TweetTextLinkifier.trimEnd(BASE_TEXT + "\n\r\t ");
+        assertEquals(BASE_TEXT, result);
+        assertNotSame(BASE_TEXT, result);
+    }
+
     /*
      * mergeAndSortEntities method
      */

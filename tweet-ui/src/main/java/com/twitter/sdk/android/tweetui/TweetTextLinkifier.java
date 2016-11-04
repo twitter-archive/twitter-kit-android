@@ -75,7 +75,22 @@ final class TweetTextLinkifier {
 
         addUrlEntities(spannable, combined, strippedEntity, listener, linkColor,
                 linkHighlightColor);
-        return spannable;
+
+        return trimEnd(spannable);
+    }
+
+    /**
+     * Trim trailing whitespaces. Similar to String#trim(), but only for trailing characters.
+     */
+    static CharSequence trimEnd(CharSequence charSequence) {
+        int length = charSequence.length();
+
+        while ((length > 0) && (charSequence.charAt(length - 1) <= ' ')) {
+            length--;
+        }
+
+        // Avoid creating new object if length hasn't changed
+        return length < charSequence.length() ? charSequence.subSequence(0, length) : charSequence;
     }
 
     /**
