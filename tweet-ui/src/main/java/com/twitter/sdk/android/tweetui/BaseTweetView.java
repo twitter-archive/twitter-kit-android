@@ -428,6 +428,7 @@ public abstract class BaseTweetView extends RelativeLayout {
      */
     public void setTweetMediaClickListener(TweetMediaClickListener tweetMediaClickListener) {
         this.tweetMediaClickListener = tweetMediaClickListener;
+        tweetMediaView.setTweetMediaClickListener(tweetMediaClickListener);
     }
 
     /**
@@ -668,7 +669,6 @@ public abstract class BaseTweetView extends RelativeLayout {
                 mediaBadgeView.setVisibility(View.VISIBLE);
                 mediaBadgeView.setCard(card);
                 scribeCardImpression(displayTweet.id, card);
-                setTweetMediaListener();
             }
         } else if (TweetMediaUtils.hasSupportedVideo(displayTweet)) {
             final MediaEntity mediaEntity = TweetMediaUtils.getVideoEntity(displayTweet);
@@ -677,13 +677,11 @@ public abstract class BaseTweetView extends RelativeLayout {
             mediaBadgeView.setVisibility(View.VISIBLE);
             mediaBadgeView.setMediaEntity(mediaEntity);
             scribeMediaEntityImpression(displayTweet.id, mediaEntity);
-            setTweetMediaListener();
         } else if (TweetMediaUtils.hasPhoto(displayTweet)) {
             final List<MediaEntity> mediaEntities = TweetMediaUtils.getPhotoEntities(displayTweet);
             setViewsForMedia(getAspectRatioForPhotoEntity(mediaEntities.size()));
             tweetMediaView.setTweetMediaEntities(displayTweet, mediaEntities);
             mediaBadgeView.setVisibility(View.GONE);
-            setTweetMediaListener();
         }
     }
 
@@ -691,12 +689,6 @@ public abstract class BaseTweetView extends RelativeLayout {
         mediaContainer.setVisibility(ImageView.VISIBLE);
         mediaContainer.setAspectRatio(aspectRatio);
         tweetMediaView.setVisibility(View.VISIBLE);
-    }
-
-    private void setTweetMediaListener() {
-        if (tweetMediaClickListener != null) {
-            tweetMediaView.setTweetMediaClickListener(tweetMediaClickListener);
-        }
     }
 
     protected double getAspectRatio(MediaEntity photoEntity) {

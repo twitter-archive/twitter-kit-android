@@ -155,10 +155,14 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
     public void onClick(View view) {
         final Integer mediaEntityIndex = (Integer) view.getTag(R.id.tw__entity_index);
         if (tweetMediaClickListener != null) {
-            final MediaEntity mediaEntity = mediaEntities.get(mediaEntityIndex);
-            if (mediaEntity != null && tweet != null) {
-                tweetMediaClickListener.onMediaEntityClick(tweet, mediaEntity);
+            final MediaEntity mediaEntity;
+            if (!mediaEntities.isEmpty()) {
+                mediaEntity = mediaEntities.get(mediaEntityIndex);
+            } else {
+                mediaEntity = null;
             }
+
+            tweetMediaClickListener.onMediaEntityClick(tweet, mediaEntity);
         } else if (!mediaEntities.isEmpty()) {
             final MediaEntity mediaEntity = mediaEntities.get(mediaEntityIndex);
             if (TweetMediaUtils.isVideoType(mediaEntity)) {
