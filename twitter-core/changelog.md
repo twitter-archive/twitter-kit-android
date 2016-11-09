@@ -3,6 +3,10 @@
 
 ## Unreleased
 
+## v2.2.0
+
+* Added support for user defined OkHttpClient.
+
 ## v2.1.0
 
 * Fixed IllegalArgumentException in GuestAuthenticator.

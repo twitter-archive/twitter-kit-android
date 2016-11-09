@@ -3,6 +3,10 @@
 
 ## Unreleased
 
+## v2.2.0
+
+* Added support for quote Tweet display.
+
 ## v2.1.1
 
 * Fixed UnsupportedOperationException when rendering multiple photos API 17 and below.
