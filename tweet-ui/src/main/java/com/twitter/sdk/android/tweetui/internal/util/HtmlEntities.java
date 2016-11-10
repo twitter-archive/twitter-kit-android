@@ -19,7 +19,6 @@ package com.twitter.sdk.android.tweetui.internal.util;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * <p>
@@ -941,48 +940,6 @@ public class HtmlEntities {
         }
     }
 
-    abstract static class MapIntMap implements EntityMap {
-        @SuppressWarnings("unchecked")
-        protected Map mapNameToValue;
-
-        @SuppressWarnings("unchecked")
-        protected Map mapValueToName;
-
-        @SuppressWarnings("unchecked")
-        public void add(String name, int value) {
-            mapNameToValue.put(name, value);
-            mapValueToName.put(value, name);
-        }
-
-        public String name(int value) {
-            return (String) mapValueToName.get(value);
-        }
-
-        public int value(String name) {
-            final Object value = mapNameToValue.get(name);
-            if (value == null) {
-                return -1;
-            }
-            return ((Integer) value).intValue();
-        }
-    }
-
-    static class HashEntityMap extends MapIntMap {
-        @SuppressWarnings("unchecked")
-        public HashEntityMap() {
-            mapNameToValue = new HashMap();
-            mapValueToName = new HashMap();
-        }
-    }
-
-    static class TreeEntityMap extends MapIntMap {
-        @SuppressWarnings("unchecked")
-        public TreeEntityMap() {
-            mapNameToValue = new TreeMap();
-            mapValueToName = new TreeMap();
-        }
-    }
-
     static class LookupEntityMap extends PrimitiveEntityMap {
         private static final int LOOKUP_TABLE_SIZE = 256;
 
@@ -1011,119 +968,6 @@ public class HtmlEntities {
         }
     }
 
-    static class ArrayEntityMap implements EntityMap {
-        protected int growBy = 100;
-
-        protected int size = 0;
-
-        protected String[] names;
-
-        protected int[] values;
-
-        public ArrayEntityMap() {
-            names = new String[growBy];
-            values = new int[growBy];
-        }
-
-        public ArrayEntityMap(int growBy) {
-            this.growBy = growBy;
-            names = new String[growBy];
-            values = new int[growBy];
-        }
-
-        public void add(String name, int value) {
-            ensureCapacity(size + 1);
-            names[size] = name;
-            values[size] = value;
-            size++;
-        }
-
-        protected void ensureCapacity(int capacity) {
-            if (capacity > names.length) {
-                final int newSize = Math.max(capacity, size + growBy);
-                final String[] newNames = new String[newSize];
-                System.arraycopy(names, 0, newNames, 0, size);
-                names = newNames;
-                final int[] newValues = new int[newSize];
-                System.arraycopy(values, 0, newValues, 0, size);
-                values = newValues;
-            }
-        }
-
-        public String name(int value) {
-            for (int i = 0; i < size; ++i) {
-                if (values[i] == value) {
-                    return names[i];
-                }
-            }
-            return null;
-        }
-
-        public int value(String name) {
-            for (int i = 0; i < size; ++i) {
-                if (names[i].equals(name)) {
-                    return values[i];
-                }
-            }
-            return -1;
-        }
-    }
-
-    static class BinaryEntityMap extends ArrayEntityMap {
-
-        public BinaryEntityMap() {}
-
-        public BinaryEntityMap(int growBy) {
-            super(growBy);
-        }
-
-        // based on code in java.util.Arrays
-        private int binarySearch(int key) {
-            int low = 0;
-            int high = size - 1;
-
-            while (low <= high) {
-                final int mid = (low + high) >>> 1;
-                final int midVal = values[mid];
-
-                if (midVal < key) {
-                    low = mid + 1;
-                } else if (midVal > key) {
-                    high = mid - 1;
-                } else {
-                    return mid; // key found
-                }
-            }
-            return -(low + 1); // key not found.
-        }
-
-        @Override
-        public void add(String name, int value) {
-            ensureCapacity(size + 1);
-            int insertAt = binarySearch(value);
-            if (insertAt > 0) {
-                return; // note: this means you can't insert the same value
-                // twice
-            }
-            insertAt = -(insertAt + 1); // binarySearch returns it negative and
-            // off-by-one
-            System.arraycopy(values, insertAt, values, insertAt + 1, size - insertAt);
-            values[insertAt] = value;
-            System.arraycopy(names, insertAt, names, insertAt + 1, size - insertAt);
-            names[insertAt] = name;
-            size++;
-        }
-
-        @Override
-        public String name(int value) {
-            final int index = binarySearch(value);
-            if (index < 0) {
-                return null;
-            }
-            return names[index];
-        }
-    }
-
     /**
      * The result of an unescape. Keeps an array of indices[start][end] on the original input that
      * was escaped.
@@ -1147,10 +991,6 @@ public class HtmlEntities {
 
     public void addEntity(String name, int value) {
         map.add(name, value);
-    }
-
-    public String entityName(int value) {
-        return map.name(value);
     }
 
     public int entityValue(String name) {

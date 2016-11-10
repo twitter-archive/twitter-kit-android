@@ -32,7 +32,7 @@ public abstract class AuthToken {
     protected final long createdAt;
 
     public AuthToken() {
-        createdAt = System.currentTimeMillis();
+        this(System.currentTimeMillis());
     }
 
     protected AuthToken(long createdAt) {

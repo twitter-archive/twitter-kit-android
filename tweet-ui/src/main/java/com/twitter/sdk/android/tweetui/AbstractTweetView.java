@@ -442,11 +442,6 @@ abstract class AbstractTweetView extends RelativeLayout{
                         }
                     }
                 }
-
-                @Override
-                public void onPhotoClicked(MediaEntity mediaEntity) {
-                    // Does nothing
-                }
             };
         }
         return linkClickListener;

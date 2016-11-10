@@ -32,10 +32,6 @@ public abstract class ClickableLinkSpan extends ClickableSpan implements Highlig
     private final boolean underlined;
     private boolean selected;
 
-    public ClickableLinkSpan(int selectedColor) {
-        this(selectedColor, 0, false, false);
-    }
-
     public ClickableLinkSpan(int selectedColor, int linkColor, boolean underlined) {
         this(selectedColor, linkColor, true, underlined);
     }

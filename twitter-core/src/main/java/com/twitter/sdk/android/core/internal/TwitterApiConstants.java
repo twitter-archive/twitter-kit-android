@@ -17,17 +17,10 @@
 
 package com.twitter.sdk.android.core.internal;
 
-
 public class TwitterApiConstants {
     public static final int MAX_TWEET_CHARS = 140;
 
-    public static class Base {
-        public static final String PARAM_ID = "id";
-        public static final String FIELD_ID = "id";
-    }
-
-    public static class Errors extends Base {
-        public static final String ERRORS = "errors";
+    public static class Errors {
 
         // error when app auth token not recognized (such as when expired)
         public static final int APP_AUTH_ERROR_CODE = 89;

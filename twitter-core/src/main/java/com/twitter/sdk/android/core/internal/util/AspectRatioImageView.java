@@ -74,18 +74,6 @@ public class AspectRatioImageView extends ImageView {
         this.aspectRatio = aspectRatio;
     }
 
-    /**
-     * Resets the size to 0.
-     */
-    public void resetSize() {
-        if (getMeasuredWidth() == 0 && getMeasuredHeight() == 0) {
-            return;
-        }
-        measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(0, MeasureSpec.EXACTLY));
-        layout(0, 0, 0, 0);
-    }
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);

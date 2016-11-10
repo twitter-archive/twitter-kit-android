@@ -68,19 +68,6 @@ public class AspectRatioFrameLayout extends FrameLayout {
         this.aspectRatio = aspectRatio;
     }
 
-    public double getAspectRatio() {
-        return aspectRatio;
-    }
-
-    public void resetSize() {
-        if (getMeasuredWidth() == 0 && getMeasuredHeight() == 0) {
-            return;
-        }
-        measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(0, MeasureSpec.EXACTLY));
-        layout(0, 0, 0, 0);
-    }
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int width, height;
