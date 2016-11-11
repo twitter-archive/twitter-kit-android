@@ -15,7 +15,7 @@
  *
  */
 
-package com.twitter.sdk.android.core.internal.util;
+package com.twitter.sdk.android.tweetcomposer.internal.util;
 
 import android.annotation.TargetApi;
 import android.content.Context;

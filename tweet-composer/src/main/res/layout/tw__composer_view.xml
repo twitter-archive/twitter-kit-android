@@ -55,7 +55,7 @@
         android:visibility="invisible"
         style="@style/tw__ComposerDivider"/>
 
-    <com.twitter.sdk.android.core.internal.util.ObservableScrollView
+    <com.twitter.sdk.android.tweetcomposer.internal.util.ObservableScrollView
         android:id="@+id/tw__composer_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/tw__card_spacing_large"/>
         </LinearLayout>
-    </com.twitter.sdk.android.core.internal.util.ObservableScrollView>
+    </com.twitter.sdk.android.tweetcomposer.internal.util.ObservableScrollView>
 
     <View
         android:id="@+id/tw__composer_toolbar_divider"
