@@ -38,8 +38,6 @@ import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledExecutorService;
 
-import javax.net.ssl.SSLSocketFactory;
-
 /**
  * ScribeClient for executing scribe requests, on a best effort basis. If the application crashes
  * while a scribe request is being processed, the scribe event may be lost.
@@ -81,7 +79,6 @@ public class ScribeClient {
     private final TwitterAuthConfig authConfig;
     private final SessionManager<? extends Session<TwitterAuthToken>> sessionManager;
     private final GuestSessionProvider guestSessionProvider;
-    private final SSLSocketFactory sslSocketFactory;
     private final IdManager idManager;
 
     /**
@@ -94,14 +91,12 @@ public class ScribeClient {
      * flush of all queued events as long as a network connection is available.
      * @param authConfig the auth configuration
      * @param sessionManager the session manager
-     * @param sslSocketFactory the SSL socket factory
      * @param idManager the id manager used to provide the device id
      */
     public ScribeClient(Kit kit, ScheduledExecutorService executor, ScribeConfig scribeConfig,
             ScribeEvent.Transform transform, TwitterAuthConfig authConfig,
             SessionManager<? extends Session<TwitterAuthToken>> sessionManager,
-            GuestSessionProvider guestSessionProvider, SSLSocketFactory sslSocketFactory,
-            IdManager idManager) {
+            GuestSessionProvider guestSessionProvider, IdManager idManager) {
         this.kit = kit;
         this.executor = executor;
         this.scribeConfig = scribeConfig;
@@ -109,7 +104,6 @@ public class ScribeClient {
         this.authConfig = authConfig;
         this.sessionManager = sessionManager;
         this.guestSessionProvider = guestSessionProvider;
-        this.sslSocketFactory = sslSocketFactory;
         this.idManager = idManager;
 
         // Set initial capacity to 2 to handle one logged in user and one logged out user.
@@ -166,8 +160,7 @@ public class ScribeClient {
             CommonUtils.logControlled(context, "Scribe enabled");
             return new EnabledScribeStrategy(context, executor, filesManager, scribeConfig,
                     new ScribeFilesSender(context, scribeConfig, ownerId, authConfig,
-                            sessionManager, guestSessionProvider, sslSocketFactory, executor,
-                            idManager));
+                            sessionManager, guestSessionProvider, executor,  idManager));
         } else {
             CommonUtils.logControlled(context, "Scribe disabled");
             return new DisabledEventsStrategy<>();

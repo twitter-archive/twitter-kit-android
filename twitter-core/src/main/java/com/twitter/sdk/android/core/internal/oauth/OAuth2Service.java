@@ -27,8 +27,6 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.internal.TwitterApi;
 
-import javax.net.ssl.SSLSocketFactory;
-
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -54,9 +52,8 @@ public class OAuth2Service extends OAuthService {
                                           @Field(OAuthConstants.PARAM_GRANT_TYPE) String grantType);
     }
 
-    public OAuth2Service(TwitterCore twitterCore, SSLSocketFactory sslSocketFactory,
-                         TwitterApi api) {
-        super(twitterCore, sslSocketFactory, api);
+    public OAuth2Service(TwitterCore twitterCore, TwitterApi api) {
+        super(twitterCore, api);
         this.api = getRetrofit().create(OAuth2Api.class);
     }
 

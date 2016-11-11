@@ -32,8 +32,6 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.io.IOException;
 
-import javax.net.ssl.SSLSocketFactory;
-
 import okhttp3.MediaType;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -56,16 +54,14 @@ public class OAuth1aServiceTest {
     private TwitterAuthConfig authConfig;
     private TwitterCore twitterCore;
     private OAuth1aService service;
-    private SSLSocketFactory sslSocketFactory;
     private TwitterApi twitterApi;
 
     @Before
     public void setUp() throws Exception {
         authConfig = new TwitterAuthConfig("key", "secret");
         twitterCore = new TwitterCore(authConfig);
-        sslSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
         twitterApi = new TwitterApi();
-        service = new OAuth1aService(twitterCore, sslSocketFactory, twitterApi);
+        service = new OAuth1aService(twitterCore, twitterApi);
     }
 
     @Test

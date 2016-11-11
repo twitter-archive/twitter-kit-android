@@ -54,9 +54,7 @@ public class TwitterApiClient {
      */
     public TwitterApiClient() {
         this(OkHttpClientHelper.getOkHttpClient(
-                TwitterCore.getInstance().getGuestSessionProvider(),
-                TwitterCore.getInstance().getSSLSocketFactory()),
-            new TwitterApi());
+                TwitterCore.getInstance().getGuestSessionProvider()), new TwitterApi());
     }
 
     /**
@@ -68,8 +66,7 @@ public class TwitterApiClient {
     public TwitterApiClient(OkHttpClient client) {
         this(OkHttpClientHelper.getCustomOkHttpClient(
                 client,
-                TwitterCore.getInstance().getGuestSessionProvider(),
-                TwitterCore.getInstance().getSSLSocketFactory()),
+                TwitterCore.getInstance().getGuestSessionProvider()),
             new TwitterApi());
     }
 
@@ -79,8 +76,7 @@ public class TwitterApiClient {
     public TwitterApiClient(TwitterSession session) {
         this(OkHttpClientHelper.getOkHttpClient(
                 session,
-                TwitterCore.getInstance().getAuthConfig(),
-                TwitterCore.getInstance().getSSLSocketFactory()),
+                TwitterCore.getInstance().getAuthConfig()),
             new TwitterApi());
     }
 
@@ -94,8 +90,7 @@ public class TwitterApiClient {
         this(OkHttpClientHelper.getCustomOkHttpClient(
                 client,
                 session,
-                TwitterCore.getInstance().getAuthConfig(),
-                TwitterCore.getInstance().getSSLSocketFactory()),
+                TwitterCore.getInstance().getAuthConfig()),
             new TwitterApi());
     }
 

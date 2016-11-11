@@ -34,8 +34,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.TreeMap;
 
-import javax.net.ssl.SSLSocketFactory;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Header;
@@ -64,9 +62,8 @@ public class OAuth1aService extends OAuthService {
 
     OAuthApi api;
 
-    public OAuth1aService(TwitterCore twitterCore, SSLSocketFactory sslSocketFactory,
-                          TwitterApi api) {
-        super(twitterCore, sslSocketFactory, api);
+    public OAuth1aService(TwitterCore twitterCore, TwitterApi api) {
+        super(twitterCore, api);
         this.api = getRetrofit().create(OAuthApi.class);
     }
 

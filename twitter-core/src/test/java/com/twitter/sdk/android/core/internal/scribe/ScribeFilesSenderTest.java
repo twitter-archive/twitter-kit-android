@@ -62,8 +62,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
-import javax.net.ssl.SSLSocketFactory;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -120,8 +118,7 @@ public class ScribeFilesSenderTest {
                 ScribeConfig.DEFAULT_SEND_INTERVAL_SECONDS);
         filesSender = new ScribeFilesSender(context, scribeConfig,
                 GuestSession.LOGGED_OUT_USER_ID, mock(TwitterAuthConfig.class), mockSessionMgr,
-                mockGuestSessionProvider, (SSLSocketFactory) SSLSocketFactory.getDefault(),
-                mock(ExecutorService.class), mockIdManager);
+                mockGuestSessionProvider, mock(ExecutorService.class), mockIdManager);
         filesSender.setScribeService(mockService);
 
         filenames = new String[] {
@@ -172,8 +169,7 @@ public class ScribeFilesSenderTest {
 
         filesSender = new ScribeFilesSender(context, config,
                 GuestSession.LOGGED_OUT_USER_ID, mock(TwitterAuthConfig.class), mockSessionMgr,
-                mockGuestSessionProvider, mock(SSLSocketFactory.class), mock(ExecutorService.class),
-                mock(IdManager.class));
+                mockGuestSessionProvider, mock(ExecutorService.class), mock(IdManager.class));
         filesSender.setScribeService(mockService);
     }
 
@@ -235,15 +231,6 @@ public class ScribeFilesSenderTest {
         setUpScribeSequence(sequence);
         filesSender.upload(logs);
         verify(mockService).uploadSequence(sequence, logs);
-    }
-
-    @Test
-    public void testSend_nullSession() {
-        // Send should fail when we don't have a valid session.
-        filesSender.setScribeService(null); // set api adapter to null since we pre-set it in setUp
-        when(mockSessionMgr.getSession(anyLong())).thenReturn(null);
-        assertFalse(filesSender.send(tempFiles));
-        verifyZeroInteractions(mockService);
     }
 
     @Test

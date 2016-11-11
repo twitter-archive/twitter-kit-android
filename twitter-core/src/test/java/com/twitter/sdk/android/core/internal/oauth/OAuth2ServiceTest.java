@@ -31,8 +31,6 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.lang.reflect.Method;
 
-import javax.net.ssl.SSLSocketFactory;
-
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.http.Field;
@@ -66,7 +64,6 @@ public class OAuth2ServiceTest  {
     static final GuestTokenResponse GUEST_RESPONSE = new GuestTokenResponse("guest");
 
     private TwitterCore twitterCore;
-    private SSLSocketFactory sslSocketFactory;
     private TwitterApi twitterApi;
     private OAuth2Service service;
 
@@ -75,9 +72,8 @@ public class OAuth2ServiceTest  {
         twitterCore = mock(TwitterCore.class);
         when(twitterCore.getAuthConfig()).thenReturn(AUTH_CONFIG);
 
-        sslSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
         twitterApi = new TwitterApi();
-        service = new OAuth2Service(twitterCore, sslSocketFactory, twitterApi);
+        service = new OAuth2Service(twitterCore, twitterApi);
     }
 
     public class MockOAuth2Api implements OAuth2Service.OAuth2Api {
@@ -91,16 +87,6 @@ public class OAuth2ServiceTest  {
         public Call<OAuth2Token> getAppAuthToken(@Header(OAuthConstants.HEADER_AUTHORIZATION) String auth,
                                                  @Field(OAuthConstants.PARAM_GRANT_TYPE) String grantType) {
             return Calls.response(Response.success(APP_TOKEN));
-        }
-    }
-
-    @Test
-    public void testConstructor_withNullSSLSocketFactory() {
-        try {
-            new OAuth2Service(twitterCore, null, twitterApi);
-            fail("Expected IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            assertEquals("sslSocketFactory must not be null", e.getMessage());
         }
     }
 

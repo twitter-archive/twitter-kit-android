@@ -57,8 +57,7 @@ public class OkHttpClientHelperTest extends FabricAndroidTestCase {
         final GuestSessionProvider sessionProvider = mock(GuestSessionProvider.class);
         final OkHttpClient guestAuthHttpClient = OkHttpClientHelper.getCustomOkHttpClient(
                 customHttpClient,
-                sessionProvider,
-                twitterCore.getSSLSocketFactory());
+                sessionProvider);
 
         final List<Interceptor> interceptors = guestAuthHttpClient.interceptors();
         assertTrue(interceptors.contains(mockInterceptor));
@@ -73,8 +72,7 @@ public class OkHttpClientHelperTest extends FabricAndroidTestCase {
         final OkHttpClient guestAuthHttpClient = OkHttpClientHelper.getCustomOkHttpClient(
                 customHttpClient,
                 mockSession,
-                new TwitterAuthConfig("", ""),
-                twitterCore.getSSLSocketFactory());
+                new TwitterAuthConfig("", ""));
 
         final List<Interceptor> interceptors = guestAuthHttpClient.interceptors();
         assertTrue(interceptors.contains(mockInterceptor));

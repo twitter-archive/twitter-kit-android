@@ -19,10 +19,9 @@ package com.twitter.sdk.android.core.internal.oauth;
 
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.internal.TwitterApi;
+import com.twitter.sdk.android.core.internal.network.OkHttpClientHelper;
 
 import java.io.IOException;
-
-import javax.net.ssl.SSLSocketFactory;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -43,18 +42,12 @@ abstract class OAuthService {
     private final String userAgent;
     private final Retrofit retrofit;
 
-    OAuthService(TwitterCore twitterCore, SSLSocketFactory sslSocketFactory,
-            TwitterApi api) {
+    OAuthService(TwitterCore twitterCore, TwitterApi api) {
         this.twitterCore = twitterCore;
         this.api = api;
         userAgent = TwitterApi.buildUserAgent(CLIENT_NAME, twitterCore.getVersion());
 
-        if (sslSocketFactory == null) {
-            throw new IllegalArgumentException("sslSocketFactory must not be null");
-        }
-
         final OkHttpClient client = new OkHttpClient.Builder()
-                .sslSocketFactory(sslSocketFactory)
                 .addInterceptor(new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
@@ -64,6 +57,7 @@ abstract class OAuthService {
                         return chain.proceed(request);
                     }
                 })
+                .certificatePinner(OkHttpClientHelper.getCertificatePinner())
                 .build();
 
         retrofit = new Retrofit.Builder()

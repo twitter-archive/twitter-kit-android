@@ -21,7 +21,6 @@ import android.app.Activity;
 
 import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.Kit;
-import io.fabric.sdk.android.services.network.NetworkUtils;
 import io.fabric.sdk.android.services.persistence.PreferenceStoreImpl;
 
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
@@ -32,8 +31,6 @@ import com.twitter.sdk.android.core.internal.oauth.OAuth2Service;
 import com.twitter.sdk.android.core.internal.scribe.TwitterCoreScribeClientHolder;
 
 import java.util.concurrent.ConcurrentHashMap;
-
-import javax.net.ssl.SSLSocketFactory;
 
 /**
  * The TwitterCore Kit provides Login with Twitter and the Twitter API.
@@ -56,7 +53,6 @@ public class TwitterCore extends Kit<Boolean> {
     private final ConcurrentHashMap<Session, TwitterApiClient> apiClients;
     private volatile TwitterApiClient guestClient;
     private volatile GuestSessionProvider guestSessionProvider;
-    private volatile SSLSocketFactory sslSocketFactory;
 
     public TwitterCore(TwitterAuthConfig authConfig) {
         this(authConfig, new ConcurrentHashMap<Session, TwitterApiClient>(), null);
@@ -85,34 +81,6 @@ public class TwitterCore extends Kit<Boolean> {
         return authConfig;
     }
 
-    /**
-     *
-     * @return the SSLSocketFactory
-     *
-     * @throws java.lang.IllegalStateException if {@link io.fabric.sdk.android.Fabric}
-     *          or {@link TwitterCore} has not been initialized.
-     */
-    public SSLSocketFactory getSSLSocketFactory() {
-        checkInitialized();
-
-        if (sslSocketFactory == null) {
-            createSSLSocketFactory();
-        }
-        return sslSocketFactory;
-    }
-
-    private synchronized void createSSLSocketFactory() {
-        if (sslSocketFactory == null) {
-            try {
-                sslSocketFactory = NetworkUtils.getSSLSocketFactory(
-                        new TwitterPinningInfoProvider(getContext()));
-                Fabric.getLogger().d(TAG, "Custom SSL pinning enabled");
-            } catch (Exception e) {
-                Fabric.getLogger().e(TAG, "Exception setting up custom SSL pinning", e);
-            }
-        }
-    }
-
     @Override
     protected boolean onPreExecute() {
         twitterSessionManager = new PersistedSessionManager<>(
@@ -136,7 +104,6 @@ public class TwitterCore extends Kit<Boolean> {
         // Trigger restoration of session
         twitterSessionManager.getActiveSession();
         guestSessionManager.getActiveSession();
-        getSSLSocketFactory();
         getGuestSessionProvider();
         initializeScribeClient();
         // Monitor activity lifecycle after sessions have been restored. Otherwise we would not
@@ -216,7 +183,7 @@ public class TwitterCore extends Kit<Boolean> {
     private synchronized void createGuestSessionProvider() {
         if (guestSessionProvider == null) {
             final OAuth2Service service =
-                    new OAuth2Service(this, getSSLSocketFactory(), new TwitterApi());
+                    new OAuth2Service(this, new TwitterApi());
             guestSessionProvider = new GuestSessionProvider(service, guestSessionManager);
         }
     }

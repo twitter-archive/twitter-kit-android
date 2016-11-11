@@ -42,12 +42,12 @@ ext {
             // Other
             picasso                    : 'com.squareup.picasso:picasso:2.5.2',
             supportV4                  : 'com.android.support:support-v4:23.1.1',
-            retrofit                   : 'com.squareup.retrofit2:retrofit:2.0.2',
-            retrofitMock               : 'com.squareup.retrofit2:retrofit-mock:2.0.2',
-            retrofitGsonConverter      : 'com.squareup.retrofit2:converter-gson:2.0.2',
-            gson                       : 'com.google.code.gson:gson:2.6.1',
-            okHttp                     : 'com.squareup.okhttp3:okhttp:3.2.0',
-            okHttpInterceptor          : 'com.squareup.okhttp3:logging-interceptor:3.2.0',
+            retrofit                   : 'com.squareup.retrofit2:retrofit:2.1.0',
+            retrofitMock               : 'com.squareup.retrofit2:retrofit-mock:2.1.0',
+            retrofitGsonConverter      : 'com.squareup.retrofit2:converter-gson:2.1.0',
+            gson                       : 'com.google.code.gson:gson:2.7',
+            okHttp                     : 'com.squareup.okhttp3:okhttp:3.4.2',
+            okHttpInterceptor          : 'com.squareup.okhttp3:logging-interceptor:3.4.2',
             design                     : 'com.android.support:design:23.1.1',
             tweetText                  : 'com.twitter:twitter-text:1.13.0'
     ]

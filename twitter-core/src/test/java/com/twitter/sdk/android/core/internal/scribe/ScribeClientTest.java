@@ -37,8 +37,6 @@ import org.robolectric.RuntimeEnvironment;
 import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
 
-import javax.net.ssl.SSLSocketFactory;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
@@ -64,8 +62,7 @@ public class ScribeClientTest {
         scribeClient = new ScribeClient(kitStub, mock(ScheduledExecutorService.class),
                 mock(ScribeConfig.class), mock(ScribeEvent.Transform.class),
                 mock(TwitterAuthConfig.class), mock(SessionManager.class),
-                mock(GuestSessionProvider.class), mock(SSLSocketFactory.class),
-                mock(IdManager.class));
+                mock(GuestSessionProvider.class), mock(IdManager.class));
     }
 
     @Test
@@ -115,7 +112,7 @@ public class ScribeClientTest {
         scribeClient = new ScribeClient(mock(Kit.class), mock(ScheduledExecutorService.class),
                 config, mock(ScribeEvent.Transform.class), mock(TwitterAuthConfig.class),
                 mock(SessionManager.class), mock(GuestSessionProvider.class),
-                mock(SSLSocketFactory.class), mock(IdManager.class));
+                mock(IdManager.class));
 
         final EventsStrategy<ScribeEvent> scribeStrategy
                 = scribeClient.getScribeStrategy(GuestSession.LOGGED_OUT_USER_ID, null);
@@ -130,7 +127,7 @@ public class ScribeClientTest {
         scribeClient = new ScribeClient(mock(Kit.class), mock(ScheduledExecutorService.class),
                 config, mock(ScribeEvent.Transform.class), mock(TwitterAuthConfig.class),
                 mock(SessionManager.class), mock(GuestSessionProvider.class),
-                mock(SSLSocketFactory.class), mock(IdManager.class));
+                mock(IdManager.class));
 
         final EventsStrategy<ScribeEvent> scribeStrategy
                 = scribeClient.getScribeStrategy(GuestSession.LOGGED_OUT_USER_ID, null);

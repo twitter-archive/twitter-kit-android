@@ -32,6 +32,7 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.internal.network.GuestAuthInterceptor;
 import com.twitter.sdk.android.core.internal.network.OAuth1aInterceptor;
+import com.twitter.sdk.android.core.internal.network.OkHttpClientHelper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -41,8 +42,6 @@ import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
-
-import javax.net.ssl.SSLSocketFactory;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -79,7 +78,6 @@ class ScribeFilesSender implements FilesSender {
     private final TwitterAuthConfig authConfig;
     private final SessionManager<? extends Session<TwitterAuthToken>> sessionManager;
     private final GuestSessionProvider guestSessionProvider;
-    private final SSLSocketFactory sslSocketFactory;
     private final AtomicReference<ScribeService> scribeService;
     private final ExecutorService executorService;
     private final IdManager idManager;
@@ -87,15 +85,14 @@ class ScribeFilesSender implements FilesSender {
     public ScribeFilesSender(Context context, ScribeConfig scribeConfig, long ownerId,
             TwitterAuthConfig authConfig,
             SessionManager<? extends Session<TwitterAuthToken>> sessionManager,
-            GuestSessionProvider guestSessionProvider, SSLSocketFactory sslSocketFactory,
-            ExecutorService executorService, IdManager idManager) {
+            GuestSessionProvider guestSessionProvider, ExecutorService executorService,
+            IdManager idManager) {
         this.context = context;
         this.scribeConfig = scribeConfig;
         this.ownerId = ownerId;
         this.authConfig = authConfig;
         this.sessionManager = sessionManager;
         this.guestSessionProvider = guestSessionProvider;
-        this.sslSocketFactory = sslSocketFactory;
         this.executorService = executorService;
         this.idManager = idManager;
         this.scribeService = new AtomicReference<>();
@@ -182,13 +179,13 @@ class ScribeFilesSender implements FilesSender {
             OkHttpClient client;
             if (isValidSession(session)) {
                 client = new OkHttpClient.Builder()
-                        .sslSocketFactory(sslSocketFactory)
+                        .certificatePinner(OkHttpClientHelper.getCertificatePinner())
                         .addInterceptor(new ConfigRequestInterceptor(scribeConfig, idManager))
                         .addInterceptor(new OAuth1aInterceptor(session, authConfig))
                         .build();
             } else {
                 client = new OkHttpClient.Builder()
-                        .sslSocketFactory(sslSocketFactory)
+                        .certificatePinner(OkHttpClientHelper.getCertificatePinner())
                         .addInterceptor(new ConfigRequestInterceptor(scribeConfig, idManager))
                         .addInterceptor(new GuestAuthInterceptor(guestSessionProvider))
                         .build();

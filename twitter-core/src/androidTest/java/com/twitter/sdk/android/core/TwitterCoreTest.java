@@ -19,19 +19,9 @@ package com.twitter.sdk.android.core;
 
 import android.app.Activity;
 
-import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.FabricAndroidTestCase;
 import io.fabric.sdk.android.FabricTestUtils;
 import io.fabric.sdk.android.KitStub;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
-import javax.net.ssl.SSLSocketFactory;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -119,25 +109,6 @@ public class TwitterCoreTest extends FabricAndroidTestCase {
         assertEquals(identifier, twitterCore.getIdentifier());
     }
 
-    public void testGetSSLSocketFactory_noSdkStart() {
-        try {
-            twitterCore.getSSLSocketFactory();
-            fail("Should fail if Fabric is not instantiated.");
-        } catch (IllegalStateException ex) {
-            assertEquals(FABRIC_NOT_INIT_ERROR_MSG, ex.getMessage());
-        }
-    }
-
-    public void testGetSSLSocketFactory_sdkStartNoTwitterKit() throws Exception {
-        FabricTestUtils.with(getContext(), new KitStub<Result>());
-        try {
-            twitterCore.getSSLSocketFactory();
-            fail("Should fail if Twitter is not instantiated with Fabric.");
-        } catch (IllegalStateException ex) {
-            assertEquals(TWITTER_NOT_INIT_ERROR_MSG, ex.getMessage());
-        }
-    }
-
     public void testGetSessionManager() throws Exception {
         FabricTestUtils.with(getContext(), twitterCore);
         assertNotNull(twitterCore.getSessionManager());
@@ -214,33 +185,4 @@ public class TwitterCoreTest extends FabricAndroidTestCase {
         when(sessionManager.getActiveSession()).thenReturn(session);
         return sessionManager;
     }
-
-    public void testGetSSLSocketFactory_contention() throws Exception {
-        // We don't want to use FabricTestUtils here because we want to test
-        // this when onBackground is also running
-        Fabric.with(getContext(), twitterCore);
-        final List<SSLSocketFactoryCallable> callables = Arrays.asList(
-                new SSLSocketFactoryCallable(twitterCore),
-                new SSLSocketFactoryCallable(twitterCore));
-        final ExecutorService executorService = Executors.newFixedThreadPool(callables.size());
-        final List<Future<SSLSocketFactory>> socketFactories = executorService.invokeAll(callables);
-
-        assertNotNull(socketFactories.get(0).get());
-        assertNotNull(socketFactories.get(1).get());
-        assertSame(socketFactories.get(0).get(), socketFactories.get(1).get());
-    }
-
-    private static class SSLSocketFactoryCallable implements Callable<SSLSocketFactory> {
-        private TwitterCore twitter;
-
-        protected SSLSocketFactoryCallable(TwitterCore twitter) {
-            this.twitter = twitter;
-        }
-
-        @Override
-        public SSLSocketFactory call() {
-            return twitter.getSSLSocketFactory();
-        }
-    }
-
 }

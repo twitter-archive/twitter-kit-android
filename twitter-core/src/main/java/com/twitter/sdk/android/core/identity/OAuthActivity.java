@@ -68,7 +68,7 @@ public class OAuthActivity extends Activity implements OAuthController.Listener 
         final TwitterCore kit = TwitterCore.getInstance();
         oAuthController = new OAuthController(spinner, webView,
                 (TwitterAuthConfig) getIntent().getParcelableExtra(EXTRA_AUTH_CONFIG),
-                new OAuth1aService(kit, kit.getSSLSocketFactory(), new TwitterApi()), this);
+                new OAuth1aService(kit, new TwitterApi()), this);
         oAuthController.startAuth();
     }
 

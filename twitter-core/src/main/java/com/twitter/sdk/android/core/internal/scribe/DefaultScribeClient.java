@@ -73,7 +73,7 @@ public class DefaultScribeClient extends ScribeClient {
         super(kit, getExecutor(), getScribeConfig(Settings.getInstance().awaitSettingsData(),
                 getUserAgent(kitName, kit)), new ScribeEvent.Transform(gson),
                 TwitterCore.getInstance().getAuthConfig(), sessionManager, guestSessionProvider,
-                TwitterCore.getInstance().getSSLSocketFactory(), idManager);
+                idManager);
 
         this.sessionManager = sessionManager;
         this.kit = kit;
