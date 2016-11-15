@@ -151,7 +151,7 @@ public final class TestFixtures {
                 photoUrlHttps, createMediaEntitySizes(100, 100), 0L, null, "photo", null, "");
         final ArrayList<MediaEntity> mediaEntities = new ArrayList<>();
         mediaEntities.add(photoEntity);
-        final TweetEntities entities = new TweetEntities(null, null, mediaEntities, null);
+        final TweetEntities entities = new TweetEntities(null, null, mediaEntities, null, null);
         return new TweetBuilder()
                 .setId(id)
                 .setUser(user)
@@ -170,7 +170,7 @@ public final class TestFixtures {
                     photoUrlHttps, createMediaEntitySizes(100, 100), 0L, null, "photo", null, "");
             mediaEntities.add(photoEntity);
         }
-        final TweetEntities entities = new TweetEntities(null, null, mediaEntities, null);
+        final TweetEntities entities = new TweetEntities(null, null, mediaEntities, null, null);
         return new TweetBuilder()
                 .setId(id)
                 .setUser(user)

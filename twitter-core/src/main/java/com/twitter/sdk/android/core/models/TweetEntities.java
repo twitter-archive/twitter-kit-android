@@ -51,12 +51,28 @@ public class TweetEntities {
     @SerializedName("hashtags")
     public final List<HashtagEntity> hashtags;
 
+    /**
+     * Represents symbols which have been parsed out of the Tweet text.
+     */
+    @SerializedName("symbols")
+    public final List<SymbolEntity> symbols;
+
+    /**
+     * @deprecated use {@link TweetEntities#TweetEntities(List, List, List, List, List)} instead
+     */
+    @Deprecated
     public TweetEntities(List<UrlEntity> urls, List<MentionEntity> userMentions,
-            List<MediaEntity> media, List<HashtagEntity> hashtags) {
+                         List<MediaEntity> media, List<HashtagEntity> hashtags) {
+        this(urls, userMentions, media, hashtags, null);
+    }
+
+    public TweetEntities(List<UrlEntity> urls, List<MentionEntity> userMentions,
+            List<MediaEntity> media, List<HashtagEntity> hashtags, List<SymbolEntity> symbols) {
         this.urls = getSafeList(urls);
         this.userMentions = getSafeList(userMentions);
         this.media = getSafeList(media);
         this.hashtags = getSafeList(hashtags);
+        this.symbols = getSafeList(symbols);
     }
 
     private <T> List<T> getSafeList(List<T> entities) {

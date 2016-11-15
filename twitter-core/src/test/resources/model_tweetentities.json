@@ -8,6 +8,15 @@
       "text": "lol"
     }
   ],
+  "symbols": [
+    {
+      "indices": [
+        0,
+        5
+      ],
+      "text": "TWTR"
+    }
+  ],
   "media": [
     {
       "type": "photo",

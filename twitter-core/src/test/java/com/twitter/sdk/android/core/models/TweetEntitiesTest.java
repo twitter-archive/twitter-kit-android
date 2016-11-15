@@ -46,6 +46,7 @@ public class TweetEntitiesTest {
     private static final int EXPECTED_USER_MENTIONS_SIZE = 1;
     private static final int EXPECTED_MEDIA_SIZE = 1;
     private static final int EXPECTED_HASHTAGS_SIZE = 1;
+    private static final int EXPECTED_SYMBOLS_SIZE = 1;
 
     @Rule
     public final TestResources testResources = new TestResources();
@@ -60,7 +61,7 @@ public class TweetEntitiesTest {
     @Test
     public void testConstructor_nullParameters() {
         try {
-            final TweetEntities entities = new TweetEntities(null, null, null, null);
+            final TweetEntities entities = new TweetEntities(null, null, null, null, null);
             assertEquals(Collections.EMPTY_LIST, entities.urls);
             assertEquals(Collections.EMPTY_LIST, entities.userMentions);
             assertEquals(Collections.EMPTY_LIST, entities.media);
@@ -83,6 +84,7 @@ public class TweetEntitiesTest {
             assertEquals(EXPECTED_USER_MENTIONS_SIZE, tweetEntities.userMentions.size());
             assertEquals(EXPECTED_MEDIA_SIZE, tweetEntities.media.size());
             assertEquals(EXPECTED_HASHTAGS_SIZE, tweetEntities.hashtags.size());
+            assertEquals(EXPECTED_SYMBOLS_SIZE, tweetEntities.symbols.size());
         } finally {
             CommonUtils.closeQuietly(reader);
         }
