@@ -47,6 +47,7 @@ ext {
             retrofitGsonConverter      : 'com.squareup.retrofit2:converter-gson:2.0.2',
             gson                       : 'com.google.code.gson:gson:2.6.1',
             okHttp                     : 'com.squareup.okhttp3:okhttp:3.2.0',
+            okHttpInterceptor          : 'com.squareup.okhttp3:logging-interceptor:3.2.0',
             design                     : 'com.android.support:design:23.1.1',
             tweetText                  : 'com.twitter:twitter-text:1.13.0'
     ]
