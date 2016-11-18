@@ -25,6 +25,7 @@ import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.tweetui.internal.FilterTimelineDelegate;
 import com.twitter.sdk.android.tweetui.internal.TimelineDelegate;
 
 /**
@@ -112,6 +113,7 @@ public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
         private Context context;
         private Timeline<Tweet> timeline;
         private Callback<Tweet> actionCallback;
+        private TimelineFilter timelineFilter;
         private int styleResId = R.style.tw__TweetLightStyle;
 
         /**
@@ -150,11 +152,26 @@ public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
         }
 
         /**
+         * Sets the TimelineFilter used to filter tweets from timeline.
+         * @param timelineFilter timelineFilter for timeline
+         */
+        public Builder setTimelineFilter(TimelineFilter timelineFilter) {
+            this.timelineFilter = timelineFilter;
+            return this;
+        }
+
+        /**
          * Builds a TweetTimelineListAdapter from Builder parameters.
          * @return a TweetTimelineListAdpater
          */
         public TweetTimelineListAdapter build() {
-            return new TweetTimelineListAdapter(context, timeline, styleResId, actionCallback);
+            if (timelineFilter == null) {
+                return new TweetTimelineListAdapter(context, timeline, styleResId, actionCallback);
+            } else {
+                final FilterTimelineDelegate delegate =
+                        new FilterTimelineDelegate(timeline, timelineFilter);
+                return new TweetTimelineListAdapter(context, delegate, styleResId, actionCallback);
+            }
         }
     }
 }

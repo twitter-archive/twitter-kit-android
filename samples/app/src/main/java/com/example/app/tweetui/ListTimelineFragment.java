@@ -26,13 +26,21 @@ import android.view.ViewGroup;
 import com.example.app.R;
 
 import com.example.app.twittercore.TwitterCoreMainActivity;
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterAuthException;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.tweetui.BasicTimelineFilter;
+import com.twitter.sdk.android.tweetui.FilterValues;
+import com.twitter.sdk.android.tweetui.TimelineFilter;
 import com.twitter.sdk.android.tweetui.TweetTimelineListAdapter;
 import com.twitter.sdk.android.tweetui.TwitterListTimeline;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * ListTimelineFragment demonstrates a TimelineListAdapter with a TwitterListTimeline.
@@ -63,12 +71,24 @@ public class ListTimelineFragment extends ListFragment {
         final TwitterListTimeline timeline = new TwitterListTimeline.Builder()
                 .slugWithOwnerScreenName("twitter-bots", "dghubble")
                 .build();
-        final TweetTimelineListAdapter adapter = new TweetTimelineListAdapter.Builder(getActivity())
+
+        final TweetTimelineListAdapter adapter =
+                new TweetTimelineListAdapter.Builder(getActivity())
+                .setTimelineFilter(getBasicTimelineFilter())
                 .setTimeline(timeline)
                 .setViewStyle(R.style.tw__TweetLightWithActionsStyle)
                 .setOnActionCallback(actionCallback)
                 .build();
+
         setListAdapter(adapter);
+    }
+
+    private TimelineFilter getBasicTimelineFilter() {
+        final InputStream inputStream = getContext().getResources().
+                openRawResource(R.raw.filter_values);
+        final JsonReader reader = new JsonReader(new InputStreamReader(inputStream));
+        final FilterValues filterValues = new Gson().fromJson(reader, FilterValues.class);
+        return new BasicTimelineFilter(filterValues);
     }
 
     @Override

@@ -22,6 +22,7 @@ import android.view.View;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.tweetui.internal.FilterTimelineDelegate;
 import com.twitter.sdk.android.tweetui.internal.TimelineDelegate;
 
 import java.util.List;
@@ -29,10 +30,10 @@ import java.util.List;
 import static org.mockito.Mockito.mock;
 
 public class TweetTimelineListAdapterTest extends TweetUiTestCase {
-    private static final String NULL_CONTEXT_MESSAGE = "Context must not be null";
-    private static final String NULL_TIMELINE_MESSAGE = "Timeline must not be null";
+    static final String NULL_CONTEXT_MESSAGE = "Context must not be null";
+    static final String NULL_TIMELINE_MESSAGE = "Timeline must not be null";
+    static final int ANY_STYLE = R.style.tw__TweetLightWithActionsStyle;
     private TweetTimelineListAdapter listAdapter;
-    private static final int ANY_STYLE = R.style.tw__TweetLightWithActionsStyle;
 
     public void testConstructor() {
         final TimelineDelegate<Tweet> mockTimelineDelegate = mock(TimelineDelegate.class);
@@ -104,6 +105,27 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
         }
     }
 
+    public void testBuilder_withTimelineFilter() {
+        final Timeline<Tweet> mockTimeline = mock(Timeline.class);
+        final TimelineFilter mockTimelineFilter = mock(TimelineFilter.class);
+        listAdapter = new TweetTimelineListAdapter.Builder(getContext())
+                .setTimeline(mockTimeline)
+                .setTimelineFilter(mockTimelineFilter)
+                .build();
+
+        assertTrue(listAdapter.delegate instanceof FilterTimelineDelegate);
+    }
+
+    public void testBuilder_withNullTimelineFilter() {
+        final Timeline<Tweet> mockTimeline = mock(Timeline.class);
+        listAdapter = new TweetTimelineListAdapter.Builder(getContext())
+                .setTimeline(mockTimeline)
+                .setTimelineFilter(null)
+                .build();
+
+        assertTrue(listAdapter.delegate instanceof TimelineDelegate);
+    }
+
     /**
      * Requires TweetUi to be setup by the test class. Without TweetUi, TweetView construction
      * returns before calling setTweet to support IDE edit mode, so getTweetId would always be -1.
@@ -151,14 +173,14 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
         assertEquals(R.style.tw__TweetDarkWithActionsStyle, tv.styleResId);
     }
 
-    public static class FakeTweetTimeline implements Timeline<Tweet> {
+    static class FakeTweetTimeline implements Timeline<Tweet> {
         private long numItems;
 
         /**
          * Constructs a FakeTweetTimeline
          * @param numItems the number of Tweets to return per call to next/previous
          */
-        public FakeTweetTimeline(long numItems) {
+        FakeTweetTimeline(long numItems) {
             this.numItems = numItems;
         }
 
