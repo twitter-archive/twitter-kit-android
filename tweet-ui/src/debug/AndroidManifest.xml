@@ -24,8 +24,6 @@
         android:largeHeap="true"
         tools:ignore="UnusedAttribute">
 
-        <activity android:name=".TestActivity"/>
-
         <uses-library android:name="android.test.runner" />
     </application>
 </manifest>
