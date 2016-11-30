@@ -61,4 +61,9 @@ public class TwitterApiTest  {
                         Build.MODEL, Build.BRAND, Build.PRODUCT),
                 userAgent);
     }
+
+    @Test
+    public void testNormalizeString() {
+        assertEquals("Twitter", TwitterApi.normalizeString("Tw" + '\u00ED' + "tter\r\n\t"));
+    }
 }

@@ -20,6 +20,8 @@ package com.twitter.sdk.android.core.internal;
 import android.net.Uri;
 import android.os.Build;
 
+import java.text.Normalizer;
+
 public class TwitterApi {
 
     public static final String BASE_HOST = "api.twitter.com";
@@ -76,6 +78,23 @@ public class TwitterApi {
                 .append(Build.PRODUCT)
                         // NOTE: We do not add client_source, preload, or wifi information.
                 .append(')');
-        return ua.toString();
+        return normalizeString(ua.toString());
+    }
+
+    static String normalizeString(String str) {
+        final String normalizedString = Normalizer.normalize(str, Normalizer.Form.NFD);
+        return stripNonAscii(normalizedString);
+    }
+
+    static String stripNonAscii(String str) {
+        final StringBuilder sb = new StringBuilder(str.length());
+        for (int i = 0; i < str.length(); i++) {
+            final char c = str.charAt(i);
+            if (c > '\u001f' && c < '\u007f') {
+                sb.append(c);
+            }
+        }
+
+        return sb.toString();
     }
 }
