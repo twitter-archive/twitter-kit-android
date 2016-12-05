@@ -25,9 +25,9 @@ import retrofit2.Call;
 
 public class TestUserTimeline extends UserTimeline {
 
-    TestUserTimeline(TweetUi tweetUi, Long userId, String screenName, Integer count,
+    TestUserTimeline(Long userId, String screenName, Integer count,
                      Boolean excludeReplies, Boolean includeRetweets) {
-        super(tweetUi, userId, screenName, count, excludeReplies, includeRetweets);
+        super(userId, screenName, count, excludeReplies, includeRetweets);
     }
 
     @Override

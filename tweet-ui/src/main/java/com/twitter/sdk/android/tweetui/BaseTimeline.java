@@ -28,24 +28,8 @@ import java.util.List;
  * BaseTimeline which handles TweetUi instance argument.
  */
 abstract class BaseTimeline {
-    protected final TweetUi tweetUi;
-
-    BaseTimeline(TweetUi tweetUi) {
-        if (tweetUi == null) {
-            throw new IllegalArgumentException("TweetUi instance must not be null");
-        }
-        this.tweetUi = tweetUi;
-        scribeImpression();
-    }
 
     abstract String getTimelineType();
-
-    private void scribeImpression() {
-        tweetUi.scribe(
-                ScribeConstants.getSyndicatedSdkTimelineNamespace(getTimelineType()),
-                ScribeConstants.getTfwClientTimelineNamespace(getTimelineType())
-        );
-    }
 
     /**
      * Returns a decremented maxId if the given id is non-null. Otherwise returns the given maxId.

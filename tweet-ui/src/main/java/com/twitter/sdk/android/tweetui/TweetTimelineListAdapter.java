@@ -34,6 +34,7 @@ import com.twitter.sdk.android.tweetui.internal.TimelineDelegate;
 public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
     protected Callback<Tweet> actionCallback;
     final protected int styleResId;
+    protected TweetUi tweetUi;
 
     /**
      * Constructs a TweetTimelineListAdapter for the given Tweet Timeline.
@@ -46,15 +47,18 @@ public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
     }
 
     TweetTimelineListAdapter(Context context, Timeline<Tweet> timeline, int styleResId,
-            Callback<Tweet> cb) {
-        this(context, new TimelineDelegate<>(timeline), styleResId, cb);
+                             Callback<Tweet> cb) {
+        this(context, new TimelineDelegate<>(timeline), styleResId, cb, TweetUi.getInstance());
     }
 
     TweetTimelineListAdapter(Context context, TimelineDelegate<Tweet> delegate, int styleResId,
-            Callback<Tweet> cb) {
+                             Callback<Tweet> cb, TweetUi tweetUi) {
         super(context, delegate);
         this.styleResId = styleResId;
         this.actionCallback = new ReplaceTweetCallback(delegate, cb);
+        this.tweetUi = tweetUi;
+
+        scribeTimelineImpression();
     }
 
     /**
@@ -75,6 +79,21 @@ public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
             ((BaseTweetView) rowView).setTweet(tweet);
         }
         return rowView;
+    }
+
+    private void scribeTimelineImpression() {
+        final String timelineType = getTimelineType(delegate.getTimeline());
+
+        tweetUi.scribe(
+                ScribeConstants.getSyndicatedSdkTimelineNamespace(timelineType),
+                ScribeConstants.getTfwClientTimelineNamespace(timelineType));
+    }
+
+    static String getTimelineType(Timeline timeline) {
+        if (timeline instanceof BaseTimeline) {
+            return ((BaseTimeline) timeline).getTimelineType();
+        }
+        return "other";
     }
 
     /*
@@ -170,7 +189,8 @@ public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
             } else {
                 final FilterTimelineDelegate delegate =
                         new FilterTimelineDelegate(timeline, timelineFilter);
-                return new TweetTimelineListAdapter(context, delegate, styleResId, actionCallback);
+                return new TweetTimelineListAdapter(context, delegate, styleResId, actionCallback,
+                        TweetUi.getInstance());
             }
         }
     }

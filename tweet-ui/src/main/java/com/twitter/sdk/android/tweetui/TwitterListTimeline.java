@@ -38,9 +38,8 @@ public class TwitterListTimeline extends BaseTimeline implements Timeline<Tweet>
     final Integer maxItemsPerRequest;
     final Boolean includeRetweets;
 
-    TwitterListTimeline(TweetUi tweetUi, Long listId, String slug, Long ownerId,
+    TwitterListTimeline(Long listId, String slug, Long ownerId,
         String ownerScreenName, Integer maxItemsPerRequest, Boolean includeRetweets) {
-        super(tweetUi);
         this.listId = listId;
         this.slug = slug;
         this.ownerId = ownerId;
@@ -87,7 +86,6 @@ public class TwitterListTimeline extends BaseTimeline implements Timeline<Tweet>
      * TwitterListTimeline Builder.
      */
     public static class Builder {
-        private final TweetUi tweetUi;
         private Long listId;
         private String slug;
         private Long ownerId;
@@ -98,21 +96,13 @@ public class TwitterListTimeline extends BaseTimeline implements Timeline<Tweet>
         /**
          * Constructs a Builder.
          */
-        public Builder() {
-            this(TweetUi.getInstance());
-        }
+        public Builder() {};
 
         /**
-         * Constructs a Builder.
-         *
-         * @param tweetUi A TweetUi instance.
+         * @deprecated use {@link Builder#Builder()} instead
          */
-        public Builder(TweetUi tweetUi) {
-            if (tweetUi == null) {
-                throw new IllegalArgumentException("TweetUi instance must not be null");
-            }
-            this.tweetUi = tweetUi;
-        }
+        @Deprecated
+        public Builder(TweetUi tweetUi) {}
 
         /**
          * Sets the id for the Twitter List to get Tweets from.
@@ -182,7 +172,7 @@ public class TwitterListTimeline extends BaseTimeline implements Timeline<Tweet>
                         "slug/owner pair must set owner via ownerId or ownerScreenName");
             }
 
-            return new TwitterListTimeline(tweetUi, listId, slug, ownerId, ownerScreenName,
+            return new TwitterListTimeline(listId, slug, ownerId, ownerScreenName,
                     maxItemsPerRequest, includeRetweets);
         }
     }

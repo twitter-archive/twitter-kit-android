@@ -109,6 +109,11 @@ public class TimelineDelegate<T extends Identifiable> {
         return itemList.size();
     }
 
+
+    public Timeline getTimeline() {
+        return timeline;
+    }
+
     /**
      * Gets the data item associated with the specified position in the data set.
      * @param position The position of the item within the adapter's data set.

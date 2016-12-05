@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FixedTweetTimelineTest extends TweetUiTestCase {
-    private static final String ILLEGAL_TWEET_UI_MESSAGE = "TweetUi instance must not be null";
     private static final Long ANY_ID = 1234L;
     private List<Tweet> fixedTweets = new ArrayList<>();
 
@@ -39,27 +38,18 @@ public class FixedTweetTimelineTest extends TweetUiTestCase {
     }
 
     public void testConstructor() {
-        final FixedTweetTimeline timeline = new FixedTweetTimeline(tweetUi, fixedTweets);
+        final FixedTweetTimeline timeline = new FixedTweetTimeline(fixedTweets);
         assertNotNull(timeline.tweets);
         assertEquals(fixedTweets, timeline.tweets);
     }
 
     public void testConstructor_nullTweets() {
-        final FixedTweetTimeline timeline = new FixedTweetTimeline(tweetUi, null);
+        final FixedTweetTimeline timeline = new FixedTweetTimeline(null);
         assertTrue(timeline.tweets.isEmpty());
     }
 
-    public void testConstructor_nullTweetUi() {
-        try {
-            new FixedTweetTimeline(null, fixedTweets);
-            fail("Expected IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertEquals(ILLEGAL_TWEET_UI_MESSAGE, e.getMessage());
-        }
-    }
-
     public void testNext_succeedsWithFixedTweets() {
-        final FixedTweetTimeline timeline = new FixedTweetTimeline(tweetUi, fixedTweets);
+        final FixedTweetTimeline timeline = new FixedTweetTimeline(fixedTweets);
         timeline.next(ANY_ID, new Callback<TimelineResult<Tweet>>() {
             @Override
             public void success(Result<TimelineResult<Tweet>> result) {
@@ -78,7 +68,7 @@ public class FixedTweetTimelineTest extends TweetUiTestCase {
     }
 
     public void testNext_succeedsWithEmptyTweets() {
-        final FixedTweetTimeline timeline = new FixedTweetTimeline(tweetUi, fixedTweets);
+        final FixedTweetTimeline timeline = new FixedTweetTimeline(fixedTweets);
         timeline.previous(ANY_ID, new Callback<TimelineResult<Tweet>>() {
             @Override
             public void success(Result<TimelineResult<Tweet>> result) {
@@ -98,24 +88,13 @@ public class FixedTweetTimelineTest extends TweetUiTestCase {
     /* Builder */
 
     public void testBuilder() {
-        final FixedTweetTimeline timeline = new FixedTweetTimeline.Builder(tweetUi)
+        final FixedTweetTimeline timeline = new FixedTweetTimeline.Builder()
                 .setTweets(fixedTweets).build();
-        assertEquals(tweetUi, timeline.tweetUi);
         assertEquals(fixedTweets, timeline.tweets);
     }
 
     public void testBuilder_empty() {
         final FixedTweetTimeline timeline = new FixedTweetTimeline.Builder().build();
-        assertNotNull(timeline.tweetUi);
         assertTrue(timeline.tweets.isEmpty());
-    }
-
-    public void testBuilder_nullTweetUi() {
-        try {
-            new FixedTweetTimeline.Builder(null).build();
-            fail();
-        } catch (IllegalArgumentException e) {
-            assertEquals(ILLEGAL_TWEET_UI_MESSAGE, e.getMessage());
-        }
     }
 }

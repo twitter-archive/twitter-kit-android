@@ -46,9 +46,8 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
     final Integer maxItemsPerRequest;
     final String untilDate;
 
-    SearchTimeline(TweetUi tweetUi, String query, String resultType, String languageCode,
+    SearchTimeline(String query, String resultType, String languageCode,
             Integer maxItemsPerRequest, String untilDate) {
-        super(tweetUi);
         this.languageCode = languageCode;
         this.maxItemsPerRequest = maxItemsPerRequest;
         this.untilDate = untilDate;
@@ -141,7 +140,6 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
      * SearchTimeline Builder
      */
     public static class Builder {
-        private TweetUi tweetUi;
         private String query;
         private String lang;
         private String resultType = ResultType.FILTERED.type;
@@ -151,22 +149,13 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
         /**
          * Constructs a Builder.
          */
-        public Builder() {
-            this(TweetUi.getInstance());
-        }
+        public Builder() {}
 
         /**
-         * Constructs a Builder.
-         *
-         * @param tweetUi A TweetUi instance.
+         * @deprecated use {@link Builder#Builder()} instead
          */
-        public Builder(TweetUi tweetUi) {
-            if (tweetUi == null) {
-                throw new IllegalArgumentException("TweetUi instance must not be null");
-            }
-            this.tweetUi = tweetUi;
-        }
-
+        @Deprecated
+        public Builder(TweetUi tweetUi) {}
 
         /**
          * Sets the query for the SearchTimeline.
@@ -230,7 +219,7 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
             if (query == null) {
                 throw new IllegalStateException("query must not be null");
             }
-            return new SearchTimeline(tweetUi, query, resultType, lang, maxItemsPerRequest,
+            return new SearchTimeline(query, resultType, lang, maxItemsPerRequest,
                     untilDate);
         }
     }

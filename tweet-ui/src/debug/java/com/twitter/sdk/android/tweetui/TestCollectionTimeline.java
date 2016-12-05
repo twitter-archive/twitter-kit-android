@@ -23,8 +23,8 @@ import retrofit2.Call;
 
 public class TestCollectionTimeline extends CollectionTimeline {
 
-    TestCollectionTimeline(TweetUi tweetUi, Long collectionId, Integer count) {
-        super(tweetUi, collectionId, count);
+    TestCollectionTimeline(Long collectionId, Integer count) {
+        super(collectionId, count);
     }
 
     @Override

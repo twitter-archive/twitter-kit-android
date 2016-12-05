@@ -86,31 +86,21 @@ public class CollectionTimelineTest extends TweetUiTestCase {
     }
 
     public void testConstructor() {
-        final CollectionTimeline timeline = new CollectionTimeline(tweetUi, TEST_COLLECTION_ID,
+        final CollectionTimeline timeline = new CollectionTimeline(TEST_COLLECTION_ID,
                 TEST_ITEMS_PER_REQUEST);
-        assertEquals(tweetUi, timeline.tweetUi);
         assertEquals(CollectionTimeline.COLLECTION_PREFIX + TEST_COLLECTION_ID,
                 timeline.collectionIdentifier);
     }
 
-    public void testConstructor_nullTweetUi() {
-        try {
-            new CollectionTimeline(null, null, null);
-            fail("Expected IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertEquals(ILLEGAL_TWEET_UI_MESSAGE, e.getMessage());
-        }
-    }
-
     public void testNext_createsCorrectRequest() {
-        final CollectionTimeline timeline = spy(new TestCollectionTimeline(tweetUi,
+        final CollectionTimeline timeline = spy(new TestCollectionTimeline(
                 TEST_COLLECTION_ID, TEST_ITEMS_PER_REQUEST));
         timeline.next(TEST_MIN_POSITION, mock(Callback.class));
         verify(timeline).createCollectionRequest(eq(TEST_MIN_POSITION), isNull(Long.class));
     }
 
     public void testPrevious_createsCorrectRequest() {
-        final CollectionTimeline timeline = spy(new TestCollectionTimeline(tweetUi,
+        final CollectionTimeline timeline = spy(new TestCollectionTimeline(
                 TEST_COLLECTION_ID, TEST_ITEMS_PER_REQUEST));
         timeline.next(TEST_MAX_POSITION, mock(Callback.class));
         verify(timeline).createCollectionRequest(eq(TEST_MAX_POSITION), isNull(Long.class));
@@ -118,7 +108,7 @@ public class CollectionTimelineTest extends TweetUiTestCase {
 
     public void testCreateCollectionRequest() {
         // build a timeline with test params
-        final CollectionTimeline timeline = new CollectionTimeline(tweetUi, TEST_COLLECTION_ID,
+        final CollectionTimeline timeline = new CollectionTimeline(TEST_COLLECTION_ID,
                 TEST_ITEMS_PER_REQUEST);
 
         // create a request directly
@@ -221,37 +211,26 @@ public class CollectionTimelineTest extends TweetUiTestCase {
     /* Builder */
 
     public void testBuilder() {
-        final CollectionTimeline timeline = new CollectionTimeline.Builder(tweetUi)
+        final CollectionTimeline timeline = new CollectionTimeline.Builder()
                 .id(TEST_COLLECTION_ID)
                 .maxItemsPerRequest(TEST_ITEMS_PER_REQUEST)
                 .build();
-        assertEquals(tweetUi, timeline.tweetUi);
         assertEquals(CollectionTimeline.COLLECTION_PREFIX + TEST_COLLECTION_ID,
                 timeline.collectionIdentifier);
         assertEquals(TEST_ITEMS_PER_REQUEST, timeline.maxItemsPerRequest);
     }
 
-    public void testBuilder_nullTweetUI() {
-        try {
-            new CollectionTimeline.Builder(null);
-            fail();
-        } catch (IllegalArgumentException e) {
-            assertEquals(ILLEGAL_TWEET_UI_MESSAGE, e.getMessage());
-        }
-    }
-
     public void testBuilder_defaults() {
-        final CollectionTimeline timeline = new CollectionTimeline.Builder(tweetUi)
+        final CollectionTimeline timeline = new CollectionTimeline.Builder()
                 .id(TEST_COLLECTION_ID)
                 .build();
-        assertEquals(tweetUi, timeline.tweetUi);
         assertEquals(CollectionTimeline.COLLECTION_PREFIX + TEST_COLLECTION_ID,
                 timeline.collectionIdentifier);
         assertEquals(REQUIRED_DEFAULT_ITEMS_PER_REQUEST, timeline.maxItemsPerRequest);
     }
 
     public void testBuilder_id() {
-        final CollectionTimeline timeline = new CollectionTimeline.Builder(tweetUi)
+        final CollectionTimeline timeline = new CollectionTimeline.Builder()
                 .id(TEST_COLLECTION_ID)
                 .build();
         assertEquals(CollectionTimeline.COLLECTION_PREFIX + TEST_COLLECTION_ID,
@@ -260,7 +239,7 @@ public class CollectionTimelineTest extends TweetUiTestCase {
 
     public void testBuilder_idNull() {
         try {
-            new CollectionTimeline.Builder(tweetUi).id(null).build();
+            new CollectionTimeline.Builder().id(null).build();
             fail("Expected IllegalStateException");
         } catch (IllegalStateException e) {
             assertEquals("collection id must not be null", e.getMessage());
@@ -268,7 +247,7 @@ public class CollectionTimelineTest extends TweetUiTestCase {
     }
 
     public void testBuilder_maxItemsPerRequest() {
-        final CollectionTimeline timeline = new CollectionTimeline.Builder(tweetUi)
+        final CollectionTimeline timeline = new CollectionTimeline.Builder()
                 .id(TEST_COLLECTION_ID)
                 .maxItemsPerRequest(TEST_ITEMS_PER_REQUEST)
                 .build();

@@ -43,8 +43,7 @@ public class CollectionTimeline extends BaseTimeline implements Timeline<Tweet> 
     final String collectionIdentifier;
     final Integer maxItemsPerRequest;
 
-    CollectionTimeline(TweetUi tweetUi, Long collectionId, Integer maxItemsPerRequest) {
-        super(tweetUi);
+    CollectionTimeline(Long collectionId, Integer maxItemsPerRequest) {
         // prefix the collection id with the collection prefix
         if (collectionId == null) {
             this.collectionIdentifier = null;
@@ -171,26 +170,19 @@ public class CollectionTimeline extends BaseTimeline implements Timeline<Tweet> 
      * CollectionTimeline Builder.
      */
     public static class Builder {
-        private final TweetUi tweetUi;
         private Long collectionId;
         private Integer maxItemsPerRequest = 30;
 
         /**
          * Constructs a Builder.
          */
-        public Builder() {
-            this(TweetUi.getInstance());
-        }
+        public Builder() {}
 
         /**
-         * Constructs a Builder.
+         * @deprecated use {@link Builder#Builder()} instead
          */
-        public Builder(TweetUi tweetUi) {
-            if (tweetUi == null) {
-                throw new IllegalArgumentException("TweetUi instance must not be null");
-            }
-            this.tweetUi = tweetUi;
-        }
+        @Deprecated
+        public Builder(TweetUi tweetUi) {}
 
         /**
          * Sets the id for the CollectionTimeline.
@@ -220,7 +212,7 @@ public class CollectionTimeline extends BaseTimeline implements Timeline<Tweet> 
             if (collectionId == null) {
                 throw new IllegalStateException("collection id must not be null");
             }
-            return new CollectionTimeline(tweetUi, collectionId, maxItemsPerRequest);
+            return new CollectionTimeline(collectionId, maxItemsPerRequest);
         }
     }
 }

@@ -37,9 +37,8 @@ public class UserTimeline extends BaseTimeline implements Timeline<Tweet> {
     final Boolean includeReplies;
     final Boolean includeRetweets;
 
-    UserTimeline(TweetUi tweetUi, Long userId, String screenName, Integer maxItemsPerRequest,
+    UserTimeline(Long userId, String screenName, Integer maxItemsPerRequest,
             Boolean includeReplies, Boolean includeRetweets) {
-        super(tweetUi);
         this.userId = userId;
         this.screenName = screenName;
         this.maxItemsPerRequest = maxItemsPerRequest;
@@ -86,7 +85,6 @@ public class UserTimeline extends BaseTimeline implements Timeline<Tweet> {
      * UserTimeline Builder.
      */
     public static class Builder {
-        private final TweetUi tweetUi;
         private Long userId;
         private String screenName;
         private Integer maxItemsPerRequest = 30;
@@ -96,20 +94,13 @@ public class UserTimeline extends BaseTimeline implements Timeline<Tweet> {
         /**
          * Constructs a Builder.
          */
-        public Builder() {
-            this(TweetUi.getInstance());
-        }
+        public Builder() {}
 
         /**
-         * Constructs a Builder.
-         * @param tweetUi A TweetUi instance.
+         * @deprecated use {@link Builder#Builder()} instead
          */
-        public Builder(TweetUi tweetUi) {
-            if (tweetUi == null) {
-                throw new IllegalArgumentException("TweetUi instance must not be null");
-            }
-            this.tweetUi = tweetUi;
-        }
+        @Deprecated
+        public Builder(TweetUi tweetUi) {}
 
         /**
          * Sets the userId for the UserTimeline.
@@ -165,7 +156,7 @@ public class UserTimeline extends BaseTimeline implements Timeline<Tweet> {
          * @return a UserTimeline.
          */
         public UserTimeline build() {
-            return new UserTimeline(tweetUi, userId, screenName, maxItemsPerRequest, includeReplies,
+            return new UserTimeline(userId, screenName, maxItemsPerRequest, includeReplies,
                     includeRetweets);
         }
     }
