@@ -76,6 +76,7 @@ public class BasicTimelineFilter implements TimelineFilter {
         }
     }
 
+    @Override
     public List<Tweet> filter(List<Tweet> tweets) {
         final List<Tweet> filteredTweets = new ArrayList<>();
         for (int idx = 0; idx < tweets.size(); idx++) {
@@ -86,6 +87,12 @@ public class BasicTimelineFilter implements TimelineFilter {
         }
 
         return Collections.unmodifiableList(filteredTweets);
+    }
+
+    @Override
+    public int totalFilters() {
+        return keywordConstraints.size() + hashTagConstraints.size()
+                + urlConstraints.size() + handleConstraints.size();
     }
 
     boolean shouldFilterTweet(Tweet tweet) {

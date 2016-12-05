@@ -15,10 +15,7 @@
  *
  */
 
-package com.twitter.sdk.android.tweetui.internal;
-
-import com.twitter.sdk.android.tweetui.BuildConfig;
-import com.twitter.sdk.android.tweetui.TimelineCursor;
+package com.twitter.sdk.android.tweetui;
 
 import org.junit.Before;
 import org.junit.Test;

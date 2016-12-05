@@ -15,29 +15,35 @@
  *
  */
 
-package com.twitter.sdk.android.tweetui.internal;
+package com.twitter.sdk.android.tweetui;
 
 import android.os.Handler;
 import android.os.Looper;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.tweetui.TimelineFilter;
+import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
 import com.twitter.sdk.android.core.models.Tweet;
-import com.twitter.sdk.android.tweetui.Timeline;
-import com.twitter.sdk.android.tweetui.TimelineCursor;
-import com.twitter.sdk.android.tweetui.TimelineResult;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 /**
  * FilterTimelineDelegate manages and filters timeline data items and loads items from a Timeline.
  */
-public class FilterTimelineDelegate extends TimelineDelegate<Tweet> {
+class FilterTimelineDelegate extends TimelineDelegate<Tweet> {
     final TimelineFilter timelineFilter;
+    final TweetUi tweetUi;
+
+    static final String TWEETS_COUNT_JSON_PROP = "tweet_count";
+    static final String TWEETS_FILTERED_JSON_PROP = "tweets_filtered";
+    static final String TOTAL_APPLIED_FILTERS_JSON_PROP = "total_filters";
+    final Gson gson = new Gson();
 
     /**
      * Constructs a FilterTimelineDelegate with a timeline for requesting data and timelineFilter to
@@ -49,6 +55,7 @@ public class FilterTimelineDelegate extends TimelineDelegate<Tweet> {
     public FilterTimelineDelegate(Timeline<Tweet> timeline, TimelineFilter timelineFilter) {
         super(timeline);
         this.timelineFilter = timelineFilter;
+        this.tweetUi = TweetUi.getInstance();
     }
 
     @Override
@@ -78,7 +85,7 @@ public class FilterTimelineDelegate extends TimelineDelegate<Tweet> {
     /**
      * Handles filtering of tweets from the timeline, provided a given TimelineFilter
      */
-    static class TimelineFilterCallback extends Callback<TimelineResult<Tweet>> {
+    class TimelineFilterCallback extends Callback<TimelineResult<Tweet>> {
         final DefaultCallback callback;
         final TimelineFilter timelineFilter;
         final Handler handler;
@@ -106,6 +113,8 @@ public class FilterTimelineDelegate extends TimelineDelegate<Tweet> {
                             callback.success(new Result<>(filteredTimelineResult, result.response));
                         }
                     });
+
+                    scribeFilteredTimeline(result.data.items, filteredTweets);
                 }
             };
 
@@ -123,5 +132,28 @@ public class FilterTimelineDelegate extends TimelineDelegate<Tweet> {
                                                   List<Tweet> filteredTweets) {
             return new TimelineResult<>(timelineCursor, filteredTweets);
         }
+    }
+
+    void scribeFilteredTimeline(List<Tweet> tweets, List<Tweet> filteredTweets) {
+        final int tweetCount = tweets.size();
+        final int totalTweetsFiltered = tweetCount - filteredTweets.size();
+        final int totalFilters = timelineFilter.totalFilters();
+
+        final String jsonMessage = getJsonMessage(tweetCount, totalTweetsFiltered,
+                totalFilters);
+        final ScribeItem scribeItem = ScribeItem.fromMessage(jsonMessage);
+        final List<ScribeItem> items = new ArrayList<>();
+        items.add(scribeItem);
+
+        final String timelineType = TweetTimelineListAdapter.getTimelineType(timeline);
+        tweetUi.scribe(ScribeConstants.getTfwClientFilterTimelineNamespace(timelineType), items);
+    }
+
+    private String getJsonMessage(int totalTweetsSize, int filteredTweetsSize, int totalFilters) {
+        final JsonObject message = new JsonObject();
+        message.addProperty(TWEETS_COUNT_JSON_PROP, totalTweetsSize);
+        message.addProperty(TWEETS_FILTERED_JSON_PROP, totalTweetsSize - filteredTweetsSize);
+        message.addProperty(TOTAL_APPLIED_FILTERS_JSON_PROP, totalFilters);
+        return gson.toJson(message);
     }
 }

@@ -24,7 +24,6 @@ import android.view.ViewGroup;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.models.Identifiable;
-import com.twitter.sdk.android.tweetui.internal.TimelineDelegate;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -150,7 +149,7 @@ public class TimelineListAdapterTest {
      * Makes class public so it can be mocked on ART runtime.
      * @param <T>
      */
-    public class TestTimelineDelegate<T extends Identifiable> extends TimelineDelegate {
+    class TestTimelineDelegate<T extends Identifiable> extends TimelineDelegate {
         public TestTimelineDelegate(Timeline<T> timeline) {
             super(timeline);
         }

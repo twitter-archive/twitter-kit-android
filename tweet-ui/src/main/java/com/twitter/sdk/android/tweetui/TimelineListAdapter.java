@@ -23,7 +23,6 @@ import android.widget.BaseAdapter;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.models.Identifiable;
-import com.twitter.sdk.android.tweetui.internal.TimelineDelegate;
 
 /**
  * TimelineListAdapter is a ListAdapter providing timeline items for ListViews.

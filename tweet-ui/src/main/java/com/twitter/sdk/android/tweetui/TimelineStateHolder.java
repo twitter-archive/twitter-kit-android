@@ -15,9 +15,7 @@
  *
  */
 
-package com.twitter.sdk.android.tweetui.internal;
-
-import com.twitter.sdk.android.tweetui.TimelineCursor;
+package com.twitter.sdk.android.tweetui;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -25,7 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Component which holds a TimelineAdapter's data about whether a request is in flight and the
  * scroll position TimelineCursors.
  */
-public class TimelineStateHolder {
+class TimelineStateHolder {
     // cursor for Timeline 'next' calls
     TimelineCursor nextCursor;
     // cursor for Timeline 'previous' calls

@@ -15,7 +15,7 @@
  *
  */
 
-package com.twitter.sdk.android.tweetui.internal;
+package com.twitter.sdk.android.tweetui;
 
 import android.database.DataSetObservable;
 import android.database.DataSetObserver;
@@ -24,8 +24,6 @@ import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Identifiable;
-import com.twitter.sdk.android.tweetui.Timeline;
-import com.twitter.sdk.android.tweetui.TimelineResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +33,7 @@ import java.util.List;
  * common to TimelineListAdapter and TimelineRecyclerAdapter.
  * @param <T> the item type
  */
-public class TimelineDelegate<T extends Identifiable> {
+class TimelineDelegate<T extends Identifiable> {
     // once capacity is exceeded, additional items will not be loaded
     static final long CAPACITY = 200L;
     // timeline that next and previous items are loaded from

@@ -15,7 +15,7 @@
  *
  */
 
-package com.twitter.sdk.android.tweetui.internal;
+package com.twitter.sdk.android.tweetui;
 
 import android.database.DataSetObservable;
 import android.database.DataSetObserver;
@@ -23,11 +23,6 @@ import android.database.DataSetObserver;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.tweetui.BuildConfig;
-import com.twitter.sdk.android.tweetui.TestItem;
-import com.twitter.sdk.android.tweetui.Timeline;
-import com.twitter.sdk.android.tweetui.TimelineCursor;
-import com.twitter.sdk.android.tweetui.TimelineResult;
 
 import org.junit.Before;
 import org.junit.Test;

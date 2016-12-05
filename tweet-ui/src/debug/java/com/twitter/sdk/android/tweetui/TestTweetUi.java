@@ -18,11 +18,19 @@
 package com.twitter.sdk.android.tweetui;
 
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
+import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
+
+import java.util.List;
 
 public class TestTweetUi extends TweetUi {
 
     @Override
     public void scribe(EventNamespace... namespaces) {
         super.scribe(namespaces);
+    }
+
+    @Override
+    public void scribe(EventNamespace ns, List<ScribeItem> items) {
+        super.scribe(ns, items);
     }
 }

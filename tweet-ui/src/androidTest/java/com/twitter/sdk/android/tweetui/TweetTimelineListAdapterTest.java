@@ -22,9 +22,9 @@ import android.view.View;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
+import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
+import com.twitter.sdk.android.core.models.Identifiable;
 import com.twitter.sdk.android.core.models.Tweet;
-import com.twitter.sdk.android.tweetui.internal.FilterTimelineDelegate;
-import com.twitter.sdk.android.tweetui.internal.TimelineDelegate;
 
 import org.mockito.ArgumentCaptor;
 
@@ -51,7 +51,7 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
     private static final String TEST_SCRIBE_SECTION = "other";
 
     public void testConstructor() {
-        final TimelineDelegate<Tweet> mockTimelineDelegate = mock(TimelineDelegate.class);
+        final TimelineDelegate<Tweet> mockTimelineDelegate = mock(TestTimelineDelegate.class);
         final TweetUi tweetUi = mock(TweetUi.class);
         listAdapter = new TweetTimelineListAdapter(getContext(), mockTimelineDelegate, ANY_STYLE,
                 null, tweetUi);
@@ -66,7 +66,7 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
     }
 
     public void testConstructor_withActionCallback() {
-        final TimelineDelegate<Tweet> mockTimelineDelegate = mock(TimelineDelegate.class);
+        final TimelineDelegate<Tweet> mockTimelineDelegate = mock(TestTimelineDelegate.class);
         final Callback<Tweet> mockCallback = mock(Callback.class);
         final TweetUi tweetUi = mock(TweetUi.class);
         listAdapter = new TweetTimelineListAdapter(getContext(), mockTimelineDelegate, ANY_STYLE,
@@ -86,7 +86,6 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
     public void testBuilder() {
         final Timeline<Tweet> mockTimeline = mock(Timeline.class);
         final Callback<Tweet> mockCallback = mock(Callback.class);
-        final TweetUi tweetUi = mock(TweetUi.class);
         listAdapter = new TweetTimelineListAdapter.Builder(getContext())
                 .setTimeline(mockTimeline)
                 .setOnActionCallback(mockCallback)
@@ -136,7 +135,6 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
 
     public void testBuilder_withNullTimelineFilter() {
         final Timeline<Tweet> mockTimeline = mock(Timeline.class);
-        final TweetUi tweetUi = mock(TweetUi.class);
         listAdapter = new TweetTimelineListAdapter.Builder(getContext())
                 .setTimeline(mockTimeline)
                 .setTimelineFilter(null)
@@ -188,15 +186,17 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
                 = ArgumentCaptor.forClass(EventNamespace.class);
         final ArgumentCaptor<EventNamespace> tfwNamespaceCaptor
                 = ArgumentCaptor.forClass(EventNamespace.class);
+        final ArgumentCaptor<List<ScribeItem>> scribeItemsCaptor
+                = ArgumentCaptor.forClass((Class) List.class);
 
-        final TimelineDelegate<Tweet> mockTimelineDelegate = mock(TimelineDelegate.class);
+        final TimelineDelegate<Tweet> mockTimelineDelegate = mock(TestTimelineDelegate.class);
         new TweetTimelineListAdapter(getContext(), mockTimelineDelegate, ANY_STYLE,
                 null, tweetUi);
 
-        verify(tweetUi).scribe(sdkNamespaceCaptor.capture(), tfwNamespaceCaptor.capture());
+        verify(tweetUi).scribe(sdkNamespaceCaptor.capture());
+        verify(tweetUi).scribe(tfwNamespaceCaptor.capture(), scribeItemsCaptor.capture());
 
         final EventNamespace sdkNs = sdkNamespaceCaptor.getValue();
-
         assertEquals(REQUIRED_SDK_IMPRESSION_CLIENT, sdkNs.client);
         assertEquals(REQUIRED_SDK_IMPRESSION_PAGE, sdkNs.page);
         assertEquals(TEST_SCRIBE_SECTION, sdkNs.section);
@@ -205,13 +205,15 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
         assertEquals(REQUIRED_IMPRESSION_ACTION, sdkNs.action);
 
         final EventNamespace tfwNs = tfwNamespaceCaptor.getValue();
-
         assertEquals(REQUIRED_TFW_CLIENT, tfwNs.client);
         assertEquals(REQUIRED_TFW_PAGE, tfwNs.page);
         assertEquals(REQUIRED_TFW_SECTION, tfwNs.section);
         assertEquals(TEST_SCRIBE_SECTION, tfwNs.component);
         assertEquals(REQUIRED_TFW_ELEMENT, tfwNs.element);
         assertEquals(REQUIRED_IMPRESSION_ACTION, tfwNs.action);
+
+        final List<ScribeItem> scribeItems = scribeItemsCaptor.getValue();
+        assertNotNull(scribeItems);
     }
 
     public void testSetViewStyle() {
@@ -252,6 +254,16 @@ public class TweetTimelineListAdapterTest extends TweetUiTestCase {
             final TimelineResult<Tweet> timelineResult
                     = new TimelineResult<>(timelineCursor, tweets);
             cb.success(new Result<>(timelineResult, null));
+        }
+    }
+
+    /**
+     * Makes class public so it can be mocked on ART runtime.
+     * @param <T>
+     */
+    public class TestTimelineDelegate<T extends Identifiable> extends TimelineDelegate {
+        public TestTimelineDelegate(Timeline<T> timeline) {
+            super(timeline);
         }
     }
 }

@@ -21,6 +21,20 @@ import com.twitter.sdk.android.core.models.Tweet;
 
 import java.util.List;
 
+/**
+ * TimelineFilter used to filter tweets from a timeline.
+ */
 public interface TimelineFilter {
+
+    /**
+     * Filter tweets from timeline with given set of constraints.
+     *
+     * @param tweets list of tweets.
+     */
     List<Tweet> filter(List<Tweet> tweets);
+
+    /**
+     * Total count of constraints applied to the timeline.
+     */
+    int totalFilters();
 }
