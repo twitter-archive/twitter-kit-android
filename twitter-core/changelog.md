@@ -3,6 +3,11 @@
 
 ## Unreleased
 
+## v2.3.0
+
+* Normalized user-agent to avoid errors with non-ascii characters.
+* Added symbols to Tweet entities.
+
 ## v2.2.0
 
 * Added support for user defined OkHttpClient.

@@ -3,6 +3,10 @@
 
 ## Unreleased
 
+## v2.3.0
+
+* Added support for timeline filtering.
+
 ## v2.2.0
 
 * Added support for quote Tweet display.
