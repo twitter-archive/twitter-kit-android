@@ -86,10 +86,12 @@ public final class TestFixtures {
     public static final String TEST_CONTENT_DESCRIPTION
             = "Alfred Verbose Named. A test Tweet status message.. Jun 6, 2012.";
 
-    public static final String TEST_PERMALINK_ONE = "https://twitter.com/longestusername/status/1";
-    public static final String TEST_PERMALINK_TWO = "https://twitter.com/longestusername/status/2";
+    public static final String TEST_PERMALINK_ONE =
+            "https://twitter.com/longestusername/status/1?ref_src=twsrc%5Etwitterkit";
+    public static final String TEST_PERMALINK_TWO =
+            "https://twitter.com/longestusername/status/2?ref_src=twsrc%5Etwitterkit";
     public static final String TEST_PERMALINK_UNKNOWN_USER
-            = "https://twitter.com/twitter_unknown/status/1";
+            = "https://twitter.com/twitter_unknown/status/1?ref_src=twsrc%5Etwitterkit";
 
     public static final Tweet TEST_TWEET = createTweet(1L, TEST_USER, TEST_STATUS, TEST_TIMESTAMP,
             false);

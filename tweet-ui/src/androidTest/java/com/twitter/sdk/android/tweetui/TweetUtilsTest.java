@@ -29,9 +29,10 @@ import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.core.models.UserBuilder;
 
 public class TweetUtilsTest extends FabricAndroidTestCase {
-    private static final String A_FULL_PERMALINK = "https://twitter.com/jack/status/20";
+    private static final String A_FULL_PERMALINK =
+            "https://twitter.com/jack/status/20?ref_src=twsrc%5Etwitterkit";
     private static final String A_PERMALINK_WITH_NO_SCREEN_NAME
-            = "https://twitter.com/twitter_unknown/status/20";
+            = "https://twitter.com/twitter_unknown/status/20?ref_src=twsrc%5Etwitterkit";
     private static final String A_VALID_SCREEN_NAME = "jack";
     private static final int A_VALID_TWEET_ID = 20;
     private static final int AN_INVALID_TWEET_ID = 0;
