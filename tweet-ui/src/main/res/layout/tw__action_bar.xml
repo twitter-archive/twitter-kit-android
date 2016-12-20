@@ -31,7 +31,8 @@
         android:src="@drawable/tw__like_action"
         twitter:contentDescriptionOff="@string/tw__like_tweet"
         twitter:contentDescriptionOn="@string/tw__liked_tweet"
-        android:layout_marginRight="@dimen/tw__tweet_action_button_spacing"/>
+        android:layout_marginRight="@dimen/tw__tweet_action_button_spacing"
+        android:layout_marginEnd="@dimen/tw__tweet_action_button_spacing"/>
 
     <ImageButton
         android:id="@+id/tw__tweet_share_button"

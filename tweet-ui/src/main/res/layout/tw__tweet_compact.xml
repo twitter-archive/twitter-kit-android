@@ -24,6 +24,7 @@
     <TextView
         android:id="@+id/tw__tweet_retweeted_by"
         android:layout_alignLeft="@+id/tw__author_attribution"
+        android:layout_alignStart="@+id/tw__author_attribution"
         style="@style/tw__TweetRetweetedBy.Compact"
         tools:text="Retweeted by Jack"
         tools:visibility="visible"/>
@@ -72,6 +73,7 @@
         android:id="@+id/tw__aspect_ratio_media_container"
         style="@style/tw__TweetMediaContainer.Compact"
         android:layout_alignLeft="@id/tw__author_attribution"
+        android:layout_alignStart="@id/tw__author_attribution"
         android:layout_below="@id/tw__author_attribution" >
 
         <com.twitter.sdk.android.tweetui.internal.TweetMediaView

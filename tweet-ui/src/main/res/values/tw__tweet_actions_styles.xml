@@ -15,7 +15,9 @@
   ~
   -->
 
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<resources
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <style name="tw__TweetActionButton">
         <item name="android:layout_width">wrap_content</item>
@@ -33,13 +35,15 @@
         <item name="android:padding">@dimen/tw__tweet_action_share_padding</item>
     </style>
 
-    <style name="tw__TweetActionButtonBar">
+    <style name="tw__TweetActionButtonBar" tools:ignore="NewApi">
         <item name="android:layout_marginLeft">@dimen/tw__tweet_action_bar_offset_left</item>
+        <item name="android:layout_marginStart">@dimen/tw__tweet_action_bar_offset_left</item>
         <item name="android:layout_marginBottom">@dimen/tw__tweet_action_bar_offset_bottom</item>
     </style>
 
-    <style name="tw__TweetActionButtonBar.Compact">
+    <style name="tw__TweetActionButtonBar.Compact" tools:ignore="NewApi">
         <item name="android:layout_marginLeft">@dimen/tw__compact_tweet_action_bar_offset_left</item>
+        <item name="android:layout_marginStart">@dimen/tw__compact_tweet_action_bar_offset_left</item>
         <item name="android:layout_marginBottom">@dimen/tw__tweet_action_bar_offset_bottom</item>
     </style>
 </resources>
