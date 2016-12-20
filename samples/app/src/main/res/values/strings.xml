@@ -18,7 +18,7 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="twitter_app_name"
-            tools:ignore="UnusedResources">Twitter Sample</string>
+        tools:ignore="UnusedResources">Twitter Sample</string>
     <string name="kit_twittercore">Twitter Core</string>
     <string name="kit_tweetcomposer">Tweet Composer</string>
     <string name="kit_tweetui">Tweet Ui</string>
@@ -38,6 +38,7 @@
     <string name="collection_timeline_title">Collection Timeline</string>
     <string name="list_timeline_title">List Timeline</string>
     <string name="fixed_timeline">Fixed Timeline</string>
+    <string name="rtl_timeline">RTL Timeline</string>
     <string name="refresh_timeline">Refresh Timeline</string>
     <string name="refresh_timeline_title">Search: #twitter</string>
     <string name="button_show_light">Light</string>

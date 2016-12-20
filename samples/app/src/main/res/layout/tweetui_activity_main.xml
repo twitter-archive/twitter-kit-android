@@ -69,6 +69,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/tweet_pojo" />
 
+            <Button
+                android:id="@+id/button_rtl_timeline_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rtl_timeline" />
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -15,11 +15,8 @@
   ~ limitations under the License.
   ~
   -->
-
-<manifest
-    package="com.example.app"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.app">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -30,8 +27,8 @@
         android:allowBackup="true"
         android:icon="@drawable/twitter_ic_launcher"
         android:label="@string/twitter_app_name"
+        android:supportsRtl="true"
         android:theme="@style/TwitterSampleTheme">
-
         <activity
             android:name=".TwitterSampleActivity"
             android:label="@string/twitter_app_name">
@@ -79,6 +76,9 @@
             android:label="@string/kit_tweetui"/>
         <activity
             android:name=".tweetui.TweetPojoActivity"
+            android:label="@string/kit_tweetui"/>
+        <activity
+            android:name=".tweetui.RtlTimelineActivity"
             android:label="@string/kit_tweetui"/>
 
         <receiver

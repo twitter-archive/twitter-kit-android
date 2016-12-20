@@ -102,5 +102,13 @@ public class TweetUiMainActivity extends BaseActivity {
                 startActivity(new Intent(TweetUiMainActivity.this, TweetPojoActivity.class));
             }
         });
+
+        final Button rtlTimelineButton = (Button) findViewById(R.id.button_rtl_timeline_activity);
+        rtlTimelineButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(TweetUiMainActivity.this, RtlTimelineActivity.class));
+            }
+        });
     }
 }
