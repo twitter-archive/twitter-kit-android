@@ -51,7 +51,6 @@ public class TweetDateUtilsTest {
         // was in order to not interfere with other tests
         realDefaultTimeZone = TimeZone.getDefault();
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-        TweetDateUtils.RELATIVE_DATE_FORMAT.setTimeZone(TimeZone.getDefault());
         TweetDateUtils.DATE_TIME_RFC822.setTimeZone(TimeZone.getDefault());
     }
 

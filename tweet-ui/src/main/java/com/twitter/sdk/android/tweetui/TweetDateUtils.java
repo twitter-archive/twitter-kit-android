@@ -18,8 +18,10 @@
 package com.twitter.sdk.android.tweetui;
 
 import android.content.res.Resources;
+import android.support.v4.util.SparseArrayCompat;
 import android.text.format.DateUtils;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -32,8 +34,7 @@ final class TweetDateUtils {
     // Sat Mar 14 02:34:20 +0000 2009
     static final SimpleDateFormat DATE_TIME_RFC822
             = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", Locale.ENGLISH);
-    static final SimpleDateFormat RELATIVE_DATE_FORMAT =
-            new SimpleDateFormat("MM/dd/yy", Locale.ENGLISH);
+    static final DateFormatter RELATIVE_DATE_FORMAT = new DateFormatter();
     static final long INVALID_DATE = -1;
 
     private TweetDateUtils() {}
@@ -55,10 +56,7 @@ final class TweetDateUtils {
     /**
      * @return the given timestamp with a prepended "•"
      */
-    public static String dotPrefix(String timestamp) {
-        if (timestamp.charAt(0) == '•') {
-            return timestamp;
-        }
+    static String dotPrefix(String timestamp) {
         return "• " + timestamp;
     }
 
@@ -93,18 +91,45 @@ final class TweetDateUtils {
 
                 if (now.get(Calendar.YEAR) == c.get(Calendar.YEAR)) {
                     // Same year
-                    RELATIVE_DATE_FORMAT.applyPattern(
-                            res.getString(R.string.tw__relative_date_format_short));
+                    return RELATIVE_DATE_FORMAT.formatShortDateString(res, d);
                 } else {
                     // Outside of our year
-                    RELATIVE_DATE_FORMAT.applyPattern(
-                        res.getString(R.string.tw__relative_date_format_long));
+                    return RELATIVE_DATE_FORMAT.formatLongDateString(res, d);
                 }
-                return RELATIVE_DATE_FORMAT.format(d);
             }
         }
-        RELATIVE_DATE_FORMAT.applyPattern(res.getString(
-                R.string.tw__relative_date_format_long));
-        return RELATIVE_DATE_FORMAT.format(new Date(timestamp));
+        return RELATIVE_DATE_FORMAT.formatLongDateString(res, new Date(timestamp));
+    }
+
+    static class DateFormatter {
+        private final SparseArrayCompat<SimpleDateFormat> dateFormatArray =
+                new SparseArrayCompat<>();
+        private Locale currentLocale;
+
+        synchronized String formatLongDateString(Resources res, Date date) {
+            return getDateFormat(res, R.string.tw__relative_date_format_long).format(date);
+        }
+
+        synchronized String formatShortDateString(Resources res, Date date) {
+            return getDateFormat(res, R.string.tw__relative_date_format_short).format(date);
+        }
+
+        private synchronized DateFormat getDateFormat(Resources res, int patternId) {
+
+            // Check if the locale changed, reference check for performance
+            if (currentLocale == null || currentLocale != res.getConfiguration().locale) {
+                currentLocale = res.getConfiguration().locale;
+                dateFormatArray.clear();
+            }
+
+            SimpleDateFormat format = dateFormatArray.get(patternId);
+            if (format == null) {
+                // Create format if not cached
+                final String pattern = res.getString(patternId);
+                format = new SimpleDateFormat(pattern, Locale.getDefault());
+                dateFormatArray.put(patternId, format);
+            }
+            return format;
+        }
     }
 }

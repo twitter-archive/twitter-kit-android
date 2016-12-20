@@ -17,6 +17,6 @@
   -->
 
 <resources>
-    <string name="tw__relative_date_format_long">d /M /y</string>
+    <string name="tw__relative_date_format_long">d/M/y</string>
     <string name="tw__relative_date_format_short">d MMM</string>
 </resources>
