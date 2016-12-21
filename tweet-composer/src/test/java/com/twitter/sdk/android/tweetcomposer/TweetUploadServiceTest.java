@@ -152,7 +152,10 @@ public class TweetUploadServiceTest {
         final ArgumentCaptor<Intent> intentCaptor = ArgumentCaptor.forClass(Intent.class);
         service.sendSuccessBroadcast(anyLong());
         verify(service).sendBroadcast(intentCaptor.capture());
-        assertEquals(TweetUploadService.UPLOAD_SUCCESS, intentCaptor.getValue().getAction());
+
+        final Intent capturedIntent = intentCaptor.getValue();
+        assertEquals(TweetUploadService.UPLOAD_SUCCESS, capturedIntent.getAction());
+        assertEquals(RuntimeEnvironment.application.getPackageName(), capturedIntent.getPackage());
     }
 
     @Test
@@ -161,8 +164,11 @@ public class TweetUploadServiceTest {
         final ArgumentCaptor<Intent> intentCaptor = ArgumentCaptor.forClass(Intent.class);
         service.sendFailureBroadcast(mockIntent);
         verify(service).sendBroadcast(intentCaptor.capture());
-        assertEquals(TweetUploadService.UPLOAD_FAILURE, intentCaptor.getValue().getAction());
+
+        final Intent capturedIntent = intentCaptor.getValue();
+        assertEquals(TweetUploadService.UPLOAD_FAILURE, capturedIntent.getAction());
         assertEquals(mockIntent,
-                intentCaptor.getValue().getParcelableExtra(TweetUploadService.EXTRA_RETRY_INTENT));
+                capturedIntent.getParcelableExtra(TweetUploadService.EXTRA_RETRY_INTENT));
+        assertEquals(RuntimeEnvironment.application.getPackageName(), capturedIntent.getPackage());
     }
 }

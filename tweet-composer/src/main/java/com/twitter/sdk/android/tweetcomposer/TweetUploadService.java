@@ -159,12 +159,14 @@ public class TweetUploadService extends IntentService {
     void sendSuccessBroadcast(long tweetId) {
         final Intent intent = new Intent(UPLOAD_SUCCESS);
         intent.putExtra(EXTRA_TWEET_ID, tweetId);
+        intent.setPackage(getApplicationContext().getPackageName());
         sendBroadcast(intent);
     }
 
     void sendFailureBroadcast(Intent original) {
         final Intent intent = new Intent(UPLOAD_FAILURE);
         intent.putExtra(EXTRA_RETRY_INTENT, original);
+        intent.setPackage(getApplicationContext().getPackageName());
         sendBroadcast(intent);
     }
 
