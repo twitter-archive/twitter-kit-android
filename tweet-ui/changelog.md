@@ -3,6 +3,9 @@
 
 ## Unreleased
 
+* Improved RTL mirroring for Tweet views.
+* Dates are now properly localized for non-English locales.
+
 ## v2.3.0
 
 * Added support for timeline filtering.

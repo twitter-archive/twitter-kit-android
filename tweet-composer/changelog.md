@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+* Restricted Broadcast Intents to current application to avoid leaking sensitive information.
+
 ## v2.3.0
 
 * Updated Twitter Core dependency.
