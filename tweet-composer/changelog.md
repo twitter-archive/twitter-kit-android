@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+## v2.3.1
+
 * Restricted Broadcast Intents to current application to avoid leaking sensitive information.
 
 ## v2.3.0

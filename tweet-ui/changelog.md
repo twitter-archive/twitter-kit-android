@@ -3,6 +3,8 @@
 
 ## Unreleased
 
+## v2.3.1
+
 * Improved RTL mirroring for Tweet views.
 * Dates are now properly localized for non-English locales.
 
