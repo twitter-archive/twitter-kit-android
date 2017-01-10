@@ -23,6 +23,7 @@ import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Search;
 import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.core.services.params.Geocode;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,12 +42,13 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
             new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
     final String query;
+    final Geocode geocode;
     final String resultType;
     final String languageCode;
     final Integer maxItemsPerRequest;
     final String untilDate;
 
-    SearchTimeline(String query, String resultType, String languageCode,
+    SearchTimeline(String query, Geocode geocode, String resultType, String languageCode,
             Integer maxItemsPerRequest, String untilDate) {
         this.languageCode = languageCode;
         this.maxItemsPerRequest = maxItemsPerRequest;
@@ -54,6 +56,7 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
         this.resultType = resultType;
         // if the query is non-null append the filter Retweets modifier
         this.query = query == null ? null : query + FILTER_RETWEETS;
+        this.geocode = geocode;
     }
 
     /**
@@ -86,7 +89,7 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
     }
 
     Call<Search> createSearchRequest(final Long sinceId, final Long maxId) {
-        return TwitterCore.getInstance().getApiClient().getSearchService().tweets(query, null,
+        return TwitterCore.getInstance().getApiClient().getSearchService().tweets(query, geocode,
                 languageCode, null, resultType, maxItemsPerRequest, untilDate, sinceId, maxId,
                 true);
     }
@@ -145,6 +148,7 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
         private String resultType = ResultType.FILTERED.type;
         private Integer maxItemsPerRequest = 30;
         private String untilDate;
+        private Geocode geocode;
 
         /**
          * Constructs a Builder.
@@ -164,6 +168,15 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
          */
         public Builder query(String query) {
             this.query = query;
+            return this;
+        }
+
+        /**
+         * Sets the geocode for the SearchTimeline.
+         * @param geocode Restricts query to a given geolocation
+         */
+        public Builder geocode(Geocode geocode) {
+            this.geocode = geocode;
             return this;
         }
 
@@ -219,7 +232,7 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
             if (query == null) {
                 throw new IllegalStateException("query must not be null");
             }
-            return new SearchTimeline(query, resultType, lang, maxItemsPerRequest,
+            return new SearchTimeline(query, geocode, resultType, lang, maxItemsPerRequest,
                     untilDate);
         }
     }
