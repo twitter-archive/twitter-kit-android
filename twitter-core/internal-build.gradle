@@ -87,23 +87,16 @@ android {
     }
 }
 
-ext.projectDependencies = [
-        ':sdk:fabric:fabric' : 'io.fabric.sdk.android:fabric:+@aar'
-]
-
 dependencies {
-    projectDependencies.each { path, binary ->
-        debugCompile project(path: path, configuration: 'debug')
-        releaseCompile projectOrBinary(path: path, configuration: 'release', binary: binary)
-    }
-
     compile dependency.retrofit
     compile dependency.retrofitGsonConverter
     compile dependency.gson
     compile dependency.okHttp
+    compile dependency.fabric
 
     androidTestCompile dependency.mockito
     androidTestCompile dependency.dexmakerMockito
+    androidTestCompile dependency.fabricTest
     androidTestCompile (dependency.junitAddons) {
         transitive = false
     }

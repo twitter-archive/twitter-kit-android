@@ -80,7 +80,6 @@ android {
 }
 
 ext.projectDependencies = [
-        ':sdk:fabric:fabric' : 'io.fabric.sdk.android:fabric:+@aar',
         ':sdk:twitter:twitter-core' : 'com.twitter.sdk.android:twitter-core:+@aar'
 ]
 
@@ -96,6 +95,7 @@ dependencies {
     androidTestCompile dependency.retrofitMock
     androidTestCompile dependency.mockito
     androidTestCompile dependency.dexmakerMockito
+    androidTestCompile dependency.fabricTest
 
     testCompile dependency.fabricTest
     testCompile dependency.mockito

@@ -73,7 +73,6 @@ android {
 }
 
 ext.projectDependencies = [
-        ':sdk:fabric:fabric' : 'io.fabric.sdk.android:fabric:+@aar',
         ':sdk:twitter:twitter-core' : 'com.twitter.sdk.android:twitter-core:+aar'
 ]
 
