@@ -22,21 +22,18 @@ import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.core.models.TweetEntities;
 import com.twitter.sdk.android.core.models.VideoInfo;
-import com.twitter.sdk.android.tweetui.BuildConfig;
 import com.twitter.sdk.android.tweetui.TestFixtures;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class TweetMediaUtilsTest {
     private static final int TEST_INDICES_START = 0;
     private static final int TEST_INDICES_END = 13;

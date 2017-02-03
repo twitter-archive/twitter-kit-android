@@ -31,7 +31,6 @@ import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.mock.Calls;
 
-import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.GuestSession;
 import com.twitter.sdk.android.core.GuestSessionProvider;
 import com.twitter.sdk.android.core.SessionManager;
@@ -50,9 +49,8 @@ import org.junit.runner.RunWith;
 
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -73,8 +71,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class ScribeFilesSenderTest {
 
     private static final int NUM_SCRIBE_EVENTS = 9;

@@ -17,7 +17,6 @@
 
 package com.twitter.sdk.android.core.internal.oauth;
 
-import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -29,8 +28,7 @@ import com.twitter.sdk.android.core.internal.TwitterApi;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
 import java.io.IOException;
 
@@ -51,8 +49,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 @SuppressWarnings("checkstyle:linelength")
 public class OAuth1aServiceTest {
 

@@ -25,7 +25,6 @@ import android.widget.ImageView;
 import com.twitter.sdk.android.core.models.Card;
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.Tweet;
-import com.twitter.sdk.android.tweetui.BuildConfig;
 import com.twitter.sdk.android.tweetui.R;
 import com.twitter.sdk.android.tweetui.TestFixtures;
 
@@ -34,9 +33,8 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,8 +47,7 @@ import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class TweetMediaViewTest {
     static final String TEST_ALT_TEXT = "alt text";
     static final int TEST_ERROR_RES_ID = 123456789;

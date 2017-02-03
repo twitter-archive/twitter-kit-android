@@ -20,7 +20,6 @@ package com.twitter.sdk.android.core.identity;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TestFixtures;
@@ -32,8 +31,7 @@ import com.twitter.sdk.android.core.TwitterSession;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -42,8 +40,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class AuthHandlerTest  {
     private static final TwitterAuthConfig AUTH_CONFIG
             = new TwitterAuthConfig("consumerKey", "consumerSecret");

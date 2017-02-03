@@ -25,8 +25,7 @@ import android.net.Uri;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
 import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertEquals;
@@ -36,8 +35,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class CardTest {
     private static final String TEST_PACKAGE_NAME = "TEST.PACKAGE.NAME";
     private static final String TEST_ALT_PACKAGE_NAME = "TEST.ALT.PACKAGE.NAME";

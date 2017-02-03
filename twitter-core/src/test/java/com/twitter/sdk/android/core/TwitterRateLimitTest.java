@@ -20,8 +20,7 @@ package com.twitter.sdk.android.core;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
@@ -31,8 +30,7 @@ import okhttp3.Headers;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class TwitterRateLimitTest  {
 
     public static final String X_RATE_LIMIT_LIMIT = "x-rate-limit-limit";

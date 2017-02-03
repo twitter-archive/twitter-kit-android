@@ -20,23 +20,20 @@ package com.twitter.sdk.android.core.internal.oauth;
 
 import io.fabric.sdk.android.services.network.HttpMethod;
 
-import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class OAuth1aHeadersTest  {
     private static final String VERIFY_CREDENTIALS_URL = "api.digits.com";
     private static final String ANY_AUTH_CREDENTIALS = "auth_credentials";

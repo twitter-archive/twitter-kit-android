@@ -19,19 +19,16 @@ package com.twitter.sdk.android.core.internal.oauth;
 
 import android.os.Parcel;
 
-import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.TestFixtures;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class OAuthResponseTest  {
 
     @Test

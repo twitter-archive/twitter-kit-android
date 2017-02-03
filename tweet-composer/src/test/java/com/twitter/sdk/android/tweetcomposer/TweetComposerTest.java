@@ -26,9 +26,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import io.fabric.sdk.android.FabricTestUtils;
 import io.fabric.sdk.android.KitStub;
@@ -37,8 +36,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class TweetComposerTest {
     private static final String TWITTER_NOT_INIT_ERROR_MSG
             = "Must start Twitter Kit with Fabric.with() first";

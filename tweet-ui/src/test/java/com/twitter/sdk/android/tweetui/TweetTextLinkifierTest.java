@@ -25,8 +25,7 @@ import com.twitter.sdk.android.core.models.UrlEntity;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +33,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class TweetTextLinkifierTest {
     static final String BASE_TEXT = "just setting up my twttr";
     static final String TEST_RLT_STRING = "ייִדיש משלי https://t.co/sfb4Id7esk\u200E";

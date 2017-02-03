@@ -19,12 +19,9 @@ package com.twitter.sdk.android.core.internal.scribe;
 
 import android.content.Context;
 
-import com.twitter.sdk.android.core.BuildConfig;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -36,8 +33,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class EnabledScribeStrategyTest {
 
     private static final String ANY_USER_AGENT = "ua";

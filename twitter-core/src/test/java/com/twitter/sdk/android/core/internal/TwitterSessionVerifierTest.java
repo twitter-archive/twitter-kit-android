@@ -17,7 +17,6 @@
 
 package com.twitter.sdk.android.core.internal;
 
-import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.TestFixtures;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.internal.TwitterSessionVerifier.AccountServiceProvider;
@@ -29,8 +28,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
 import java.io.IOException;
 
@@ -44,8 +42,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class TwitterSessionVerifierTest {
     private static final String REQUIRED_IMPRESSION_CLIENT = "android";
     private static final String REQUIRED_IMPRESSION_PAGE = "credentials";

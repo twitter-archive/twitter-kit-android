@@ -17,19 +17,15 @@
 
 package com.twitter.sdk.android.core.internal.scribe;
 
-import com.twitter.sdk.android.core.BuildConfig;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class ScribeEventFactoryTest {
     private static long ANY_TIMESTAMP = 0;
     private static String ANY_ADVERTISING_ID = "id";

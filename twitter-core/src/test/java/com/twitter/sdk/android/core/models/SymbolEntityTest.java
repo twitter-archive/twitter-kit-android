@@ -18,20 +18,17 @@
 package com.twitter.sdk.android.core.models;
 
 import com.google.gson.Gson;
-import com.twitter.sdk.android.core.BuildConfig;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class SymbolEntityTest  {
 
     private static final String TEST_JSON = "{\"indices\":[32,36],\"text\":\"TWTR\"}";

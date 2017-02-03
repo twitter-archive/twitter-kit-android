@@ -31,9 +31,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import java.io.IOException;
 
@@ -52,8 +52,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class TweetUploadServiceTest {
     private static final String EXPECTED_TWEET_TEXT = "tweet text";
 
@@ -87,7 +86,9 @@ public class TweetUploadServiceTest {
 
         when(mockDependencyProvider.getComposerApiClient(any(TwitterSession.class)))
                 .thenReturn(mockComposerApiClient);
-        service = spy(new TweetUploadService(mockDependencyProvider));
+
+        service = spy(Robolectric.buildService(TweetUploadService.class).create().get());
+        service.dependencyProvider = mockDependencyProvider;
     }
 
     @Test

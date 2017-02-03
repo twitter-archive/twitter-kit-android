@@ -19,7 +19,6 @@ package com.twitter.sdk.android.tweetui;
 
 import android.annotation.SuppressLint;
 
-import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.models.HashtagEntity;
 import com.twitter.sdk.android.core.models.MentionEntity;
 import com.twitter.sdk.android.core.models.SymbolEntity;
@@ -35,8 +34,7 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,8 +46,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class BasicTimelineFilterTest {
     static final Tweet TEST_TWEET_1 = new TweetBuilder()
             .setText("Lorem Ipsum is simply dummy text of the printing and typesetting industry.")

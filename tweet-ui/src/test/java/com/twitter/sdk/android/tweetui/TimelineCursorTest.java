@@ -19,16 +19,14 @@ package com.twitter.sdk.android.tweetui;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class TimelineCursorTest {
     private static final Long TEST_MAX_POSITION = 200L;
     private static final Long TEST_MIN_POSITION = 100L;

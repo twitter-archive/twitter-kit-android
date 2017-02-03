@@ -33,8 +33,7 @@ import com.twitter.sdk.android.core.services.StatusesService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
 import org.junit.Before;
 
@@ -43,8 +42,7 @@ import java.util.ArrayList;
 
 import static org.mockito.Mockito.*;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class TweetRepositoryTest {
     private static final Long anyId = 123L;
     private static final List<Long> anyIds = new ArrayList<>();

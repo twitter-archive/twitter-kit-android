@@ -17,8 +17,6 @@
 
 package com.twitter.sdk.android.core.models;
 
-import com.twitter.sdk.android.core.BuildConfig;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
@@ -26,8 +24,7 @@ import com.google.gson.annotations.SerializedName;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,8 +32,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class SafeListAdapterTest  {
 
     private static final String TEST_JSON_LIST_NULL = "{\"list\":null}";

@@ -17,15 +17,12 @@
 
 package com.twitter.sdk.android.core.internal.network;
 
-import com.twitter.sdk.android.core.BuildConfig;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
 import okhttp3.Interceptor;
 import okhttp3.Protocol;
@@ -37,8 +34,7 @@ import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class GuestAuthNetworkInterceptorTest {
     static final String TEST_URL = "https://api.twitter.com";
 

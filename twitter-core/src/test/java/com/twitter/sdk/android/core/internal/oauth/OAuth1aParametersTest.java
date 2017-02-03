@@ -19,22 +19,19 @@ package com.twitter.sdk.android.core.internal.oauth;
 
 import io.fabric.sdk.android.services.network.HttpMethod;
 
-import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 @SuppressWarnings("checkstyle:linelength")
 public class OAuth1aParametersTest  {
 

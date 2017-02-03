@@ -17,7 +17,6 @@
 
 package com.twitter.sdk.android.core.internal.network;
 
-import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.GuestSession;
 import com.twitter.sdk.android.core.GuestSessionProvider;
 import com.twitter.sdk.android.core.internal.oauth.GuestAuthToken;
@@ -29,8 +28,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
 import okhttp3.Protocol;
 import okhttp3.Request;
@@ -42,8 +40,7 @@ import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class GuestAuthenticatorTest {
     static final String TEST_GUEST_TOKEN = "139854932048";
     static final String TEST_ACCESS_TOKEN = "AjhdlsjreurWfjdiskdjieidfkdjshrow";

@@ -18,7 +18,6 @@
 package com.twitter.sdk.android.core.models;
 
 import com.google.gson.stream.JsonReader;
-import com.twitter.sdk.android.core.BuildConfig;
 
 import com.google.gson.Gson;
 import com.twitter.sdk.android.core.TestResources;
@@ -27,8 +26,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -41,8 +39,7 @@ import io.fabric.sdk.android.services.common.CommonUtils;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class MediaEntityTest  {
     private static final int TEST_INDICES_START = 117;
     private static final int TEST_INDICES_END = 139;

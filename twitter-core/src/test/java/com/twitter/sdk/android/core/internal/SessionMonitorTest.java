@@ -22,7 +22,6 @@ import android.text.format.DateUtils;
 import io.fabric.sdk.android.ActivityLifecycleManager;
 import io.fabric.sdk.android.services.common.SystemCurrentTimeProvider;
 
-import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
 
@@ -30,8 +29,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,8 +46,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class SessionMonitorTest {
 
     private static final long TEST_TIME_1200_UTC = 1422014401245L;

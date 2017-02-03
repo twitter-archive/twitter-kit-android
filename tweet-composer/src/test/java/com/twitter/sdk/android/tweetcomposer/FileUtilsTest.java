@@ -23,8 +23,7 @@ import android.webkit.MimeTypeMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.internal.ShadowExtractor;
 import org.robolectric.shadows.ShadowMimeTypeMap;
 
@@ -33,8 +32,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class FileUtilsTest {
     ShadowMimeTypeMap mimeTypeMap;
 

@@ -17,7 +17,6 @@
 
 package com.twitter.sdk.android.core.internal.scribe;
 
-import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.TestFixtures;
 import com.twitter.sdk.android.core.models.Card;
 import com.twitter.sdk.android.core.models.MediaEntity;
@@ -28,15 +27,13 @@ import com.twitter.sdk.android.core.models.UserBuilder;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class ScribeItemTest {
     static final long TEST_ID = 123;
     static final long TEST_MEDIA_ID = 586671909L;

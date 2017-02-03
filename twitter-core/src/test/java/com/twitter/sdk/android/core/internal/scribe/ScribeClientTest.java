@@ -23,7 +23,6 @@ import io.fabric.sdk.android.services.common.IdManager;
 import io.fabric.sdk.android.services.events.DisabledEventsStrategy;
 import io.fabric.sdk.android.services.events.EventsStrategy;
 
-import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.GuestSession;
 import com.twitter.sdk.android.core.GuestSessionProvider;
 import com.twitter.sdk.android.core.SessionManager;
@@ -32,9 +31,8 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import java.io.IOException;
 import java.util.concurrent.ScheduledExecutorService;
@@ -48,8 +46,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class ScribeClientTest {
 
     private static final long TEST_USER_ID = 12L;

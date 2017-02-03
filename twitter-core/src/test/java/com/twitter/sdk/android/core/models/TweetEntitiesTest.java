@@ -21,15 +21,13 @@ import io.fabric.sdk.android.services.common.CommonUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
-import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.TestResources;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -38,8 +36,7 @@ import java.util.Collections;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class TweetEntitiesTest {
 
     private static final int EXPECTED_URLS_SIZE = 1;

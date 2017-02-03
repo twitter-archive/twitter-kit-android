@@ -17,22 +17,18 @@
 
 package com.twitter.sdk.android.core.models;
 
-import com.twitter.sdk.android.core.BuildConfig;
-
 import com.google.gson.Gson;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class MentionEntityTest  {
 
     private static final String TEST_JSON = "{\"name\":\"Twitter API\","

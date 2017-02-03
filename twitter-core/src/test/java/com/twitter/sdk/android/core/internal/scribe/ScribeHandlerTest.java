@@ -21,14 +21,11 @@ import io.fabric.sdk.android.services.events.DisabledEventsStrategy;
 import io.fabric.sdk.android.services.events.EventsFilesManager;
 import io.fabric.sdk.android.services.events.EventsStrategy;
 
-import com.twitter.sdk.android.core.BuildConfig;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -37,8 +34,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-@RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk = 21)
+@RunWith(RobolectricTestRunner.class)
 public class ScribeHandlerTest {
 
     private ScheduledExecutorService mockExecutorService;
