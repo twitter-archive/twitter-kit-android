@@ -22,22 +22,35 @@ import android.view.View;
 import com.twitter.sdk.android.core.models.Card;
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.VideoInfo;
+import com.twitter.sdk.android.tweetui.BuildConfig;
 import com.twitter.sdk.android.tweetui.TestFixtures;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
 
-public class MediaBadgeViewTest extends FabricAndroidTestCase {
+import static org.junit.Assert.assertEquals;
+
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, sdk = 21)
+public class MediaBadgeViewTest {
     MediaBadgeView view;
+
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
-        view = new MediaBadgeView(getContext());
+        view = new MediaBadgeView(RuntimeEnvironment.application);
     }
 
+    @Test
     public void testInitialViewState() {
         assertEquals(View.GONE, view.badge.getVisibility());
         assertEquals(View.GONE, view.videoDuration.getVisibility());
     }
 
+    @Test
     public void testSetMediaEntity_withAnimatedGif() {
         final MediaEntity entity = TestFixtures.createEntityWithAnimatedGif(null);
         view.setMediaEntity(entity);
@@ -46,6 +59,7 @@ public class MediaBadgeViewTest extends FabricAndroidTestCase {
         assertEquals(View.GONE, view.videoDuration.getVisibility());
     }
 
+    @Test
     public void testSetMediaEntity_withVideo() {
         final VideoInfo videoInfo = new VideoInfo(null, 1000, null);
         final MediaEntity entity = TestFixtures.createEntityWithVideo(videoInfo);
@@ -56,6 +70,7 @@ public class MediaBadgeViewTest extends FabricAndroidTestCase {
         assertEquals("0:01", view.videoDuration.getText());
     }
 
+    @Test
     public void testSetMediaEntity_withNullVideoInfo() {
         final MediaEntity entity = TestFixtures.createEntityWithVideo(null);
         view.setMediaEntity(entity);
@@ -65,6 +80,7 @@ public class MediaBadgeViewTest extends FabricAndroidTestCase {
         assertEquals("0:00", view.videoDuration.getText());
     }
 
+    @Test
     public void testSetMediaEntity_withImage() {
         final MediaEntity entity = TestFixtures.createMediaEntityWithPhoto(null);
         view.setMediaEntity(entity);
@@ -73,6 +89,7 @@ public class MediaBadgeViewTest extends FabricAndroidTestCase {
         assertEquals(View.GONE, view.videoDuration.getVisibility());
     }
 
+    @Test
     public void testSetEntity_withVineCard() {
         final Card vineCard = TestFixtures.sampleValidVineCard();
         view.setCard(vineCard);
@@ -81,6 +98,7 @@ public class MediaBadgeViewTest extends FabricAndroidTestCase {
         assertEquals(View.GONE, view.videoDuration.getVisibility());
     }
 
+    @Test
     public void testSetEntity_withInvalidVineCard() {
         final Card vineCard = TestFixtures.sampleInvalidVineCard();
         view.setCard(vineCard);

@@ -19,21 +19,30 @@ package com.twitter.sdk.android.core;
 
 import android.os.Parcel;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.annotation.Config;
 
-public class TwitterAuthConfigTest extends FabricAndroidTestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+
+@RunWith(RobolectricGradleTestRunner.class)
+@Config(constants = BuildConfig.class, sdk = 21)
+public class TwitterAuthConfigTest {
     private static final String NO_PARAM_ERROR_MSG =
             "TwitterAuthConfig must not be created with null consumer key or secret.";
 
     private TwitterAuthConfig authConfig;
 
-
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         authConfig = new TwitterAuthConfig(TestFixtures.KEY, TestFixtures.SECRET);
     }
 
+    @Test
     public void testParcelable() {
         final Parcel parcel = Parcel.obtain();
         authConfig.writeToParcel(parcel, 0);
@@ -44,24 +53,29 @@ public class TwitterAuthConfigTest extends FabricAndroidTestCase {
         assertEquals(TestFixtures.SECRET, parceledAuthConfig.getConsumerSecret());
     }
 
+    @Test
     public void testGetRequestCode() {
         assertEquals(TwitterAuthConfig.DEFAULT_AUTH_REQUEST_CODE, authConfig.getRequestCode());
     }
 
+    @Test
     public void testSanitizeAttribute_nullAttribute() {
         assertNull(TwitterAuthConfig.sanitizeAttribute(null));
     }
 
+    @Test
     public void testSanitizeAttribute_sanitizedString() {
         final String test = "test";
         assertEquals(test, TwitterAuthConfig.sanitizeAttribute(test));
     }
 
-    public void testSanitizeAttribute_trailingWhitespace() {
-        final String test = "test    ";
+    @Test
+    public void testSanitizeAttribute_withWhitespace() {
+        final String test = "\ttest    ";
         assertEquals("test", TwitterAuthConfig.sanitizeAttribute(test));
     }
 
+    @Test
     public void testConstructor_nullKey() {
         try {
             new TwitterAuthConfig(null, "secret");
@@ -71,6 +85,7 @@ public class TwitterAuthConfigTest extends FabricAndroidTestCase {
         }
     }
 
+    @Test
     public void testConstructor_nullSecret() {
         try {
             new TwitterAuthConfig("key", null);
@@ -80,6 +95,7 @@ public class TwitterAuthConfigTest extends FabricAndroidTestCase {
         }
     }
 
+    @Test
     public void testConstructor_nullArguments() {
         try {
             new TwitterAuthConfig(null, null);
