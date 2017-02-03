@@ -33,8 +33,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -55,8 +53,31 @@ public class IntentUtilsTest {
     }
 
     @Test
+    public void testIsActivityAvailable_activitiesAvailable() {
+        final List<ResolveInfo> activities = new ArrayList<>();
+        activities.add(mock(ResolveInfo.class));
+
+        when(pm.queryIntentActivities(intent, 0)).thenReturn(activities);
+        when(context.getPackageManager()).thenReturn(pm);
+
+        assertTrue(IntentUtils.isActivityAvailable(context, intent));
+    }
+
+    @Test
+    public void testSafeStartActivity() {
+        when(pm.queryIntentActivities(intent, 0))
+                .thenReturn(Collections.EMPTY_LIST);
+        when(context.getPackageManager()).thenReturn(pm);
+
+        final Intent intent = new Intent("io.fabric.is.awesome");
+        assertFalse(IntentUtils.safeStartActivity(context, intent));
+        verify(context).getPackageManager();
+        verify(pm).queryIntentActivities(intent, 0);
+    }
+
+    @Test
     public void testIsActivityAvailable_noActivitiesAvailable() {
-        when(pm.queryIntentActivities(any(Intent.class), anyInt()))
+        when(pm.queryIntentActivities(intent, 0))
                 .thenReturn(Collections.EMPTY_LIST);
         when(context.getPackageManager()).thenReturn(pm);
 
@@ -70,7 +91,7 @@ public class IntentUtilsTest {
         final List<ResolveInfo> activities = new ArrayList<>();
         activities.add(mock(ResolveInfo.class));
 
-        when(pm.queryIntentActivities(any(Intent.class), anyInt())).thenReturn(activities);
+        when(pm.queryIntentActivities(intent, 0)).thenReturn(activities);
         when(context.getPackageManager()).thenReturn(pm);
 
         assertTrue(IntentUtils.isActivityAvailable(context, intent));
@@ -79,8 +100,9 @@ public class IntentUtilsTest {
     }
 
     @Test
+    @SuppressWarnings("WrongConstant")
     public void testSafeStartActivity_noActivitiesAvailable() {
-        when(pm.queryIntentActivities(any(Intent.class), anyInt()))
+        when(pm.queryIntentActivities(intent, 0))
                 .thenReturn(Collections.EMPTY_LIST);
         when(context.getPackageManager()).thenReturn(pm);
 
@@ -95,7 +117,7 @@ public class IntentUtilsTest {
         final List<ResolveInfo> activities = new ArrayList<>();
         activities.add(mock(ResolveInfo.class));
 
-        when(pm.queryIntentActivities(any(Intent.class), anyInt())).thenReturn(activities);
+        when(pm.queryIntentActivities(intent, 0)).thenReturn(activities);
         when(context.getPackageManager()).thenReturn(pm);
 
         IntentUtils.safeStartActivity(context, intent);

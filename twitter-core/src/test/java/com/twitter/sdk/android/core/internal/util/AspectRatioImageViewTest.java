@@ -17,26 +17,42 @@
 
 package com.twitter.sdk.android.core.internal.util;
 
-import android.test.AndroidTestCase;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.util.AttributeSet;
 
 import com.twitter.sdk.android.core.R;
 
-public class AspectRatioImageViewTest extends AndroidTestCase {
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
+
+import static org.junit.Assert.assertEquals;
+
+@RunWith(RobolectricTestRunner.class)
+public class AspectRatioImageViewTest {
     private static final double TEST_ASPECT_RATIO = 2.0;
     private static final float DELTA = 0.001f;
 
     private AspectRatioImageView getHeightAdjustedView() {
-        return (AspectRatioImageView) getInflatedLayout().findViewById(R.id.height_adjusted_view);
+        final AttributeSet attrs = Robolectric.buildAttributeSet()
+                .addAttribute(R.attr.tw__image_dimension_to_adjust, "height")
+                .addAttribute(R.attr.tw__image_aspect_ratio, "1.6")
+                .build();
+
+        return new AspectRatioImageView(RuntimeEnvironment.application, attrs);
     }
 
     private AspectRatioImageView getWidthAdjustedView() {
-        return (AspectRatioImageView) getInflatedLayout().findViewById(R.id.width_adjusted_view);
+        final AttributeSet attrs = Robolectric.buildAttributeSet()
+                .addAttribute(R.attr.tw__image_dimension_to_adjust, "width")
+                .addAttribute(R.attr.tw__image_aspect_ratio, "1.2")
+                .build();
+
+        return new AspectRatioImageView(RuntimeEnvironment.application, attrs);
     }
 
+    @Test
     public void testHeightAdjusted() {
         final AspectRatioImageView imageView = getHeightAdjustedView();
         assertEquals(1.6, imageView.getAspectRatio(), DELTA);
@@ -44,6 +60,7 @@ public class AspectRatioImageViewTest extends AndroidTestCase {
                 imageView.getDimensionToAdjust());
     }
 
+    @Test
     public void testWidthAdjusted() {
         final AspectRatioImageView imageView = getWidthAdjustedView();
         assertEquals(1.2, imageView.getAspectRatio(), DELTA);
@@ -51,26 +68,23 @@ public class AspectRatioImageViewTest extends AndroidTestCase {
                 imageView.getDimensionToAdjust());
     }
 
-    private View getInflatedLayout() {
-        final ViewGroup group = new LinearLayout(getContext());
-        return LayoutInflater.from(getContext()).inflate(
-                R.layout.activity_aspect_ratio_image_view_test, group, true);
-    }
-
+    @Test
     public void testSetAspectRatio() {
-        final AspectRatioImageView av = new AspectRatioImageView(getContext());
+        final AspectRatioImageView av = new AspectRatioImageView(RuntimeEnvironment.application);
         av.setAspectRatio(TEST_ASPECT_RATIO);
-        assertEquals(TEST_ASPECT_RATIO, av.getAspectRatio());
+        assertEquals(TEST_ASPECT_RATIO, av.getAspectRatio(), DELTA);
     }
 
-    public void testSetAspectRatio_xml() {
+    @Test
+    public void testSetAspectRatio_withAttributeSet() {
         final AspectRatioImageView av = getHeightAdjustedView();
         av.setAspectRatio(TEST_ASPECT_RATIO);
-        assertEquals(TEST_ASPECT_RATIO, av.getAspectRatio());
+        assertEquals(TEST_ASPECT_RATIO, av.getAspectRatio(), DELTA);
     }
 
+    @Test
     public void testCalculateHeight() {
-        final AspectRatioImageView av = new AspectRatioImageView(getContext());
+        final AspectRatioImageView av = new AspectRatioImageView(RuntimeEnvironment.application);
         assertEquals(400, av.calculateHeight(600, 1.5));
         assertEquals(600, av.calculateHeight(300, 0.5));
         assertEquals(300, av.calculateHeight(300, 1.0));
@@ -80,8 +94,9 @@ public class AspectRatioImageViewTest extends AndroidTestCase {
         assertEquals(1, av.calculateHeight(10, 15.0));
     }
 
+    @Test
     public void testCalculateWidth() {
-        final AspectRatioImageView av = new AspectRatioImageView(getContext());
+        final AspectRatioImageView av = new AspectRatioImageView(RuntimeEnvironment.application);
         assertEquals(300, av.calculateWidth(200, 1.5));
         assertEquals(201, av.calculateWidth(401, 0.5));
         assertEquals(200, av.calculateWidth(200, 1.0));
