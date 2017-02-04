@@ -31,6 +31,7 @@ import retrofit2.Call;
 public class TwitterListTimeline extends BaseTimeline implements Timeline<Tweet> {
     private static final String SCRIBE_SECTION = "list";
 
+    final TwitterCore twitterCore;
     final Long listId;
     final String slug;
     final String ownerScreenName;
@@ -38,8 +39,9 @@ public class TwitterListTimeline extends BaseTimeline implements Timeline<Tweet>
     final Integer maxItemsPerRequest;
     final Boolean includeRetweets;
 
-    TwitterListTimeline(Long listId, String slug, Long ownerId,
+    TwitterListTimeline(TwitterCore twitterCore, Long listId, String slug, Long ownerId,
         String ownerScreenName, Integer maxItemsPerRequest, Boolean includeRetweets) {
+        this.twitterCore = twitterCore;
         this.listId = listId;
         this.slug = slug;
         this.ownerId = ownerId;
@@ -72,7 +74,7 @@ public class TwitterListTimeline extends BaseTimeline implements Timeline<Tweet>
     }
 
     Call<List<Tweet>> createListTimelineRequest(final Long sinceId, final Long maxId) {
-        return TwitterCore.getInstance().getApiClient().getListService().statuses(listId, slug,
+        return twitterCore.getApiClient().getListService().statuses(listId, slug,
                 ownerScreenName, ownerId, sinceId, maxId, maxItemsPerRequest, true,
                 includeRetweets);
     }
@@ -86,6 +88,7 @@ public class TwitterListTimeline extends BaseTimeline implements Timeline<Tweet>
      * TwitterListTimeline Builder.
      */
     public static class Builder {
+        private TwitterCore twitterCore;
         private Long listId;
         private String slug;
         private Long ownerId;
@@ -96,13 +99,14 @@ public class TwitterListTimeline extends BaseTimeline implements Timeline<Tweet>
         /**
          * Constructs a Builder.
          */
-        public Builder() {};
+        public Builder() {
+            twitterCore = TwitterCore.getInstance();
+        };
 
-        /**
-         * @deprecated use {@link Builder#Builder()} instead
-         */
-        @Deprecated
-        public Builder(TweetUi tweetUi) {}
+        // For testing
+        Builder(TwitterCore twitterCore) {
+            this.twitterCore = twitterCore;
+        }
 
         /**
          * Sets the id for the Twitter List to get Tweets from.
@@ -172,7 +176,7 @@ public class TwitterListTimeline extends BaseTimeline implements Timeline<Tweet>
                         "slug/owner pair must set owner via ownerId or ownerScreenName");
             }
 
-            return new TwitterListTimeline(listId, slug, ownerId, ownerScreenName,
+            return new TwitterListTimeline(twitterCore, listId, slug, ownerId, ownerScreenName,
                     maxItemsPerRequest, includeRetweets);
         }
     }

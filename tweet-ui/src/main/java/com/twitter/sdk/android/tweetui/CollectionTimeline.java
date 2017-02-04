@@ -40,16 +40,18 @@ public class CollectionTimeline extends BaseTimeline implements Timeline<Tweet> 
     static final String COLLECTION_PREFIX = "custom-";
     private static final String SCRIBE_SECTION = "collection";
 
+    final TwitterCore twitterCore;
     final String collectionIdentifier;
     final Integer maxItemsPerRequest;
 
-    CollectionTimeline(Long collectionId, Integer maxItemsPerRequest) {
+    CollectionTimeline(TwitterCore twitterCore, Long collectionId, Integer maxItemsPerRequest) {
         // prefix the collection id with the collection prefix
         if (collectionId == null) {
             this.collectionIdentifier = null;
         } else {
             this.collectionIdentifier = COLLECTION_PREFIX + Long.toString(collectionId);
         }
+        this.twitterCore = twitterCore;
         this.maxItemsPerRequest = maxItemsPerRequest;
     }
 
@@ -81,7 +83,7 @@ public class CollectionTimeline extends BaseTimeline implements Timeline<Tweet> 
 
     Call<TwitterCollection> createCollectionRequest(final Long minPosition,
             final Long maxPosition) {
-        return TwitterCore.getInstance().getApiClient().getCollectionService()
+        return twitterCore.getApiClient().getCollectionService()
                 .collection(collectionIdentifier, maxItemsPerRequest, maxPosition, minPosition);
     }
 
@@ -170,19 +172,21 @@ public class CollectionTimeline extends BaseTimeline implements Timeline<Tweet> 
      * CollectionTimeline Builder.
      */
     public static class Builder {
+        private TwitterCore twitterCore;
         private Long collectionId;
         private Integer maxItemsPerRequest = 30;
 
         /**
          * Constructs a Builder.
          */
-        public Builder() {}
+        public Builder() {
+            twitterCore = TwitterCore.getInstance();
+        }
 
-        /**
-         * @deprecated use {@link Builder#Builder()} instead
-         */
-        @Deprecated
-        public Builder(TweetUi tweetUi) {}
+        // For testing
+        Builder(TwitterCore twitterCore) {
+            this.twitterCore = twitterCore;
+        }
 
         /**
          * Sets the id for the CollectionTimeline.
@@ -212,7 +216,7 @@ public class CollectionTimeline extends BaseTimeline implements Timeline<Tweet> 
             if (collectionId == null) {
                 throw new IllegalStateException("collection id must not be null");
             }
-            return new CollectionTimeline(collectionId, maxItemsPerRequest);
+            return new CollectionTimeline(twitterCore, collectionId, maxItemsPerRequest);
         }
     }
 }

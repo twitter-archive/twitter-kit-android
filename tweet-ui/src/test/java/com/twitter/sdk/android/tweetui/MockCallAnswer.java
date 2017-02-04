@@ -17,20 +17,21 @@
 
 package com.twitter.sdk.android.tweetui;
 
-import com.twitter.sdk.android.core.models.Search;
-import com.twitter.sdk.android.core.services.params.Geocode;
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 import retrofit2.Call;
 
-public class TestSearchTimeline extends SearchTimeline {
+import static org.mockito.Mockito.mock;
 
-    TestSearchTimeline(String query, Geocode geocode, String resultType, String lang,
-                       Integer count, String untilDate) {
-        super(query, geocode, resultType, lang, count, untilDate);
-    }
-
+class MockCallAnswer implements Answer<Object> {
     @Override
-    public Call<Search> createSearchRequest(Long sinceId, Long maxId) {
-        return super.createSearchRequest(sinceId, maxId);
+    public Object answer(InvocationOnMock invocation) throws Throwable {
+        if (invocation.getMethod().getReturnType().equals(Call.class)) {
+            return mock(Call.class);
+        } else {
+            return Mockito.RETURNS_DEFAULTS.answer(invocation);
+        }
     }
 }

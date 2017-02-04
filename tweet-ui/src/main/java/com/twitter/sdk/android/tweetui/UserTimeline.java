@@ -31,14 +31,16 @@ import retrofit2.Call;
 public class UserTimeline extends BaseTimeline implements Timeline<Tweet> {
     private static final String SCRIBE_SECTION = "user";
 
+    final TwitterCore twitterCore;
     final Long userId;
     final String screenName;
     final Integer maxItemsPerRequest;
     final Boolean includeReplies;
     final Boolean includeRetweets;
 
-    UserTimeline(Long userId, String screenName, Integer maxItemsPerRequest,
-            Boolean includeReplies, Boolean includeRetweets) {
+    UserTimeline(TwitterCore twitterCore, Long userId, String screenName,
+                 Integer maxItemsPerRequest, Boolean includeReplies, Boolean includeRetweets) {
+        this.twitterCore = twitterCore;
         this.userId = userId;
         this.screenName = screenName;
         this.maxItemsPerRequest = maxItemsPerRequest;
@@ -76,7 +78,7 @@ public class UserTimeline extends BaseTimeline implements Timeline<Tweet> {
     }
 
     Call<List<Tweet>> createUserTimelineRequest(final Long sinceId, final Long maxId) {
-        return TwitterCore.getInstance().getApiClient().getStatusesService().userTimeline(userId,
+        return twitterCore.getApiClient().getStatusesService().userTimeline(userId,
                 screenName, maxItemsPerRequest, sinceId, maxId, false, !includeReplies, null,
                 includeRetweets);
     }
@@ -85,6 +87,7 @@ public class UserTimeline extends BaseTimeline implements Timeline<Tweet> {
      * UserTimeline Builder.
      */
     public static class Builder {
+        private TwitterCore twitterCore;
         private Long userId;
         private String screenName;
         private Integer maxItemsPerRequest = 30;
@@ -94,13 +97,14 @@ public class UserTimeline extends BaseTimeline implements Timeline<Tweet> {
         /**
          * Constructs a Builder.
          */
-        public Builder() {}
+        public Builder() {
+            twitterCore = TwitterCore.getInstance();
+        }
 
-        /**
-         * @deprecated use {@link Builder#Builder()} instead
-         */
-        @Deprecated
-        public Builder(TweetUi tweetUi) {}
+        // For testing
+        Builder(TwitterCore twitterCore) {
+            this.twitterCore = twitterCore;
+        }
 
         /**
          * Sets the userId for the UserTimeline.
@@ -156,8 +160,8 @@ public class UserTimeline extends BaseTimeline implements Timeline<Tweet> {
          * @return a UserTimeline.
          */
         public UserTimeline build() {
-            return new UserTimeline(userId, screenName, maxItemsPerRequest, includeReplies,
-                    includeRetweets);
+            return new UserTimeline(twitterCore, userId, screenName, maxItemsPerRequest,
+                    includeReplies, includeRetweets);
         }
     }
 }

@@ -22,15 +22,18 @@ import android.widget.ImageView;
 
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.TwitterApiClient;
-import com.twitter.sdk.android.core.services.CollectionService;
-import com.twitter.sdk.android.core.services.ListService;
-import com.twitter.sdk.android.core.services.SearchService;
 import com.twitter.sdk.android.core.services.StatusesService;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+
 import java.util.concurrent.ConcurrentHashMap;
+
+import retrofit2.Call;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -40,11 +43,11 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public final class MockUtils {
+final class MockUtils {
 
     private MockUtils() {}
 
-    public static Picasso mockPicasso(Picasso picasso, RequestCreator requestCreator) {
+    static Picasso mockPicasso(Picasso picasso, RequestCreator requestCreator) {
         when(picasso.load(anyString())).thenReturn(requestCreator);
         when(picasso.load(anyInt())).thenReturn(requestCreator);
         when(requestCreator.centerCrop()).thenReturn(requestCreator);
@@ -56,22 +59,26 @@ public final class MockUtils {
         return picasso;
     }
 
-    public static void mockApiClient(TwitterApiClient apiClient) {
+    static void mockApiClient(TwitterApiClient apiClient) {
         final StatusesService statusesService = mock(StatusesService.class, new MockCallAnswer());
-        final SearchService searchService = mock(SearchService.class, new MockCallAnswer());
-        final ListService listService = mock(ListService.class, new MockCallAnswer());
-        final CollectionService collectionService =
-                mock(CollectionService.class, new MockCallAnswer());
 
         when(apiClient.getStatusesService()).thenReturn(statusesService);
-        when(apiClient.getCollectionService()).thenReturn(collectionService);
-        when(apiClient.getSearchService()).thenReturn(searchService);
-        when(apiClient.getListService()).thenReturn(listService);
     }
 
-    public static void mockClients(ConcurrentHashMap<Session, TwitterApiClient> clients,
+    static void mockClients(ConcurrentHashMap<Session, TwitterApiClient> clients,
                                    TwitterApiClient apiClient) {
         when(clients.get(anyObject())).thenReturn(apiClient);
         when(clients.contains(anyObject())).thenReturn(true);
+    }
+
+    static class MockCallAnswer implements Answer<Object> {
+        @Override
+        public Object answer(InvocationOnMock invocation) throws Throwable {
+            if (invocation.getMethod().getReturnType().equals(Call.class)) {
+                return mock(Call.class);
+            } else {
+                return Mockito.RETURNS_DEFAULTS.answer(invocation);
+            }
+        }
     }
 }

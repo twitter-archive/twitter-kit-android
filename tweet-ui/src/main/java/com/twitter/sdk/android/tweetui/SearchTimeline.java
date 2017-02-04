@@ -41,6 +41,7 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
     private static final SimpleDateFormat QUERY_DATE =
             new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
+    final TwitterCore twitterCore;
     final String query;
     final Geocode geocode;
     final String resultType;
@@ -48,8 +49,9 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
     final Integer maxItemsPerRequest;
     final String untilDate;
 
-    SearchTimeline(String query, Geocode geocode, String resultType, String languageCode,
-            Integer maxItemsPerRequest, String untilDate) {
+    SearchTimeline(TwitterCore twitterCore, String query, Geocode geocode, String resultType,
+                   String languageCode, Integer maxItemsPerRequest, String untilDate) {
+        this.twitterCore = twitterCore;
         this.languageCode = languageCode;
         this.maxItemsPerRequest = maxItemsPerRequest;
         this.untilDate = untilDate;
@@ -89,7 +91,7 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
     }
 
     Call<Search> createSearchRequest(final Long sinceId, final Long maxId) {
-        return TwitterCore.getInstance().getApiClient().getSearchService().tweets(query, geocode,
+        return twitterCore.getApiClient().getSearchService().tweets(query, geocode,
                 languageCode, null, resultType, maxItemsPerRequest, untilDate, sinceId, maxId,
                 true);
     }
@@ -143,6 +145,7 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
      * SearchTimeline Builder
      */
     public static class Builder {
+        private TwitterCore twitterCore;
         private String query;
         private String lang;
         private String resultType = ResultType.FILTERED.type;
@@ -153,13 +156,14 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
         /**
          * Constructs a Builder.
          */
-        public Builder() {}
+        public Builder() {
+            twitterCore = TwitterCore.getInstance();
+        };
 
-        /**
-         * @deprecated use {@link Builder#Builder()} instead
-         */
-        @Deprecated
-        public Builder(TweetUi tweetUi) {}
+        // For testing
+        Builder(TwitterCore twitterCore) {
+            this.twitterCore = twitterCore;
+        }
 
         /**
          * Sets the query for the SearchTimeline.
@@ -232,8 +236,8 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
             if (query == null) {
                 throw new IllegalStateException("query must not be null");
             }
-            return new SearchTimeline(query, geocode, resultType, lang, maxItemsPerRequest,
-                    untilDate);
+            return new SearchTimeline(twitterCore, query, geocode, resultType, lang,
+                    maxItemsPerRequest, untilDate);
         }
     }
 }
