@@ -18,7 +18,6 @@
 package com.twitter.sdk.android.core.internal.oauth;
 
 import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.services.network.HttpRequest;
 import io.fabric.sdk.android.services.network.UrlUtils;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -27,6 +26,7 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.internal.TwitterApi;
 
+import okio.ByteString;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -130,10 +130,11 @@ public class OAuth2Service extends OAuthService {
 
     private String getAuthHeader() {
         final TwitterAuthConfig authConfig = getTwitterCore().getAuthConfig();
-        return OAuthConstants.AUTHORIZATION_BASIC + " " + HttpRequest.Base64.encode(
-                        UrlUtils.percentEncode(authConfig.getConsumerKey())
-                                + ":"
-                                + UrlUtils.percentEncode(authConfig.getConsumerSecret()));
+        final ByteString string = ByteString.encodeUtf8(
+                UrlUtils.percentEncode(authConfig.getConsumerKey())
+                + ":"
+                + UrlUtils.percentEncode(authConfig.getConsumerSecret()));
 
+        return OAuthConstants.AUTHORIZATION_BASIC + " " + string.base64();
     }
 }

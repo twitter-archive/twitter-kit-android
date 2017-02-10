@@ -18,8 +18,6 @@
 package com.twitter.sdk.android.core.internal.oauth;
 
 
-import io.fabric.sdk.android.services.network.HttpMethod;
-
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 
@@ -53,7 +51,7 @@ public class OAuth1aHeadersTest  {
         final TwitterAuthToken token = mock(TwitterAuthToken.class);
 
         final Map<String, String> headers = oAuthHeaders.getOAuthEchoHeaders(config, token, null,
-                HttpMethod.GET.name(), VERIFY_CREDENTIALS_URL, null);
+                "GET", VERIFY_CREDENTIALS_URL, null);
         assertEquals(VERIFY_CREDENTIALS_URL, headers.get(OAuth1aHeaders
                 .HEADER_AUTH_SERVICE_PROVIDER));
         assertEquals(ANY_AUTH_CREDENTIALS, headers.get(OAuth1aHeaders
@@ -66,7 +64,7 @@ public class OAuth1aHeadersTest  {
         final TwitterAuthToken token = mock(TwitterAuthToken.class);
 
         assertEquals(ANY_AUTH_CREDENTIALS, oAuthHeaders.getAuthorizationHeader(config, token, null,
-                HttpMethod.GET.name(), VERIFY_CREDENTIALS_URL, null));
+                "GET", VERIFY_CREDENTIALS_URL, null));
     }
 
     private class MockOAuth1aParameters extends OAuth1aParameters {

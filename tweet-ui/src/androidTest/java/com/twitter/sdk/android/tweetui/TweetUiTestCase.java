@@ -36,8 +36,6 @@ import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.FabricAndroidTestCase;
 import io.fabric.sdk.android.FabricTestUtils;
 import io.fabric.sdk.android.services.concurrency.PriorityThreadPoolExecutor;
-import io.fabric.sdk.android.services.settings.Settings;
-import io.fabric.sdk.android.services.settings.TestSettingsController;
 
 import static org.mockito.Mockito.mock;
 
@@ -70,7 +68,6 @@ public class TweetUiTestCase extends FabricAndroidTestCase {
                 .threadPoolExecutor(mock(PriorityThreadPoolExecutor.class))
                 .build();
 
-        Settings.getInstance().setSettingsController(new TestSettingsController());
         Fabric.with(fabric);
 
         tweetUi = TweetUi.getInstance();

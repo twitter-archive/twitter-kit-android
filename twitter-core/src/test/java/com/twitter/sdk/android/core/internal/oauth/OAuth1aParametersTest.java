@@ -17,8 +17,6 @@
 
 package com.twitter.sdk.android.core.internal.oauth;
 
-import io.fabric.sdk.android.services.network.HttpMethod;
-
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 
@@ -36,7 +34,7 @@ import static org.junit.Assert.assertEquals;
 public class OAuth1aParametersTest  {
 
     private static class TestParameters {
-        public final HttpMethod method;
+        public final String method;
         public final String url;
         public final Map<String, String> postParams;
         public final String consumerKey;
@@ -50,7 +48,7 @@ public class OAuth1aParametersTest  {
         public final String expectedSignature;
         public final String expectedAuthHeader;
 
-        public TestParameters(HttpMethod method, String url, Map<String, String> postParams,
+        public TestParameters(String method, String url, Map<String, String> postParams,
                 String consumerKey, String consumerSecret, String callback, String nonce,
                 String timestamp, String token, String tokenSecret,
                 String expectedSignatureBase, String expectedSignature,
@@ -74,7 +72,7 @@ public class OAuth1aParametersTest  {
     private static final TestParameters[] TEST_PARAMETERS = new TestParameters[] {
             // tokens/secrets (disabled) from https://dev.twitter.com/web/sign-in/implementing
             new TestParameters(
-                    HttpMethod.POST,
+                    "POST",
                     "https://api.twitter.com/oauth/request_token",
                     null,
                     "cChZNFj6T5R0TigYB9yd1w",
@@ -88,7 +86,7 @@ public class OAuth1aParametersTest  {
                     "F1Li3tvehgcraF8DMJ7OyxO4w9Y=",
                     "OAuth oauth_callback=\"http%3A%2F%2Flocalhost%2Fsign-in-with-twitter%2F\", oauth_consumer_key=\"cChZNFj6T5R0TigYB9yd1w\", oauth_nonce=\"ea9ec8429b68d6b77cd5600adbbb0456\", oauth_signature=\"F1Li3tvehgcraF8DMJ7OyxO4w9Y%3D\", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp=\"1318467427\", oauth_version=\"1.0\""),
             new TestParameters(
-                    HttpMethod.POST,
+                    "POST",
                     "https://api.twitter.com/1/statuses/update.json?include_entities=true",
                     new HashMap<String, String>() {
                         {
@@ -127,7 +125,7 @@ public class OAuth1aParametersTest  {
         return new OAuth1aParameters(
                 new TwitterAuthConfig(testParameters.consumerKey, testParameters.consumerSecret),
                 authToken,
-                testParameters.callback, testParameters.method.name(), testParameters.url,
+                testParameters.callback, testParameters.method, testParameters.url,
                 testParameters.postParams);
     }
 

@@ -17,8 +17,6 @@
 
 package com.twitter.sdk.android.core;
 
-import io.fabric.sdk.android.services.network.HttpMethod;
-
 import com.twitter.sdk.android.core.internal.oauth.OAuth1aHeaders;
 
 import org.junit.Before;
@@ -50,7 +48,7 @@ public class OAuthSigningTests  {
         authToken = new TwitterAuthToken(TestFixtures.TOKEN, TestFixtures.SECRET);
         authSigning = new OAuthSigning(authConfig, authToken, oAuthHeaders);
 
-        when(oAuthHeaders.getAuthorizationHeader(authConfig, authToken, null, HttpMethod.GET.name(),
+        when(oAuthHeaders.getAuthorizationHeader(authConfig, authToken, null, "GET",
                 OAuthSigning.VERIFY_CREDENTIALS_URL, null)).thenReturn(ANY_AUTH_HEADER);
     }
 
@@ -76,27 +74,25 @@ public class OAuthSigningTests  {
 
     @Test
     public void testGetAuthorizationHeader() {
-        authSigning.getAuthorizationHeader(HttpMethod.POST.name(),
-                VERIFY_CREDENTIALS_URL, null);
+        authSigning.getAuthorizationHeader("POST", VERIFY_CREDENTIALS_URL, null);
 
         verify(oAuthHeaders).getAuthorizationHeader(authConfig, authToken, null,
-                HttpMethod.POST.name(), VERIFY_CREDENTIALS_URL, null);
+                "POST", VERIFY_CREDENTIALS_URL, null);
     }
 
     @Test
     public void testGetOAuthEchoHeaders() {
-        authSigning.getOAuthEchoHeaders(HttpMethod.POST.name(),
-                VERIFY_CREDENTIALS_URL, null);
+        authSigning.getOAuthEchoHeaders("POST", VERIFY_CREDENTIALS_URL, null);
 
         verify(oAuthHeaders).getOAuthEchoHeaders(authConfig, authToken, null,
-                HttpMethod.POST.name(), VERIFY_CREDENTIALS_URL, null);
+                "POST", VERIFY_CREDENTIALS_URL, null);
     }
 
     @Test
     public void testGetOAuthEchoHeadersForVerifyCredentials() {
         authSigning.getOAuthEchoHeadersForVerifyCredentials();
 
-        verify(oAuthHeaders).getOAuthEchoHeaders(authConfig, authToken, null, HttpMethod.GET.name(),
+        verify(oAuthHeaders).getOAuthEchoHeaders(authConfig, authToken, null, "GET",
                 OAuthSigning.VERIFY_CREDENTIALS_URL, null);
     }
 }

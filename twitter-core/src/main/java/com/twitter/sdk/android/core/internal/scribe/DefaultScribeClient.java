@@ -38,8 +38,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import io.fabric.sdk.android.Kit;
 import io.fabric.sdk.android.services.common.ExecutorUtils;
 import io.fabric.sdk.android.services.common.IdManager;
-import io.fabric.sdk.android.services.settings.Settings;
-import io.fabric.sdk.android.services.settings.SettingsData;
 
 /**
  * Instances of this class should always be created on a background thread.
@@ -70,10 +68,9 @@ public class DefaultScribeClient extends ScribeClient {
     DefaultScribeClient(Kit kit, String kitName, Gson gson,
             SessionManager<? extends Session<TwitterAuthToken>> sessionManager,
             GuestSessionProvider guestSessionProvider, IdManager idManager) {
-        super(kit, getExecutor(), getScribeConfig(Settings.getInstance().awaitSettingsData(),
-                getUserAgent(kitName, kit)), new ScribeEvent.Transform(gson),
-                TwitterCore.getInstance().getAuthConfig(), sessionManager, guestSessionProvider,
-                idManager);
+        super(kit, getExecutor(), getScribeConfig(getUserAgent(kitName, kit)),
+                new ScribeEvent.Transform(gson), TwitterCore.getInstance().getAuthConfig(),
+                sessionManager, guestSessionProvider, idManager);
 
         this.sessionManager = sessionManager;
         this.kit = kit;
@@ -160,24 +157,11 @@ public class DefaultScribeClient extends ScribeClient {
         return executor;
     }
 
-    static ScribeConfig getScribeConfig(SettingsData settingsData, String userAgent) {
-        // Get scribe configuration using analytics settings, which is used by crashlytics for
-        // configuring Answers. This is temporary until we have can get our scribe settings from the
-        // backend. If analytics settings are not available, fallback to defaults.
-        final int maxFilesToKeep;
-        final int sendIntervalSeconds;
-        if (settingsData != null && settingsData.analyticsSettingsData != null) {
-            maxFilesToKeep = settingsData.analyticsSettingsData.maxPendingSendFileCount;
-            sendIntervalSeconds = settingsData.analyticsSettingsData.flushIntervalSeconds;
-        } else {
-            maxFilesToKeep = ScribeConfig.DEFAULT_MAX_FILES_TO_KEEP;
-            sendIntervalSeconds = ScribeConfig.DEFAULT_SEND_INTERVAL_SECONDS;
-        }
-
+    static ScribeConfig getScribeConfig(String userAgent) {
         final String scribeUrl = getScribeUrl(SCRIBE_URL, BuildConfig.SCRIBE_ENDPOINT_OVERRIDE);
         return new ScribeConfig(isEnabled(), scribeUrl, SCRIBE_PATH_VERSION,
-                SCRIBE_PATH_TYPE, BuildConfig.SCRIBE_SEQUENCE, userAgent, maxFilesToKeep,
-                sendIntervalSeconds);
+                SCRIBE_PATH_TYPE, BuildConfig.SCRIBE_SEQUENCE, userAgent,
+                ScribeConfig.DEFAULT_MAX_FILES_TO_KEEP, ScribeConfig.DEFAULT_SEND_INTERVAL_SECONDS);
     }
 
     /*

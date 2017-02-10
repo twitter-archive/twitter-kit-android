@@ -17,8 +17,6 @@
 
 package com.twitter.sdk.android.core;
 
-import io.fabric.sdk.android.services.network.HttpMethod;
-
 import com.twitter.sdk.android.core.internal.TwitterApi;
 import com.twitter.sdk.android.core.internal.oauth.OAuth1aHeaders;
 
@@ -100,7 +98,7 @@ public class OAuthSigning {
      */
     public Map<String, String> getOAuthEchoHeadersForVerifyCredentials() {
         return oAuth1aHeaders.getOAuthEchoHeaders(authConfig, authToken, null,
-                HttpMethod.GET.name(), VERIFY_CREDENTIALS_URL, null);
+                "GET", VERIFY_CREDENTIALS_URL, null);
     }
 
 }

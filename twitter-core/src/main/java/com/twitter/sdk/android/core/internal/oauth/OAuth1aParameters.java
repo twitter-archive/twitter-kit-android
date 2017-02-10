@@ -18,8 +18,9 @@
 package com.twitter.sdk.android.core.internal.oauth;
 
 import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.services.network.HttpRequest;
 import io.fabric.sdk.android.services.network.UrlUtils;
+import okio.ByteString;
+
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterCore;
@@ -142,9 +143,7 @@ class OAuth1aParameters {
             final Mac mac = Mac.getInstance("HmacSHA1");
             mac.init(secretKey);
             final byte[] signatureBytes = mac.doFinal(signatureBaseBytes);
-            return new String(
-                    HttpRequest.Base64.encodeBytesToBytes(signatureBytes, 0, signatureBytes.length),
-                    UrlUtils.UTF8);
+            return ByteString.of(signatureBytes, 0, signatureBytes.length).base64();
         } catch (InvalidKeyException e) {
             Fabric.getLogger().e(TwitterCore.TAG, "Failed to calculate signature", e);
             return "";

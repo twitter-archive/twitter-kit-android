@@ -24,10 +24,6 @@ import io.fabric.sdk.android.FabricAndroidTestCase;
 import io.fabric.sdk.android.FabricTestUtils;
 import io.fabric.sdk.android.Kit;
 import io.fabric.sdk.android.services.common.IdManager;
-import io.fabric.sdk.android.services.settings.AnalyticsSettingsData;
-import io.fabric.sdk.android.services.settings.Settings;
-import io.fabric.sdk.android.services.settings.SettingsData;
-import io.fabric.sdk.android.services.settings.TestSettingsController;
 
 import com.twitter.sdk.android.core.BuildConfig;
 import com.twitter.sdk.android.core.GuestSessionProvider;
@@ -44,8 +40,6 @@ import static org.mockito.Mockito.when;
 
 public class DefaultScribeClientTest extends FabricAndroidTestCase {
 
-    private static final int TEST_SEND_INTERVAL_SECONDS = 6000000 * 60; // 6 million minutes
-    private static final int TEST_MAX_FILES_TO_KEEP = 100000;
     private static final String TEST_USER_AGENT = "user-agent";
     private static final String TEST_DEFAULT_SCRIBE_URL = "https://syndication.twitter.com";
     private static final String TEST_OVERRIDE_SCRIBE_URL = "http://api.twitter.com";
@@ -69,7 +63,6 @@ public class DefaultScribeClientTest extends FabricAndroidTestCase {
         super.setUp();
 
         FabricTestUtils.resetFabric();
-        Settings.getInstance().setSettingsController(new TestSettingsController());
         Fabric.with(getContext(), new TwitterCore(new TwitterAuthConfig("", "")), new ExampleKit());
         testKit = Fabric.getKit(ExampleKit.class);
 
@@ -106,30 +99,14 @@ public class DefaultScribeClientTest extends FabricAndroidTestCase {
 
     public void testGetScribeConfig_settingsDataNull() {
         final ScribeConfig scribeConfig
-                = DefaultScribeClient.getScribeConfig(null, TEST_USER_AGENT);
-        assertScribeConfig(TEST_USER_AGENT, ScribeConfig.DEFAULT_MAX_FILES_TO_KEEP,
-                ScribeConfig.DEFAULT_SEND_INTERVAL_SECONDS, scribeConfig);
-    }
+                = DefaultScribeClient.getScribeConfig(TEST_USER_AGENT);
 
-    public void testGetScribeConfig_settingsDataAnalyticsSettingsDataNull() {
-        final SettingsData settingsData
-                = new SettingsData(0L, null, null, null, null, null, null, 0, 0);
-        final ScribeConfig scribeConfig
-                = DefaultScribeClient.getScribeConfig(settingsData, TEST_USER_AGENT);
-        assertScribeConfig(TEST_USER_AGENT, ScribeConfig.DEFAULT_MAX_FILES_TO_KEEP,
-                ScribeConfig.DEFAULT_SEND_INTERVAL_SECONDS, scribeConfig);
-    }
-
-    public void testGetScribeConfig_settingsDataValid() {
-        final AnalyticsSettingsData analyticsSettingsData = new AnalyticsSettingsData(null,
-                TEST_SEND_INTERVAL_SECONDS, 0, 0, TEST_MAX_FILES_TO_KEEP, true);
-        final SettingsData settingsData = new SettingsData(0L, null, null, null, null,
-                analyticsSettingsData, null, 0, 0);
-
-        final ScribeConfig scribeConfig
-                = DefaultScribeClient.getScribeConfig(settingsData, TEST_USER_AGENT);
-        assertScribeConfig(TEST_USER_AGENT, TEST_MAX_FILES_TO_KEEP,
-                TEST_SEND_INTERVAL_SECONDS, scribeConfig);
+        assertEquals(!BuildConfig.BUILD_TYPE.equals(DEBUG_BUILD_TYPE), scribeConfig.isEnabled);
+        assertEquals(REQUIRED_SCRIBE_URL_COMPONENT, scribeConfig.baseUrl);
+        assertEquals(BuildConfig.SCRIBE_SEQUENCE, scribeConfig.sequence);
+        assertEquals(TEST_USER_AGENT, scribeConfig.userAgent);
+        assertEquals(ScribeConfig.DEFAULT_MAX_FILES_TO_KEEP, scribeConfig.maxFilesToKeep);
+        assertEquals(ScribeConfig.DEFAULT_SEND_INTERVAL_SECONDS, scribeConfig.sendIntervalSeconds);
     }
 
     public void testGetScribeUrl_nullOverride() {
@@ -147,16 +124,6 @@ public class DefaultScribeClientTest extends FabricAndroidTestCase {
         final String scribeUrl = DefaultScribeClient.getScribeUrl(TEST_DEFAULT_SCRIBE_URL,
                 TEST_OVERRIDE_SCRIBE_URL);
         assertEquals(TEST_OVERRIDE_SCRIBE_URL, scribeUrl);
-    }
-
-    private void assertScribeConfig(String expectedUserAgent, int expectedMaxFilesToKeep,
-                                    int expectedSendIntervalSeconds, ScribeConfig scribeConfig) {
-        assertEquals(!BuildConfig.BUILD_TYPE.equals(DEBUG_BUILD_TYPE), scribeConfig.isEnabled);
-        assertEquals(REQUIRED_SCRIBE_URL_COMPONENT, scribeConfig.baseUrl);
-        assertEquals(BuildConfig.SCRIBE_SEQUENCE, scribeConfig.sequence);
-        assertEquals(expectedUserAgent, scribeConfig.userAgent);
-        assertEquals(expectedMaxFilesToKeep, scribeConfig.maxFilesToKeep);
-        assertEquals(expectedSendIntervalSeconds, scribeConfig.sendIntervalSeconds);
     }
 
     public void testGetScribeUserAgent() {
