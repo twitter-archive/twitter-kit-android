@@ -15,14 +15,14 @@
  *
  */
 
-package com.twitter.sdk.android.core.internal.util;
+package com.twitter.sdk.android.tweetcomposer.internal.util;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import com.twitter.sdk.android.core.R;
+import com.twitter.sdk.android.tweetcomposer.R;
 
 /**
  * AspectRatioImageView maintains an aspect ratio by adjusting the width or height dimension. The

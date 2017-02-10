@@ -23,7 +23,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.twitter.sdk.android.core.internal.util.AspectRatioImageView
+    <com.twitter.sdk.android.tweetcomposer.internal.util.AspectRatioImageView
         android:id="@+id/tw__app_image"
         twittersdk:tw__image_aspect_ratio="1.91"
         android:layout_width="match_parent"

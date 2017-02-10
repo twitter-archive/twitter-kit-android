@@ -15,11 +15,11 @@
  *
  */
 
-package com.twitter.sdk.android.core.internal.util;
+package com.twitter.sdk.android.tweetcomposer.internal.util;
 
 import android.util.AttributeSet;
 
-import com.twitter.sdk.android.core.R;
+import com.twitter.sdk.android.tweetcomposer.R;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
