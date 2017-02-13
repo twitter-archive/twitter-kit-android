@@ -17,11 +17,10 @@
 
 package com.twitter.sdk.android.core.models;
 
-import io.fabric.sdk.android.services.common.CommonUtils;
-
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.twitter.sdk.android.core.TestResources;
+import com.twitter.sdk.android.core.internal.CommonUtils;
 
 import org.junit.Before;
 import org.junit.Rule;

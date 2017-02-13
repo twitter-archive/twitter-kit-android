@@ -21,7 +21,6 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
-import io.fabric.sdk.android.services.events.EventTransform;
 
 import java.io.IOException;
 import java.util.Collections;

@@ -17,10 +17,6 @@
 
 package com.twitter.sdk.android.core.internal.scribe;
 
-import io.fabric.sdk.android.services.events.DisabledEventsStrategy;
-import io.fabric.sdk.android.services.events.EventsFilesManager;
-import io.fabric.sdk.android.services.events.EventsStrategy;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

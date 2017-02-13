@@ -20,7 +20,6 @@ package com.twitter.sdk.android.core.internal;
 import android.text.format.DateUtils;
 
 import io.fabric.sdk.android.ActivityLifecycleManager;
-import io.fabric.sdk.android.services.common.SystemCurrentTimeProvider;
 
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;

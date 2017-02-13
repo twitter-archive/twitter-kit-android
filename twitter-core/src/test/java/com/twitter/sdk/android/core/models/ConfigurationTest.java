@@ -20,6 +20,7 @@ package com.twitter.sdk.android.core.models;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.twitter.sdk.android.core.TestResources;
+import com.twitter.sdk.android.core.internal.CommonUtils;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -28,8 +29,6 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-
-import io.fabric.sdk.android.services.common.CommonUtils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

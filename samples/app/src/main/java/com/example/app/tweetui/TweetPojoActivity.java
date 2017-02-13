@@ -29,6 +29,7 @@ import com.example.app.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.twitter.sdk.android.core.internal.CommonUtils;
 import com.twitter.sdk.android.core.models.SafeListAdapter;
 import com.twitter.sdk.android.core.models.SafeMapAdapter;
 import com.twitter.sdk.android.core.models.Tweet;
@@ -38,8 +39,6 @@ import com.twitter.sdk.android.tweetui.TweetTimelineListAdapter;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-
-import io.fabric.sdk.android.services.common.CommonUtils;
 
 /**
  * Example code showing how to load Tweets from JSON.

@@ -21,16 +21,14 @@ import android.content.Context;
 
 import java.util.concurrent.ScheduledExecutorService;
 
-class EnabledScribeStrategy extends EnabledEventsStrategy<ScribeEvent> {
+public class TestEnabledEventsStrategy extends EnabledEventsStrategy<TestEvent> {
 
-    private final FilesSender filesSender;
+    FilesSender filesSender;
 
-    public EnabledScribeStrategy(Context context, ScheduledExecutorService executorService,
-            ScribeFilesManager filesManager, ScribeConfig config, ScribeFilesSender filesSender) {
+    public TestEnabledEventsStrategy(Context context, ScheduledExecutorService executorService,
+            EventsFilesManager<TestEvent> filesManager, FilesSender filesSender) {
         super(context, executorService, filesManager);
         this.filesSender = filesSender;
-
-        configureRollover(config.sendIntervalSeconds);
     }
 
     @Override

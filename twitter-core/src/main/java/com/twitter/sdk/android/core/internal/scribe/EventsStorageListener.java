@@ -17,24 +17,19 @@
 
 package com.twitter.sdk.android.core.internal.scribe;
 
-import android.content.Context;
 
-import java.util.concurrent.ScheduledExecutorService;
+/**
+ * Implementors of this interface are interested in rollOver events for a particular
+ * instance of {@link EventsStorage}
+ */
+public interface EventsStorageListener {
 
-class EnabledScribeStrategy extends EnabledEventsStrategy<ScribeEvent> {
-
-    private final FilesSender filesSender;
-
-    public EnabledScribeStrategy(Context context, ScheduledExecutorService executorService,
-            ScribeFilesManager filesManager, ScribeConfig config, ScribeFilesSender filesSender) {
-        super(context, executorService, filesManager);
-        this.filesSender = filesSender;
-
-        configureRollover(config.sendIntervalSeconds);
-    }
-
-    @Override
-    public FilesSender getFilesSender() {
-        return filesSender;
-    }
+    /**
+     * Triggered after an {@link EventsStorage} rollOver event has successfully been completed
+     *
+     * @param rolledOverFile file that was rolled over as part of this event; null
+     * if a roll over event were triggered but it was determined that the current active file
+     * is empty.
+     */
+    void onRollOver(String rolledOverFile);
 }

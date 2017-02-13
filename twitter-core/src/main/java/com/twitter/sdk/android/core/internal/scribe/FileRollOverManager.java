@@ -17,24 +17,25 @@
 
 package com.twitter.sdk.android.core.internal.scribe;
 
-import android.content.Context;
+import java.io.IOException;
 
-import java.util.concurrent.ScheduledExecutorService;
+public interface FileRollOverManager {
 
-class EnabledScribeStrategy extends EnabledEventsStrategy<ScribeEvent> {
+    /**
+     * Triggers a file roll over. Returns <code>true</code> if events existed and a roll-over file
+     * was created.
+     * Returns <code>false</code> if no events existed and a roll-over file was not created.
+     */
+    boolean rollFileOver() throws IOException;
 
-    private final FilesSender filesSender;
+    /**
+     * Schedules a time-based roll-over task if the necessary info is present, and no existing task
+     * has been scheduled.
+     */
+    void scheduleTimeBasedRollOverIfNeeded();
 
-    public EnabledScribeStrategy(Context context, ScheduledExecutorService executorService,
-            ScribeFilesManager filesManager, ScribeConfig config, ScribeFilesSender filesSender) {
-        super(context, executorService, filesManager);
-        this.filesSender = filesSender;
-
-        configureRollover(config.sendIntervalSeconds);
-    }
-
-    @Override
-    public FilesSender getFilesSender() {
-        return filesSender;
-    }
+    /**
+     * Stops performing time based roll-over
+     */
+    void cancelTimeBasedFileRollOver();
 }

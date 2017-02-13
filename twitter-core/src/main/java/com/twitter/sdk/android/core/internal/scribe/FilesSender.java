@@ -17,24 +17,17 @@
 
 package com.twitter.sdk.android.core.internal.scribe;
 
-import android.content.Context;
+import java.io.File;
+import java.util.List;
 
-import java.util.concurrent.ScheduledExecutorService;
+/**
+ * Sends files over to the server
+ */
+public interface FilesSender {
 
-class EnabledScribeStrategy extends EnabledEventsStrategy<ScribeEvent> {
-
-    private final FilesSender filesSender;
-
-    public EnabledScribeStrategy(Context context, ScheduledExecutorService executorService,
-            ScribeFilesManager filesManager, ScribeConfig config, ScribeFilesSender filesSender) {
-        super(context, executorService, filesManager);
-        this.filesSender = filesSender;
-
-        configureRollover(config.sendIntervalSeconds);
-    }
-
-    @Override
-    public FilesSender getFilesSender() {
-        return filesSender;
-    }
+    /**
+     * @param files files to send to server, must not be null
+     * @return true if the files should be cleaned up
+     */
+    boolean send(List<File> files);
 }

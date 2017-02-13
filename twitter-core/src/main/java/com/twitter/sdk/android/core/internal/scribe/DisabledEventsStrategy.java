@@ -17,24 +17,40 @@
 
 package com.twitter.sdk.android.core.internal.scribe;
 
-import android.content.Context;
+public class DisabledEventsStrategy<T> implements EventsStrategy<T> {
 
-import java.util.concurrent.ScheduledExecutorService;
+    @Override
+    public void sendEvents() {
+        // Does nothing
+    }
 
-class EnabledScribeStrategy extends EnabledEventsStrategy<ScribeEvent> {
+    @Override
+    public void deleteAllEvents() {
+        // Does nothing
+    }
 
-    private final FilesSender filesSender;
+    @Override
+    public void recordEvent(T event) {
+        // Does nothing
+    }
 
-    public EnabledScribeStrategy(Context context, ScheduledExecutorService executorService,
-            ScribeFilesManager filesManager, ScribeConfig config, ScribeFilesSender filesSender) {
-        super(context, executorService, filesManager);
-        this.filesSender = filesSender;
+    @Override
+    public void cancelTimeBasedFileRollOver() {
+        // Does nothing
+    }
 
-        configureRollover(config.sendIntervalSeconds);
+    @Override
+    public void scheduleTimeBasedRollOverIfNeeded() {
+        // Does nothing
+    }
+
+    @Override
+    public boolean rollFileOver() {
+        return false;
     }
 
     @Override
     public FilesSender getFilesSender() {
-        return filesSender;
+        return null;
     }
 }

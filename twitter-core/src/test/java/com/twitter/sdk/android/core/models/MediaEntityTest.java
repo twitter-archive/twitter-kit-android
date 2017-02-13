@@ -21,6 +21,7 @@ import com.google.gson.stream.JsonReader;
 
 import com.google.gson.Gson;
 import com.twitter.sdk.android.core.TestResources;
+import com.twitter.sdk.android.core.internal.CommonUtils;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -33,8 +34,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.NotSerializableException;
 import java.io.ObjectOutputStream;
-
-import io.fabric.sdk.android.services.common.CommonUtils;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;

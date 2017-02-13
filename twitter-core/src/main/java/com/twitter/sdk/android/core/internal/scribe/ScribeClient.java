@@ -20,12 +20,10 @@ package com.twitter.sdk.android.core.internal.scribe;
 import android.content.Context;
 
 import io.fabric.sdk.android.Kit;
-import io.fabric.sdk.android.services.common.CommonUtils;
 import io.fabric.sdk.android.services.common.IdManager;
-import io.fabric.sdk.android.services.common.SystemCurrentTimeProvider;
-import io.fabric.sdk.android.services.events.DisabledEventsStrategy;
-import io.fabric.sdk.android.services.events.EventsStrategy;
-import io.fabric.sdk.android.services.events.QueueFileEventStorage;
+
+import com.twitter.sdk.android.core.internal.CommonUtils;
+import com.twitter.sdk.android.core.internal.SystemCurrentTimeProvider;
 import com.twitter.sdk.android.core.internal.persistence.FileStoreImpl;
 
 import com.twitter.sdk.android.core.GuestSessionProvider;

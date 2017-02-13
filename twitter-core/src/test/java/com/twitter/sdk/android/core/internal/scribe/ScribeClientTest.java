@@ -20,8 +20,6 @@ package com.twitter.sdk.android.core.internal.scribe;
 import io.fabric.sdk.android.Kit;
 import io.fabric.sdk.android.KitStub;
 import io.fabric.sdk.android.services.common.IdManager;
-import io.fabric.sdk.android.services.events.DisabledEventsStrategy;
-import io.fabric.sdk.android.services.events.EventsStrategy;
 
 import com.twitter.sdk.android.core.GuestSession;
 import com.twitter.sdk.android.core.GuestSessionProvider;

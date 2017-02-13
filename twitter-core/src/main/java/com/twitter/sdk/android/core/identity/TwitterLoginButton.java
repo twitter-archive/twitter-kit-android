@@ -33,11 +33,11 @@ import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.R;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.internal.CommonUtils;
+
 import io.fabric.sdk.android.Fabric;
 
 import java.lang.ref.WeakReference;
-
-import io.fabric.sdk.android.services.common.CommonUtils;
 
 /**
  * Log in button for logging into Twitter. When the button is clicked, an authorization request

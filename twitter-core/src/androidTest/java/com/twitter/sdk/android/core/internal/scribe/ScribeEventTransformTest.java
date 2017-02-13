@@ -18,9 +18,9 @@
 package com.twitter.sdk.android.core.internal.scribe;
 
 import io.fabric.sdk.android.FabricAndroidTestCase;
-import io.fabric.sdk.android.services.common.CommonUtils;
 
 import com.google.gson.GsonBuilder;
+import com.twitter.sdk.android.core.internal.CommonUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
