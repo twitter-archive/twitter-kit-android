@@ -26,7 +26,7 @@ import io.fabric.sdk.android.services.common.SystemCurrentTimeProvider;
 import io.fabric.sdk.android.services.events.DisabledEventsStrategy;
 import io.fabric.sdk.android.services.events.EventsStrategy;
 import io.fabric.sdk.android.services.events.QueueFileEventStorage;
-import io.fabric.sdk.android.services.persistence.FileStoreImpl;
+import com.twitter.sdk.android.core.internal.persistence.FileStoreImpl;
 
 import com.twitter.sdk.android.core.GuestSessionProvider;
 import com.twitter.sdk.android.core.Session;

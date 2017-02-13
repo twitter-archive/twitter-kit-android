@@ -26,10 +26,10 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
-import io.fabric.sdk.android.services.persistence.PreferenceStore;
-import io.fabric.sdk.android.services.persistence.PreferenceStoreImpl;
-import io.fabric.sdk.android.services.persistence.PreferenceStoreStrategy;
-import io.fabric.sdk.android.services.persistence.SerializationStrategy;
+import com.twitter.sdk.android.core.internal.persistence.PreferenceStore;
+import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreImpl;
+import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreStrategy;
+import com.twitter.sdk.android.core.internal.persistence.SerializationStrategy;
 
 import java.util.ArrayList;
 import java.util.List;

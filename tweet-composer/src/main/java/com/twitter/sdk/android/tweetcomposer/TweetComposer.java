@@ -34,7 +34,7 @@ import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
 import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.Kit;
 import io.fabric.sdk.android.services.concurrency.DependsOn;
-import io.fabric.sdk.android.services.network.UrlUtils;
+import com.twitter.sdk.android.core.internal.network.UrlUtils;
 
 import java.net.URL;
 import java.util.List;

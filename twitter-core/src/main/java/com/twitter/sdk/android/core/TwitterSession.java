@@ -20,7 +20,7 @@ package com.twitter.sdk.android.core;
 import android.text.TextUtils;
 
 import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.services.persistence.SerializationStrategy;
+import com.twitter.sdk.android.core.internal.persistence.SerializationStrategy;
 
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.Gson;

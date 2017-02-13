@@ -26,7 +26,7 @@ import android.webkit.WebViewClient;
 import java.net.URI;
 import java.util.TreeMap;
 
-import io.fabric.sdk.android.services.network.UrlUtils;
+import com.twitter.sdk.android.core.internal.network.UrlUtils;
 
 class OAuthWebViewClient extends WebViewClient {
 

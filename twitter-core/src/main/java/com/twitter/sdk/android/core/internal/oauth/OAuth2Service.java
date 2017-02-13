@@ -18,7 +18,7 @@
 package com.twitter.sdk.android.core.internal.oauth;
 
 import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.services.network.UrlUtils;
+import com.twitter.sdk.android.core.internal.network.UrlUtils;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterCore;

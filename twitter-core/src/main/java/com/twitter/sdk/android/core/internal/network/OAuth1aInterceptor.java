@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import io.fabric.sdk.android.services.network.UrlUtils;
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;

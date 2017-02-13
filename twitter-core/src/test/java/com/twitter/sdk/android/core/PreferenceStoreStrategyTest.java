@@ -17,9 +17,9 @@
 
 package com.twitter.sdk.android.core;
 
-import io.fabric.sdk.android.services.persistence.PreferenceStore;
-import io.fabric.sdk.android.services.persistence.PreferenceStoreImpl;
-import io.fabric.sdk.android.services.persistence.PreferenceStoreStrategy;
+import com.twitter.sdk.android.core.internal.persistence.PreferenceStore;
+import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreImpl;
+import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreStrategy;
 
 import org.junit.After;
 import org.junit.Before;

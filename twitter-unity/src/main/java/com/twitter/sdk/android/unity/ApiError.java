@@ -23,7 +23,7 @@ import com.google.gson.Gson;
 import com.twitter.sdk.android.core.TwitterCore;
 
 import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.services.persistence.SerializationStrategy;
+import com.twitter.sdk.android.core.internal.persistence.SerializationStrategy;
 
 class ApiError {
     final public int code;

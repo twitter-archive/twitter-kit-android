@@ -24,7 +24,7 @@ import com.google.gson.GsonBuilder;
 import com.twitter.sdk.android.core.internal.oauth.GuestAuthToken;
 
 import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.services.persistence.SerializationStrategy;
+import com.twitter.sdk.android.core.internal.persistence.SerializationStrategy;
 
 public class GuestSession extends Session<GuestAuthToken> {
     public static final long LOGGED_OUT_USER_ID = 0L;

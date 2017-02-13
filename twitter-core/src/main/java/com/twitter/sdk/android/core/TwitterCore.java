@@ -21,7 +21,7 @@ import android.app.Activity;
 
 import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.Kit;
-import io.fabric.sdk.android.services.persistence.PreferenceStoreImpl;
+import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreImpl;
 
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.core.internal.SessionMonitor;
