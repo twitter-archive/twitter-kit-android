@@ -54,10 +54,6 @@ public class VineCardUtils {
         return card.bindingValues.get("player_stream_url");
     }
 
-    public static String getCallToActionUrl(Card card) {
-        return card.bindingValues.get("card_url");
-    }
-
     public static ImageValue getImageValue(Card card) {
         return card.bindingValues.get("player_image");
     }

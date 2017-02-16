@@ -18,7 +18,6 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="tw__cta_text">Åpne i Vine</string>
     <string name="tw__like_tweet">Lik Tweet</string>
     <string name="tw__liked_tweet">Angre Liker</string>
     <string name="tw__loading_tweet">Laster inn tweeten</string>

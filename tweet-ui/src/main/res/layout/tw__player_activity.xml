@@ -42,7 +42,6 @@
         android:layout_gravity="top|center"
         android:padding="@dimen/tw__cta_padding"
         android:layout_marginTop="@dimen/tw__cta_margin_top"
-        android:text="@string/tw__cta_text"
         android:textSize="@dimen/tw__text_size_medium"
         android:textColor="@color/tw__cta_text_color"
         android:background="@drawable/tw__call_to_action"

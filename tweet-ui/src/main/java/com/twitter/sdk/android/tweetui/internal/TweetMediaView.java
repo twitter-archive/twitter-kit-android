@@ -192,12 +192,9 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
         final Card card = tweet.card;
         final Intent intent = new Intent(getContext(), PlayerActivity.class);
         final String playerStreamUrl = VineCardUtils.getStreamUrl(card);
-        final String callToActionUrl = VineCardUtils.getCallToActionUrl(card);
-        final String callToActionText =
-                getContext().getResources().getString(R.string.tw__cta_text);
+
         final PlayerActivity.PlayerItem playerItem =
-                new PlayerActivity.PlayerItem(playerStreamUrl, true,
-                        callToActionText, callToActionUrl);
+                new PlayerActivity.PlayerItem(playerStreamUrl, true);
         intent.putExtra(PlayerActivity.PLAYER_ITEM, playerItem);
 
         final ScribeItem scribeItem = ScribeItem.fromTweetCard(tweet.id, card);

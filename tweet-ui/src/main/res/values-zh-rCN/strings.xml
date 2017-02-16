@@ -18,7 +18,6 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="tw__cta_text">在 Vine 中打开</string>
     <string name="tw__like_tweet">喜欢推文</string>
     <string name="tw__liked_tweet">取消喜欢</string>
     <string name="tw__loading_tweet">加载推文</string>
