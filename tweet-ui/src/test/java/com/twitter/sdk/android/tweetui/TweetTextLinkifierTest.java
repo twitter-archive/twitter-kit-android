@@ -43,7 +43,7 @@ public class TweetTextLinkifierTest {
     @Test
     public void testLinkifyUrls_nullFormattedTweetText() {
         try {
-            TweetTextLinkifier.linkifyUrls(null, null, 0, 0, true);
+            TweetTextLinkifier.linkifyUrls(null, null, 0, 0, true, true);
         } catch (Exception e) {
             fail("threw unexpected exception");
         }
@@ -52,7 +52,7 @@ public class TweetTextLinkifierTest {
     @Test
     public void testLinkifyUrls_newFormattedTweetText() {
         try {
-            TweetTextLinkifier.linkifyUrls(new FormattedTweetText(), null, 0, 0, true);
+            TweetTextLinkifier.linkifyUrls(new FormattedTweetText(), null, 0, 0, true, true);
         } catch (Exception e) {
             fail("threw unexpected exception");
         }
@@ -71,7 +71,7 @@ public class TweetTextLinkifierTest {
         formattedText.urlEntities.add(new FormattedUrlEntity(urlEntity));
 
         final CharSequence linkifiedText
-                = TweetTextLinkifier.linkifyUrls(formattedText, null, 0, 0, true);
+                = TweetTextLinkifier.linkifyUrls(formattedText, null, 0, 0, true, true);
         final String displayUrlFromEntity =
                 linkifiedText.subSequence(urlEntity.getStart(), urlEntity.getEnd()).toString();
         assertEquals(urlEntity.displayUrl, displayUrlFromEntity);
@@ -86,7 +86,7 @@ public class TweetTextLinkifierTest {
         formattedText.urlEntities.add(new FormattedUrlEntity(urlEntity));
 
         final CharSequence linkifiedText
-                = TweetTextLinkifier.linkifyUrls(formattedText, null, 0, 0, true);
+                = TweetTextLinkifier.linkifyUrls(formattedText, null, 0, 0, true, true);
         assertEquals("", linkifiedText.toString());
     }
 
@@ -105,7 +105,7 @@ public class TweetTextLinkifierTest {
         formattedText.urlEntities.add(new FormattedUrlEntity(urlEntity));
 
         final SpannableStringBuilder linkifiedText = (SpannableStringBuilder)
-                TweetTextLinkifier.linkifyUrls(formattedText, mockClickListener, 0, 0, true);
+                TweetTextLinkifier.linkifyUrls(formattedText, mockClickListener, 0, 0, true, true);
         final ClickableSpan[] clickables =
                 linkifiedText.getSpans(urlEntity.getStart(), urlEntity.getEnd(),
                         ClickableSpan.class);
@@ -117,7 +117,7 @@ public class TweetTextLinkifierTest {
         final FormattedTweetText formattedText = setupPicTwitterEntities();
         final FormattedMediaEntity lastPhotoUrl = formattedText.mediaEntities.get(0);
         final CharSequence linkifiedText
-                = TweetTextLinkifier.linkifyUrls(formattedText, null, 0, 0, true);
+                = TweetTextLinkifier.linkifyUrls(formattedText, null, 0, 0, true, true);
 
         // make sure we are stripping out a photo entity since it is the only media entity
         // that we can render inline

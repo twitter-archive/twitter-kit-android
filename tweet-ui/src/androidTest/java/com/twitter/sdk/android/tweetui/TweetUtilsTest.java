@@ -24,8 +24,10 @@ import io.fabric.sdk.android.FabricTestUtils;
 import io.fabric.sdk.android.KitStub;
 
 import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.models.Card;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
+import com.twitter.sdk.android.core.models.TweetEntities;
 import com.twitter.sdk.android.core.models.UserBuilder;
 
 public class TweetUtilsTest extends FabricAndroidTestCase {
@@ -169,5 +171,30 @@ public class TweetUtilsTest extends FabricAndroidTestCase {
 
     public void testGetDisplayTweet_nonRetweet() {
         assertEquals(TestFixtures.TEST_TWEET, TweetUtils.getDisplayTweet(TestFixtures.TEST_TWEET));
+    }
+
+    public void testShowQuoteTweet() {
+        final Tweet tweet = new TweetBuilder()
+                .copy(TestFixtures.TEST_TWEET)
+                .setQuotedStatus(TestFixtures.TEST_TWEET)
+                .build();
+        assertTrue(TweetUtils.showQuoteTweet(tweet));
+    }
+
+    public void testShowQuoteTweet_withCardAndQuoteTweet() {
+        final Tweet tweet = new TweetBuilder()
+                .setQuotedStatus(TestFixtures.TEST_TWEET)
+                .setCard(new Card(null, "Vine"))
+                .setEntities(new TweetEntities(null, null, null, null, null))
+                .build();
+        assertFalse(TweetUtils.showQuoteTweet(tweet));
+    }
+
+    public void testShowQuoteTweet_withMediaAndQuoteTweet() {
+        final Tweet tweet = new TweetBuilder()
+                .copy(TestFixtures.TEST_PHOTO_TWEET)
+                .setQuotedStatus(TestFixtures.TEST_TWEET)
+                .build();
+        assertFalse(TweetUtils.showQuoteTweet(tweet));
     }
 }

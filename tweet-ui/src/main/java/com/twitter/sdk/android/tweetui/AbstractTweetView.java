@@ -399,8 +399,10 @@ abstract class AbstractTweetView extends RelativeLayout{
         final boolean stripVineCard = displayTweet.card != null
                 && VineCardUtils.isVine(displayTweet.card);
 
+        final boolean stripQuoteTweet = TweetUtils.showQuoteTweet(displayTweet);
+
         return TweetTextLinkifier.linkifyUrls(formattedText, getLinkClickListener(),
-                actionColor, actionHighlightColor, stripVineCard);
+                actionColor, actionHighlightColor, stripQuoteTweet, stripVineCard);
     }
 
     void setContentDescription(Tweet displayTweet) {

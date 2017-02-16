@@ -317,7 +317,7 @@ public abstract class BaseTweetView extends AbstractTweetView {
     void setQuoteTweet(Tweet tweet) {
         quoteTweetView = null;
         quoteTweetHolder.removeAllViews();
-        if (tweet != null && tweet.quotedStatus != null) {
+        if (tweet != null && TweetUtils.showQuoteTweet(tweet)) {
             quoteTweetView = new QuoteTweetView(getContext());
             quoteTweetView.setStyle(primaryTextColor, secondaryTextColor, actionColor,
                     actionHighlightColor, mediaBgColor, photoErrorResId);

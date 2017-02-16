@@ -144,6 +144,7 @@ public final class TestFixtures {
                 .setText(text)
                 .setCreatedAt(timestamp)
                 .setFavorited(isFavorited)
+                .setEntities(new TweetEntities(null, null, null, null, null))
                 .build();
     }
 

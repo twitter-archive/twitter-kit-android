@@ -100,6 +100,12 @@ public final class TweetUtils {
         }
     }
 
+    static boolean showQuoteTweet(Tweet tweet) {
+        return tweet.quotedStatus != null &&
+                tweet.card == null &&
+                (tweet.entities.media == null || tweet.entities.media.isEmpty());
+    }
+
     /**
      * Builds a permalink url for the given screen name and Tweet id. If we don't have a
      * screen_name, use the constant UNKNOWN_SCREEN_NAME value and the app or the site will figure

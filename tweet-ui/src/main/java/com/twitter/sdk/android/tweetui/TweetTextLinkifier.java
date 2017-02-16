@@ -49,12 +49,13 @@ final class TweetTextLinkifier {
      * @param listener              A listener to handle link clicks
      * @param linkColor             The link color
      * @param linkHighlightColor    The link background color when pressed
+     * @param stripQuoteTweet       If true we should strip the quote Tweet URL
      * @param stripVineCard         If true we should strip the Vine card URL
      * @return                      The Tweet text with displayUrls substituted in
      */
     static CharSequence linkifyUrls(FormattedTweetText tweetText, final LinkClickListener listener,
                                     final int linkColor, final int linkHighlightColor,
-                                    boolean stripVineCard) {
+                                    boolean stripQuoteTweet, boolean stripVineCard) {
         if (tweetText == null) return null;
 
         if (TextUtils.isEmpty(tweetText.text)) {
@@ -71,7 +72,7 @@ final class TweetTextLinkifier {
          */
         final List<FormattedUrlEntity> combined = mergeAndSortEntities(urls, media);
         final FormattedUrlEntity strippedEntity = getEntityToStrip(tweetText.text, combined,
-                stripVineCard);
+                stripQuoteTweet, stripVineCard);
 
         addUrlEntities(spannable, combined, strippedEntity, listener, linkColor,
                 linkHighlightColor);
@@ -176,12 +177,13 @@ final class TweetTextLinkifier {
     }
 
     static FormattedUrlEntity getEntityToStrip(String tweetText, List<FormattedUrlEntity> combined,
-                                               boolean stripVineCard) {
+                                               boolean stripQuoteTweet, boolean stripVineCard) {
         if (combined.isEmpty()) return null;
 
         final FormattedUrlEntity urlEntity = combined.get(combined.size() - 1);
         if (stripLtrMarker(tweetText).endsWith(urlEntity.url) && (isPhotoEntity(urlEntity) ||
-                isQuotedStatus(urlEntity) || (stripVineCard && isVineCard(urlEntity)))) {
+                (stripQuoteTweet && isQuotedStatus(urlEntity)) ||
+                (stripVineCard && isVineCard(urlEntity)))) {
             return urlEntity;
         }
 
