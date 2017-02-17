@@ -92,20 +92,44 @@ public class PlayerActivity extends Activity {
     }
 
     public static class PlayerItem implements Serializable {
-        public String url;
-        public boolean looping;
-        public String callToActionUrl;
-        public String callToActionText;
+        public final String url;
+        public final boolean looping;
+        public final boolean showVideoControls;
+        public final String callToActionUrl;
+        public final String callToActionText;
 
+        /**
+         * @deprecated use  {@link PlayerItem#PlayerItem(String, boolean, boolean, String, String)}
+         * instead
+         */
+        @Deprecated
         public PlayerItem(String url, boolean looping) {
             this.url = url;
             this.looping = looping;
+            this.showVideoControls = false;
+            this.callToActionUrl = null;
+            this.callToActionText = null;
         }
 
+        /**
+         * @deprecated use  {@link PlayerItem#PlayerItem(String, boolean, boolean, String, String)}
+         * instead
+         */
+        @Deprecated
         public PlayerItem(String url, boolean looping,
                           String callToActionText, String callToActionUrl) {
             this.url = url;
             this.looping = looping;
+            this.showVideoControls = false;
+            this.callToActionText = callToActionText;
+            this.callToActionUrl = callToActionUrl;
+        }
+
+        public PlayerItem(String url, boolean looping, boolean showVideoControls,
+                          String callToActionText, String callToActionUrl) {
+            this.url = url;
+            this.looping = looping;
+            this.showVideoControls = showVideoControls;
             this.callToActionText = callToActionText;
             this.callToActionUrl = callToActionUrl;
         }

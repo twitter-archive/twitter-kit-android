@@ -66,7 +66,7 @@ class PlayerController {
     void prepare(PlayerActivity.PlayerItem item) {
         try {
             setUpCallToAction(item);
-            setUpMediaControl(item.looping);
+            setUpMediaControl(item.looping, item.showVideoControls);
             final View.OnTouchListener listener = SwipeToDismissTouchListener
                     .createFromView(videoView, callback);
             videoView.setOnTouchListener(listener);
@@ -117,8 +117,8 @@ class PlayerController {
         videoView.stopPlayback();
     }
 
-    void setUpMediaControl(boolean looping) {
-        if (looping) {
+    void setUpMediaControl(boolean looping, boolean showVideoControls) {
+        if (looping && !showVideoControls) {
             setUpLoopControl();
         } else {
             setUpMediaControl();

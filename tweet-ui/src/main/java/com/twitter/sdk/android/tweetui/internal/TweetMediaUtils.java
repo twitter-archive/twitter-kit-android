@@ -33,6 +33,7 @@ final public class TweetMediaUtils {
     public static final String GIF_TYPE = "animated_gif";
     private static final String CONTENT_TYPE_MP4 = "video/mp4";
     private static final String CONTENT_TYPE_HLS = "application/x-mpegURL";
+    private static final int LOOP_VIDEO_IN_MILLIS = 6500;
 
     private TweetMediaUtils() {
     }
@@ -138,7 +139,13 @@ final public class TweetMediaUtils {
     }
 
     static public boolean isLooping(MediaEntity mediaEntity) {
-        return GIF_TYPE.equals(mediaEntity.type);
+        return GIF_TYPE.equals(mediaEntity.type) ||
+                VIDEO_TYPE.endsWith(mediaEntity.type) &&
+                mediaEntity.videoInfo.durationMillis < LOOP_VIDEO_IN_MILLIS;
+    }
+
+    static public boolean showVideoControls(MediaEntity mediaEntity) {
+        return !GIF_TYPE.equals(mediaEntity.type);
     }
 
     static boolean isVariantSupported(VideoInfo.Variant variant) {

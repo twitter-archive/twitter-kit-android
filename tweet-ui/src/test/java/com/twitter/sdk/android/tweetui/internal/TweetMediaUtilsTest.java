@@ -311,10 +311,17 @@ public class TweetMediaUtilsTest {
     }
 
     @Test
-    public void testIsLooping_withVideo() {
+    public void testIsLooping_withVideoOverSevenSeconds() {
         final MediaEntity entity = TestFixtures.newMediaEntity(TEST_INDICES_START, TEST_INDICES_END,
-                TEST_MEDIA_TYPE_VIDEO);
+                TEST_MEDIA_TYPE_VIDEO, 7000);
         assertFalse(TweetMediaUtils.isLooping(entity));
+    }
+
+    @Test
+    public void testIsLooping_withVideoUnderSevenSeconds() {
+        final MediaEntity entity = TestFixtures.newMediaEntity(TEST_INDICES_START, TEST_INDICES_END,
+                TEST_MEDIA_TYPE_VIDEO, 6000);
+        assertTrue(TweetMediaUtils.isLooping(entity));
     }
 
     @Test
@@ -322,5 +329,19 @@ public class TweetMediaUtilsTest {
         final MediaEntity entity = TestFixtures.newMediaEntity(TEST_INDICES_START, TEST_INDICES_END,
                 TEST_MEDIA_TYPE_ANIMATED_GIF);
         assertTrue(TweetMediaUtils.isLooping(entity));
+    }
+
+    @Test
+    public void showVideoControlsWithVideo() {
+        final MediaEntity entity = TestFixtures.newMediaEntity(TEST_INDICES_START, TEST_INDICES_END,
+                TEST_MEDIA_TYPE_VIDEO);
+        assertTrue(TweetMediaUtils.showVideoControls(entity));
+    }
+
+    @Test
+    public void showVideoControlsWithAnimatedGif() {
+        final MediaEntity entity = TestFixtures.newMediaEntity(TEST_INDICES_START, TEST_INDICES_END,
+                TEST_MEDIA_TYPE_ANIMATED_GIF);
+        assertFalse(TweetMediaUtils.showVideoControls(entity));
     }
 }

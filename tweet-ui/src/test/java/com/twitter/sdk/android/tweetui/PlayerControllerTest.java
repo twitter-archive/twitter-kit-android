@@ -82,7 +82,7 @@ public class PlayerControllerTest {
         when(videoView.getContext()).thenReturn(RuntimeEnvironment.application);
         subject = spy(new PlayerController(rootView, videoView, videoControlView,
                 videoProgressView, callToActionView, callback));
-        playerItem = new PlayerActivity.PlayerItem(TEST_CONTENT_URL, false);
+        playerItem = new PlayerActivity.PlayerItem(TEST_CONTENT_URL, false, true, null, null);
     }
 
     @Test
@@ -90,7 +90,7 @@ public class PlayerControllerTest {
         doNothing().when(subject).setUpMediaControl();
         subject.prepare(playerItem);
 
-        verify(subject).setUpMediaControl(false);
+        verify(subject).setUpMediaControl(false, true);
         verify(videoView).setOnTouchListener(any(View.OnTouchListener.class));
         verify(videoView).setVideoURI(TEST_URI, false);
         verify(videoView).requestFocus();
@@ -103,7 +103,7 @@ public class PlayerControllerTest {
         doNothing().when(subject).setUpMediaControl();
         subject.prepare(playerItem);
 
-        verify(subject).setUpMediaControl(false);
+        verify(subject).setUpMediaControl(false, true);
         verify(videoView).setVideoURI(TEST_URI, false);
         verify(videoView).requestFocus();
         verify(videoView).setOnPreparedListener(prepareListenerCaptor.capture());
@@ -116,11 +116,11 @@ public class PlayerControllerTest {
         doNothing().when(subject).setUpMediaControl();
 
         final PlayerActivity.PlayerItem itemWithCallToActionUrl =
-                new PlayerActivity.PlayerItem(TEST_CONTENT_URL, false,
+                new PlayerActivity.PlayerItem(TEST_CONTENT_URL, false, false,
                         TEST_CALL_TO_ACTION_TEXT, TEST_CALL_TO_ACTION_URL);
         subject.prepare(itemWithCallToActionUrl);
 
-        verify(subject).setUpMediaControl(false);
+        verify(subject).setUpMediaControl(false, false);
         verify(videoView).setVideoURI(TEST_URI, false);
         verify(videoView).requestFocus();
         verify(videoView).setOnPreparedListener(any(MediaPlayer.OnPreparedListener.class));
@@ -142,7 +142,7 @@ public class PlayerControllerTest {
         doNothing().when(subject).setUpMediaControl();
         subject.prepare(playerItem);
 
-        verify(subject).setUpMediaControl(false);
+        verify(subject).setUpMediaControl(false, true);
         verify(videoView).setVideoURI(TEST_URI, false);
         verify(videoView).requestFocus();
         verify(videoView).setOnPreparedListener(any(MediaPlayer.OnPreparedListener.class));
@@ -165,15 +165,22 @@ public class PlayerControllerTest {
 
     @Test
     public void testSetUpMediaControl_withLooping() {
-        subject.setUpMediaControl(true);
+        subject.setUpMediaControl(true, false);
 
         verify(subject).setUpLoopControl();
     }
 
     @Test
+    public void testSetUpMediaControl_withLoopingAndControls() {
+        subject.setUpMediaControl(true, true);
+
+        verify(subject).setUpMediaControl();
+    }
+
+    @Test
     public void testSetUpMediaControl_withOutLooping() {
         doNothing().when(subject).setUpMediaControl();
-        subject.setUpMediaControl(false);
+        subject.setUpMediaControl(false, true);
 
         verify(subject).setUpMediaControl();
     }

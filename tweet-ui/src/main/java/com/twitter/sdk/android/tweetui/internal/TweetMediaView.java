@@ -180,8 +180,10 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
         if (variant != null) {
             final Intent intent = new Intent(getContext(), PlayerActivity.class);
             final boolean looping = TweetMediaUtils.isLooping(entity);
+            final boolean showControls = TweetMediaUtils.showVideoControls(entity);
             final String url = TweetMediaUtils.getSupportedVariant(entity).url;
-            final PlayerActivity.PlayerItem item = new PlayerActivity.PlayerItem(url, looping);
+            final PlayerActivity.PlayerItem item =
+                    new PlayerActivity.PlayerItem(url, looping, showControls, null, null);
             intent.putExtra(PlayerActivity.PLAYER_ITEM, item);
 
             IntentUtils.safeStartActivity(getContext(), intent);
@@ -194,7 +196,7 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
         final String playerStreamUrl = VineCardUtils.getStreamUrl(card);
 
         final PlayerActivity.PlayerItem playerItem =
-                new PlayerActivity.PlayerItem(playerStreamUrl, true);
+                new PlayerActivity.PlayerItem(playerStreamUrl, true, false, null, null);
         intent.putExtra(PlayerActivity.PLAYER_ITEM, playerItem);
 
         final ScribeItem scribeItem = ScribeItem.fromTweetCard(tweet.id, card);

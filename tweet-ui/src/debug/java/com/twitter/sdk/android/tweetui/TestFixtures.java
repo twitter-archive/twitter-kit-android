@@ -212,8 +212,15 @@ public final class TestFixtures {
     }
 
     public static MediaEntity newMediaEntity(int start, int end, String type) {
+        return newMediaEntity(start, end, type, 0);
+    }
+
+    public static MediaEntity newMediaEntity(int start, int end, String type,
+                                             int durationInMillis) {
+        final VideoInfo videoInfo =
+                new VideoInfo(Collections.EMPTY_LIST, durationInMillis, Collections.EMPTY_LIST);
         return new MediaEntity("url", "expandedUrl", "displayUrl", start, end, 0L, "0", "mediaUrl",
-                "mediaUrlHttps", null, 0L, "0", type, null, "");
+                "mediaUrlHttps", null, 0L, "0", type, videoInfo, "");
     }
 
     public static List<Tweet> getTweetList(long count) {
