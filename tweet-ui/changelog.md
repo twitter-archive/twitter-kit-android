@@ -3,6 +3,8 @@
 
 ## Unreleased
 
+## v2.3.2
+
 * Added ability to set geocode for SearchTimeline builder.
 * Videos less than 6.5 seconds now loop.
 * Fixed issue where quote Tweets with media showed both media and quote Tweet. Only media should be shown if both are included.

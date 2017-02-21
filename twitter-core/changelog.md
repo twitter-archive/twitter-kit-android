@@ -3,6 +3,8 @@
 
 ## Unreleased
 
+## v2.3.1
+
 * Removed unused Vine utility method.
 
 ## v2.3.0
