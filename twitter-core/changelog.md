@@ -3,6 +3,8 @@
 
 ## Unreleased
 
+* Removed unused Vine utility method.
+
 ## v2.3.0
 
 * Normalized user-agent to avoid errors with non-ascii characters.
