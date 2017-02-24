@@ -18,34 +18,58 @@
 package com.twitter.sdk.android.core.identity;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
-import io.fabric.sdk.android.FabricTestUtils;
-import io.fabric.sdk.android.KitStub;
+import retrofit2.Call;
+import retrofit2.mock.Calls;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.TestFixtures;
+import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthException;
+import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
+import com.twitter.sdk.android.core.models.User;
+import com.twitter.sdk.android.core.models.UserBuilder;
+import com.twitter.sdk.android.core.services.AccountService;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
+import org.robolectric.RobolectricTestRunner;
 
-import static org.mockito.Mockito.*;
+import java.io.IOException;
 
-public class TwitterAuthClientTest extends FabricAndroidTestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+
+@RunWith(RobolectricTestRunner.class)
+public class TwitterAuthClientTest {
 
     private static final int TEST_REQUEST_CODE = 100;
+    private static final String TEST_EMAIL = "foo@twitter.com";
 
     private Context mockContext;
+    private TwitterCore mockTwitterCore;
     private TwitterAuthConfig mockAuthConfig;
     private SessionManager<TwitterSession> mockSessionManager;
     private AuthState mockAuthState;
@@ -53,40 +77,29 @@ public class TwitterAuthClientTest extends FabricAndroidTestCase {
     private DefaultScribeClient mockScribeClient;
     private TwitterAuthClient authClient;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-
+    @Before
+    public void setUp() throws Exception {
         mockContext = mock(Context.class);
         when(mockContext.getPackageName()).thenReturn(getClass().getPackage().toString());
 
+        mockTwitterCore = mock(TwitterCore.class);
         mockAuthConfig = mock(TwitterAuthConfig.class);
         when(mockAuthConfig.getRequestCode()).thenReturn(TEST_REQUEST_CODE);
         mockSessionManager = mock(SessionManager.class);
-        mockAuthState = mock(TestAuthState.class);
+        mockAuthState = mock(AuthState.class);
         mockCallback = mock(Callback.class);
         mockScribeClient = mock(DefaultScribeClient.class);
 
-        authClient = new TwitterAuthClient(mockContext, mockAuthConfig, mockSessionManager,
+        authClient = new TwitterAuthClient(mockTwitterCore, mockAuthConfig, mockSessionManager,
                 mockAuthState);
     }
 
-    public void testConstructor_noParameters() throws Exception {
-        FabricTestUtils.with(getContext(), new KitStub());
-        try {
-            new TwitterAuthClient();
-            fail("Expected IllegalStateException to be thrown");
-        } catch (IllegalStateException e) {
-            assertEquals("Must start Twitter Kit with Fabric.with() first", e.getMessage());
-        } finally {
-            FabricTestUtils.resetFabric();
-        }
-    }
-
+    @Test
     public void testGetRequestCode() {
         assertEquals(TEST_REQUEST_CODE, authClient.getRequestCode());
     }
 
+    @Test
     public void testAuthorize_activityNull() {
         try {
             authClient.authorize(null, mock(Callback.class));
@@ -96,6 +109,7 @@ public class TwitterAuthClientTest extends FabricAndroidTestCase {
         }
     }
 
+    @Test
     public void testAuthorize_activityIsFinishing() {
         final Activity mockActivity = mock(Activity.class);
         when(mockActivity.isFinishing()).thenReturn(true);
@@ -105,6 +119,7 @@ public class TwitterAuthClientTest extends FabricAndroidTestCase {
         verifyZeroInteractions(mockAuthState);
     }
 
+    @Test
     public void testAuthorize_callbackNull() {
         try {
             authClient.authorize(mock(Activity.class), null);
@@ -114,6 +129,7 @@ public class TwitterAuthClientTest extends FabricAndroidTestCase {
         }
     }
 
+    @Test
     public void testAuthorize_authorizeInProgress() throws PackageManager.NameNotFoundException {
         final Activity mockActivity = mock(Activity.class);
         TestUtils.setupNoSSOAppInstalled(mockActivity);
@@ -124,6 +140,7 @@ public class TwitterAuthClientTest extends FabricAndroidTestCase {
         verify(mockCallback).failure(any(TwitterAuthException.class));
     }
 
+    @Test
     public void testAuthorize_ssoAvailable() throws PackageManager.NameNotFoundException {
         final Activity mockActivity = mock(Activity.class);
         TestUtils.setupTwitterInstalled(mockActivity);
@@ -136,6 +153,7 @@ public class TwitterAuthClientTest extends FabricAndroidTestCase {
         verify(mockAuthState).beginAuthorize(eq(mockActivity), any(SSOAuthHandler.class));
     }
 
+    @Test
     public void testAuthorize_ssoAvailableViaTwitterDogfood()
             throws PackageManager.NameNotFoundException {
         final Activity mockActivity = mock(Activity.class);
@@ -149,6 +167,7 @@ public class TwitterAuthClientTest extends FabricAndroidTestCase {
         verify(mockAuthState).beginAuthorize(eq(mockActivity), any(SSOAuthHandler.class));
     }
 
+    @Test
     public void testAuthorize_ssoNotAvailable() throws PackageManager.NameNotFoundException {
         final Activity mockActivity = mock(Activity.class);
         TestUtils.setupNoSSOAppInstalled(mockActivity);
@@ -161,6 +180,7 @@ public class TwitterAuthClientTest extends FabricAndroidTestCase {
         verify(mockAuthState).beginAuthorize(eq(mockActivity), any(OAuthHandler.class));
     }
 
+    @Test
     public void testAuthorize_bothSsoAndOAuthFail() throws PackageManager.NameNotFoundException {
         final Activity mockActivity = mock(Activity.class);
         TestUtils.setupTwitterInstalled(mockActivity);
@@ -175,10 +195,11 @@ public class TwitterAuthClientTest extends FabricAndroidTestCase {
         assertEquals("Authorize failed.", argCaptor.getValue().getMessage());
     }
 
+    @Test
     public void testAuthorize_scribesImpression() throws PackageManager.NameNotFoundException {
         final Activity mockActivity = mock(Activity.class);
         TestUtils.setupNoSSOAppInstalled(mockActivity);
-        authClient = new TwitterAuthClient(mockContext, mockAuthConfig, mockSessionManager,
+        authClient = new TwitterAuthClient(mockTwitterCore, mockAuthConfig, mockSessionManager,
                 mockAuthState) {
             @Override
             protected DefaultScribeClient getScribeClient() {
@@ -190,12 +211,13 @@ public class TwitterAuthClientTest extends FabricAndroidTestCase {
         verify(mockScribeClient).scribe(any(EventNamespace.class));
     }
 
+    @Test
     public void testAuthorize_scribeHandlesNullClient()
             throws PackageManager.NameNotFoundException {
         final Activity mockActivity = mock(Activity.class);
         TestUtils.setupNoSSOAppInstalled(mockActivity);
 
-        authClient = new TwitterAuthClient(mockContext, mockAuthConfig, mockSessionManager,
+        authClient = new TwitterAuthClient(mockTwitterCore, mockAuthConfig, mockSessionManager,
                 mockAuthState) {
             @Override
             protected DefaultScribeClient getScribeClient() {
@@ -210,6 +232,7 @@ public class TwitterAuthClientTest extends FabricAndroidTestCase {
         }
     }
 
+    @Test
     public void testOnActivityResult_noAuthorizeInProgress() {
         when(mockAuthState.isAuthorizeInProgress()).thenReturn(false);
 
@@ -219,6 +242,7 @@ public class TwitterAuthClientTest extends FabricAndroidTestCase {
         verifyNoMoreInteractions(mockAuthState);
     }
 
+    @Test
     public void testOnActivityResult_handleOnActivityResultTrue() {
         setUpAuthStateOnActivityResult(true);
 
@@ -229,6 +253,7 @@ public class TwitterAuthClientTest extends FabricAndroidTestCase {
         verify(mockAuthState).endAuthorize();
     }
 
+    @Test
     public void testOnActivityResult_handleOnActivityResultFalse() {
         setUpAuthStateOnActivityResult(false);
 
@@ -247,85 +272,7 @@ public class TwitterAuthClientTest extends FabricAndroidTestCase {
         when(mockAuthState.getAuthHandler()).thenReturn(mockAuthHandler);
     }
 
-    public void testRequestEmail_nullSession() {
-        try {
-            authClient.requestEmail(null, mock(Callback.class));
-            fail("Expected IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertEquals("Session must not be null.", e.getMessage());
-        }
-    }
-
-    public void testRequestEmail() {
-        final TwitterSession mockSession = mock(TwitterSession.class);
-        when(mockSession.getId()).thenReturn(TestFixtures.USER_ID);
-        authClient.requestEmail(mockSession, mock(Callback.class));
-
-        final ArgumentCaptor<Intent> argCaptor = ArgumentCaptor.forClass(Intent.class);
-        verify(mockContext).startActivity(argCaptor.capture());
-        assertShareEmailIntent(argCaptor.getValue());
-    }
-
-    public void testRequestEmail_nullCallback() {
-        try {
-            authClient.requestEmail(mock(TwitterSession.class), null);
-            fail("Expected IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertEquals("Callback must not be null.", e.getMessage());
-        }
-    }
-
-    public void testRequestEmail_scribesImpression() {
-        final TwitterSession mockSession = mock(TwitterSession.class);
-        when(mockSession.getId()).thenReturn(TestFixtures.USER_ID);
-        authClient = new TwitterAuthClient(mockContext, mockAuthConfig, mockSessionManager,
-                mockAuthState) {
-            @Override
-            protected DefaultScribeClient getScribeClient() {
-                return mockScribeClient;
-            }
-        };
-
-        authClient.requestEmail(mockSession, mock(Callback.class));
-
-        verify(mockScribeClient).scribe(any(EventNamespace.class));
-    }
-
-    public void testReqestEmail_scribeHandlesNullClient() {
-        final TwitterSession mockSession = mock(TwitterSession.class);
-        when(mockSession.getId()).thenReturn(TestFixtures.USER_ID);
-        authClient = new TwitterAuthClient(mockContext, mockAuthConfig, mockSessionManager,
-                mockAuthState) {
-            @Override
-            protected DefaultScribeClient getScribeClient() {
-                return null;
-            }
-        };
-
-        try {
-            authClient.requestEmail(mockSession, mock(Callback.class));
-        } catch (NullPointerException e) {
-            fail("should handle null scribe client");
-        }
-    }
-
-    public void testNewShareEmailIntent() {
-        final TwitterSession mockSession = mock(TwitterSession.class);
-        when(mockSession.getId()).thenReturn(TestFixtures.USER_ID);
-        final Intent intent = authClient.newShareEmailIntent(mockSession, mock(Callback.class));
-        assertShareEmailIntent(intent);
-    }
-
-    private void assertShareEmailIntent(Intent intent) {
-        final ComponentName component = new ComponentName(mockContext,
-                ShareEmailActivity.class.getName());
-        assertEquals(component, intent.getComponent());
-        assertEquals(Intent.FLAG_ACTIVITY_NEW_TASK, intent.getFlags());
-        assertEquals(TestFixtures.USER_ID, intent.getLongExtra(ShareEmailActivity.EXTRA_SESSION_ID,
-                TwitterSession.UNKNOWN_USER_ID));
-        assertNotNull(intent.getParcelableExtra(ShareEmailActivity.EXTRA_RESULT_RECEIVER));
-    }
-
+    @Test
     public void testCallbackWrapper_success() {
         final TwitterAuthClient.CallbackWrapper callbackWrapper
                 = new TwitterAuthClient.CallbackWrapper(mockSessionManager, mockCallback);
@@ -338,6 +285,7 @@ public class TwitterAuthClientTest extends FabricAndroidTestCase {
         verify(mockCallback).success(eq(mockResult));
     }
 
+    @Test
     public void testCallbackWrapper_failure() {
         final TwitterAuthClient.CallbackWrapper callbackWrapper
                 = new TwitterAuthClient.CallbackWrapper(mockSessionManager, mockCallback);
@@ -347,5 +295,73 @@ public class TwitterAuthClientTest extends FabricAndroidTestCase {
 
         verifyZeroInteractions(mockSessionManager);
         verify(mockCallback).failure(eq(mockException));
+    }
+
+    @Test
+    public void testRequestEmail_withSuccess() {
+        final User user = new UserBuilder().setEmail(TEST_EMAIL).build();
+        final Call<User> call = Calls.response(user);
+        setupMockAccountService(call);
+
+        authClient.requestEmail(mock(TwitterSession.class), new Callback<String>() {
+            @Override
+            public void success(Result<String> result) {
+                assertEquals(TEST_EMAIL, result.data);
+            }
+
+            @Override
+            public void failure(TwitterException exception) {
+                fail("Expected Callback#success to be called");
+            }
+        });
+    }
+
+    @Test
+    public void testRequestEmail_withFailure() {
+        final IOException networkException = new IOException("Network failure");
+        final Call<User> call = Calls.failure(networkException);
+        setupMockAccountService(call);
+
+        authClient.requestEmail(mock(TwitterSession.class), new Callback<String>() {
+            @Override
+            public void success(Result<String> result) {
+                fail("Expected Callback#failure to be called");
+            }
+
+            @Override
+            public void failure(TwitterException exception) {
+                assertEquals(exception.getCause(), networkException);
+            }
+        });
+    }
+
+    @Test
+    public void testRequestEmail_scribesImpression() {
+        final IOException networkException = new IOException("Network failure");
+        final Call<User> call = Calls.failure(networkException);
+        setupMockAccountService(call);
+
+        final TwitterSession mockSession = mock(TwitterSession.class);
+        when(mockSession.getId()).thenReturn(TestFixtures.USER_ID);
+        authClient = new TwitterAuthClient(mockTwitterCore, mockAuthConfig, mockSessionManager,
+                mockAuthState) {
+            @Override
+            protected DefaultScribeClient getScribeClient() {
+                return mockScribeClient;
+            }
+        };
+
+        authClient.requestEmail(mockSession, mock(Callback.class));
+
+        verify(mockScribeClient).scribe(any(EventNamespace.class));
+    }
+
+    private void setupMockAccountService(Call<User> call) {
+        final AccountService mockAccountService = mock(AccountService.class);
+        when(mockAccountService.verifyCredentials(anyBoolean(), anyBoolean(), eq(true)))
+                .thenReturn(call);
+        final TwitterApiClient mockApiClient = mock(TwitterApiClient.class);
+        when(mockApiClient.getAccountService()).thenReturn(mockAccountService);
+        when(mockTwitterCore.getApiClient(any(TwitterSession.class))).thenReturn(mockApiClient);
     }
 }

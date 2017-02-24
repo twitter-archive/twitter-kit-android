@@ -18,9 +18,5 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="tw__allow_btn_txt">Permite</string>
     <string name="tw__login_btn_txt">Conectează-te cu Twitter</string>
-    <string name="tw__not_now_btn_txt">Nu acum</string>
-    <string name="tw__share_email_desc">Permite ca %1$s să acceseze adresa de e-mail asociată contului tău Twitter \@%2$s, astfel încât %1$s să o folosească în conformitate cu politica sa de confidențialitate. De exemplu, %1$s ți-ar putea trimite actualizări și alte informații la această adresă.</string>
-    <string name="tw__share_email_title">Partajează-ți adresa de e-mail</string>
 </resources>

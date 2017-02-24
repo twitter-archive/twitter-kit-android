@@ -18,9 +18,5 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="tw__allow_btn_txt">Tillat</string>
     <string name="tw__login_btn_txt">Logg inn med Twitter</string>
-    <string name="tw__not_now_btn_txt">Ikke nå</string>
-    <string name="tw__share_email_desc">Gi %1$s tilgang til e-postadressen tilknyttet din Twitter-konto \@%2$s slik at %1$s kan benytte den ihht personverpolicyen. For eksempel, %1$s kan sende deg oppdateringer og annen informasjon på denne adressen.</string>
-    <string name="tw__share_email_title">Del e-postadressen din</string>
 </resources>

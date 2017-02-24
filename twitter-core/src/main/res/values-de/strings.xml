@@ -18,10 +18,5 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="tw__allow_btn_txt">Erlauben</string>
     <string name="tw__login_btn_txt">Mit Twitter anmelden</string>
-    <string name="tw__not_now_btn_txt">Nicht jetzt</string>
-    <string name="tw__share_email_desc">Erlaube %1$s  Zugriff auf die mit Deinem Twitter Account verknüpfte E-Mail Adresse \@%2$s, damit %1$s sie den Datenschutzrichtlinien entsprechend nutzen kann. Zum \
-Beispiel könnte %1$s Dir Updates und andere Informationen an diese Adresse senden.</string>
-    <string name="tw__share_email_title">Teile Deine E-Mail Adresse</string>
 </resources>

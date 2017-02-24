@@ -18,9 +18,5 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="tw__allow_btn_txt">İzin ver</string>
     <string name="tw__login_btn_txt">Twitter ile giriş yap</string>
-    <string name="tw__not_now_btn_txt">Şu an değil</string>
-    <string name="tw__share_email_desc">Twitter hesabın \@%2$s ile ilişkilendirilmiş e-posta adresine erişmesi için %1$s uygulamasına izin ver. Böylece %1$s bu e-posta adresini kendi gizlilik politikası kapsamında kullanabilir. Örneğin, %1$s bu adres üzerinden sana en yeni haberleri ve diğer bilgileri gönderebilir.</string>
-    <string name="tw__share_email_title">E-posta adresini paylaş</string>
 </resources>

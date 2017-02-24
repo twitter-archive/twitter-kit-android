@@ -76,7 +76,8 @@ public class ComposerControllerTest {
 
         final TwitterApiClient mockTwitterApiClient = mock(TwitterApiClient.class);
         mockAccountService = mock(AccountService.class);
-        when(mockAccountService.verifyCredentials(any(Boolean.class), any(Boolean.class)))
+        when(mockAccountService
+                .verifyCredentials(any(Boolean.class), any(Boolean.class), any(Boolean.class)))
                 .thenReturn(mock(Call.class));
         when(mockTwitterApiClient.getAccountService()).thenReturn(mockAccountService);
 
@@ -109,7 +110,7 @@ public class ComposerControllerTest {
         verify(mockComposerView).setCardView(any(View.class));
         verify(mockDependencyProvider).getApiClient(mockTwitterSession);
         verify(mockDependencyProvider).getCardViewFactory();
-        verify(mockAccountService).verifyCredentials(eq(false), eq(true));
+        verify(mockAccountService).verifyCredentials(eq(false), eq(true), eq(false));
         verify(mockComposerScribeClient).impression(mockCard);
     }
 

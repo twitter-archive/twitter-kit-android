@@ -18,10 +18,11 @@
 package com.twitter.sdk.android.core.identity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 
 import io.fabric.sdk.android.Fabric;
+import retrofit2.Call;
+
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.SessionManager;
@@ -33,6 +34,7 @@ import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.internal.scribe.TwitterCoreScribeClientHolder;
+import com.twitter.sdk.android.core.models.User;
 
 /**
  * Client for requesting authorization and email from the user.
@@ -51,11 +53,10 @@ public class TwitterAuthClient {
     private static final String SCRIBE_ELEMENT = ""; // intentionally blank
     private static final String SCRIBE_ACTION = "impression";
 
+    final TwitterCore twitterCore;
     final AuthState authState;
     final SessionManager<TwitterSession> sessionManager;
-
-    private final Context context;
-    private final TwitterAuthConfig authConfig;
+    final TwitterAuthConfig authConfig;
 
     public int getRequestCode() {
         return authConfig.getRequestCode();
@@ -68,14 +69,14 @@ public class TwitterAuthClient {
      *                                         Fabric.with()
      */
     public TwitterAuthClient() {
-        this(TwitterCore.getInstance().getContext(), TwitterCore.getInstance().getAuthConfig(),
+        this(TwitterCore.getInstance(), TwitterCore.getInstance().getAuthConfig(),
                 TwitterCore.getInstance().getSessionManager(), AuthStateLazyHolder.INSTANCE);
     }
 
-    TwitterAuthClient(Context context, TwitterAuthConfig authConfig,
-            SessionManager<TwitterSession> sessionManager, AuthState authState) {
+    TwitterAuthClient(TwitterCore twitterCore, TwitterAuthConfig authConfig,
+                      SessionManager<TwitterSession> sessionManager, AuthState authState) {
+        this.twitterCore = twitterCore;
         this.authState = authState;
-        this.context = context;
         this.authConfig = authConfig;
         this.sessionManager = sessionManager;
     }
@@ -174,15 +175,22 @@ public class TwitterAuthClient {
      *                 an error is returned.
      * @throws java.lang.IllegalArgumentException if session or callback are null.
      */
-    public void requestEmail(TwitterSession session, Callback<String> callback) {
-        if (session == null) {
-            throw new IllegalArgumentException("Session must not be null.");
-        }
-        if (callback == null) {
-            throw new IllegalArgumentException("Callback must not be null.");
-        }
+    public void requestEmail(TwitterSession session, final Callback<String> callback) {
         scribeRequestEmail();
-        context.startActivity(newShareEmailIntent(session, callback));
+        final Call<User> verifyRequest = twitterCore.getApiClient(session).getAccountService()
+                .verifyCredentials(false, false, true);
+
+        verifyRequest.enqueue(new Callback<User>() {
+            @Override
+            public void success(Result<User> result) {
+                callback.success(new Result<>(result.data.email, null));
+            }
+
+            @Override
+            public void failure(TwitterException exception) {
+                callback.failure(exception);
+            }
+        });
     }
 
     protected DefaultScribeClient getScribeClient() {
@@ -205,19 +213,11 @@ public class TwitterAuthClient {
         scribeClient.scribe(ns);
     }
 
-    Intent newShareEmailIntent(TwitterSession session, Callback<String> callback) {
-        return new Intent(context, ShareEmailActivity.class)
-                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .putExtra(ShareEmailActivity.EXTRA_SESSION_ID, session.getId())
-                .putExtra(ShareEmailActivity.EXTRA_RESULT_RECEIVER,
-                        new ShareEmailResultReceiver(callback));
-    }
-
     static class CallbackWrapper extends Callback<TwitterSession> {
         private final SessionManager<TwitterSession> sessionManager;
         private final Callback<TwitterSession> callback;
 
-        public CallbackWrapper(SessionManager<TwitterSession> sessionManager,
+        CallbackWrapper(SessionManager<TwitterSession> sessionManager,
                 Callback<TwitterSession> callback) {
             this.sessionManager = sessionManager;
             this.callback = callback;

@@ -18,9 +18,5 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="tw__allow_btn_txt">Engedélyezés</string>
     <string name="tw__login_btn_txt">Bejelentkezés Twitter-fiókkal</string>
-    <string name="tw__not_now_btn_txt">Most nem</string>
-    <string name="tw__share_email_desc">Engedélyezd a(z) %1$s számára Twitter-fiókodhoz kapcsolódó e-mail cím elérését \@%2$s, hogy a(z) %1$s adatvédelmi irányelveinek megfelelően használhassa azt. Például, hogy %1$s frissítéseket és más egyéb információkat küldhessen erre az e-mail címre.</string>
-    <string name="tw__share_email_title">Oszd meg az e-mail címedet</string>
 </resources>

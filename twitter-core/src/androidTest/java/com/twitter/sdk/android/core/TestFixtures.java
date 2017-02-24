@@ -18,9 +18,6 @@
 package com.twitter.sdk.android.core;
 
 public final class TestFixtures {
-
-    public static final String KEY = "key";
     public static final String TOKEN = "token";
     public static final String SECRET = "secret";
-    public static final long USER_ID = 11L;
 }

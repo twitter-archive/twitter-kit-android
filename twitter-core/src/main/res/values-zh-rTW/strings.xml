@@ -18,9 +18,5 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="tw__allow_btn_txt">允許</string>
     <string name="tw__login_btn_txt">使用 Twitter 登入</string>
-    <string name="tw__not_now_btn_txt">現在不要</string>
-    <string name="tw__share_email_desc">允許 %1$s 存取與你的 Twitter 帳戶相關的電子郵件地址 \@%2$s 如此一來，%1$s 可以根據隱私政策使用該電子郵件地址。例如，%1$s 可以將最新消息和其他資訊寄至該電子郵件地址。</string>
-    <string name="tw__share_email_title">分享你的電子郵件地址</string>
 </resources>

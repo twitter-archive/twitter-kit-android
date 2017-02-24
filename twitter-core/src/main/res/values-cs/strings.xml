@@ -18,9 +18,5 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="tw__allow_btn_txt">Povolit</string>
     <string name="tw__login_btn_txt">Přihlásit se účtem od Twitteru</string>
-    <string name="tw__not_now_btn_txt">Teď ne</string>
-    <string name="tw__share_email_desc">Povolí uživateli %1$s přístup k e-mailové adrese přidružené k vašemu twitterovému účtu \@%2$s, takže ji pak %1$s bude moct používat podle svých zásad ochrany osobních údajů. Například vám %1$s bude moct na tuto adresu posílat aktualizace a další informace.</string>
-    <string name="tw__share_email_title">Sdílejte svou e-mailovou adresu</string>
 </resources>

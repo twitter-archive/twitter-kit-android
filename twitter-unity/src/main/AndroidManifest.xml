@@ -19,6 +19,5 @@
           package="com.twitter.sdk.android.unity">
     <application>
         <activity android:name="com.twitter.sdk.android.unity.LoginActivity"/>
-        <activity android:name="com.twitter.sdk.android.unity.RequestEmailActivity"/>
     </application>
 </manifest>

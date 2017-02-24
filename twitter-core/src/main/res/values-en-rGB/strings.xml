@@ -18,9 +18,5 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="tw__allow_btn_txt">Allow</string>
     <string name="tw__login_btn_txt">Log in with Twitter</string>
-    <string name="tw__not_now_btn_txt"> Not now </string>
-    <string name="tw__share_email_desc">Allow %1$s to access the email address associated with your Twitter account \@%2$s so that %1$s can use it according to its privacy policy. For example, %1$s could send you updates and other information at that address.</string>
-    <string name="tw__share_email_title">Share your email address</string>
 </resources>

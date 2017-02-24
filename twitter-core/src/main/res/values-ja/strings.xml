@@ -18,9 +18,5 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="tw__allow_btn_txt">許可</string>
     <string name="tw__login_btn_txt">Twitterにログイン</string>
-    <string name="tw__not_now_btn_txt">今はしない</string>
-    <string name="tw__share_email_desc">あなたのTwitterアカウント\@%2$sに登録されているメールアドレスへのアクセスを%1$sに許可します。%1$sはそのメールアドレスをプライバシーポリシーに従って使用できるようになります。たとえば、%1$sはそのアドレス宛に更新情報などを送信することができます。</string>
-    <string name="tw__share_email_title">メールアドレスを共有</string>
 </resources>

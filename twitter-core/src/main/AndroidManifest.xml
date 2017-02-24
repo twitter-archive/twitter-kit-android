@@ -27,13 +27,6 @@
                   android:excludeFromRecents="true"
                   android:exported="false"/>
 
-        <activity
-            android:name=".identity.ShareEmailActivity"
-            android:label="@string/kit_name"
-            android:icon="@drawable/tw__transparent"
-            android:configChanges="orientation|screenSize"
-            android:excludeFromRecents="true"
-            android:exported="false"/>
     </application>
 
 </manifest>

@@ -31,10 +31,14 @@ public interface AccountService {
      * this method to test if supplied user credentials are valid.
      *
      * @param includeEntities (optional) The entities node will not be included when set to false.
-     * @param skipStatus (optional) When set to either true, t or 1 statuses will not be included in
+     * @param skipStatus (optional) When set to either true statuses will not be included in
      *                   the returned user objects.
+     * @param includeEmail (optional) When set to true email will be returned in the user object as
+     *                     a string. If the user does not have an email address on their account, or
+     *                     if the email address is not verified, null will be returned.
      */
     @GET("/1.1/account/verify_credentials.json")
     Call<User> verifyCredentials(@Query("include_entities") Boolean includeEntities,
-                                 @Query("skip_status") Boolean skipStatus);
+                                 @Query("skip_status") Boolean skipStatus,
+                                 @Query("include_email") Boolean includeEmail);
 }

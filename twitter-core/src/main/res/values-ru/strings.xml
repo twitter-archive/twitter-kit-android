@@ -18,9 +18,5 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="tw__allow_btn_txt">Разрешить</string>
     <string name="tw__login_btn_txt">Войти с учётной записью Твиттера</string>
-    <string name="tw__not_now_btn_txt">Не сейчас</string>
-    <string name="tw__share_email_desc">Разрешить %1$s доступ к адресу электронной почты, связанному с вашей учетной записью в Твиттере \@%2$s. Таким образом, %1$s сможет использовать его согласно своей политике конфиденциальности. Например, %1$s сможет отправлять обновления или другую информацию на этот адрес.</string>
-    <string name="tw__share_email_title">Поделиться своим адресом электронной почты</string>
 </resources>

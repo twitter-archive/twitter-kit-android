@@ -22,9 +22,13 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.google.gson.Gson;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.TwitterSessionHelper;
+import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.tweetcomposer.Card;
 import com.twitter.sdk.android.tweetcomposer.ComposerActivity;
 import com.unity3d.player.UnityPlayer;
@@ -39,18 +43,6 @@ public class TwitterKit {
     public static void login() {
         final Activity currentActivity = UnityPlayer.currentActivity;
         final Intent intent = new Intent(currentActivity, LoginActivity.class);
-        currentActivity.startActivity(intent);
-    }
-
-    /**
-     *  Convenience method for requesting users email address using JNI.
-     *
-     * @param session the user session
-     */
-    public static void requestEmail(String session) {
-        final Activity currentActivity = UnityPlayer.currentActivity;
-        final Intent intent = new Intent(currentActivity, RequestEmailActivity.class);
-        intent.putExtra(EXTRA_TWITTER_SESSION, session);
         currentActivity.startActivity(intent);
     }
 
@@ -92,6 +84,36 @@ public class TwitterKit {
                 .hashtags(hashtags)
                 .createIntent();
         currentActivity.startActivity(intent);
+    }
+
+    /**
+     *  Convenience method for requesting users email address using JNI.
+     *
+     * @param session the user session
+     */
+    public static void requestEmail(String session) {
+        final TwitterSession twitterSession = TwitterSessionHelper.deserialize(session);
+        new TwitterAuthClient().requestEmail(twitterSession, new Callback<String>() {
+            @Override
+            public void success(Result<String> result) {
+                final UnityMessage message = new UnityMessage.Builder()
+                        .setMethod("RequestEmailComplete")
+                        .setData(result.data)
+                        .build();
+                message.send();
+            }
+
+            @Override
+            public void failure(TwitterException exception) {
+                final String error = new ApiError.Serializer()
+                        .serialize(new ApiError(0, exception.getMessage()));
+                final UnityMessage message = new UnityMessage.Builder()
+                        .setMethod("RequestEmailFailed")
+                        .setData(error)
+                        .build();
+                message.send();
+            }
+        });
     }
 
     static class CardConfig {

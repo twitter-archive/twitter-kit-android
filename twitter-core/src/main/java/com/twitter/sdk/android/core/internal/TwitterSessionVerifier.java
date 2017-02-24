@@ -56,7 +56,7 @@ public class TwitterSessionVerifier implements SessionVerifier<TwitterSession> {
         final AccountService accountService = accountServiceProvider.getAccountService(session);
         try {
             scribeVerifySession();
-            accountService.verifyCredentials(true, false).execute();
+            accountService.verifyCredentials(true, false, false).execute();
         } catch (IOException | RuntimeException e) {
             // We ignore failures since we will attempt the verification again the next time
             // the verification period comes up. This has the potential to lose events, but we

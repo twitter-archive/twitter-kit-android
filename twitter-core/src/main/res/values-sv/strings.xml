@@ -18,9 +18,5 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="tw__allow_btn_txt">Tillåt</string>
     <string name="tw__login_btn_txt">Logga in med Twitter</string>
-    <string name="tw__not_now_btn_txt">Inte nu</string>
-    <string name="tw__share_email_desc">Tillåt %1$s att få tillgång till den e-postadress som är kopplad till ditt Twitter-konto \@%2$s så att %1$s kan använda den enligt deras integritetspolicy. Till exempel så skulle %1$s kunna skicka uppdateringar och annan information till den adressen.</string>
-    <string name="tw__share_email_title">Dela din e-postadress</string>
 </resources>

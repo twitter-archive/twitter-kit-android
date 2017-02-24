@@ -77,7 +77,7 @@ public class TwitterSessionVerifierTest {
 
         verifier.verifySession(session);
 
-        verify(mockAccountService).verifyCredentials(true, false);
+        verify(mockAccountService).verifyCredentials(true, false, false);
         verify(mockScribeClient).scribe(namespaceCaptor.capture());
         final EventNamespace ns = namespaceCaptor.getValue();
         assertEquals(REQUIRED_IMPRESSION_CLIENT, ns.client);
@@ -103,11 +103,11 @@ public class TwitterSessionVerifierTest {
     @Test
     public void testVerifySession_catchesRetrofitExceptionsAndFinishesVerification() {
         doReturn(Calls.failure(new IOException()))
-                .when(mockAccountService).verifyCredentials(true, false);
+                .when(mockAccountService).verifyCredentials(true, false, false);
 
         verifier.verifySession(session);
 
-        verify(mockAccountService).verifyCredentials(true, false);
+        verify(mockAccountService).verifyCredentials(true, false, false);
         // success, we caught the exception
     }
 }

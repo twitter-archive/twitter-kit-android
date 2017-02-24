@@ -18,9 +18,5 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="tw__allow_btn_txt">Toestaan</string>
     <string name="tw__login_btn_txt">Inloggen met Twitter</string>
-    <string name="tw__not_now_btn_txt">Niet nu</string>
-    <string name="tw__share_email_desc">Geef %1$s toegang tot het e-mailadres van je Twitter-account \@%2$s zodat %1$s er gebruik van kan maken volgens het privacy beleid. %1$s kan je bijvoorbeeld updates en andere informatie te sturen op dat adres.</string>
-    <string name="tw__share_email_title">E-mailadres delen</string>
 </resources>

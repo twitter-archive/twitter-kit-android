@@ -18,9 +18,5 @@
   -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="tw__allow_btn_txt">السماح</string>
     <string name="tw__login_btn_txt">سجّل الدخول بواسطة تويتر</string>
-    <string name="tw__not_now_btn_txt">ليس الآن</string>
-    <string name="tw__share_email_desc">السماح لـ %1$s بالدخول إلى البريد الإلكترونيّ المرتبِط بحساب تويتر الخاصّ بك ‎\@%2$s كي يتمكن %1$s من استخدامه استنادًا إلى سياسة الخصوصيّة الخاصّة به. على سبيل المثال، يمكن لـ %1$s أن يرسِل لك تحديثات ومعلومات أخرى على ذلك العنوان.</string>
-    <string name="tw__share_email_title">شارِك عنوان بريدك الإلكترونيّ</string>
 </resources>
