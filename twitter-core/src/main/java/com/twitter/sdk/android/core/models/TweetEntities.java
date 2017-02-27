@@ -57,15 +57,6 @@ public class TweetEntities {
     @SerializedName("symbols")
     public final List<SymbolEntity> symbols;
 
-    /**
-     * @deprecated use {@link TweetEntities#TweetEntities(List, List, List, List, List)} instead
-     */
-    @Deprecated
-    public TweetEntities(List<UrlEntity> urls, List<MentionEntity> userMentions,
-                         List<MediaEntity> media, List<HashtagEntity> hashtags) {
-        this(urls, userMentions, media, hashtags, null);
-    }
-
     public TweetEntities(List<UrlEntity> urls, List<MentionEntity> userMentions,
             List<MediaEntity> media, List<HashtagEntity> hashtags, List<SymbolEntity> symbols) {
         this.urls = getSafeList(urls);

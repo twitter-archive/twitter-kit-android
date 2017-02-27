@@ -63,7 +63,7 @@ final public class TweetMediaUtils {
      */
     static public List<MediaEntity> getPhotoEntities(Tweet tweet) {
         final List<MediaEntity> photoEntities = new ArrayList<>();
-        final TweetEntities extendedEntities = tweet.extendedEtities;
+        final TweetEntities extendedEntities = tweet.extendedEntities;
 
         if (extendedEntities != null && extendedEntities.media != null
                 && extendedEntities.media.size() > 0) {
@@ -165,8 +165,8 @@ final public class TweetMediaUtils {
             entities.addAll(tweet.entities.media);
         }
 
-        if (tweet.extendedEtities != null && tweet.extendedEtities.media != null) {
-            entities.addAll(tweet.extendedEtities.media);
+        if (tweet.extendedEntities != null && tweet.extendedEntities.media != null) {
+            entities.addAll(tweet.extendedEntities.media);
         }
 
         return entities;

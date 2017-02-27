@@ -67,12 +67,6 @@ public class FixedTweetTimeline extends BaseTimeline implements Timeline<Tweet> 
         public Builder() {}
 
         /**
-         * @deprecated use {@link Builder#Builder()} instead
-         */
-        @Deprecated
-        public Builder(TweetUi tweetUi) {}
-
-        /**
          * Sets the Tweets to be returned by the timeline.
          * @param tweets fixed set of Tweets provided by the timeline.
          */

@@ -61,7 +61,7 @@ public class Tweet implements Identifiable {
      * Additional entities such as multi photos, animated gifs and video.
      */
     @SerializedName("extended_entities")
-    public final TweetEntities extendedEtities;
+    public final TweetEntities extendedEntities;
 
     /**
      * Nullable. Indicates approximately how many times this Tweet has been "favorited" by Twitter
@@ -281,7 +281,7 @@ public class Tweet implements Identifiable {
     public final Card card;
 
     public Tweet(Coordinates coordinates, String createdAt, Object currentUserRetweet,
-            TweetEntities entities, TweetEntities extendedEtities, Integer favoriteCount,
+            TweetEntities entities, TweetEntities extendedEntities, Integer favoriteCount,
             boolean favorited, String filterLevel, long id, String idStr,
             String inReplyToScreenName, long inReplyToStatusId, String inReplyToStatusIdStr,
             long inReplyToUserId, String inReplyToUserIdStr, String lang, Place place,
@@ -294,7 +294,7 @@ public class Tweet implements Identifiable {
         this.createdAt = createdAt;
         this.currentUserRetweet = currentUserRetweet;
         this.entities = entities;
-        this.extendedEtities = extendedEtities;
+        this.extendedEntities = extendedEntities;
         this.favoriteCount = favoriteCount;
         this.favorited = favorited;
         this.filterLevel = filterLevel;

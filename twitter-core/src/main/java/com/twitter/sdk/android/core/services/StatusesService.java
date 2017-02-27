@@ -313,7 +313,7 @@ public interface StatusesService {
                        @Field("lat") Double latitude,
                        @Field("long") Double longitude,
                        @Field("place_id") String placeId,
-                       @Field("display_cooridnates") Boolean displayCoordinates,
+                       @Field("display_coordinates") Boolean displayCoordinates,
                        @Field("trim_user") Boolean trimUser,
                        @Field("media_ids") String mediaIds);
 

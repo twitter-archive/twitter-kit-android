@@ -36,7 +36,7 @@ public interface PreferenceStore {
     /**
      *
      * @param editor to save
-     * @return sucessful save
+     * @return successful save
      */
     boolean save(SharedPreferences.Editor editor);
 

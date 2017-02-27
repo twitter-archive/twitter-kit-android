@@ -57,7 +57,7 @@ public class GuestSessionSerializerTest {
     }
 
     @Test
-    public void testSerialze_sessionAuthTokenIsGuestAuthToken() {
+    public void testSerialize_sessionAuthTokenIsGuestAuthToken() {
         final GuestSession session = new GuestSession(new GuestAuthToken(TEST_TOKEN_TYPE,
                 TEST_ACCESS_TOKEN, TEST_GUEST_TOKEN, CREATED_AT));
         assertEquals(JSON_SESSION_GUEST, serializer.serialize(session));
