@@ -27,11 +27,12 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import com.squareup.leakcanary.LeakCanary;
-import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.tweetcomposer.TweetComposer;
+import com.twitter.sdk.android.tweetui.TweetUi;
 
 public class SampleApplication extends Application {
     private static final String TAG = SampleApplication.class.getSimpleName();
@@ -56,7 +57,7 @@ public class SampleApplication extends Application {
                 BuildConfig.CONSUMER_SECRET);
 
         final Fabric fabric = new Fabric.Builder(this)
-                .kits(new Twitter(authConfig))
+                .kits(new TwitterCore(authConfig), new TweetUi(), new TweetComposer())
                 .logger(new DefaultLogger(Log.DEBUG))
                 .debuggable(true)
                 .build();
