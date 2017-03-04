@@ -17,24 +17,19 @@
 
 package com.twitter.sdk.android.core.internal.persistence;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 
 public class PreferenceStoreImpl implements PreferenceStore {
     private final SharedPreferences sharedPreferences;
     private final String preferenceName;
-    private final Context context;
 
     public PreferenceStoreImpl(Context context, String name) {
         if (context == null) {
-            throw new IllegalStateException("Cannot get directory before context has been set. " +
-                    "Call Fabric.with() first");
+            throw new IllegalArgumentException("Context must not be null");
         }
-        this.context = context;
         preferenceName = name;
-        sharedPreferences = this.context.getSharedPreferences(preferenceName, Context.MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences(preferenceName, Context.MODE_PRIVATE);
     }
 
     /**
@@ -58,14 +53,9 @@ public class PreferenceStoreImpl implements PreferenceStore {
      * @param editor
      * @return boolean success
      */
-    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     @Override
     public boolean save(SharedPreferences.Editor editor) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
-            editor.apply();
-            return true;
-        } else {
-            return editor.commit();
-        }
+        editor.apply();
+        return true;
     }
 }
