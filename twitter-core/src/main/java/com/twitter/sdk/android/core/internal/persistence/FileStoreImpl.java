@@ -17,32 +17,22 @@
 
 package com.twitter.sdk.android.core.internal.persistence;
 
-
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.os.Environment;
 
 import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.Kit;
 
 import java.io.File;
 
 public class FileStoreImpl implements FileStore {
     private final Context context;
-    private final String contentPath;
-    private final String legacySupport;
 
-
-    public FileStoreImpl(Kit kit) {
-        if (kit.getContext() == null) {
-            throw new IllegalStateException("Cannot get directory before context has been set. " +
-                    "Call Fabric.with() first");
+    public FileStoreImpl(Context context) {
+        if (context == null) {
+            throw new IllegalArgumentException("Context must not be null");
         }
 
-        context = kit.getContext();
-        contentPath = kit.getPath();
-        legacySupport = "Android/" + context.getPackageName();
+        this.context = context;
     }
 
     /**
@@ -61,16 +51,11 @@ public class FileStoreImpl implements FileStore {
      */
     @Override
     public File getExternalCacheDir() {
-        File file = null;
         if (isExternalStorageAvailable()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
-                file = context.getExternalCacheDir();
-            } else {
-                file = new File(Environment.getExternalStorageDirectory(),
-                        legacySupport + "/cache/" + contentPath);
-            }
+            return prepare(context.getExternalCacheDir());
         }
-        return prepare(file);
+
+        return prepare(null);
     }
 
     /**
@@ -87,19 +72,13 @@ public class FileStoreImpl implements FileStore {
      *
      * @return Directory to store External files.
      */
-    @TargetApi(Build.VERSION_CODES.FROYO)
     @Override
     public File getExternalFilesDir() {
-        File file = null;
         if (isExternalStorageAvailable()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
-                file = context.getExternalFilesDir(null);
-            } else {
-                file = new File(Environment.getExternalStorageDirectory(),
-                        legacySupport + "/files/" + contentPath);
-            }
+            return prepare(context.getExternalFilesDir(null));
         }
-        return prepare(file);
+
+        return prepare(null);
     }
 
     File prepare(File file) {

@@ -144,7 +144,7 @@ public class ScribeClient {
     private ScribeHandler newScribeHandler(long ownerId) throws IOException {
         final Context context = kit.getContext();
         final QueueFileEventStorage storage = new QueueFileEventStorage(context,
-                new FileStoreImpl(kit).getFilesDir(), getWorkingFileNameForOwner(ownerId),
+                new FileStoreImpl(context).getFilesDir(), getWorkingFileNameForOwner(ownerId),
                 getStorageDirForOwner(ownerId));
         final ScribeFilesManager filesManager = new ScribeFilesManager(context,
                 transform, new SystemCurrentTimeProvider(), storage, scribeConfig.maxFilesToKeep);

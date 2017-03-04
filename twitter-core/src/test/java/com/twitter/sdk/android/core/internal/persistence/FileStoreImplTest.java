@@ -19,68 +19,84 @@ package com.twitter.sdk.android.core.internal.persistence;
 
 import android.os.Environment;
 
-import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.FabricAndroidTestCase;
-import io.fabric.sdk.android.FabricTestUtils;
-import io.fabric.sdk.android.Kit;
-import io.fabric.sdk.android.KitStub;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.shadows.ShadowEnvironment;
 
 import java.io.File;
 
-public class FileStoreImplTest extends FabricAndroidTestCase {
-    FileStoreImpl fileStore;
-    Kit kit;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        FabricTestUtils.resetFabric();
-        FabricTestUtils.with(getContext(), new KitStub(), new PersistenceTestKit());
-        kit = Fabric.getKit(KitStub.class);
-        fileStore = new FileStoreImpl(kit);
+@RunWith(RobolectricTestRunner.class)
+public class FileStoreImplTest {
+    FileStoreImpl fileStore;
+
+    @Before
+    public void setUp() throws Exception {
+        fileStore = new FileStoreImpl(RuntimeEnvironment.application);
     }
 
+    @Test
     public void testConstructor() {
         try {
-            new FileStoreImpl(new KitStub());
+            new FileStoreImpl(null);
             fail();
-        } catch (IllegalStateException ex) {}
+        } catch (IllegalArgumentException ex) {
+            assertEquals("Context must not be null", ex.getMessage());
+        }
     }
 
+    @Test
     public void testGetCacheDir() {
         verifyFile(fileStore.getCacheDir());
     }
+
+    @Test
     public void testGetFilesDir() {
         verifyFile(fileStore.getFilesDir());
     }
 
+    @Test
     public void testGetExternalCacheDir() {
+        ShadowEnvironment.setExternalStorageState(Environment.MEDIA_MOUNTED);
         verifyFile(fileStore.getExternalCacheDir());
     }
+
+    @Test
+    public void testGetExternalCacheDir_withoutExternalStorage() {
+        ShadowEnvironment.setExternalStorageState(Environment.MEDIA_REMOVED);
+        assertNull(fileStore.getExternalCacheDir());
+    }
+
+    @Test
     public void testGetExternalFilesDir() {
+        ShadowEnvironment.setExternalStorageState(Environment.MEDIA_MOUNTED);
         verifyFile(fileStore.getExternalFilesDir());
     }
 
-    public void testPrepare() {
-        verifyFile(fileStore.prepare(new File(getContext().getFilesDir(), "FileStoreImplTest/")));
+    @Test
+    public void testGetExternalFilesDir_withoutExternalStorage() {
+        ShadowEnvironment.setExternalStorageState(Environment.MEDIA_REMOVED);
+        assertNull(fileStore.getExternalFilesDir());
     }
 
+    public void testPrepare() {
+        verifyFile(fileStore.prepare(new File(RuntimeEnvironment.application.getFilesDir(),
+                "FileStoreImplTest/")));
+    }
+
+    @Test
     public void testisExternalStorageAvailable() {
         final String state = Environment.getExternalStorageState();
         assertEquals(Environment.MEDIA_MOUNTED.equals(state),
                 fileStore.isExternalStorageAvailable());
-    }
-
-    public void testNamespace() {
-        final FileStoreImpl secondFileStore =
-                new FileStoreImpl(Fabric.getKit(PersistenceTestKit.class));
-
-        assertNotSame(fileStore.getFilesDir().getPath(), secondFileStore.getFilesDir().getPath());
-        assertNotSame(fileStore.getCacheDir().getPath(), secondFileStore.getCacheDir().getPath());
-        assertNotSame(fileStore.getExternalFilesDir().getPath(),
-                secondFileStore.getExternalFilesDir().getPath());
-        assertNotSame(fileStore.getExternalCacheDir().getPath(),
-                secondFileStore.getExternalCacheDir().getPath());
     }
 
     private void verifyFile(File file) {
