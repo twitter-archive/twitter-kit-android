@@ -73,7 +73,7 @@ android {
 }
 
 ext.projectDependencies = [
-        ':sdk:twitter:twitter-core' : 'com.twitter.sdk.android:twitter-core:+aar'
+        ':sdk:twitter:twitter-core' : 'com.twitter.sdk.android:twitter-core:+@aar'
 ]
 
 dependencies {
