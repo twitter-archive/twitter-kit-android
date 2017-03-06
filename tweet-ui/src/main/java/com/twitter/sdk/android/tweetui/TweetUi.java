@@ -28,6 +28,7 @@ import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
+import com.twitter.sdk.android.core.internal.scribe.ScribeConfig;
 import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
 
 import java.util.List;
@@ -104,8 +105,10 @@ public class TweetUi extends Kit<Boolean> {
     }
 
     private void setUpScribeClient() {
-        scribeClient = new DefaultScribeClient(this, KIT_SCRIBE_NAME, sessionManager,
-                guestSessionProvider, getIdManager());
+        final ScribeConfig config =
+                DefaultScribeClient.getScribeConfig(KIT_SCRIBE_NAME, getVersion());
+        scribeClient = new DefaultScribeClient(getContext(), sessionManager,
+                guestSessionProvider, getIdManager(), config);
     }
 
     void scribe(EventNamespace... namespaces) {

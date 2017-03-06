@@ -17,6 +17,7 @@
 
 package com.twitter.sdk.android.core.internal.scribe;
 
+import android.content.Context;
 import android.os.Build;
 import android.text.TextUtils;
 
@@ -28,6 +29,7 @@ import com.twitter.sdk.android.core.GuestSession;
 import com.twitter.sdk.android.core.GuestSessionProvider;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterCore;
 
@@ -35,7 +37,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 
-import io.fabric.sdk.android.Kit;
 import io.fabric.sdk.android.services.common.ExecutorUtils;
 import io.fabric.sdk.android.services.common.IdManager;
 
@@ -55,25 +56,27 @@ public class DefaultScribeClient extends ScribeClient {
 
     private static volatile ScheduledExecutorService executor;
 
-    private final Kit kit;
     private final SessionManager<? extends Session<TwitterAuthToken>> sessionManager;
     private final String advertisingId;
+    private final Context context;
 
-    public DefaultScribeClient(Kit kit, String kitName,
-            SessionManager<? extends Session<TwitterAuthToken>> sessionManager,
-            GuestSessionProvider guestSessionProvider, IdManager idManager) {
-        this(kit, kitName, getGson(), sessionManager, guestSessionProvider, idManager);
+    public DefaultScribeClient(Context context,
+                               SessionManager<? extends Session<TwitterAuthToken>> sessionManager,
+                               GuestSessionProvider guestSessionProvider, IdManager idManager,
+                               ScribeConfig scribeConfig) {
+        this(context, TwitterCore.getInstance().getAuthConfig(), sessionManager,
+                guestSessionProvider, idManager, scribeConfig);
     }
 
-    DefaultScribeClient(Kit kit, String kitName, Gson gson,
-            SessionManager<? extends Session<TwitterAuthToken>> sessionManager,
-            GuestSessionProvider guestSessionProvider, IdManager idManager) {
-        super(kit, getExecutor(), getScribeConfig(getUserAgent(kitName, kit)),
-                new ScribeEvent.Transform(gson), TwitterCore.getInstance().getAuthConfig(),
-                sessionManager, guestSessionProvider, idManager);
+    DefaultScribeClient(Context context, TwitterAuthConfig authConfig,
+                        SessionManager<? extends Session<TwitterAuthToken>> sessionManager,
+                        GuestSessionProvider guestSessionProvider, IdManager idManager,
+                        ScribeConfig scribeConfig) {
+        super(context, getExecutor(), scribeConfig, new ScribeEvent.Transform(getGson()),
+                authConfig, sessionManager, guestSessionProvider, idManager);
 
+        this.context = context;
         this.sessionManager = sessionManager;
-        this.kit = kit;
         this.advertisingId = idManager.getAdvertisingId();
     }
 
@@ -84,7 +87,7 @@ public class DefaultScribeClient extends ScribeClient {
     }
 
     public void scribe(EventNamespace namespace, List<ScribeItem> items) {
-        final String language = getLanguageFromKit();
+        final String language = getLanguage();
         final long timestamp = System.currentTimeMillis();
         /*
          * The advertising ID may be null if this method is called before doInBackground completes.
@@ -100,7 +103,7 @@ public class DefaultScribeClient extends ScribeClient {
     }
 
     public void scribe(EventNamespace namespace, String eventInfo) {
-        final String language = getLanguageFromKit();
+        final String language = getLanguage();
         final long timestamp = System.currentTimeMillis();
         /*
          * The advertising ID may be null if this method is called before doInBackground completes.
@@ -130,14 +133,8 @@ public class DefaultScribeClient extends ScribeClient {
         return scribeSessionId;
     }
 
-    private String getLanguageFromKit(){
-        final String language;
-        if (kit.getContext() != null) {
-            language = kit.getContext().getResources().getConfiguration().locale.getLanguage();
-        } else {
-            language = "";
-        }
-        return language;
+    private String getLanguage(){
+        return context.getResources().getConfiguration().locale.getLanguage();
     }
 
     private static Gson getGson() {
@@ -157,10 +154,10 @@ public class DefaultScribeClient extends ScribeClient {
         return executor;
     }
 
-    static ScribeConfig getScribeConfig(String userAgent) {
+    static public ScribeConfig getScribeConfig(String kitName, String kitVersion) {
         final String scribeUrl = getScribeUrl(SCRIBE_URL, BuildConfig.SCRIBE_ENDPOINT_OVERRIDE);
         return new ScribeConfig(isEnabled(), scribeUrl, SCRIBE_PATH_VERSION,
-                SCRIBE_PATH_TYPE, BuildConfig.SCRIBE_SEQUENCE, userAgent,
+                SCRIBE_PATH_TYPE, BuildConfig.SCRIBE_SEQUENCE, getUserAgent(kitName, kitVersion),
                 ScribeConfig.DEFAULT_MAX_FILES_TO_KEEP, ScribeConfig.DEFAULT_SEND_INTERVAL_SECONDS);
     }
 
@@ -173,16 +170,16 @@ public class DefaultScribeClient extends ScribeClient {
         return !BuildConfig.BUILD_TYPE.equals(DEBUG_BUILD);
     }
 
-    static String getUserAgent(String kitName, Kit kit) {
+    static String getUserAgent(String kitName, String kitVersion) {
         return new StringBuilder()
-                .append("Fabric/")
-                .append(kit.getFabric().getVersion())
+                .append("TwitterKit/")
+                .append("3.0")
                 .append(" (Android ")
                 .append(Build.VERSION.SDK_INT)
                 .append(") ")
                 .append(kitName)
                 .append("/")
-                .append(kit.getVersion())
+                .append(kitVersion)
                 .toString();
     }
 

@@ -17,8 +17,8 @@
 
 package com.twitter.sdk.android.core.internal.scribe;
 
-import io.fabric.sdk.android.Kit;
-import io.fabric.sdk.android.KitStub;
+import android.content.Context;
+
 import io.fabric.sdk.android.services.common.IdManager;
 
 import com.twitter.sdk.android.core.GuestSession;
@@ -49,18 +49,15 @@ public class ScribeClientTest {
     private static final String ANY_PATH_VERSION = "version";
     private static final String ANY_PATH_TYPE = "type";
 
-    private KitStub kitStub;
     private ScribeClient scribeClient;
 
     @Before
     public void setUp() throws Exception {
-        kitStub = new KitStub();
-        kitStub.init(RuntimeEnvironment.application);
-
-        scribeClient = new ScribeClient(kitStub, mock(ScheduledExecutorService.class),
-                mock(ScribeConfig.class), mock(ScribeEvent.Transform.class),
-                mock(TwitterAuthConfig.class), mock(SessionManager.class),
-                mock(GuestSessionProvider.class), mock(IdManager.class));
+        scribeClient = new ScribeClient(RuntimeEnvironment.application,
+                mock(ScheduledExecutorService.class), mock(ScribeConfig.class),
+                mock(ScribeEvent.Transform.class), mock(TwitterAuthConfig.class),
+                mock(SessionManager.class), mock(GuestSessionProvider.class),
+                mock(IdManager.class));
     }
 
     @Test
@@ -107,7 +104,7 @@ public class ScribeClientTest {
         final ScribeConfig config = new ScribeConfig(true, ScribeConfig.BASE_URL, ANY_PATH_VERSION,
                 ANY_PATH_TYPE, null, null, ScribeConfig.DEFAULT_MAX_FILES_TO_KEEP,
                 ScribeConfig.DEFAULT_SEND_INTERVAL_SECONDS);
-        scribeClient = new ScribeClient(mock(Kit.class), mock(ScheduledExecutorService.class),
+        scribeClient = new ScribeClient(mock(Context.class), mock(ScheduledExecutorService.class),
                 config, mock(ScribeEvent.Transform.class), mock(TwitterAuthConfig.class),
                 mock(SessionManager.class), mock(GuestSessionProvider.class),
                 mock(IdManager.class));
@@ -122,7 +119,7 @@ public class ScribeClientTest {
         final ScribeConfig config = new ScribeConfig(false, ScribeConfig.BASE_URL, ANY_PATH_VERSION,
                 ANY_PATH_TYPE, null, null, ScribeConfig.DEFAULT_MAX_FILES_TO_KEEP,
                 ScribeConfig.DEFAULT_SEND_INTERVAL_SECONDS);
-        scribeClient = new ScribeClient(mock(Kit.class), mock(ScheduledExecutorService.class),
+        scribeClient = new ScribeClient(mock(Context.class), mock(ScheduledExecutorService.class),
                 config, mock(ScribeEvent.Transform.class), mock(TwitterAuthConfig.class),
                 mock(SessionManager.class), mock(GuestSessionProvider.class),
                 mock(IdManager.class));

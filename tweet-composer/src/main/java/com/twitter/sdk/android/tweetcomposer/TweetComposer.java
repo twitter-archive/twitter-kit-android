@@ -35,6 +35,7 @@ import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.Kit;
 import io.fabric.sdk.android.services.concurrency.DependsOn;
 import com.twitter.sdk.android.core.internal.network.UrlUtils;
+import com.twitter.sdk.android.core.internal.scribe.ScribeConfig;
 
 import java.net.URL;
 import java.util.List;
@@ -76,9 +77,15 @@ public class TweetComposer extends Kit<Void> {
     @Override
     protected Void doInBackground() {
         advertisingId = getIdManager().getAdvertisingId();
-        scribeClient = new ScribeClientImpl(new DefaultScribeClient(this, KIT_SCRIBE_NAME,
-                sessionManager, guestSessionProvider, getIdManager()));
+        setUpScribeClient();
         return null;
+    }
+
+    private void setUpScribeClient() {
+        final ScribeConfig config =
+                DefaultScribeClient.getScribeConfig(KIT_SCRIBE_NAME, getVersion());
+        scribeClient = new ScribeClientImpl(new DefaultScribeClient(getContext(),
+                sessionManager, guestSessionProvider, getIdManager(), config));
     }
 
     @Override

@@ -44,6 +44,7 @@ public class TwitterCore extends Kit<Boolean> {
     static final String PREF_KEY_ACTIVE_GUEST_SESSION = "active_guestsession";
     static final String PREF_KEY_GUEST_SESSION = "guestsession";
     static final String SESSION_PREF_FILE_NAME = "session_store";
+    static final String KIT_SCRIBE_NAME = "TwitterCore";
 
     SessionManager<TwitterSession> twitterSessionManager;
     SessionManager<GuestSession> guestSessionManager;
@@ -105,7 +106,7 @@ public class TwitterCore extends Kit<Boolean> {
         twitterSessionManager.getActiveSession();
         guestSessionManager.getActiveSession();
         getGuestSessionProvider();
-        initializeScribeClient();
+        setUpScribeClient();
         // Monitor activity lifecycle after sessions have been restored. Otherwise we would not
         // have any sessions to monitor anyways.
         sessionMonitor.monitorActivityLifecycle(getFabric().getActivityLifecycleManager());
@@ -123,9 +124,9 @@ public class TwitterCore extends Kit<Boolean> {
         }
     }
 
-    private void initializeScribeClient() {
-        TwitterCoreScribeClientHolder.initialize(this, getSessionManager(),
-                getGuestSessionProvider(), getIdManager());
+    private void setUpScribeClient() {
+        TwitterCoreScribeClientHolder.initialize(getContext(), getSessionManager(),
+                getGuestSessionProvider(), getIdManager(), KIT_SCRIBE_NAME, getVersion());
     }
 
     /**********************************************************************************************

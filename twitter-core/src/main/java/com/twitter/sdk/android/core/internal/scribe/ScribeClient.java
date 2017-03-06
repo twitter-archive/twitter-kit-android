@@ -19,7 +19,6 @@ package com.twitter.sdk.android.core.internal.scribe;
 
 import android.content.Context;
 
-import io.fabric.sdk.android.Kit;
 import io.fabric.sdk.android.services.common.IdManager;
 
 import com.twitter.sdk.android.core.internal.CommonUtils;
@@ -58,9 +57,9 @@ public class ScribeClient {
      */
     final ConcurrentHashMap<Long, ScribeHandler> scribeHandlers;
     /**
-     * The kit.
+     * The Context.
      */
-    private final Kit kit;
+    private final Context context;
     /**
      * The scheduled executor service for performing background operations and scheduling uploads.
      */
@@ -82,7 +81,7 @@ public class ScribeClient {
     /**
      * Constructor.
      *
-     * @param kit the kit
+     * @param context the context
      * @param executor scheduled executor service for executing scribe requests on background thread
      * @param scribeConfig the scribe configuration
      * @param transform the scribe event transform for serializing and deserializing scribe events
@@ -91,11 +90,12 @@ public class ScribeClient {
      * @param sessionManager the session manager
      * @param idManager the id manager used to provide the device id
      */
-    public ScribeClient(Kit kit, ScheduledExecutorService executor, ScribeConfig scribeConfig,
-            ScribeEvent.Transform transform, TwitterAuthConfig authConfig,
+    public ScribeClient(Context context, ScheduledExecutorService executor,
+            ScribeConfig scribeConfig, ScribeEvent.Transform transform,
+            TwitterAuthConfig authConfig,
             SessionManager<? extends Session<TwitterAuthToken>> sessionManager,
             GuestSessionProvider guestSessionProvider, IdManager idManager) {
-        this.kit = kit;
+        this.context = context;
         this.executor = executor;
         this.scribeConfig = scribeConfig;
         this.transform = transform;
@@ -116,7 +116,7 @@ public class ScribeClient {
             getScribeHandler(ownerId).scribe(event);
             return true;
         } catch (IOException e) {
-            CommonUtils.logControlledError(kit.getContext(), "Failed to scribe event", e);
+            CommonUtils.logControlledError(context, "Failed to scribe event", e);
             return false;
         }
     }
@@ -129,7 +129,7 @@ public class ScribeClient {
             getScribeHandler(ownerId).scribeAndFlush(event);
             return true;
         } catch (IOException e) {
-            CommonUtils.logControlledError(kit.getContext(), "Failed to scribe event", e);
+            CommonUtils.logControlledError(context, "Failed to scribe event", e);
             return false;
         }
     }
@@ -142,7 +142,6 @@ public class ScribeClient {
     }
 
     private ScribeHandler newScribeHandler(long ownerId) throws IOException {
-        final Context context = kit.getContext();
         final QueueFileEventStorage storage = new QueueFileEventStorage(context,
                 new FileStoreImpl(context).getFilesDir(), getWorkingFileNameForOwner(ownerId),
                 getStorageDirForOwner(ownerId));
@@ -153,7 +152,6 @@ public class ScribeClient {
     }
 
     EventsStrategy<ScribeEvent> getScribeStrategy(long ownerId, ScribeFilesManager filesManager) {
-        final Context context = kit.getContext();
         if (scribeConfig.isEnabled) {
             CommonUtils.logControlled(context, "Scribe enabled");
             return new EnabledScribeStrategy(context, executor, filesManager, scribeConfig,
