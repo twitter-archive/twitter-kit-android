@@ -17,7 +17,7 @@
 
 package com.twitter.sdk.android.mopub;
 
-import android.app.Activity;
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -41,8 +41,8 @@ public class TwitterStaticNativeAdRenderer implements MoPubAdRenderer<StaticNati
     }
 
     @Override
-    public View createAdView(final Activity activity, final ViewGroup parent) {
-        return new TwitterStaticNativeAd(activity, null, styleResId);
+    public View createAdView(final Context context, final ViewGroup parent) {
+        return new TwitterStaticNativeAd(context, null, styleResId);
     }
 
     @Override
