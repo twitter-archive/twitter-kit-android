@@ -18,6 +18,7 @@
 package com.twitter.sdk.android.core.internal;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 
 import java.io.Closeable;
@@ -29,9 +30,14 @@ import java.util.Scanner;
 import io.fabric.sdk.android.Fabric;
 
 public class CommonUtils {
+    static final String CLS_SHARED_PREFERENCES_NAME = "com.crashlytics.prefs";
     static final String CLS_TRACE_PREFERENCE_NAME = "com.crashlytics.Trace";
     static final boolean CLS_TRACE_DEFAULT = false;
     private static Boolean clsTrace = null;
+
+    public static SharedPreferences getSharedPrefs(Context context) {
+        return context.getSharedPreferences(CLS_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+    }
 
     public static String streamToString(InputStream is) throws IOException {
         // Previous code was running into this: http://code.google.com/p/android/issues/detail?id=14562
