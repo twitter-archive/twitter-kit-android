@@ -17,88 +17,52 @@
 
 package com.twitter.sdk.android.core;
 
-import android.app.Activity;
 import android.test.AndroidTestCase;
 
-import io.fabric.sdk.android.FabricTestUtils;
-import io.fabric.sdk.android.KitStub;
+import java.util.concurrent.ExecutorService;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class TwitterCoreTest extends AndroidTestCase {
 
-    private static final String TWITTER_NOT_INIT_ERROR_MSG = "Must start Twitter Kit with Fabric.with() first";
-    private static final String FABRIC_NOT_INIT_ERROR_MSG = "Must Initialize Fabric before using singleton()";
+    private static final String TWITTER_NOT_INIT_ERROR_MSG = "Must initialize Twitter before using getInstance()";
     private TwitterCore twitterCore;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        Twitter.initialize(new TwitterConfig.Builder(getContext())
+                .executorService(mock(ExecutorService.class))
+                .build());
         twitterCore = new TwitterCore(new TwitterAuthConfig("", ""));
+        TwitterCore.instance = twitterCore;
     }
 
     @Override
     protected void tearDown() throws Exception {
+        TwitterTestUtils.resetTwitter();
+        TwitterCoreTestUtils.resetTwitterCore();
         super.tearDown();
-        FabricTestUtils.resetFabric();
-    }
-
-    public void testLogOut_noSdkStart() {
-        try {
-            TwitterCore.getInstance().logOut();
-            fail("Should fail if Fabric is not instantiated.");
-        } catch (IllegalStateException ex) {
-            assertEquals(FABRIC_NOT_INIT_ERROR_MSG, ex.getMessage());
-        }
-    }
-
-    public void testLogOut_sdkStartNoTwitterKit() throws Exception {
-        FabricTestUtils.with(getContext(), new KitStub<Result>());
-        try {
-            TwitterCore.getInstance().logOut();
-            fail("Should fail if Twitter is not instantiated with Fabric.");
-        } catch (IllegalStateException ie) {
-            assertEquals(TWITTER_NOT_INIT_ERROR_MSG, ie.getMessage());
-        }
-    }
-
-    public void testLogIn_noSdkStart() {
-        final Callback<TwitterSession> mockCallback = mock(Callback.class);
-        try {
-            TwitterCore.getInstance().logIn(mock(Activity.class), mockCallback);
-            fail("Should fail if Fabric is not instantiated.");
-        } catch (IllegalStateException ie) {
-            assertEquals(FABRIC_NOT_INIT_ERROR_MSG, ie.getMessage());
-        }
-    }
-
-    public void testLogIn_sdkStartNoTwitterKit() throws Exception {
-        FabricTestUtils.with(getContext(), new KitStub<Result>());
-        final Callback<TwitterSession> mockCallback = mock(Callback.class);
-
-        try {
-            TwitterCore.getInstance().logIn(mock(Activity.class), mockCallback);
-            fail("Should fail if Twitter is not instantiated with Fabric.");
-        } catch (IllegalStateException ie) {
-            assertEquals(TWITTER_NOT_INIT_ERROR_MSG, ie.getMessage());
-        }
     }
 
     public void testGuestSessionManager_noSdkStart() {
         try {
+            TwitterTestUtils.resetTwitter();
+            TwitterCoreTestUtils.resetTwitterCore();
             TwitterCore.getInstance().getGuestSessionProvider();
-            fail("Should fail if Fabric is not instantiated.");
+            fail("Should fail if Twitter is not initialized.");
         } catch (IllegalStateException ie) {
-            assertEquals(FABRIC_NOT_INIT_ERROR_MSG, ie.getMessage());
+            assertEquals(TWITTER_NOT_INIT_ERROR_MSG, ie.getMessage());
         }
     }
 
     public void testGuestSessionManager_sdkStartNoTwitterKit() throws Exception {
-        FabricTestUtils.with(getContext(), new KitStub<Result>());
         try {
+            TwitterTestUtils.resetTwitter();
+            TwitterCoreTestUtils.resetTwitterCore();
             TwitterCore.getInstance().getGuestSessionProvider();
-            fail("Should fail if Twitter is not instantiated with Fabric.");
+            fail("Should fail if Twitter is not initialized.");
         } catch (IllegalStateException ie) {
             assertEquals(TWITTER_NOT_INIT_ERROR_MSG, ie.getMessage());
         }
@@ -110,71 +74,72 @@ public class TwitterCoreTest extends AndroidTestCase {
     }
 
     public void testGetSessionManager() throws Exception {
-        FabricTestUtils.with(getContext(), twitterCore);
         assertNotNull(twitterCore.getSessionManager());
     }
 
     public void testGetSessionManager_twitterNotInitialized() throws Exception {
-        FabricTestUtils.with(getContext(), new KitStub());
         try {
-            twitterCore.getSessionManager();
-            fail("Should fail if Twitter is not instantiated with Fabric.");
+            TwitterTestUtils.resetTwitter();
+            TwitterCoreTestUtils.resetTwitterCore();
+            TwitterCore.getInstance().getSessionManager();
+            fail("Should fail if Twitter is not initialized.");
         } catch (IllegalStateException ex) {
             assertEquals(TWITTER_NOT_INIT_ERROR_MSG, ex.getMessage());
         }
     }
 
     public void testGetAppSessionManager() throws Exception {
-        FabricTestUtils.with(getContext(), twitterCore);
         assertNotNull(twitterCore.getGuestSessionProvider());
     }
 
     public void testGetAppSessionManager_twitterNotInitialized() throws Exception {
-        FabricTestUtils.with(getContext(), new KitStub());
         try {
-            twitterCore.getGuestSessionProvider();
-            fail("Should fail if Twitter is not instantiated with Fabric.");
+            TwitterTestUtils.resetTwitter();
+            TwitterCoreTestUtils.resetTwitterCore();
+            TwitterCore.getInstance().getGuestSessionProvider();
+            fail("Should fail if Twitter is not initialized.");
         } catch (IllegalStateException ex) {
             assertEquals(TWITTER_NOT_INIT_ERROR_MSG, ex.getMessage());
         }
     }
 
     public void testGetApiClient_activeSessionExists() throws Exception {
-        FabricTestUtils.with(getContext(), twitterCore);
         twitterCore.twitterSessionManager = setUpSessionManager(mock(TwitterSession.class));
         assertNotNull(twitterCore.getApiClient());
     }
 
     public void testGetApiClient_twitterNotInitialized() throws Exception {
-        FabricTestUtils.with(getContext(), new KitStub<Result>());
         try {
+            TwitterTestUtils.resetTwitter();
+            TwitterCoreTestUtils.resetTwitterCore();
             twitterCore.getApiClient();
-            fail("Should fail if Twitter is not instantiated with Fabric.");
+            fail("Should fail if Twitter is not initialized.");
         } catch (IllegalStateException ex) {
             assertEquals(TWITTER_NOT_INIT_ERROR_MSG, ex.getMessage());
         }
     }
 
     public void testGetApiClient_withSession() throws Exception {
-        FabricTestUtils.with(getContext(), twitterCore);
         assertNotNull(twitterCore.getApiClient(mock(TwitterSession.class)));
     }
 
     public void testGetApiClient_withSessionTwitterNotInitialized() throws Exception {
-        FabricTestUtils.with(getContext(), new KitStub<Result>());
         try {
-            twitterCore.getApiClient(mock(TwitterSession.class));
-            fail("Should fail if Twitter is not instantiated with Fabric.");
+            TwitterTestUtils.resetTwitter();
+            TwitterCoreTestUtils.resetTwitterCore();
+            TwitterCore.getInstance().getApiClient(mock(TwitterSession.class));
+            fail("Should fail if Twitter is not initialized.");
         } catch (IllegalStateException ex) {
             assertEquals(TWITTER_NOT_INIT_ERROR_MSG, ex.getMessage());
         }
     }
 
     public void testGetGuestApiClient_twitterNotInitialized() throws Exception {
-        FabricTestUtils.with(getContext(), new KitStub<Result>());
         try {
-            twitterCore.getGuestApiClient();
-            fail("Should fail if Twitter is not instantiated with Fabric.");
+            TwitterTestUtils.resetTwitter();
+            TwitterCoreTestUtils.resetTwitterCore();
+            TwitterCore.getInstance().getGuestApiClient();
+            fail("Should fail if Twitter is not initialized.");
         } catch (IllegalStateException ex) {
             assertEquals(TWITTER_NOT_INIT_ERROR_MSG, ex.getMessage());
         }

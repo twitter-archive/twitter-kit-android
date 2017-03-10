@@ -15,26 +15,10 @@
  *
  */
 
-apply from: rootProject.file('dependencies.gradle')
+package com.twitter.sdk.android.core;
 
-subprojects { Project subproject ->
-    buildscript {
-        repositories {
-            jcenter()
-            maven { url 'https://maven.fabric.io/public' }
-        }
-        dependencies {
-            classpath dependency.androidGradlePlugin
-            classpath 'io.fabric.gradle.unity:unity:0.0.1'
-        }
-    }
-
-    repositories {
-        jcenter()
+public class TwitterTestUtils {
+    public static void resetTwitter() {
+        Twitter.instance = null;
     }
 }
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.12'
-}
-

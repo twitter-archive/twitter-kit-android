@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.view.View;
 
+import com.twitter.sdk.android.core.TwitterTestUtils;
 import com.twitter.sdk.android.core.models.Card;
 import com.twitter.sdk.android.core.models.ImageValue;
 import com.twitter.sdk.android.core.models.MediaEntity;
@@ -28,10 +29,6 @@ import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.tweetui.internal.AspectRatioFrameLayout;
 
 import java.util.Locale;
-
-import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.FabricTestUtils;
-import io.fabric.sdk.android.KitStub;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -46,7 +43,7 @@ public abstract class AbstractTweetViewTest extends TweetUiTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        context = Fabric.getKit(TweetUi.class).getContext();
+        context = getContext();
         resources = context.getResources();
         defaultLocale = TestUtils.setLocale(getContext(), Locale.ENGLISH);
         setUpMockDependencyProvider();
@@ -113,20 +110,15 @@ public abstract class AbstractTweetViewTest extends TweetUiTestCase {
     }
 
     public void testInit_inEditMode() {
-        FabricTestUtils.resetFabric();
+        TwitterTestUtils.resetTwitter();
         try {
-            final Fabric fabric = new Fabric.Builder(getContext())
-                    .debuggable(true)
-                    .kits(new KitStub())
-                    .build();
-            FabricTestUtils.with(fabric);
             final AbstractTweetView view = createViewInEditMode(context, TestFixtures.TEST_TWEET);
             assertTrue(view.isInEditMode());
             assertTrue(view.isEnabled());
         } catch (Exception e) {
             fail("Must start TweetUi... IllegalStateException should be caught");
         } finally {
-            FabricTestUtils.resetFabric();
+            TwitterTestUtils.resetTwitter();
         }
     }
 

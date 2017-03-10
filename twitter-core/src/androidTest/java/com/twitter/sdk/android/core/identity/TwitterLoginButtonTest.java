@@ -23,17 +23,18 @@ import android.test.AndroidTestCase;
 import android.util.Log;
 import android.view.View;
 
-import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.FabricTestUtils;
-import io.fabric.sdk.android.KitStub;
-import io.fabric.sdk.android.Logger;
-
 import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.Logger;
+import com.twitter.sdk.android.core.Twitter;
+import com.twitter.sdk.android.core.TwitterConfig;
 import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterCoreTestUtils;
 import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.TwitterTestUtils;
 
 import org.mockito.ArgumentCaptor;
+
+import java.util.concurrent.ExecutorService;
 
 import static org.mockito.Mockito.*;
 
@@ -116,37 +117,25 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
 
     public void testConstructor_twitterNotStarted() throws Exception {
         try {
-            final Fabric fabric = new Fabric.Builder(getContext())
-                    .debuggable(true)
-                    .logger(mock(Logger.class))
-                    .kits(new KitStub())
-                    .build();
-            FabricTestUtils.with(fabric);
-
+            TwitterTestUtils.resetTwitter();
+            TwitterCoreTestUtils.resetTwitterCore();
             final TwitterLoginButton button = new TwitterLoginButton(getContext()) {
                 @Override
                 protected Activity getActivity() {
                     return mock(Activity.class);
                 }
             };
-            final Logger logger = Fabric.getLogger();
-            verify(logger).e(eq(TwitterLoginButton.TAG),
-                    eq("Must start Twitter Kit with Fabric.with() first"));
+
             assertFalse(button.isEnabled());
 
         } finally {
-            FabricTestUtils.resetFabric();
+            TwitterTestUtils.resetTwitter();
         }
     }
 
     public void testConstructor_twitterStarted() throws Exception {
         try {
-            final Fabric fabric = new Fabric.Builder(getContext())
-                    .debuggable(true)
-                    .kits(new TwitterCore(new TwitterAuthConfig("", "")))
-                    .logger(mock(Logger.class))
-                    .build();
-            FabricTestUtils.with(fabric);
+            Twitter.initialize(setUpLogTest());
 
             final TwitterLoginButton button = new TwitterLoginButton(getContext()) {
                 @Override
@@ -155,13 +144,12 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
                 }
             };
 
-            final Logger logger = Fabric.getLogger();
-            verify(logger, never()).e(eq(TwitterLoginButton.TAG),
-                    eq("Must start Twitter Kit with Fabric.with() first"));
+            final Logger logger = Twitter.getLogger();
+            verify(logger, never()).e(eq(TwitterLoginButton.TAG), anyString());
             assertTrue(button.isEnabled());
 
         } finally {
-            FabricTestUtils.resetFabric();
+            TwitterTestUtils.resetTwitter();
         }
     }
 
@@ -196,38 +184,37 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
     }
 
     public void testOnClick_callbackNullDebuggableTrue() throws Exception {
-        final Fabric fabric = new Fabric.Builder(getContext())
-                .kits(new KitStub())
-                .debuggable(true)
-                .build();
-        FabricTestUtils.with(fabric);
+        Twitter.initialize(new TwitterConfig.Builder(getContext())
+                .executorService(mock(ExecutorService.class))
+                .isDebug(true)
+                .build());
         try {
             loginButton.performClick();
             fail("onClick should throw an exception when called and there is no callback");
         } catch (IllegalStateException e) {
             assertEquals("Callback must not be null, did you call setCallback?", e.getMessage());
         } finally {
-            FabricTestUtils.resetFabric();
+            TwitterCoreTestUtils.resetTwitterCore();
+            TwitterTestUtils.resetTwitter();
         }
     }
 
     public void testOnClick_callbackNullDebuggableFalse() throws Exception {
-        final Fabric fabric = setUpLogTest();
-        FabricTestUtils.with(fabric);
+        Twitter.initialize(setUpLogTest());
         try {
             loginButton.performClick();
             assertLogMessage("Callback must not be null, did you call setCallback?");
         } finally {
-            FabricTestUtils.resetFabric();
+            TwitterCoreTestUtils.resetTwitterCore();
+            TwitterTestUtils.resetTwitter();
         }
     }
 
     public void testOnClick_activityNullDebuggableTrue() throws Exception {
-        final Fabric fabric = new Fabric.Builder(getContext())
-                .kits(new KitStub())
-                .debuggable(true)
-                .build();
-        FabricTestUtils.with(fabric);
+        Twitter.initialize(new TwitterConfig.Builder(getContext())
+                .executorService(mock(ExecutorService.class))
+                .isDebug(true)
+                .build());
         loginButton = new TwitterLoginButton(getContext(), null, 0, mockAuthClient) {
             // This is to allow us to test TwitterLoginButton without having to set up a real
             // activity.
@@ -244,13 +231,13 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
         } catch (IllegalStateException e) {
             assertEquals(TwitterLoginButton.ERROR_MSG_NO_ACTIVITY, e.getMessage());
         } finally {
-            FabricTestUtils.resetFabric();
+            TwitterCoreTestUtils.resetTwitterCore();
+            TwitterTestUtils.resetTwitter();
         }
     }
 
     public void testOnClick_activityNullDebuggableFalse() throws Exception {
-        final Fabric fabric = setUpLogTest();
-        FabricTestUtils.with(fabric);
+        Twitter.initialize(setUpLogTest());
         loginButton = new TwitterLoginButton(getContext(), null, 0, mockAuthClient) {
             // This is to allow us to test TwitterLoginButton without having to set up a real
             // activity.
@@ -265,13 +252,13 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
             loginButton.performClick();
             assertLogMessage(TwitterLoginButton.ERROR_MSG_NO_ACTIVITY);
         } finally {
-            FabricTestUtils.resetFabric();
+            TwitterCoreTestUtils.resetTwitterCore();
+            TwitterTestUtils.resetTwitter();
         }
     }
 
     public void testOnClick_activityFinishingDebuggableFalse() throws Exception {
-        final Fabric fabric = setUpLogTest();
-        FabricTestUtils.with(fabric);
+        Twitter.initialize(setUpLogTest());
         loginButton = new TwitterLoginButton(getContext(), null, 0, mockAuthClient) {
             // This is to allow us to test TwitterLoginButton without having to set up a real
             // activity.
@@ -288,25 +275,26 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
             loginButton.performClick();
             assertLogMessage(TwitterLoginButton.ERROR_MSG_NO_ACTIVITY);
         } finally {
-            FabricTestUtils.resetFabric();
+            TwitterCoreTestUtils.resetTwitterCore();
+            TwitterTestUtils.resetTwitter();
         }
     }
 
-    private Fabric setUpLogTest() {
+    private TwitterConfig setUpLogTest() {
         final Logger mockLogger = mock(Logger.class);
         when(mockLogger.isLoggable(TwitterCore.TAG, Log.WARN)).thenReturn(true);
 
-        final Fabric fabric = new Fabric.Builder(getContext())
-                .kits(new KitStub())
-                .debuggable(false)
+        final TwitterConfig config = new TwitterConfig.Builder(getContext())
+                .executorService(mock(ExecutorService.class))
                 .logger(mockLogger)
                 .build();
-        return fabric;
+
+        return config;
     }
 
     private void assertLogMessage(String expectedMessage) {
         final ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
-        verify(Fabric.getLogger()).w(eq(TwitterCore.TAG), argumentCaptor.capture());
+        verify(Twitter.getLogger()).w(eq(Twitter.TAG), argumentCaptor.capture());
         assertEquals(expectedMessage, argumentCaptor.getValue());
     }
 
@@ -330,10 +318,9 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
 
     public void testGetTwitterAuthClient() throws Exception {
         try {
-            final Fabric fabric = new Fabric.Builder(getContext())
-                    .kits(new TwitterCore(new TwitterAuthConfig("", "")))
-                    .build();
-            FabricTestUtils.with(fabric);
+            Twitter.initialize(new TwitterConfig.Builder(getContext())
+                    .executorService(mock(ExecutorService.class))
+                    .build());
 
             final TwitterLoginButton button = new TwitterLoginButton(getContext()) {
                 @Override
@@ -345,16 +332,16 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
             assertNotNull(client);
 
         } finally {
-            FabricTestUtils.resetFabric();
+            TwitterCoreTestUtils.resetTwitterCore();
+            TwitterTestUtils.resetTwitter();
         }
     }
 
     public void testGetTwitterAuthClient_duplicateCalls() throws Exception {
         try {
-            final Fabric fabric = new Fabric.Builder(getContext())
-                    .kits(new TwitterCore(new TwitterAuthConfig("", "")))
-                    .build();
-            FabricTestUtils.with(fabric);
+            Twitter.initialize(new TwitterConfig.Builder(getContext())
+                    .executorService(mock(ExecutorService.class))
+                    .build());
 
             final TwitterLoginButton button = new TwitterLoginButton(getContext()) {
                 @Override
@@ -367,7 +354,8 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
             assertSame(client, client2);
 
         } finally {
-            FabricTestUtils.resetFabric();
+            TwitterCoreTestUtils.resetTwitterCore();
+            TwitterTestUtils.resetTwitter();
         }
     }
 }

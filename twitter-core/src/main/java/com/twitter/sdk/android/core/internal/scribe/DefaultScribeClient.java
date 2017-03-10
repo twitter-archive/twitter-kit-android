@@ -33,12 +33,11 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.internal.ExecutorUtils;
+import com.twitter.sdk.android.core.internal.IdManager;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
-
-import io.fabric.sdk.android.services.common.IdManager;
 
 /**
  * Instances of this class should always be created on a background thread.
@@ -46,7 +45,7 @@ import io.fabric.sdk.android.services.common.IdManager;
 public class DefaultScribeClient extends ScribeClient {
     /*
      * We are using the syndication backend for all scribing until there is a separate schema and
-     * category for other Fabric events.
+     * category for other events.
      */
     private static final String SCRIBE_URL = "https://syndication.twitter.com";
     private static final String SCRIBE_PATH_VERSION = "i";

@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.TwitterTestUtils;
 import com.twitter.sdk.android.core.models.Card;
 import com.twitter.sdk.android.core.models.ImageValue;
 import com.twitter.sdk.android.core.models.MediaEntity;
@@ -36,10 +37,6 @@ import org.mockito.ArgumentCaptor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.FabricTestUtils;
-import io.fabric.sdk.android.KitStub;
 
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doNothing;
@@ -63,7 +60,7 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        context = Fabric.getKit(TweetUi.class).getContext();
+        context = getContext();
         resources = context.getResources();
         defaultLocale = TestUtils.setLocale(getContext(), Locale.ENGLISH);
         setUpMockDependencyProvider();
@@ -145,38 +142,15 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
     }
 
     public void testInit_inEditMode() {
-        FabricTestUtils.resetFabric();
+        TwitterTestUtils.resetTwitter();
         try {
-            final Fabric fabric = new Fabric.Builder(getContext())
-                    .debuggable(true)
-                    .kits(new KitStub())
-                    .build();
-            FabricTestUtils.with(fabric);
             final BaseTweetView view = createViewInEditMode(context, TestFixtures.TEST_TWEET);
             assertTrue(view.isInEditMode());
             assertTrue(view.isEnabled());
         } catch (Exception e) {
             fail("Must start TweetUi... IllegalStateException should be caught");
         } finally {
-            FabricTestUtils.resetFabric();
-        }
-    }
-
-    public void testInit_tweetUiNotStarted() {
-        FabricTestUtils.resetFabric();
-        try {
-            final Fabric fabric = new Fabric.Builder(getContext())
-                    .debuggable(true)
-                    .kits(new KitStub())
-                    .build();
-            FabricTestUtils.with(fabric);
-            final BaseTweetView view = createView(getContext(), TestFixtures.TEST_TWEET);
-            // asserts that view is disabled and "Must start TweetUi..." logged as an error
-            assertFalse(view.isEnabled());
-        } catch (Exception e) {
-            fail("Must start TweetUi... IllegalStateException should be caught");
-        } finally {
-            FabricTestUtils.resetFabric();
+            TwitterTestUtils.resetTwitter();
         }
     }
 

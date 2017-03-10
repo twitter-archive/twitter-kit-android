@@ -23,19 +23,19 @@ import android.util.Log;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
+import com.twitter.sdk.android.core.DefaultLogger;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
+import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterConfig;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterCoreTestUtils;
+import com.twitter.sdk.android.core.TwitterTestUtils;
 
 import java.util.concurrent.ConcurrentHashMap;
-
-import io.fabric.sdk.android.DefaultLogger;
-import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.FabricTestUtils;
-import io.fabric.sdk.android.services.concurrency.PriorityThreadPoolExecutor;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import static org.mockito.Mockito.mock;
 
@@ -55,20 +55,17 @@ public class TweetUiTestCase extends AndroidTestCase {
         super.setUp();
         createMocks();
 
-        FabricTestUtils.resetFabric();
-        final TwitterCore twitterCore = TwitterCoreTestUtils.createTwitterCore(
-                new TwitterAuthConfig("", ""), clients, apiClient);
-
         // Initialize Fabric with mock executor so that kit#doInBackground() will not be called
         // during kit initialization.
-        final Fabric fabric = new Fabric.Builder(getContext())
-                .kits(twitterCore, new TweetUi())
+        final TwitterConfig config = new TwitterConfig.Builder(getContext())
                 .logger(new DefaultLogger(Log.DEBUG))
-                .debuggable(true)
-                .threadPoolExecutor(mock(PriorityThreadPoolExecutor.class))
+                .executorService(mock(ThreadPoolExecutor.class))
                 .build();
 
-        Fabric.with(fabric);
+        Twitter.initialize(config);
+
+        final TwitterCore twitterCore = TwitterCoreTestUtils.createTwitterCore(
+                new TwitterAuthConfig("", ""), clients, apiClient);
 
         tweetUi = TweetUi.getInstance();
         final TweetRepository tweetRepository = new TweetRepository(mainHandler,
@@ -79,7 +76,10 @@ public class TweetUiTestCase extends AndroidTestCase {
 
     @Override
     protected void tearDown() throws Exception {
-        FabricTestUtils.resetFabric();
+        TwitterTestUtils.resetTwitter();
+        TwitterCoreTestUtils.resetTwitterCore();
+        TweetUiTestUtils.resetTweetUi();
+
         scrubClass(TweetUiTestCase.class);
         super.tearDown();
     }

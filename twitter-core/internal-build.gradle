@@ -92,13 +92,10 @@ dependencies {
     compile dependency.retrofitGsonConverter
     compile dependency.gson
     compile dependency.okHttp
-    compile dependency.fabric
 
     androidTestCompile dependency.mockito
     androidTestCompile dependency.dexmakerMockito
-    androidTestCompile dependency.fabricTest
 
-    testCompile dependency.fabricTest
     testCompile dependency.mockito
     testCompile dependency.junit
     testCompile dependency.retrofitMock

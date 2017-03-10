@@ -50,7 +50,7 @@ public class TwitterKit {
      *  Convenience method for logging out active user using JNI.
      */
     public static void logout() {
-        TwitterCore.getInstance().logOut();
+        TwitterCore.getInstance().getSessionManager().clearActiveSession();
     }
 
     /**

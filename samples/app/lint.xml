@@ -21,4 +21,7 @@
     <issue id="MissingPermission" severity="ignore"/>
     <issue id="Registered" severity="ignore"/>
     <issue id="InvalidPackage" severity="ignore"/>
+    <issue id="UnusedResources">
+        <ignore regexp="CONSUMER_KEY|CONSUMER_SECRET|TRACE_ENABLED|COLLECT_IDENTIFIERS_ENABLED" />
+    </issue>
 </lint>

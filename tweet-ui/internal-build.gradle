@@ -95,9 +95,7 @@ dependencies {
     androidTestCompile dependency.retrofitMock
     androidTestCompile dependency.mockito
     androidTestCompile dependency.dexmakerMockito
-    androidTestCompile dependency.fabricTest
 
-    testCompile dependency.fabricTest
     testCompile dependency.mockito
     testCompile dependency.junit
     testCompile(dependency.robolectric) {

@@ -19,13 +19,15 @@ package com.twitter.sdk.android.tweetui;
 
 import android.test.AndroidTestCase;
 
-import io.fabric.sdk.android.FabricTestUtils;
-import io.fabric.sdk.android.KitStub;
-import io.fabric.sdk.android.services.concurrency.UnmetDependencyException;
-
-import com.twitter.sdk.android.core.TwitterAuthConfig;
-import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.Twitter;
+import com.twitter.sdk.android.core.TwitterConfig;
+import com.twitter.sdk.android.core.TwitterCoreTestUtils;
+import com.twitter.sdk.android.core.TwitterTestUtils;
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
+
+import java.util.concurrent.ExecutorService;
+
+import static org.mockito.Mockito.mock;
 
 public class TweetUiTest extends AndroidTestCase {
 
@@ -36,15 +38,19 @@ public class TweetUiTest extends AndroidTestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
+        Twitter.initialize(new TwitterConfig.Builder(getContext())
+                .executorService(mock(ExecutorService.class))
+                .build());
+
         tweetUi = new TweetUi();
-        FabricTestUtils.with(getContext(),
-                new TwitterCore(new TwitterAuthConfig(TestFixtures.CONSUMER_KEY,
-                        TestFixtures.CONSUMER_SECRET)), tweetUi);
     }
 
     @Override
     protected void tearDown() throws Exception {
-        FabricTestUtils.resetFabric();
+        TwitterTestUtils.resetTwitter();
+        TwitterCoreTestUtils.resetTwitterCore();
+        TweetUiTestUtils.resetTweetUi();
+
         super.tearDown();
     }
 
@@ -53,24 +59,12 @@ public class TweetUiTest extends AndroidTestCase {
                 tweetUi.getVersion());
     }
 
-    public void testTwitterDependency() {
-        FabricTestUtils.resetFabric();
-        try {
-            FabricTestUtils.with(getContext(), new TweetUi());
-            fail("UnmetDependencyException was expected");
-        } catch (Exception ex) {
-            if (!(ex instanceof UnmetDependencyException)) {
-                fail();
-            }
-        }
-    }
-
     public void testGetIdentifier() {
         final String identifier = BuildConfig.GROUP + ":" + BuildConfig.ARTIFACT_ID;
         assertEquals(identifier, tweetUi.getIdentifier());
     }
 
-    public void testGetInstance_tweetUiStarted() {
+    public void testGetInstance_tweeterStarted() {
         try {
             final TweetUi instance = TweetUi.getInstance();
             assertNotNull(instance);
@@ -79,18 +73,15 @@ public class TweetUiTest extends AndroidTestCase {
         }
     }
 
-    public void testGetInstance_tweetUiNotStarted() {
-        FabricTestUtils.resetFabric();
+    public void testGetInstance_tweeterNotStarted() {
+        TwitterTestUtils.resetTwitter();
         try {
-            FabricTestUtils.with(getContext(), new KitStub());
             TweetUi.getInstance();
             fail("IllegalStateException was expected");
         } catch (Exception ex) {
             if (!(ex instanceof IllegalStateException)) {
                 fail("IllegalStateException was expected");
             }
-        } finally {
-            FabricTestUtils.resetFabric();
         }
     }
 

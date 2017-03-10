@@ -17,13 +17,10 @@
 
 package com.twitter.sdk.android.core;
 
-import android.app.Activity;
+import android.content.Context;
 
-import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.Kit;
 import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreImpl;
 
-import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.core.internal.SessionMonitor;
 import com.twitter.sdk.android.core.internal.TwitterApi;
 import com.twitter.sdk.android.core.internal.TwitterSessionVerifier;
@@ -35,8 +32,8 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * The TwitterCore Kit provides Login with Twitter and the Twitter API.
  */
-public class TwitterCore extends Kit<Boolean> {
-
+public class TwitterCore {
+    static volatile TwitterCore instance = null;
     public static final String TAG = "Twitter";
 
     static final String PREF_KEY_ACTIVE_TWITTER_SESSION = "active_twittersession";
@@ -52,10 +49,11 @@ public class TwitterCore extends Kit<Boolean> {
 
     private final TwitterAuthConfig authConfig;
     private final ConcurrentHashMap<Session, TwitterApiClient> apiClients;
+    private final Context context;
     private volatile TwitterApiClient guestClient;
     private volatile GuestSessionProvider guestSessionProvider;
 
-    public TwitterCore(TwitterAuthConfig authConfig) {
+    TwitterCore(TwitterAuthConfig authConfig) {
         this(authConfig, new ConcurrentHashMap<Session, TwitterApiClient>(), null);
     }
 
@@ -66,14 +64,39 @@ public class TwitterCore extends Kit<Boolean> {
         this.authConfig = authConfig;
         this.apiClients = apiClients;
         this.guestClient = guestClient;
+        context = Twitter.getInstance().getContext(getIdentifier());
+
+        twitterSessionManager = new PersistedSessionManager<>(
+                new PreferenceStoreImpl(context, SESSION_PREF_FILE_NAME),
+                new TwitterSession.Serializer(), PREF_KEY_ACTIVE_TWITTER_SESSION,
+                PREF_KEY_TWITTER_SESSION);
+
+        guestSessionManager = new PersistedSessionManager<>(
+                new PreferenceStoreImpl(context, SESSION_PREF_FILE_NAME),
+                new GuestSession.Serializer(), PREF_KEY_ACTIVE_GUEST_SESSION,
+                PREF_KEY_GUEST_SESSION);
+
+        sessionMonitor = new SessionMonitor<>(twitterSessionManager,
+                Twitter.getInstance().getExecutorService(), new TwitterSessionVerifier());
     }
 
     public static TwitterCore getInstance() {
-        checkInitialized();
-        return Fabric.getKit(TwitterCore.class);
+        if (instance == null) {
+            synchronized (TwitterCore.class) {
+                if (instance == null) {
+                    instance = new TwitterCore(Twitter.getInstance().getTwitterAuthConfig());
+                    Twitter.getInstance().getExecutorService().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            instance.doInBackground();
+                        }
+                    });
+                }
+            }
+        }
+        return instance;
     }
 
-    @Override
     public String getVersion() {
         return BuildConfig.VERSION_NAME + "." + BuildConfig.BUILD_NUMBER;
     }
@@ -82,26 +105,7 @@ public class TwitterCore extends Kit<Boolean> {
         return authConfig;
     }
 
-    @Override
-    protected boolean onPreExecute() {
-        twitterSessionManager = new PersistedSessionManager<>(
-                new PreferenceStoreImpl(getContext(), SESSION_PREF_FILE_NAME),
-                new TwitterSession.Serializer(), PREF_KEY_ACTIVE_TWITTER_SESSION,
-                PREF_KEY_TWITTER_SESSION);
-
-        guestSessionManager = new PersistedSessionManager<>(
-                new PreferenceStoreImpl(getContext(), SESSION_PREF_FILE_NAME),
-                new GuestSession.Serializer(), PREF_KEY_ACTIVE_GUEST_SESSION,
-                PREF_KEY_GUEST_SESSION);
-
-        sessionMonitor = new SessionMonitor<>(twitterSessionManager,
-                getFabric().getExecutorService(), new TwitterSessionVerifier());
-
-        return true;
-    }
-
-    @Override
-    protected Boolean doInBackground() {
+    void doInBackground() {
         // Trigger restoration of session
         twitterSessionManager.getActiveSession();
         guestSessionManager.getActiveSession();
@@ -109,24 +113,19 @@ public class TwitterCore extends Kit<Boolean> {
         setUpScribeClient();
         // Monitor activity lifecycle after sessions have been restored. Otherwise we would not
         // have any sessions to monitor anyways.
-        sessionMonitor.monitorActivityLifecycle(getFabric().getActivityLifecycleManager());
-        return true;
+
+        sessionMonitor.monitorActivityLifecycle(
+                Twitter.getInstance().getActivityLifecycleManager());
     }
 
-    @Override
     public String getIdentifier() {
         return BuildConfig.GROUP + ":" + BuildConfig.ARTIFACT_ID;
     }
 
-    private static void checkInitialized() {
-        if (Fabric.getKit(TwitterCore.class) == null) {
-            throw new IllegalStateException("Must start Twitter Kit with Fabric.with() first");
-        }
-    }
-
     private void setUpScribeClient() {
-        TwitterCoreScribeClientHolder.initialize(getContext(), getSessionManager(),
-                getGuestSessionProvider(), getIdManager(), KIT_SCRIBE_NAME, getVersion());
+        TwitterCoreScribeClientHolder.initialize(context, getSessionManager(),
+                getGuestSessionProvider(), Twitter.getInstance().getIdManager(), KIT_SCRIBE_NAME,
+                getVersion());
     }
 
     /**********************************************************************************************
@@ -134,47 +133,13 @@ public class TwitterCore extends Kit<Boolean> {
      **********************************************************************************************/
 
     /**
-     * Performs log in on behalf of a user.
-     *
-     * @param activity The {@link android.app.Activity} context to use for the login flow.
-     * @param callback The callback interface to invoke when login completes.
-     *
-     * @throws java.lang.IllegalStateException if {@link io.fabric.sdk.android.Fabric}
-     *          or {@link TwitterCore} has not been initialized.
-     */
-    public void logIn(Activity activity, Callback<TwitterSession> callback) {
-        checkInitialized();
-        new TwitterAuthClient().authorize(activity, callback);
-    }
-
-    /**
-     * Logs out the user, clearing user session. This will not make a network request to invalidate
-     * the session.
-     *
-     * @throws java.lang.IllegalStateException if {@link io.fabric.sdk.android.Fabric}
-     *          or {@link TwitterCore} has not been initialized.
-     */
-    public void logOut() {
-        checkInitialized();
-        final SessionManager<TwitterSession> sessionManager = getSessionManager();
-        if (sessionManager != null) {
-            sessionManager.clearActiveSession();
-        }
-    }
-
-    /**
      * @return the {@link com.twitter.sdk.android.core.SessionManager} for user sessions.
-     *
-     * @throws java.lang.IllegalStateException if {@link io.fabric.sdk.android.Fabric}
-     *          or {@link TwitterCore} has not been initialized.
      */
     public SessionManager<TwitterSession> getSessionManager() {
-        checkInitialized();
         return twitterSessionManager;
     }
 
     public GuestSessionProvider getGuestSessionProvider() {
-        checkInitialized();
         if (guestSessionProvider == null) {
             createGuestSessionProvider();
         }
@@ -194,12 +159,8 @@ public class TwitterCore extends Kit<Boolean> {
      * {@link com.twitter.sdk.android.core.Session}.
      *
      * Caches internally for efficient access.
-     *
-     * @throws java.lang.IllegalStateException if {@link io.fabric.sdk.android.Fabric}
-     *          or {@link TwitterCore} has not been initialized.
      */
     public TwitterApiClient getApiClient() {
-        checkInitialized();
         final TwitterSession session = twitterSessionManager.getActiveSession();
         if (session == null) {
             return getGuestApiClient();
@@ -214,12 +175,8 @@ public class TwitterCore extends Kit<Boolean> {
      *
      * Caches internally for efficient access.
      * @param session the session
-     *
-     * @throws java.lang.IllegalStateException if {@link io.fabric.sdk.android.Fabric}
-     *          or {@link TwitterCore} has not been initialized.
      */
     public TwitterApiClient getApiClient(TwitterSession session) {
-        checkInitialized();
         if (!apiClients.containsKey(session)) {
             apiClients.putIfAbsent(session, new TwitterApiClient(session));
         }
@@ -233,12 +190,8 @@ public class TwitterCore extends Kit<Boolean> {
      * access and storing it in TwitterCore's singleton.
      *
      * @param customTwitterApiClient the custom twitter api client
-     *
-     * @throws java.lang.IllegalStateException if {@link io.fabric.sdk.android.Fabric}
-     *          or {@link TwitterCore} has not been initialized.
      */
     public void addGuestApiClient(TwitterApiClient customTwitterApiClient) {
-        checkInitialized();
         if (guestClient == null) {
             createGuestClient(customTwitterApiClient);
         }
@@ -253,12 +206,8 @@ public class TwitterCore extends Kit<Boolean> {
      *
      * @param session the session
      * @param customTwitterApiClient the custom twitter api client
-     *
-     * @throws java.lang.IllegalStateException if {@link io.fabric.sdk.android.Fabric}
-     *          or {@link TwitterCore} has not been initialized.
      */
     public void addApiClient(TwitterSession session, TwitterApiClient customTwitterApiClient) {
-        checkInitialized();
         if (!apiClients.containsKey(session)) {
             apiClients.putIfAbsent(session, customTwitterApiClient);
         }
@@ -268,12 +217,8 @@ public class TwitterCore extends Kit<Boolean> {
      * Creates {@link com.twitter.sdk.android.core.TwitterApiClient} using guest authentication.
      *
      * Caches internally for efficient access.
-     *
-     * @throws java.lang.IllegalStateException if {@link io.fabric.sdk.android.Fabric}
-     *          or {@link TwitterCore} has not been initialized.
      */
     public TwitterApiClient getGuestApiClient() {
-        checkInitialized();
         if (guestClient == null) {
             createGuestClient();
         }

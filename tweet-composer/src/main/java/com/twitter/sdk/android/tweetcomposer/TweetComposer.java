@@ -27,13 +27,11 @@ import android.text.TextUtils;
 import com.twitter.sdk.android.core.GuestSessionProvider;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
+import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
 
-import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.Kit;
-import io.fabric.sdk.android.services.concurrency.DependsOn;
 import com.twitter.sdk.android.core.internal.network.UrlUtils;
 import com.twitter.sdk.android.core.internal.scribe.ScribeConfig;
 
@@ -44,8 +42,8 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * The TweetComposer Kit provides a lightweight mechanism for creating intents to interact with the installed Twitter app or a browser.
  */
-@DependsOn(TwitterCore.class)
-public class TweetComposer extends Kit<Void> {
+public class TweetComposer {
+    static volatile TweetComposer instance = null;
     private static final String MIME_TYPE_PLAIN_TEXT = "text/plain";
     private static final String MIME_TYPE_JPEG = "image/jpeg";
     private static final String TWITTER_PACKAGE_NAME = "com.twitter.android";
@@ -53,67 +51,58 @@ public class TweetComposer extends Kit<Void> {
     private static final String KIT_SCRIBE_NAME = "TweetComposer";
 
     private final ConcurrentHashMap<Session, ComposerApiClient> apiClients;
-    String advertisingId;
     SessionManager<TwitterSession> sessionManager;
     GuestSessionProvider guestSessionProvider;
+    Context context;
     private ScribeClient scribeClient;
 
-    public TweetComposer() {
+    public static TweetComposer getInstance() {
+        if (instance == null) {
+            synchronized (TweetComposer.class) {
+                if (instance == null) {
+                    instance = new TweetComposer();
+                }
+            }
+        }
+        return instance;
+    }
+
+    TweetComposer() {
         this.apiClients = new ConcurrentHashMap<>();
         scribeClient = new ScribeClientImpl(null);
-    }
 
-    @Override
-    public String getVersion() {
-        return BuildConfig.VERSION_NAME + "." + BuildConfig.BUILD_NUMBER;
-    }
-
-    protected boolean onPreExecute() {
         sessionManager = TwitterCore.getInstance().getSessionManager();
         guestSessionProvider = TwitterCore.getInstance().getGuestSessionProvider();
-        return super.onPreExecute();
+        context = Twitter.getInstance().getContext(getIdentifier());
+
+        setUpScribeClient();
     }
 
-    @Override
-    protected Void doInBackground() {
-        advertisingId = getIdManager().getAdvertisingId();
-        setUpScribeClient();
-        return null;
+    public String getVersion() {
+        return BuildConfig.VERSION_NAME + "." + BuildConfig.BUILD_NUMBER;
     }
 
     private void setUpScribeClient() {
         final ScribeConfig config =
                 DefaultScribeClient.getScribeConfig(KIT_SCRIBE_NAME, getVersion());
-        scribeClient = new ScribeClientImpl(new DefaultScribeClient(getContext(),
-                sessionManager, guestSessionProvider, getIdManager(), config));
+        scribeClient = new ScribeClientImpl(new DefaultScribeClient(context,
+                sessionManager, guestSessionProvider, Twitter.getInstance().getIdManager(),
+                config));
     }
 
-    @Override
     public String getIdentifier() {
         return BuildConfig.GROUP + ":" + BuildConfig.ARTIFACT_ID;
     }
 
     public ComposerApiClient getApiClient(TwitterSession session) {
-        checkInitialized();
         if (!apiClients.containsKey(session)) {
             apiClients.putIfAbsent(session, new ComposerApiClient(session));
         }
         return apiClients.get(session);
     }
 
-    public static TweetComposer getInstance() {
-        checkInitialized();
-        return Fabric.getKit(TweetComposer.class);
-    }
-
     protected ScribeClient getScribeClient() {
         return scribeClient;
-    }
-
-    private static void checkInitialized() {
-        if (Fabric.getKit(TweetComposer.class) == null) {
-            throw new IllegalStateException("Must start Twitter Kit with Fabric.with() first");
-        }
     }
 
     String getAdvertisingId() {
@@ -122,7 +111,7 @@ public class TweetComposer extends Kit<Void> {
          * It also may be null depending on the users preferences and if Google Play Services has
          * been installed on the device.
          */
-        return advertisingId;
+        return Twitter.getInstance().getIdManager().getAdvertisingId();
     }
 
     /**

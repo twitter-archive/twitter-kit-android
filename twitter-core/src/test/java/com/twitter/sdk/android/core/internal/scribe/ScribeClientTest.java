@@ -19,12 +19,11 @@ package com.twitter.sdk.android.core.internal.scribe;
 
 import android.content.Context;
 
-import io.fabric.sdk.android.services.common.IdManager;
-
 import com.twitter.sdk.android.core.GuestSession;
 import com.twitter.sdk.android.core.GuestSessionProvider;
 import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.internal.IdManager;
 
 import org.junit.Before;
 import org.junit.Test;

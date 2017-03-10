@@ -25,6 +25,12 @@ public final class TwitterCoreTestUtils {
 
     public static TwitterCore createTwitterCore(TwitterAuthConfig authConfig,
             ConcurrentHashMap<Session, TwitterApiClient> clients, TwitterApiClient guestClient) {
-        return new TwitterCore(authConfig, clients, guestClient);
+
+        TwitterCore.instance = new TwitterCore(authConfig, clients, guestClient);
+        return TwitterCore.instance;
+    }
+
+    public static void resetTwitterCore() {
+        TwitterCore.instance = null;
     }
 }

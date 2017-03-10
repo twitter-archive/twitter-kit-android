@@ -66,8 +66,6 @@ dependencies {
     compile project(':tweet-composer')
     compile project(':tweet-ui')
 
-    compile dependency.fabric
-
     testCompile dependency.mockito
     testCompile dependency.junit
     testCompile(dependency.robolectric) {

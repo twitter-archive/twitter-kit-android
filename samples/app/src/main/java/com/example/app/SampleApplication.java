@@ -21,18 +21,14 @@ import android.app.Application;
 import android.os.StrictMode;
 import android.util.Log;
 
-import io.fabric.sdk.android.DefaultLogger;
-import io.fabric.sdk.android.Fabric;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import com.squareup.leakcanary.LeakCanary;
+import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterApiClient;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterSession;
-import com.twitter.sdk.android.tweetcomposer.TweetComposer;
-import com.twitter.sdk.android.tweetui.TweetUi;
 
 public class SampleApplication extends Application {
     private static final String TAG = SampleApplication.class.getSimpleName();
@@ -53,16 +49,7 @@ public class SampleApplication extends Application {
                 .penaltyLog()
                 .build());
 
-        final TwitterAuthConfig authConfig = new TwitterAuthConfig(BuildConfig.CONSUMER_KEY,
-                BuildConfig.CONSUMER_SECRET);
-
-        final Fabric fabric = new Fabric.Builder(this)
-                .kits(new TwitterCore(authConfig), new TweetUi(), new TweetComposer())
-                .logger(new DefaultLogger(Log.DEBUG))
-                .debuggable(true)
-                .build();
-
-        Fabric.with(fabric);
+        Twitter.initialize(this);
 
         final HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);

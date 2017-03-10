@@ -24,7 +24,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
 import com.twitter.sdk.android.core.models.Tweet;
@@ -95,7 +95,7 @@ class FilterTimelineDelegate extends TimelineDelegate<Tweet> {
             this.callback = callback;
             this.timelineFilter = timelineFilter;
             this.handler = new Handler(Looper.getMainLooper());
-            this.executorService = TwitterCore.getInstance().getFabric().getExecutorService();
+            this.executorService = Twitter.getInstance().getExecutorService();
         }
 
         @Override

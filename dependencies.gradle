@@ -17,11 +17,8 @@ ext {
             // Gradle plugins
             spoonGradlePlugin          : 'com.stanfy.spoon:spoon-gradle-plugin:1.0.4',
             androidGradlePlugin        : 'com.android.tools.build:gradle:2.1.2',
-            fabricGradlePlugin         : 'io.fabric.tools:gradle:1.22.0',
 
-            // Fabric
-            fabric                     : 'io.fabric.sdk.android:fabric:1.3.+@aar',
-            fabricTest                 : 'io.fabric.sdk.android:fabric-test:0.0.+@aar',
+            // Mopub
             mopub                      : 'com.mopub:mopub-sdk:4.11.0@aar',
 
             // Sample App

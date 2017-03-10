@@ -31,13 +31,12 @@ import android.widget.Button;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.R;
+import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.internal.CommonUtils;
 
 import java.lang.ref.WeakReference;
-
-import io.fabric.sdk.android.Fabric;
 
 /**
  * Log in button for logging into Twitter. When the button is clicked, an authorization request
@@ -199,7 +198,7 @@ public class TwitterLoginButton extends Button {
             TwitterCore.getInstance();
         } catch (IllegalStateException ex) {
             //Disable if TwitterCore hasn't started
-            Fabric.getLogger().e(TAG, ex.getMessage());
+            Twitter.getLogger().e(TAG, ex.getMessage());
             setEnabled(false);
         }
     }

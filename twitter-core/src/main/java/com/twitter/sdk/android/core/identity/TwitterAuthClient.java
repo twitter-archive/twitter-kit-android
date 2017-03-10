@@ -65,8 +65,8 @@ public class TwitterAuthClient {
     /**
      * Constructor.
      *
-     * @throws java.lang.IllegalStateException if called before starting Twitter Kit with
-     *                                         Fabric.with()
+     * @throws java.lang.IllegalStateException if called before starting TwitterKit with
+     *                                         Twitter.initialize()
      */
     public TwitterAuthClient() {
         this(TwitterCore.getInstance(), TwitterCore.getInstance().getAuthConfig(),

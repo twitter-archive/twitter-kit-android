@@ -20,10 +20,8 @@ package com.twitter.sdk.android.tweetui;
 import android.net.Uri;
 import android.test.AndroidTestCase;
 
-import io.fabric.sdk.android.FabricTestUtils;
-import io.fabric.sdk.android.KitStub;
-
-import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.TwitterCoreTestUtils;
+import com.twitter.sdk.android.core.TwitterTestUtils;
 import com.twitter.sdk.android.core.models.Card;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
@@ -31,6 +29,7 @@ import com.twitter.sdk.android.core.models.TweetEntities;
 import com.twitter.sdk.android.core.models.UserBuilder;
 
 public class TweetUtilsTest extends AndroidTestCase {
+    static final String NOT_STARTED_ERROR = "Must initialize Twitter before using getInstance()";
     private static final String A_FULL_PERMALINK =
             "https://twitter.com/jack/status/20?ref_src=twsrc%5Etwitterkit";
     private static final String A_PERMALINK_WITH_NO_SCREEN_NAME
@@ -39,33 +38,34 @@ public class TweetUtilsTest extends AndroidTestCase {
     private static final int A_VALID_TWEET_ID = 20;
     private static final int AN_INVALID_TWEET_ID = 0;
 
+    @Override
+    public void tearDown() throws Exception {
+        TwitterTestUtils.resetTwitter();
+        TwitterCoreTestUtils.resetTwitterCore();
+        TweetUiTestUtils.resetTweetUi();
+
+        super.tearDown();
+    }
+
     public void testLoadTweet_beforeKitStart() {
-        FabricTestUtils.resetFabric();
         try {
-            FabricTestUtils.with(getContext(), new KitStub<TwitterCore>());
             TweetUtils.loadTweet(TestFixtures.TEST_TWEET_ID, null);
             fail("IllegalStateException not thrown");
         } catch (IllegalStateException e) {
-            assertEquals(TweetUi.NOT_STARTED_ERROR, e.getMessage());
+            assertEquals(NOT_STARTED_ERROR, e.getMessage());
         } catch (Exception ex) {
             fail();
-        } finally {
-            FabricTestUtils.resetFabric();
         }
     }
 
     public void testLoadTweets_beforeKitStart() {
-        FabricTestUtils.resetFabric();
         try {
-            FabricTestUtils.with(getContext(), new KitStub<TwitterCore>());
             TweetUtils.loadTweets(TestFixtures.TWEET_IDS, null);
             fail("IllegalStateException not thrown");
         } catch (IllegalStateException e) {
-            assertEquals(TweetUi.NOT_STARTED_ERROR, e.getMessage());
+            assertEquals(NOT_STARTED_ERROR, e.getMessage());
         } catch (Exception ex) {
             fail();
-        } finally {
-            FabricTestUtils.resetFabric();
         }
     }
 

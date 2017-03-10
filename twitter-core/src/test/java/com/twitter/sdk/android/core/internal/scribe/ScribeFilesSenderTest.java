@@ -19,8 +19,6 @@ package com.twitter.sdk.android.core.internal.scribe;
 
 import android.content.Context;
 
-import io.fabric.sdk.android.services.common.IdManager;
-
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
 import okhttp3.Protocol;
@@ -38,6 +36,7 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.internal.CommonUtils;
+import com.twitter.sdk.android.core.internal.IdManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;

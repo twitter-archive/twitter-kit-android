@@ -70,6 +70,4 @@ dependencies {
     provided fileTree(dir: 'libs', include: ['unity.jar'])
     compile project(':twitter-core')
     compile project(':tweet-composer')
-
-    compile dependency.fabric
 }

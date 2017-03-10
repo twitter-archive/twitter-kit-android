@@ -22,9 +22,8 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.twitter.sdk.android.core.Twitter;
-
-import io.fabric.sdk.android.services.persistence.PreferenceStore;
-import io.fabric.sdk.android.services.persistence.PreferenceStoreImpl;
+import com.twitter.sdk.android.core.internal.persistence.PreferenceStore;
+import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreImpl;
 
 class AdvertisingInfoProvider {
     private static final String ADVERTISING_INFO_PREFERENCES = "TwitterAdvertisingInfoPreferences";

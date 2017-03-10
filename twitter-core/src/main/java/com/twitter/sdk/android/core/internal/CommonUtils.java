@@ -29,8 +29,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Scanner;
 
-import io.fabric.sdk.android.Fabric;
-
 public class CommonUtils {
     static final String CLS_SHARED_PREFERENCES_NAME = "com.crashlytics.prefs";
     static final String TRACE_ENABLED_RESOURCE_NAME = "com.twitter.sdk.android.TRACE_ENABLED";
@@ -224,17 +222,17 @@ public class CommonUtils {
     }
 
     /**
-     *  If {@link io.fabric.sdk.android.Fabric#isDebuggable()}, throws an IllegalStateException,
+     *  If {@link Twitter#isDebug()}, throws an IllegalStateException,
      *  else logs a warning.
      *
      * @param logTag the log tag to use for logging
      * @param errorMsg the error message
      */
     public static void logOrThrowIllegalStateException(String logTag, String errorMsg) {
-        if (Fabric.isDebuggable()) {
+        if (Twitter.isDebug()) {
             throw new IllegalStateException(errorMsg);
         } else {
-            Fabric.getLogger().w(logTag, errorMsg);
+            Twitter.getLogger().w(logTag, errorMsg);
         }
     }
 }

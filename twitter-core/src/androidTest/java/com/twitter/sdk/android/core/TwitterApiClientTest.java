@@ -23,35 +23,37 @@ import com.twitter.sdk.android.core.internal.TwitterApi;
 import com.twitter.sdk.android.core.services.FavoriteService;
 import com.twitter.sdk.android.core.services.StatusesService;
 
-import io.fabric.sdk.android.FabricTestUtils;
+import java.util.concurrent.ExecutorService;
+
 import okhttp3.OkHttpClient;
 
 import static org.mockito.Mockito.mock;
 
 public class TwitterApiClientTest extends AndroidTestCase {
 
-    private TwitterCore twitterCore;
-
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        twitterCore = new TwitterCore(new TwitterAuthConfig("", ""));
-        FabricTestUtils.with(getContext(), twitterCore);
+
+        Twitter.initialize(new TwitterConfig.Builder(getContext())
+                .executorService(mock(ExecutorService.class))
+                .build());
     }
 
     @Override
     protected void tearDown() throws Exception {
+        TwitterTestUtils.resetTwitter();
+        TwitterCoreTestUtils.resetTwitterCore();
         super.tearDown();
-        FabricTestUtils.resetFabric();
     }
 
     public void testGetService_sdkNotStarted() {
         try {
-            FabricTestUtils.resetFabric();
+            TwitterTestUtils.resetTwitter();
             new TwitterApiClient(mock(TwitterSession.class));
             fail();
         } catch (IllegalStateException ise) {
-            assertEquals("Must Initialize Fabric before using singleton()", ise.getMessage());
+            assertEquals("Must initialize Twitter before using getInstance()", ise.getMessage());
         }
     }
 

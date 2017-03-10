@@ -19,9 +19,8 @@ package com.twitter.sdk.android.core.internal.scribe;
 
 import android.content.Context;
 
-import io.fabric.sdk.android.services.common.IdManager;
-
 import com.twitter.sdk.android.core.internal.CommonUtils;
+import com.twitter.sdk.android.core.internal.IdManager;
 import com.twitter.sdk.android.core.internal.SystemCurrentTimeProvider;
 import com.twitter.sdk.android.core.internal.persistence.FileStoreImpl;
 

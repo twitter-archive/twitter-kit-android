@@ -68,16 +68,13 @@ android {
 dependencies {
     compile project(':twitter-core')
 
-    compile dependency.fabric
     compile dependency.picasso
     compile dependency.supportV4
 
     androidTestCompile dependency.retrofitMock
     androidTestCompile dependency.mockito
     androidTestCompile dependency.dexmakerMockito
-    androidTestCompile dependency.fabricTest
 
-    testCompile dependency.fabricTest
     testCompile dependency.mockito
     testCompile dependency.junit
     testCompile(dependency.robolectric) {

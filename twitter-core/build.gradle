@@ -74,7 +74,6 @@ android {
 }
 
 dependencies {
-    compile dependency.fabric
     compile dependency.retrofit
     compile dependency.retrofitGsonConverter
     compile dependency.gson
@@ -82,9 +81,7 @@ dependencies {
 
     androidTestCompile dependency.mockito
     androidTestCompile dependency.dexmakerMockito
-    androidTestCompile dependency.fabricTest
 
-    testCompile dependency.fabricTest
     testCompile dependency.mockito
     testCompile dependency.junit
     testCompile dependency.retrofitMock

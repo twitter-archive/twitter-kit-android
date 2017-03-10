@@ -84,7 +84,9 @@ dependencies {
     compile dependency.picasso
     compile dependency.tweetText
 
-    testCompile dependency.fabricTest
+    androidTestCompile dependency.mockito
+    androidTestCompile dependency.dexmakerMockito
+
     testCompile dependency.mockito
     testCompile dependency.junit
     testCompile dependency.retrofitMock

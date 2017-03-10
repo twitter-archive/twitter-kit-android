@@ -17,49 +17,45 @@
 
 package com.twitter.sdk.android.tweetui;
 
-import android.test.AndroidTestCase;
+import android.test.InstrumentationTestCase;
+import android.test.UiThreadTest;
 
-import com.twitter.sdk.android.core.TwitterAuthConfig;
-import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.Twitter;
+import com.twitter.sdk.android.core.TwitterConfig;
+import com.twitter.sdk.android.core.TwitterCoreTestUtils;
+import com.twitter.sdk.android.core.TwitterTestUtils;
 
-import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.FabricTestUtils;
-import io.fabric.sdk.android.services.concurrency.PriorityThreadPoolExecutor;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import static org.mockito.Mockito.*;
 
-/**
- * Call Fabric.with instead of FabricTestUtils.with to detect background thread issues.
- */
-public class TweetUiBackgroundTest extends AndroidTestCase {
+public class TweetUiBackgroundTest extends InstrumentationTestCase {
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         // Set a mock thread pool executor so we can run these tests knowing that doInBackground
         // has not been run.
-        Fabric.with(new Fabric.Builder(getContext())
-                .threadPoolExecutor(mock(PriorityThreadPoolExecutor.class))
-                .kits(
-                        new TwitterCore(new TwitterAuthConfig(TestFixtures.CONSUMER_KEY,
-                                TestFixtures.CONSUMER_SECRET)),
-                        new TweetUi())
+        Twitter.initialize(new TwitterConfig.Builder(getInstrumentation().getTargetContext())
+                .executorService(mock(ThreadPoolExecutor.class))
                 .build());
     }
 
     @Override
     protected void tearDown() throws Exception {
-        FabricTestUtils.resetFabric();
+        TwitterTestUtils.resetTwitter();
+        TwitterCoreTestUtils.resetTwitterCore();
+        TweetUiTestUtils.resetTweetUi();
+
         super.tearDown();
     }
 
+    @UiThreadTest
     public void testRenderTweet_beforeInBackground() {
         try {
-            final TweetView tv = new TweetView(getContext(), TestFixtures.TEST_TWEET);
+            new TweetView(getInstrumentation().getTargetContext(), TestFixtures.TEST_TWEET);
         } catch (IllegalArgumentException e) {
             fail(e.getMessage());
-        } finally {
-            FabricTestUtils.resetFabric();
         }
     }
 

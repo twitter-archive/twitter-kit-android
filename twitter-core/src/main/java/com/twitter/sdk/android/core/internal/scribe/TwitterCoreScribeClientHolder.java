@@ -23,8 +23,7 @@ import com.twitter.sdk.android.core.GuestSessionProvider;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.TwitterAuthToken;
-
-import io.fabric.sdk.android.services.common.IdManager;
+import com.twitter.sdk.android.core.internal.IdManager;
 
 public class TwitterCoreScribeClientHolder {
 

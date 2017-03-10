@@ -189,8 +189,12 @@ public class Twitter {
     /**
      * @return the global value for debug mode.
      */
-    public boolean isDebug() {
-        return isDebug;
+    public static boolean isDebug() {
+        if (instance == null) {
+            return false;
+        }
+
+        return instance.isDebug;
     }
 
     /**

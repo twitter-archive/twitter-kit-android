@@ -20,8 +20,6 @@ package com.twitter.sdk.android.core.internal;
 import android.app.Activity;
 import android.text.format.DateUtils;
 
-import io.fabric.sdk.android.ActivityLifecycleManager;
-
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
 
