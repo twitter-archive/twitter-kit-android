@@ -22,7 +22,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.provider.Settings.Secure;
 
-import io.fabric.sdk.android.Fabric;
+import com.twitter.sdk.android.core.Twitter;
 
 import java.util.Locale;
 import java.util.UUID;
@@ -71,7 +71,7 @@ public class IdManager {
         collectHardwareIds = CommonUtils.getBooleanResourceValue(appContext,
                 COLLECT_DEVICE_IDENTIFIERS, true);
         if (!collectHardwareIds) {
-            Fabric.getLogger().d(Fabric.TAG, "Device ID collection disabled for "
+            Twitter.getLogger().d(Twitter.TAG, "Device ID collection disabled for "
                     + appContext.getPackageName());
         }
     }

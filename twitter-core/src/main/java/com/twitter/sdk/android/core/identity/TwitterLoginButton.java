@@ -35,9 +35,9 @@ import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.internal.CommonUtils;
 
-import io.fabric.sdk.android.Fabric;
-
 import java.lang.ref.WeakReference;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Log in button for logging into Twitter. When the button is clicked, an authorization request

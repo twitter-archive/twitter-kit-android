@@ -18,9 +18,8 @@
 package com.twitter.sdk.android.tweetui;
 
 import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Logger;
 import com.twitter.sdk.android.core.TwitterException;
-
-import io.fabric.sdk.android.Logger;
 
 /**
  * LoggingCallback logs error messages to the logger and passes TwitterExceptions through to the

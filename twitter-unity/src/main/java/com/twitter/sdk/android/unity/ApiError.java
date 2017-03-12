@@ -20,9 +20,9 @@ package com.twitter.sdk.android.unity;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterCore;
 
-import io.fabric.sdk.android.Fabric;
 import com.twitter.sdk.android.core.internal.persistence.SerializationStrategy;
 
 class ApiError {
@@ -47,7 +47,7 @@ class ApiError {
             try {
                 return gson.toJson(error);
             } catch (Exception e) {
-                Fabric.getLogger().d(TwitterCore.TAG, e.getMessage());
+                Twitter.getLogger().d(TwitterCore.TAG, e.getMessage());
             }
             return "";
         }
@@ -58,7 +58,7 @@ class ApiError {
                 try {
                     return gson.fromJson(serializedSession, ApiError.class);
                 } catch (Exception e) {
-                    Fabric.getLogger().d(TwitterCore.TAG, e.getMessage());
+                    Twitter.getLogger().d(TwitterCore.TAG, e.getMessage());
                 }
             }
             return null;

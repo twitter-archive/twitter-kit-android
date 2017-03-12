@@ -19,7 +19,8 @@ package com.twitter.sdk.android.core.internal;
 
 import android.content.Context;
 
-import io.fabric.sdk.android.Fabric;
+
+import com.twitter.sdk.android.core.Twitter;
 
 import java.lang.reflect.Method;
 
@@ -76,7 +77,7 @@ class AdvertisingInfoReflectionStrategy implements AdvertisingInfoStrategy {
             return (String) method.invoke(getInfo());
 
         } catch (Exception e) {
-            Fabric.getLogger().w(Fabric.TAG, "Could not call " + METHOD_NAME_GET_ID
+            Twitter.getLogger().w(Twitter.TAG, "Could not call " + METHOD_NAME_GET_ID
                     + " on " + CLASS_NAME_ADVERTISING_ID_CLIENT_INFO);
         }
 
@@ -91,7 +92,7 @@ class AdvertisingInfoReflectionStrategy implements AdvertisingInfoStrategy {
             return (Boolean) method.invoke(getInfo());
 
         } catch (Exception e) {
-            Fabric.getLogger().w(Fabric.TAG, "Could not call "
+            Twitter.getLogger().w(Twitter.TAG, "Could not call "
                     + METHOD_NAME_IS_LIMITED_AD_TRACKING_ENABLED + " on "
                     + CLASS_NAME_ADVERTISING_ID_CLIENT_INFO);
         }
@@ -106,7 +107,8 @@ class AdvertisingInfoReflectionStrategy implements AdvertisingInfoStrategy {
             return method.invoke(null, context);
 
         } catch (Exception e) {
-            Fabric.getLogger().w(Fabric.TAG, "Could not call " + METHOD_NAME_GET_ADVERTISING_ID_INFO
+            Twitter.getLogger()
+                    .w(Twitter.TAG, "Could not call " + METHOD_NAME_GET_ADVERTISING_ID_INFO
                     + " on " + CLASS_NAME_ADVERTISING_ID_CLIENT);
         }
 

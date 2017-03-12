@@ -28,7 +28,8 @@ import android.os.Looper;
 import android.os.Parcel;
 import android.os.RemoteException;
 
-import io.fabric.sdk.android.Fabric;
+
+import com.twitter.sdk.android.core.Twitter;
 
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -47,7 +48,7 @@ class AdvertisingInfoServiceStrategy implements AdvertisingInfoStrategy {
 
     public AdvertisingInfo getAdvertisingInfo() {
         if (Looper.myLooper() == Looper.getMainLooper()) {
-            Fabric.getLogger().d(Fabric.TAG,
+            Twitter.getLogger().d(Twitter.TAG,
                     "AdvertisingInfoServiceStrategy cannot be called on the main thread");
             return null;
         }
@@ -58,13 +59,13 @@ class AdvertisingInfoServiceStrategy implements AdvertisingInfoStrategy {
         } catch (PackageManager.NameNotFoundException e) {
             // Can happen if the device doesn't have Google play services
             // (Genymotion emulator is an example)
-            Fabric.getLogger().d(Fabric.TAG, "Unable to find Google Play Services package name");
+            Twitter.getLogger().d(Twitter.TAG, "Unable to find Google Play Services package name");
             return null;
         } catch (Exception e) {
             // android.os.TransactionTooLargeException can be thrown when there are many
             // transactions in progress even when most of the individual transactions are below the
             // 1MB buffer size.
-            Fabric.getLogger().d(Fabric.TAG,
+            Twitter.getLogger().d(Twitter.TAG,
                     "Unable to determine if Google Play Services is available", e);
             return null;
         }
@@ -80,18 +81,18 @@ class AdvertisingInfoServiceStrategy implements AdvertisingInfoStrategy {
                     return new AdvertisingInfo(adInterface.getId(),
                             adInterface.isLimitAdTrackingEnabled());
                 } catch (Exception e) {
-                    Fabric.getLogger().w(Fabric.TAG,
+                    Twitter.getLogger().w(Twitter.TAG,
                             "Exception in binding to Google Play Service to capture AdvertisingId",
                             e);
                 } finally {
                     context.unbindService(connection);
                 }
             } else {
-                Fabric.getLogger().d(Fabric.TAG,
+                Twitter.getLogger().d(Twitter.TAG,
                         "Could not bind to Google Play Service to capture AdvertisingId");
             }
         } catch (Throwable t) {
-            Fabric.getLogger().d(Fabric.TAG,
+            Twitter.getLogger().d(Twitter.TAG,
                     "Could not bind to Google Play Service to capture AdvertisingId", t);
         }
 
@@ -124,7 +125,7 @@ class AdvertisingInfoServiceStrategy implements AdvertisingInfoStrategy {
 
         IBinder getBinder()  {
             if (retrieved) {
-                Fabric.getLogger().e(Fabric.TAG, "getBinder already called");
+                Twitter.getLogger().e(Twitter.TAG, "getBinder already called");
             }
             retrieved = true;
 
@@ -177,7 +178,7 @@ class AdvertisingInfoServiceStrategy implements AdvertisingInfoStrategy {
                 reply.readException();
                 id = reply.readString();
             } catch (Exception e) {
-                Fabric.getLogger().d(Fabric.TAG,
+                Twitter.getLogger().d(Twitter.TAG,
                         "Could not get parcel from Google Play Service to capture AdvertisingId");
             } finally {
                 reply.recycle();
@@ -197,7 +198,7 @@ class AdvertisingInfoServiceStrategy implements AdvertisingInfoStrategy {
                 reply.readException();
                 limitAdTracking = 0 != reply.readInt();
             } catch (Exception e) {
-                Fabric.getLogger().d(Fabric.TAG,
+                Twitter.getLogger().d(Twitter.TAG,
                         "Could not get parcel from Google Play Service"
                                 + " to capture Advertising limitAdTracking");
             } finally {

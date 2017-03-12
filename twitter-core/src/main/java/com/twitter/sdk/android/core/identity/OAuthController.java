@@ -27,10 +27,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
-import io.fabric.sdk.android.Fabric;
-
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthException;
 import com.twitter.sdk.android.core.TwitterAuthToken;
@@ -65,7 +64,7 @@ class OAuthController implements OAuthWebViewClient.Listener {
 
     void startAuth() {
         // Step 1. Obtain a request token to start the sign in flow.
-        Fabric.getLogger().d(TwitterCore.TAG, "Obtaining request token to start the sign in flow");
+        Twitter.getLogger().d(TwitterCore.TAG, "Obtaining request token to start the sign in flow");
         oAuth1aService.requestTempToken(newRequestTempTokenCallback());
     }
 
@@ -79,7 +78,7 @@ class OAuthController implements OAuthWebViewClient.Listener {
                 requestToken = result.data.authToken;
                 final String authorizeUrl = oAuth1aService.getAuthorizeUrl(requestToken);
                 // Step 2. Redirect user to web view to complete authorization flow.
-                Fabric.getLogger().d(TwitterCore.TAG,
+                Twitter.getLogger().d(TwitterCore.TAG,
                         "Redirecting user to web view to complete authorization flow");
                 setUpWebView(webView,
                         new OAuthWebViewClient(oAuth1aService.buildCallbackUrl(authConfig),
@@ -88,7 +87,7 @@ class OAuthController implements OAuthWebViewClient.Listener {
 
             @Override
             public void failure(TwitterException error) {
-                Fabric.getLogger().e(TwitterCore.TAG,
+                Twitter.getLogger().e(TwitterCore.TAG,
                         "Failed to get request token", error);
                 // Create new exception that can be safely serialized since Retrofit errors may
                 // throw a NotSerializableException.
@@ -122,12 +121,12 @@ class OAuthController implements OAuthWebViewClient.Listener {
     }
 
     private void handleWebViewSuccess(Bundle bundle) {
-        Fabric.getLogger().d(TwitterCore.TAG, "OAuth web view completed successfully");
+        Twitter.getLogger().d(TwitterCore.TAG, "OAuth web view completed successfully");
         if (bundle != null) {
             final String verifier = bundle.getString(OAuthConstants.PARAM_VERIFIER);
             if (verifier != null) {
                 // Step 3. Convert the request token to an access token.
-                Fabric.getLogger().d(TwitterCore.TAG,
+                Twitter.getLogger().d(TwitterCore.TAG,
                         "Converting the request token to an access token.");
                 oAuth1aService.requestAccessToken(newRequestAccessTokenCallback(),
                         requestToken, verifier);
@@ -136,7 +135,7 @@ class OAuthController implements OAuthWebViewClient.Listener {
         }
 
         // If we get here, we failed to complete authorization.
-        Fabric.getLogger().e(TwitterCore.TAG,
+        Twitter.getLogger().e(TwitterCore.TAG,
                 "Failed to get authorization, bundle incomplete " + bundle, null);
         handleAuthError(AuthHandler.RESULT_CODE_ERROR,
                 new TwitterAuthException("Failed to get authorization, bundle incomplete"));
@@ -161,7 +160,7 @@ class OAuthController implements OAuthWebViewClient.Listener {
 
             @Override
             public void failure(TwitterException error) {
-                Fabric.getLogger().e(TwitterCore.TAG, "Failed to get access token", error);
+                Twitter.getLogger().e(TwitterCore.TAG, "Failed to get access token", error);
                 // Create new exception that can be safely serialized since Retrofit errors may
                 // throw a NotSerializableException.
                 handleAuthError(AuthHandler.RESULT_CODE_ERROR,
@@ -171,7 +170,7 @@ class OAuthController implements OAuthWebViewClient.Listener {
     }
 
     private void handleWebViewError(WebViewException error) {
-        Fabric.getLogger().e(TwitterCore.TAG, "OAuth web view completed with an error", error);
+        Twitter.getLogger().e(TwitterCore.TAG, "OAuth web view completed with an error", error);
         handleAuthError(AuthHandler.RESULT_CODE_ERROR,
                 new TwitterAuthException("OAuth web view completed with an error"));
     }

@@ -22,12 +22,11 @@ import android.text.TextUtils;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.models.Tweet;
 
 import java.util.List;
 import java.util.Locale;
-
-import io.fabric.sdk.android.Fabric;
 
 /**
  * Convenience methods for loading Tweets from the API without requiring a user
@@ -47,7 +46,7 @@ public final class TweetUtils {
      */
     public static void loadTweet(final long tweetId, final Callback<Tweet> cb) {
         TweetUi.getInstance().getTweetRepository().loadTweet(tweetId,
-                new com.twitter.sdk.android.tweetui.LoggingCallback<Tweet>(cb, Fabric.getLogger()) {
+                new LoggingCallback<Tweet>(cb, Twitter.getLogger()) {
                     @Override
                     public void success(Result<Tweet> result) {
                         if (cb != null) {
@@ -64,8 +63,7 @@ public final class TweetUtils {
      */
     public static void loadTweets(final List<Long> tweetIds, final Callback<List<Tweet>> cb) {
         TweetUi.getInstance().getTweetRepository().loadTweets(tweetIds,
-                new com.twitter.sdk.android.tweetui.LoggingCallback<List<Tweet>>(cb,
-                        Fabric.getLogger()) {
+                new LoggingCallback<List<Tweet>>(cb, Twitter.getLogger()) {
                     @Override
                     public void success(Result<List<Tweet>> result) {
                         if (cb != null) {

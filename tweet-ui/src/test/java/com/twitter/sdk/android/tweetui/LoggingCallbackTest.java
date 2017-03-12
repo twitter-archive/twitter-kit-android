@@ -17,9 +17,8 @@
 
 package com.twitter.sdk.android.tweetui;
 
-import io.fabric.sdk.android.Logger;
-
 import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Logger;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;

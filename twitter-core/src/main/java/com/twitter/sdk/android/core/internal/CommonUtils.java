@@ -21,6 +21,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 
+import com.twitter.sdk.android.core.Twitter;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
@@ -81,7 +83,7 @@ public class CommonUtils {
             try {
                 c.close();
             } catch (IOException e) {
-                Fabric.getLogger().e(Fabric.TAG, message, e);
+                Twitter.getLogger().e(Twitter.TAG, message, e);
             }
         }
     }
@@ -170,7 +172,7 @@ public class CommonUtils {
      */
     public static void logControlled(Context context, String msg){
         if (isClsTrace(context)){
-            Fabric.getLogger().d(Fabric.TAG, msg);
+            Twitter.getLogger().d(Twitter.TAG, msg);
         }
     }
 
@@ -180,7 +182,7 @@ public class CommonUtils {
      */
     public static void logControlledError(Context context, String msg, Throwable tr){
         if (isClsTrace(context)){
-            Fabric.getLogger().e(Fabric.TAG, msg);
+            Twitter.getLogger().e(Twitter.TAG, msg);
         }
     }
 
@@ -190,7 +192,7 @@ public class CommonUtils {
      */
     public static void logControlled(Context context, int level, String tag, String msg) {
         if (isClsTrace(context)) {
-            Fabric.getLogger().log(level, Fabric.TAG, msg);
+            Twitter.getLogger().log(level, Twitter.TAG, msg);
         }
     }
 

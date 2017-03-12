@@ -27,7 +27,6 @@ import com.twitter.sdk.android.core.models.ApiErrors;
 import com.twitter.sdk.android.core.models.SafeListAdapter;
 import com.twitter.sdk.android.core.models.SafeMapAdapter;
 
-import io.fabric.sdk.android.Fabric;
 import retrofit2.Response;
 
 /**
@@ -96,7 +95,7 @@ public class TwitterApiException extends TwitterException {
                 return parseApiError(body);
             }
         } catch (Exception e) {
-            Fabric.getLogger().e(TwitterCore.TAG, "Unexpected response", e);
+            Twitter.getLogger().e(TwitterCore.TAG, "Unexpected response", e);
         }
 
         return null;
@@ -113,7 +112,7 @@ public class TwitterApiException extends TwitterException {
                 return apiErrors.errors.get(0);
             }
         } catch (JsonSyntaxException e) {
-            Fabric.getLogger().e(TwitterCore.TAG, "Invalid json: " + body, e);
+            Twitter.getLogger().e(TwitterCore.TAG, "Invalid json: " + body, e);
         }
         return null;
     }

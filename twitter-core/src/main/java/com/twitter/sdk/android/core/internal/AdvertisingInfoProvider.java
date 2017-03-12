@@ -21,7 +21,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
 
-import io.fabric.sdk.android.Fabric;
+import com.twitter.sdk.android.core.Twitter;
+
 import io.fabric.sdk.android.services.persistence.PreferenceStore;
 import io.fabric.sdk.android.services.persistence.PreferenceStoreImpl;
 
@@ -49,7 +50,7 @@ class AdvertisingInfoProvider {
 
         infoToReturn = getInfoFromPreferences();
         if (isInfoValid(infoToReturn)) {
-            Fabric.getLogger().d(Fabric.TAG, "Using AdvertisingInfo from Preference Store");
+            Twitter.getLogger().d(Twitter.TAG, "Using AdvertisingInfo from Preference Store");
             refreshInfoIfNeededAsync(infoToReturn);
             return infoToReturn;
         }
@@ -69,7 +70,8 @@ class AdvertisingInfoProvider {
             public void run() {
                 final AdvertisingInfo infoToStore = getAdvertisingInfoFromStrategies();
                 if (!advertisingInfo.equals(infoToStore)) {
-                    Fabric.getLogger().d(Fabric.TAG, "Asychronously getting Advertising Info and " +
+                    Twitter.getLogger()
+                            .d(Twitter.TAG, "Asychronously getting Advertising Info and " +
                             "storing it to preferences");
                     storeInfoToPreferences(infoToStore);
                 }
@@ -122,12 +124,12 @@ class AdvertisingInfoProvider {
             infoToReturn = adInfoStrategy.getAdvertisingInfo();
 
             if (!isInfoValid(infoToReturn)) {
-                Fabric.getLogger().d(Fabric.TAG, "AdvertisingInfo not present");
+                Twitter.getLogger().d(Twitter.TAG, "AdvertisingInfo not present");
             } else {
-                Fabric.getLogger().d(Fabric.TAG, "Using AdvertisingInfo from Service Provider");
+                Twitter.getLogger().d(Twitter.TAG, "Using AdvertisingInfo from Service Provider");
             }
         } else {
-            Fabric.getLogger().d(Fabric.TAG, "Using AdvertisingInfo from Reflection Provider");
+            Twitter.getLogger().d(Twitter.TAG, "Using AdvertisingInfo from Reflection Provider");
         }
 
         return infoToReturn;

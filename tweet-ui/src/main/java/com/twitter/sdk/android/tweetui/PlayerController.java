@@ -25,11 +25,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.twitter.sdk.android.core.IntentUtils;
+import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.tweetui.internal.SwipeToDismissTouchListener;
 import com.twitter.sdk.android.tweetui.internal.VideoControlView;
 import com.twitter.sdk.android.tweetui.internal.VideoView;
-
-import io.fabric.sdk.android.Fabric;
 
 class PlayerController {
     private static final String TAG = "PlayerController";
@@ -93,7 +92,7 @@ class PlayerController {
             videoView.setVideoURI(uri, item.looping);
             videoView.requestFocus();
         } catch (Exception e) {
-            Fabric.getLogger().e(TAG, "Error occurred during video playback", e);
+            Twitter.getLogger().e(TAG, "Error occurred during video playback", e);
         }
     }
 

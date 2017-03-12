@@ -31,6 +31,7 @@ import com.squareup.picasso.Picasso;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.internal.UserUtils;
@@ -38,7 +39,6 @@ import com.twitter.sdk.android.core.models.TweetBuilder;
 
 import java.util.Locale;
 
-import io.fabric.sdk.android.Fabric;
 
 public abstract class BaseTweetView extends AbstractTweetView {
 
@@ -240,7 +240,7 @@ public abstract class BaseTweetView extends AbstractTweetView {
 
             @Override
             public void failure(TwitterException exception) {
-                Fabric.getLogger().d(TAG,
+                Twitter.getLogger().d(TAG,
                         String.format(Locale.ENGLISH, TweetUtils.LOAD_TWEET_DEBUG, tweetId));
             }
         };

@@ -17,7 +17,7 @@
 
 package com.twitter.sdk.android.core.internal.oauth;
 
-import io.fabric.sdk.android.Fabric;
+import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.internal.network.UrlUtils;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -80,7 +80,7 @@ public class OAuth2Service extends OAuthService {
 
                     @Override
                     public void failure(TwitterException error) {
-                        Fabric.getLogger().e(TwitterCore.TAG,
+                        Twitter.getLogger().e(TwitterCore.TAG,
                                 "Your app may not allow guest auth. Please talk to us "
                                         + "regarding upgrading your consumer key.", error);
                         callback.failure(error);
@@ -91,7 +91,7 @@ public class OAuth2Service extends OAuthService {
 
             @Override
             public void failure(TwitterException error) {
-                Fabric.getLogger().e(TwitterCore.TAG, "Failed to get app auth token", error);
+                Twitter.getLogger().e(TwitterCore.TAG, "Failed to get app auth token", error);
                 if (callback != null) {
                     callback.failure(error);
                 }

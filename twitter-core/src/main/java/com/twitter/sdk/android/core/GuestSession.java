@@ -23,7 +23,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.twitter.sdk.android.core.internal.oauth.GuestAuthToken;
 
-import io.fabric.sdk.android.Fabric;
 import com.twitter.sdk.android.core.internal.persistence.SerializationStrategy;
 
 public class GuestSession extends Session<GuestAuthToken> {
@@ -54,7 +53,7 @@ public class GuestSession extends Session<GuestAuthToken> {
                 try {
                     return gson.toJson(session);
                 } catch (Exception e) {
-                    Fabric.getLogger().d(TwitterCore.TAG,
+                    Twitter.getLogger().d(TwitterCore.TAG,
                             "Failed to serialize session " + e.getMessage());
                 }
             }
@@ -67,7 +66,7 @@ public class GuestSession extends Session<GuestAuthToken> {
                 try {
                     return gson.fromJson(serializedSession, GuestSession.class);
                 } catch (Exception e) {
-                    Fabric.getLogger().d(TwitterCore.TAG,
+                    Twitter.getLogger().d(TwitterCore.TAG,
                             "Failed to deserialize session " + e.getMessage());
                 }
             }

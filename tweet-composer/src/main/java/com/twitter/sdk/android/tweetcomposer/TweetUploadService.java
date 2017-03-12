@@ -23,6 +23,7 @@ import android.net.Uri;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
@@ -33,7 +34,6 @@ import com.twitter.sdk.android.tweetcomposer.internal.CardData;
 
 import java.io.File;
 
-import io.fabric.sdk.android.Fabric;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -152,7 +152,7 @@ public class TweetUploadService extends IntentService {
 
     void fail(TwitterException e) {
         sendFailureBroadcast(intent);
-        Fabric.getLogger().e(TAG, "Post Tweet failed", e);
+        Twitter.getLogger().e(TAG, "Post Tweet failed", e);
         stopSelf();
     }
 

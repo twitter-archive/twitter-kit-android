@@ -20,12 +20,12 @@ package com.twitter.sdk.android.core.identity;
 import android.app.Activity;
 import android.content.Intent;
 
-import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.SessionManager;
+import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthException;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -97,7 +97,8 @@ public class TwitterAuthClient {
         }
 
         if (activity.isFinishing()) {
-            Fabric.getLogger().e(TwitterCore.TAG, "Cannot authorize, activity is finishing.", null);
+            Twitter.getLogger()
+                    .e(TwitterCore.TAG, "Cannot authorize, activity is finishing.", null);
         } else {
             handleAuthorize(activity, callback);
         }
@@ -114,7 +115,7 @@ public class TwitterAuthClient {
 
     private boolean authorizeUsingSSO(Activity activity, CallbackWrapper callbackWrapper) {
         if (SSOAuthHandler.isAvailable(activity)) {
-            Fabric.getLogger().d(TwitterCore.TAG, "Using SSO");
+            Twitter.getLogger().d(TwitterCore.TAG, "Using SSO");
             return authState.beginAuthorize(activity,
                     new SSOAuthHandler(authConfig, callbackWrapper, authConfig.getRequestCode()));
         } else {
@@ -123,7 +124,7 @@ public class TwitterAuthClient {
     }
 
     private boolean authorizeUsingOAuth(Activity activity, CallbackWrapper callbackWrapper) {
-        Fabric.getLogger().d(TwitterCore.TAG, "Using OAuth");
+        Twitter.getLogger().d(TwitterCore.TAG, "Using OAuth");
         return authState.beginAuthorize(activity,
                 new OAuthHandler(authConfig, callbackWrapper, authConfig.getRequestCode()));
     }
@@ -153,10 +154,10 @@ public class TwitterAuthClient {
      * @param data the result data returned by the SSO activity
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Fabric.getLogger().d(TwitterCore.TAG,
+        Twitter.getLogger().d(TwitterCore.TAG,
                 "onActivityResult called with " + requestCode + " " + resultCode);
         if (!authState.isAuthorizeInProgress()) {
-            Fabric.getLogger().e(TwitterCore.TAG, "Authorize not in progress", null);
+            Twitter.getLogger().e(TwitterCore.TAG, "Authorize not in progress", null);
         } else {
             final AuthHandler authHandler = authState.getAuthHandler();
             if (authHandler != null &&
@@ -225,14 +226,14 @@ public class TwitterAuthClient {
 
         @Override
         public void success(Result<TwitterSession> result) {
-            Fabric.getLogger().d(TwitterCore.TAG, "Authorization completed successfully");
+            Twitter.getLogger().d(TwitterCore.TAG, "Authorization completed successfully");
             sessionManager.setActiveSession(result.data);
             callback.success(result);
         }
 
         @Override
         public void failure(TwitterException exception) {
-            Fabric.getLogger().e(TwitterCore.TAG, "Authorization completed with an error",
+            Twitter.getLogger().e(TwitterCore.TAG, "Authorization completed with an error",
                     exception);
             callback.failure(exception);
         }

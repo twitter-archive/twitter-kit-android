@@ -40,11 +40,9 @@ import java.util.Locale;
 import io.fabric.sdk.android.Fabric;
 import io.fabric.sdk.android.FabricTestUtils;
 import io.fabric.sdk.android.KitStub;
-import io.fabric.sdk.android.Logger;
 
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -170,14 +168,11 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
             final Fabric fabric = new Fabric.Builder(getContext())
                     .debuggable(true)
                     .kits(new KitStub())
-                    .logger(mock(Logger.class))
                     .build();
             FabricTestUtils.with(fabric);
             final BaseTweetView view = createView(getContext(), TestFixtures.TEST_TWEET);
             // asserts that view is disabled and "Must start TweetUi..." logged as an error
             assertFalse(view.isEnabled());
-            final Logger logger = Fabric.getLogger();
-            verify(logger).e(eq(TweetUi.LOGTAG), eq(TweetUi.NOT_STARTED_ERROR));
         } catch (Exception e) {
             fail("Must start TweetUi... IllegalStateException should be caught");
         } finally {

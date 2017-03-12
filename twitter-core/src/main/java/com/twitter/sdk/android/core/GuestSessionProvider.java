@@ -22,8 +22,6 @@ import com.twitter.sdk.android.core.internal.oauth.OAuth2Service;
 
 import java.util.concurrent.CountDownLatch;
 
-import io.fabric.sdk.android.Fabric;
-
 public class GuestSessionProvider {
     private final OAuth2Service oAuth2Service;
     private final SessionManager<GuestSession> sessionManager;
@@ -55,7 +53,7 @@ public class GuestSessionProvider {
     }
 
     void refreshToken() {
-        Fabric.getLogger().d("GuestSessionProvider", "Refreshing expired guest session.");
+        Twitter.getLogger().d("GuestSessionProvider", "Refreshing expired guest session.");
         final CountDownLatch latch = new CountDownLatch(1);
         oAuth2Service.requestGuestAuthToken(new Callback<GuestAuthToken>() {
             @Override

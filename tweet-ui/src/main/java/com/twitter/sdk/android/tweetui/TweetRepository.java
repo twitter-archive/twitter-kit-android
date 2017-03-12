@@ -24,6 +24,7 @@ import android.text.TextUtils;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.SessionManager;
+import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthException;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
@@ -32,7 +33,6 @@ import com.twitter.sdk.android.core.models.Tweet;
 
 import java.util.List;
 
-import io.fabric.sdk.android.Fabric;
 
 /**
  * Encapsulates Tweet API access. Tweet loads are read through a thread safe LruCache.
@@ -104,7 +104,7 @@ class TweetRepository {
     }
 
     void favorite(final long tweetId, final Callback<Tweet> cb) {
-        getUserSession(new LoggingCallback<TwitterSession>(cb, Fabric.getLogger()) {
+        getUserSession(new LoggingCallback<TwitterSession>(cb, Twitter.getLogger()) {
             @Override
             public void success(Result<TwitterSession> result) {
                 twitterCore.getApiClient(result.data).getFavoriteService().create(tweetId, false)
@@ -114,7 +114,7 @@ class TweetRepository {
     }
 
     void unfavorite(final long tweetId, final Callback<Tweet> cb) {
-        getUserSession(new LoggingCallback<TwitterSession>(cb, Fabric.getLogger()) {
+        getUserSession(new LoggingCallback<TwitterSession>(cb, Twitter.getLogger()) {
             @Override
             public void success(Result<TwitterSession> result) {
                 twitterCore.getApiClient(result.data).getFavoriteService().destroy(tweetId, false)
@@ -124,7 +124,7 @@ class TweetRepository {
     }
 
     void retweet(final long tweetId, final Callback<Tweet> cb) {
-        getUserSession(new LoggingCallback<TwitterSession>(cb, Fabric.getLogger()) {
+        getUserSession(new LoggingCallback<TwitterSession>(cb, Twitter.getLogger()) {
             @Override
             public void success(Result<TwitterSession> result) {
                 twitterCore.getApiClient(result.data).getStatusesService().retweet(tweetId, false)
@@ -134,7 +134,7 @@ class TweetRepository {
     }
 
     void unretweet(final long tweetId, final Callback<Tweet> cb) {
-        getUserSession(new LoggingCallback<TwitterSession>(cb, Fabric.getLogger()) {
+        getUserSession(new LoggingCallback<TwitterSession>(cb, Twitter.getLogger()) {
             @Override
             public void success(Result<TwitterSession> result) {
                 twitterCore.getApiClient(result.data).getStatusesService().unretweet(tweetId, false)

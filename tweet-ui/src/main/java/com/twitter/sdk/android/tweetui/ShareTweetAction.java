@@ -23,9 +23,8 @@ import android.content.res.Resources;
 import android.view.View;
 
 import com.twitter.sdk.android.core.IntentUtils;
+import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.models.Tweet;
-
-import io.fabric.sdk.android.Fabric;
 
 class ShareTweetAction implements View.OnClickListener {
     final Tweet tweet;
@@ -78,7 +77,8 @@ class ShareTweetAction implements View.OnClickListener {
 
     void launchShareIntent(Intent chooser, Context context) {
         if (!IntentUtils.safeStartActivity(context, chooser)) {
-            Fabric.getLogger().e(TweetUi.LOGTAG, "Activity cannot be found to handle share intent");
+            Twitter.getLogger()
+                    .e(TweetUi.LOGTAG, "Activity cannot be found to handle share intent");
         }
     }
 

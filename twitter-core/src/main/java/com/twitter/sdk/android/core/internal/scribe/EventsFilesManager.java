@@ -20,10 +20,10 @@ package com.twitter.sdk.android.core.internal.scribe;
 import android.content.Context;
 import android.util.Log;
 
+import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.internal.CommonUtils;
 import com.twitter.sdk.android.core.internal.CurrentTimeProvider;
 
-import io.fabric.sdk.android.Fabric;
 
 import java.io.File;
 import java.io.IOException;
@@ -113,7 +113,7 @@ public abstract class EventsFilesManager<T> {
             eventStorage.rollOver(targetFileName);
 
             CommonUtils.logControlled(context,
-                    Log.INFO, Fabric.TAG,
+                    Log.INFO, Twitter.TAG,
                     String.format(Locale.US,
                             "generated new file %s", targetFileName)
             );
@@ -140,7 +140,7 @@ public abstract class EventsFilesManager<T> {
                             " rolling it over",
                     eventStorage.getWorkingFileUsedSizeInBytes(), newEventSizeInBytes,
                     getMaxByteSizePerFile());
-            CommonUtils.logControlled(context, Log.INFO, Fabric.TAG, msg);
+            CommonUtils.logControlled(context, Log.INFO, Twitter.TAG, msg);
             rollFileOver();
         }
     }

@@ -32,6 +32,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.twitter.sdk.android.core.IntentUtils;
+import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.internal.UserUtils;
 import com.twitter.sdk.android.core.internal.VineCardUtils;
 import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
@@ -50,7 +51,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import io.fabric.sdk.android.Fabric;
 
 abstract class AbstractTweetView extends RelativeLayout{
     static final String TAG = TweetUi.LOGTAG;
@@ -134,7 +134,7 @@ abstract class AbstractTweetView extends RelativeLayout{
         try {
             dependencyProvider.getTweetUi();
         } catch (IllegalStateException e) {
-            Fabric.getLogger().e(TAG, e.getMessage());
+            Twitter.getLogger().e(TAG, e.getMessage());
             // TweetUi kit instance not available, halt view creation and disable
             setEnabled(false);
             return false;
@@ -254,7 +254,7 @@ abstract class AbstractTweetView extends RelativeLayout{
     void launchPermalink() {
         final Intent intent = new Intent(Intent.ACTION_VIEW, getPermalinkUri());
         if (!IntentUtils.safeStartActivity(getContext(), intent)) {
-            Fabric.getLogger().e(TweetUi.LOGTAG, "Activity cannot be found to open permalink URI");
+            Twitter.getLogger().e(TweetUi.LOGTAG, "Activity cannot be found to open permalink URI");
         }
     }
 
@@ -439,7 +439,7 @@ abstract class AbstractTweetView extends RelativeLayout{
                     } else {
                         final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                         if (!IntentUtils.safeStartActivity(getContext(), intent)) {
-                            Fabric.getLogger().e(TweetUi.LOGTAG,
+                            Twitter.getLogger().e(TweetUi.LOGTAG,
                                     "Activity cannot be found to open URL");
                         }
                     }

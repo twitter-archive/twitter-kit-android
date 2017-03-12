@@ -19,7 +19,6 @@ package com.twitter.sdk.android.core;
 
 import android.text.TextUtils;
 
-import io.fabric.sdk.android.Fabric;
 import com.twitter.sdk.android.core.internal.persistence.SerializationStrategy;
 
 import com.google.gson.annotations.SerializedName;
@@ -88,7 +87,7 @@ public class TwitterSession extends Session<TwitterAuthToken> {
                 try {
                     return gson.toJson(session);
                 } catch (Exception e) {
-                    Fabric.getLogger().d(TwitterCore.TAG, e.getMessage());
+                    Twitter.getLogger().d(TwitterCore.TAG, e.getMessage());
                 }
             }
             return "";
@@ -100,7 +99,7 @@ public class TwitterSession extends Session<TwitterAuthToken> {
                 try {
                     return gson.fromJson(serializedSession, TwitterSession.class);
                 } catch (Exception e) {
-                    Fabric.getLogger().d(TwitterCore.TAG, e.getMessage());
+                    Twitter.getLogger().d(TwitterCore.TAG, e.getMessage());
                 }
             }
             return null;

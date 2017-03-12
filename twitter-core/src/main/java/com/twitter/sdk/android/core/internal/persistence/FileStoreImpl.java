@@ -20,7 +20,7 @@ package com.twitter.sdk.android.core.internal.persistence;
 import android.content.Context;
 import android.os.Environment;
 
-import io.fabric.sdk.android.Fabric;
+import com.twitter.sdk.android.core.Twitter;
 
 import java.io.File;
 
@@ -86,10 +86,10 @@ public class FileStoreImpl implements FileStore {
             if (file.exists() || file.mkdirs()) {
                 return file;
             } else {
-                Fabric.getLogger().w(Fabric.TAG, "Couldn't create file");
+                Twitter.getLogger().w(Twitter.TAG, "Couldn't create file");
             }
         } else {
-            Fabric.getLogger().d(Fabric.TAG, "Null File");
+            Twitter.getLogger().d(Twitter.TAG, "Null File");
         }
         return null;
     }
@@ -97,7 +97,7 @@ public class FileStoreImpl implements FileStore {
     boolean isExternalStorageAvailable() {
         final String state = Environment.getExternalStorageState();
         if (!Environment.MEDIA_MOUNTED.equals(state)) {
-            Fabric.getLogger().w(Fabric.TAG,
+            Twitter.getLogger().w(Twitter.TAG,
                     "External Storage is not mounted and/or writable\n" +
                             "Have you declared android.permission.WRITE_EXTERNAL_STORAGE " +
                             "in the manifest?");

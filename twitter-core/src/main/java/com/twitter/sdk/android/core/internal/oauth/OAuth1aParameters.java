@@ -17,7 +17,7 @@
 
 package com.twitter.sdk.android.core.internal.oauth;
 
-import io.fabric.sdk.android.Fabric;
+import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.internal.network.UrlUtils;
 import okio.ByteString;
 
@@ -145,13 +145,13 @@ class OAuth1aParameters {
             final byte[] signatureBytes = mac.doFinal(signatureBaseBytes);
             return ByteString.of(signatureBytes, 0, signatureBytes.length).base64();
         } catch (InvalidKeyException e) {
-            Fabric.getLogger().e(TwitterCore.TAG, "Failed to calculate signature", e);
+            Twitter.getLogger().e(TwitterCore.TAG, "Failed to calculate signature", e);
             return "";
         } catch (NoSuchAlgorithmException e) {
-            Fabric.getLogger().e(TwitterCore.TAG, "Failed to calculate signature", e);
+            Twitter.getLogger().e(TwitterCore.TAG, "Failed to calculate signature", e);
             return "";
         } catch (UnsupportedEncodingException e) {
-            Fabric.getLogger().e(TwitterCore.TAG, "Failed to calculate signature", e);
+            Twitter.getLogger().e(TwitterCore.TAG, "Failed to calculate signature", e);
             return "";
         }
     }
