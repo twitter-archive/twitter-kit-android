@@ -22,10 +22,10 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-public class TestEventTransform implements EventTransform<TestEvent> {
+class TestEventTransform implements EventTransform<TestEvent> {
 
-    public static final String ID = "id";
-    public static final String MSG = "msg";
+    static final String ID = "id";
+    static final String MSG = "msg";
 
     @Override
     public byte[] toBytes(TestEvent event) throws IOException {
@@ -40,7 +40,7 @@ public class TestEventTransform implements EventTransform<TestEvent> {
         }
     }
 
-    public TestEvent fromBytes(byte[] bytes) throws IOException {
+    TestEvent fromBytes(byte[] bytes) throws IOException {
         final String bytesString = new String(bytes, "UTF-8");
         try {
             final JSONObject jsonObject = new JSONObject(bytesString);

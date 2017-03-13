@@ -21,11 +21,11 @@ import android.content.Context;
 
 import java.util.concurrent.ScheduledExecutorService;
 
-public class TestEnabledEventsStrategy extends EnabledEventsStrategy<TestEvent> {
+class TestEnabledEventsStrategy extends EnabledEventsStrategy<TestEvent> {
 
     FilesSender filesSender;
 
-    public TestEnabledEventsStrategy(Context context, ScheduledExecutorService executorService,
+    TestEnabledEventsStrategy(Context context, ScheduledExecutorService executorService,
             EventsFilesManager<TestEvent> filesManager, FilesSender filesSender) {
         super(context, executorService, filesManager);
         this.filesSender = filesSender;

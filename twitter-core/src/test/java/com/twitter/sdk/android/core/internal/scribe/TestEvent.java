@@ -17,12 +17,12 @@
 
 package com.twitter.sdk.android.core.internal.scribe;
 
-public class TestEvent {
+class TestEvent {
 
-    public final String id;
-    public final String msg;
+    final String id;
+    final String msg;
 
-    public TestEvent(String id, String msg) {
+    TestEvent(String id, String msg) {
         this.id = id;
         this.msg = msg;
     }

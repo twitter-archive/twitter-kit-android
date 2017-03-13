@@ -19,36 +19,25 @@ package com.twitter.sdk.android.core.internal;
 
 import com.twitter.sdk.android.core.GuestSessionProvider;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
-import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.internal.network.OkHttpClientHelper;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+
 import java.util.List;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
-import io.fabric.sdk.android.FabricTestUtils;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
-public class OkHttpClientHelperTest extends FabricAndroidTestCase {
+@RunWith(RobolectricTestRunner.class)
+public class OkHttpClientHelperTest {
 
-    private TwitterCore twitterCore;
-
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        twitterCore = new TwitterCore(new TwitterAuthConfig("", ""));
-        FabricTestUtils.with(getContext(), twitterCore);
-    }
-
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-        FabricTestUtils.resetFabric();
-    }
-
+    @Test
     public void testGetCustomOkHttpClient_guestAuth() throws Exception {
         final Interceptor mockInterceptor = mock(Interceptor.class);
         final OkHttpClient customHttpClient = new OkHttpClient.Builder()
@@ -63,6 +52,7 @@ public class OkHttpClientHelperTest extends FabricAndroidTestCase {
         assertTrue(interceptors.contains(mockInterceptor));
     }
 
+    @Test
     public void testGetCustomOkHttpClient_userAuth() throws Exception {
         final Interceptor mockInterceptor = mock(Interceptor.class);
         final OkHttpClient customHttpClient = new OkHttpClient.Builder()

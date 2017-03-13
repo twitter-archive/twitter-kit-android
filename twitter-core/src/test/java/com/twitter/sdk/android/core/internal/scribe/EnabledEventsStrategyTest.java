@@ -17,6 +17,12 @@
 
 package com.twitter.sdk.android.core.internal.scribe;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,29 +32,31 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
-public class EnabledEventsStrategyTest extends FabricAndroidTestCase {
+@RunWith(RobolectricTestRunner.class)
+public class EnabledEventsStrategyTest {
 
     TestEnabledEventsStrategy eventsStrategy;
     ScheduledExecutorService mockExecutor;
-    TestEventsFilesManager mockFilesManager;
+    EventsFilesManager mockFilesManager;
     FilesSender mockFilesSender;
 
-    @Override
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
-
         mockExecutor = mock(ScheduledExecutorService.class);
-        mockFilesManager = mock(TestEventsFilesManager.class);
+        mockFilesManager = mock(EventsFilesManager.class);
         mockFilesSender = mock(FilesSender.class);
-        eventsStrategy = new TestEnabledEventsStrategy(getContext(), mockExecutor,
+        eventsStrategy = new TestEnabledEventsStrategy(RuntimeEnvironment.application, mockExecutor,
                 mockFilesManager, mockFilesSender);
     }
 
+    @Test
     public void testScheduleTimeBasedRollOverIfNeeded() throws Exception {
         final int rollover = 10;
         eventsStrategy.rolloverIntervalSeconds = rollover;
@@ -56,11 +64,13 @@ public class EnabledEventsStrategyTest extends FabricAndroidTestCase {
         verifyExecutorScheduled(rollover, rollover);
     }
 
+    @Test
     public void testScheduleTimeBasedRollOverIfNeeded_noRollOverInterval() throws Exception {
         eventsStrategy.scheduleTimeBasedRollOverIfNeeded();
         verifyZeroInteractions(mockExecutor);
     }
 
+    @Test
     public void testCancelTimeBasedFileRollOver() throws Exception {
         final ScheduledFuture mockFuture = mock(ScheduledFuture.class);
         eventsStrategy.scheduledRolloverFutureRef.set(mockFuture);
@@ -71,11 +81,13 @@ public class EnabledEventsStrategyTest extends FabricAndroidTestCase {
         assertNull(eventsStrategy.scheduledRolloverFutureRef.get());
     }
 
+    @Test
     public void testDeleteAllEvents() throws Exception {
         eventsStrategy.deleteAllEvents();
         verify(mockFilesManager).deleteAllEventsFiles();
     }
 
+    @Test
     public void testRecordEvent() throws Exception {
         final int rollover = 10;
         final TestEvent testEvent = mock(TestEvent.class);
@@ -85,21 +97,25 @@ public class EnabledEventsStrategyTest extends FabricAndroidTestCase {
         verifyExecutorScheduled(rollover, rollover);
     }
 
+    @Test
     public void testRollFileOver() throws Exception {
         doReturn(true).when(mockFilesManager).rollFileOver();
         assertTrue(eventsStrategy.rollFileOver());
     }
 
+    @Test
     public void testRollFileOver_failure() throws Exception {
         doReturn(false).when(mockFilesManager).rollFileOver();
         assertFalse(eventsStrategy.rollFileOver());
     }
 
+    @Test
     public void testRollFileOver_exception() throws Exception {
         doThrow(new IOException()).when(mockFilesManager).rollFileOver();
         assertFalse(eventsStrategy.rollFileOver());
     }
 
+    @Test
     public void testConfigureRollover() throws Exception {
         final int rollover = 10;
         eventsStrategy.configureRollover(rollover);
@@ -107,6 +123,7 @@ public class EnabledEventsStrategyTest extends FabricAndroidTestCase {
         verifyExecutorScheduled(0, rollover);
     }
 
+    @Test
     public void testScheduleTimeBasedFileRollOver() throws Exception {
         final long initialDelay = 10L;
         final long frequency = 20L;
@@ -121,6 +138,7 @@ public class EnabledEventsStrategyTest extends FabricAndroidTestCase {
         assertEquals(mockFuture, eventsStrategy.scheduledRolloverFutureRef.get());
     }
 
+    @Test
     public void testScheduleTimeBasedRollOver_rollOverScheduled() throws Exception {
         final long initialDelay = 10L;
         final long frequency = 20L;
@@ -131,6 +149,7 @@ public class EnabledEventsStrategyTest extends FabricAndroidTestCase {
         verifyZeroInteractions(mockExecutor);
     }
 
+    @Test
     public void testSendAndCleanUpIfSuccess() throws Exception {
         final List<File> fileList = new ArrayList<>();
         fileList.add(new File("file-1"));
@@ -147,12 +166,14 @@ public class EnabledEventsStrategyTest extends FabricAndroidTestCase {
         verifyNoMoreInteractions(mockFilesManager);
     }
 
+    @Test
     public void testSendAndCleanUpIfSuccess_doNothing() throws Exception {
         eventsStrategy.filesSender = null;
         eventsStrategy.sendAndCleanUpIfSuccess();
         verifyZeroInteractions(mockFilesManager);
     }
 
+    @Test
     public void testSendAndCleanUpIfSuccess_noFilesToSend() throws Exception {
         doReturn(Collections.emptyList()).when(mockFilesManager).getBatchOfFilesToSend();
         eventsStrategy.sendAndCleanUpIfSuccess();
@@ -161,6 +182,7 @@ public class EnabledEventsStrategyTest extends FabricAndroidTestCase {
         verifyNoMoreInteractions(mockFilesManager);
     }
 
+    @Test
     public void testSendAndCleanUpIfSuccess_failedToSendFirstFile() throws Exception {
         final List<File> fileList = new ArrayList<>();
         fileList.add(new File("file-1"));
@@ -176,6 +198,7 @@ public class EnabledEventsStrategyTest extends FabricAndroidTestCase {
         verifyNoMoreInteractions(mockFilesManager);
     }
 
+    @Test
     public void testSendAndCleanUpIfSuccess_failedToSendFile() throws Exception {
         final List<File> fileList1 = new ArrayList<>();
         fileList1.add(new File("file-1"));

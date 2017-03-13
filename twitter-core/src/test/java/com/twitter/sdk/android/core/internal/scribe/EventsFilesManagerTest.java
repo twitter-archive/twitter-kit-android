@@ -21,9 +21,12 @@ import com.twitter.sdk.android.core.internal.CommonUtils;
 import com.twitter.sdk.android.core.internal.CurrentTimeProvider;
 import com.twitter.sdk.android.core.internal.SystemCurrentTimeProvider;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
-import io.fabric.sdk.android.FabricTestUtils;
-import io.fabric.sdk.android.KitStub;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.AdditionalMatchers;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -31,7 +34,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.AdditionalMatchers.aryEq;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
@@ -39,7 +43,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class EventsFilesManagerTest extends FabricAndroidTestCase {
+@RunWith(RobolectricTestRunner.class)
+public class EventsFilesManagerTest {
 
     EventsFilesManager<TestEvent> filesManager;
 
@@ -49,13 +54,8 @@ public class EventsFilesManagerTest extends FabricAndroidTestCase {
     TestEventTransform transform;
     TestEvent testEvent;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-
-        FabricTestUtils.resetFabric();
-        FabricTestUtils.with(getContext(), new KitStub());
-
+    @Before
+    public void setUp() throws Exception {
         mockCurrentTimeProvider = mock(CurrentTimeProvider.class);
         mockEventStorage = mock(EventsStorage.class);
 
@@ -64,18 +64,13 @@ public class EventsFilesManagerTest extends FabricAndroidTestCase {
         testEvent = new TestEvent("id", "msg");
     }
 
-    @Override
-    protected void tearDown() throws Exception {
-        FabricTestUtils.resetFabric();
-        super.tearDown();
-    }
-
+    @Test
     public void testNoRollOverNeeded() throws IOException{
         final long startTime = 10000L;
 
         when(mockCurrentTimeProvider.getCurrentTimeMillis()).thenReturn(startTime);
 
-        filesManager = new TestEventsFilesManager(getContext(), transform,
+        filesManager = new TestEventsFilesManager(RuntimeEnvironment.application, transform,
                 mockCurrentTimeProvider, mockEventStorage,
                 "testNoRollOverNeeded", EventsFilesManager.MAX_FILES_TO_KEEP);
 
@@ -84,7 +79,7 @@ public class EventsFilesManagerTest extends FabricAndroidTestCase {
 
         filesManager.writeEvent(testEvent);
 
-        verify(mockEventStorage).add(aryEq(transform.toBytes(testEvent)));
+        verify(mockEventStorage).add(AdditionalMatchers.aryEq(transform.toBytes(testEvent)));
         verify(mockEventStorage).canWorkingFileStore(anyInt(), anyInt());
         verify(mockCurrentTimeProvider, times(1)).getCurrentTimeMillis();
 
@@ -92,6 +87,7 @@ public class EventsFilesManagerTest extends FabricAndroidTestCase {
                 startTime, filesManager.getLastRollOverTime());
     }
 
+    @Test
     public void testSizeTriggeredRollOver() throws IOException{
         final long startTime = 10000L;
         final long newMostRecentRollOverTime = 11500L;
@@ -100,7 +96,7 @@ public class EventsFilesManagerTest extends FabricAndroidTestCase {
                 .thenReturn(startTime)
                 .thenReturn(newMostRecentRollOverTime);
 
-        filesManager = new TestEventsFilesManager(getContext(), transform,
+        filesManager = new TestEventsFilesManager(RuntimeEnvironment.application, transform,
                 mockCurrentTimeProvider, mockEventStorage,
                 "testSizeTriggeredRollOver", EventsFilesManager.MAX_FILES_TO_KEEP);
 
@@ -113,7 +109,7 @@ public class EventsFilesManagerTest extends FabricAndroidTestCase {
 
         filesManager.writeEvent(testEvent);
 
-        verify(mockEventStorage).add(aryEq(transform.toBytes(testEvent)));
+        verify(mockEventStorage).add(AdditionalMatchers.aryEq(transform.toBytes(testEvent)));
         verify(mockEventStorage).canWorkingFileStore(anyInt(), anyInt());
         verify(mockEventStorage).getWorkingFileUsedSizeInBytes();
         verify(mockEventStorage).isWorkingFileEmpty();
@@ -124,12 +120,13 @@ public class EventsFilesManagerTest extends FabricAndroidTestCase {
                 filesManager.getLastRollOverTime());
     }
 
+    @Test
     public void testParseTimestampFromRolledOverFileName() throws IOException{
         final long startTime = 10000L;
 
         when(mockCurrentTimeProvider.getCurrentTimeMillis()).thenReturn(startTime);
 
-        filesManager = new TestEventsFilesManager(getContext(), transform,
+        filesManager = new TestEventsFilesManager(RuntimeEnvironment.application, transform,
                 mockCurrentTimeProvider, mockEventStorage,
                 "testParseTimestampFromRolledOverFileName",
                 EventsFilesManager.MAX_FILES_TO_KEEP);
@@ -140,6 +137,7 @@ public class EventsFilesManagerTest extends FabricAndroidTestCase {
                 "unexpected_nonnumeric_time"));
     }
 
+    @Test
     public void testWriteEvent() throws IOException {
         final ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
         try {
@@ -202,7 +200,7 @@ public class EventsFilesManagerTest extends FabricAndroidTestCase {
                 }
             };
 
-            filesManager = new TestEventsFilesManager(getContext(), transform,
+            filesManager = new TestEventsFilesManager(RuntimeEnvironment.application, transform,
                     new SystemCurrentTimeProvider(), stubEventStorage, "testWriteEvent",
                     EventsFilesManager.MAX_FILES_TO_KEEP);
 
