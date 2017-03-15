@@ -17,18 +17,18 @@
 
 package com.twitter.sdk.android.tweetui;
 
+import android.test.AndroidTestCase;
+
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
-
 /**
  * Incorrectly translated dates can cause our process to crash, so here we exercise all of our
  * translations.
  */
-public class DateTranslationsTest extends FabricAndroidTestCase {
+public class DateTranslationsTest extends AndroidTestCase {
     private Locale defaultLocale;
 
     final SimpleDateFormat RELATIVE_DATE_FORMAT =

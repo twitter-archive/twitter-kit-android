@@ -24,7 +24,6 @@ import com.squareup.picasso.RequestCreator;
 
 import com.twitter.sdk.android.core.models.Tweet;
 
-import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 public class CompactTweetViewTest extends BaseTweetViewTest {
@@ -101,7 +100,7 @@ public class CompactTweetViewTest extends BaseTweetViewTest {
         final CompactTweetView tv = createViewWithMocks(context, TestFixtures.TEST_PHOTO_TWEET,
                 R.style.tw__TweetLightStyle, mockDependencyProvider);
         // assert 1 load for profile photo, tweet photo loaded in TweetMediaView
-        verify(mockPicasso, times(1)).load(anyString());
+        verify(mockPicasso, times(1)).load(TestFixtures.TEST_PROFILE_IMAGE_URL);
     }
 
     public void testGetAspectRatioForPhotoEntity() {

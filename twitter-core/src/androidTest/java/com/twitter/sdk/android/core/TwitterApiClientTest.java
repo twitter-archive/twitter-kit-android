@@ -17,17 +17,18 @@
 
 package com.twitter.sdk.android.core;
 
+import android.test.AndroidTestCase;
+
 import com.twitter.sdk.android.core.internal.TwitterApi;
 import com.twitter.sdk.android.core.services.FavoriteService;
 import com.twitter.sdk.android.core.services.StatusesService;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
 import io.fabric.sdk.android.FabricTestUtils;
 import okhttp3.OkHttpClient;
 
 import static org.mockito.Mockito.mock;
 
-public class TwitterApiClientTest extends FabricAndroidTestCase {
+public class TwitterApiClientTest extends AndroidTestCase {
 
     private TwitterCore twitterCore;
 

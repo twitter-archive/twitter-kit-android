@@ -18,6 +18,7 @@
 package com.twitter.sdk.android.tweetui;
 
 import android.os.Handler;
+import android.test.AndroidTestCase;
 import android.util.Log;
 
 import com.squareup.picasso.Picasso;
@@ -33,13 +34,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import io.fabric.sdk.android.DefaultLogger;
 import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.FabricAndroidTestCase;
 import io.fabric.sdk.android.FabricTestUtils;
 import io.fabric.sdk.android.services.concurrency.PriorityThreadPoolExecutor;
 
 import static org.mockito.Mockito.mock;
 
-public class TweetUiTestCase extends FabricAndroidTestCase {
+public class TweetUiTestCase extends AndroidTestCase {
 
     protected TweetUi tweetUi;
 

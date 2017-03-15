@@ -31,7 +31,6 @@ import org.mockito.ArgumentCaptor;
 import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(RobolectricTestRunner.class)

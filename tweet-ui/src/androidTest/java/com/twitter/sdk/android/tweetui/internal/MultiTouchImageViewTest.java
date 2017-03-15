@@ -20,10 +20,9 @@ package com.twitter.sdk.android.tweetui.internal;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.RectF;
+import android.test.AndroidTestCase;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
-
-public class MultiTouchImageViewTest extends FabricAndroidTestCase {
+public class MultiTouchImageViewTest extends AndroidTestCase {
     static final RectF TEST_VIEW_RECT = new RectF(0, 0, 100, 100);
     static final Matrix TEST_BASE_MATRIX = new MatrixBuilder().postScale(2f).build();
     static final Matrix TEST_IDENTITY_MATRIX = new MatrixBuilder().build();

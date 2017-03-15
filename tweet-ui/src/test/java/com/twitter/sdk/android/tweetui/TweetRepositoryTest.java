@@ -129,7 +129,7 @@ public class TweetRepositoryTest {
         final TweetRepository mockRepo = mock(TweetRepository.class);
         final TweetRepository.SingleTweetCallback callback
                 = mockRepo.new SingleTweetCallback(null);
-        callback.success(new Result<Tweet>(null, null));
+        callback.success(new Result<>(mock(Tweet.class), null));
         verify(mockRepo, times(1)).updateCache(any(Tweet.class));
     }
 }

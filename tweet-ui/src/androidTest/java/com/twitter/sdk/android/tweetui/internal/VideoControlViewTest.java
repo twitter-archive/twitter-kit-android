@@ -17,20 +17,19 @@
 
 package com.twitter.sdk.android.tweetui.internal;
 
+import android.test.AndroidTestCase;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 
 import com.twitter.sdk.android.tweetui.R;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-public class VideoControlViewTest extends FabricAndroidTestCase {
+public class VideoControlViewTest extends AndroidTestCase {
     static final int SECOND_IN_MS = 1000;
     static final int MINUTE_IN_MS = 60000;
     static final int TEST_BUFFER_PROGRESS = 32;

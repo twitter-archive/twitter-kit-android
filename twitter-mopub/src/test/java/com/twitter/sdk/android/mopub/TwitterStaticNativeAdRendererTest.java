@@ -17,8 +17,8 @@
 
 package com.twitter.sdk.android.mopub;
 
+import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -52,6 +52,7 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class TwitterStaticNativeAdRendererTest {
@@ -107,6 +108,8 @@ public class TwitterStaticNativeAdRendererTest {
         staticNativeAd.setClickDestinationUrl(TEST_URL);
         staticNativeAd.setMainImageUrl(TEST_URL);
         staticNativeAd.setIconImageUrl(TEST_URL);
+        staticNativeAd.setPrivacyInformationIconClickThroughUrl(TEST_URL);
+        staticNativeAd.setPrivacyInformationIconImageUrl(TEST_URL);
     }
 
     @Test(expected = NullPointerException.class)
@@ -126,6 +129,7 @@ public class TwitterStaticNativeAdRendererTest {
 
     @Test
     public void testRenderAdView_shouldReturnPopulatedView() {
+        when(twitterStaticNativeAd.privacyInfoView.getContext()).thenReturn(mock(Context.class));
         twitterStaticNativeAdRenderer.renderAdView(twitterStaticNativeAd, staticNativeAd);
 
         verify(twitterStaticNativeAd.adTitleView).setText(TEST_TITLE);
@@ -133,8 +137,7 @@ public class TwitterStaticNativeAdRendererTest {
         verify(twitterStaticNativeAd.callToActionView).setText(TEST_CTA);
         verify(twitterStaticNativeAd.mainImageView).setImageBitmap(mockBitmap);
         verify(twitterStaticNativeAd.adIconView).setImageBitmap(mockBitmap);
-        verify(twitterStaticNativeAd.privacyInfoView)
-                .setImageDrawable(any(Drawable.class));
+        verify(twitterStaticNativeAd.privacyInfoView).setImageBitmap(mockBitmap);
         verify(twitterStaticNativeAd.privacyInfoView)
                 .setOnClickListener(any(View.OnClickListener.class));
     }

@@ -36,8 +36,8 @@ ext {
             junit                      : 'junit:junit:4.12',
             junitAddons                : 'junit-addons:junit-addons:1.4',
             robolectric                : 'org.robolectric:robolectric:3.2.2',
-            mockito                    : 'org.mockito:mockito-core:1.9.5',
-            dexmakerMockito            : 'com.google.dexmaker:dexmaker-mockito:1.2',
+            mockito                    : 'org.mockito:mockito-core:2.2.0',
+            dexmakerMockito            : 'com.linkedin.dexmaker:dexmaker-mockito:2.2.0',
 
             // Other
             picasso                    : 'com.squareup.picasso:picasso:2.5.2',

@@ -17,7 +17,7 @@
 
 package com.twitter.sdk.android.core.internal.scribe;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
+import android.test.AndroidTestCase;
 
 import com.google.gson.GsonBuilder;
 import com.twitter.sdk.android.core.internal.CommonUtils;
@@ -27,7 +27,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
-public class ScribeEventTransformTest extends FabricAndroidTestCase {
+public class ScribeEventTransformTest extends AndroidTestCase {
     static final String TEST_MESSAGE = "TEST MESSAGE";
     static final String TEST_ITEM_TYPE = "\"item_type\":6";
     static final String TEST_DESCRIPTION = "\"description\":\"TEST MESSAGE\"";

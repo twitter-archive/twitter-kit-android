@@ -17,11 +17,12 @@
 
 package com.twitter.sdk.android.tweetui;
 
+import android.test.AndroidTestCase;
+
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterCore;
 
 import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.FabricAndroidTestCase;
 import io.fabric.sdk.android.FabricTestUtils;
 import io.fabric.sdk.android.services.concurrency.PriorityThreadPoolExecutor;
 
@@ -30,7 +31,7 @@ import static org.mockito.Mockito.*;
 /**
  * Call Fabric.with instead of FabricTestUtils.with to detect background thread issues.
  */
-public class TweetUiBackgroundTest extends FabricAndroidTestCase {
+public class TweetUiBackgroundTest extends AndroidTestCase {
 
     @Override
     protected void setUp() throws Exception {

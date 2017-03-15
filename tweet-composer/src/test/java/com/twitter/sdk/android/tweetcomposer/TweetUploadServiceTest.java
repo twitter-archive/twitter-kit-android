@@ -73,7 +73,7 @@ public class TweetUploadServiceTest {
         when(mockMediaService
                 .upload(any(RequestBody.class), any(RequestBody.class), any(RequestBody.class)))
                 .thenReturn(mock(Call.class));
-        when(mockStatusesService.update(anyString(), anyString()))
+        when(mockStatusesService.update(anyString(), isNull(String.class)))
                 .thenReturn(mock(Call.class));
 
         mockComposerApiClient = mock(ComposerApiClient.class);
@@ -128,7 +128,7 @@ public class TweetUploadServiceTest {
 
     @Test
     public void testUploadTweet_success() {
-        when(mockStatusesService.update(anyString(), anyString()))
+        when(mockStatusesService.update(anyString(), isNull(String.class)))
                 .thenReturn(Calls.response(tweet));
         service.uploadTweet(mock(TwitterSession.class), EXPECTED_TWEET_TEXT);
 
@@ -139,12 +139,13 @@ public class TweetUploadServiceTest {
 
     @Test
     public void testUploadTweet_failure() {
-        when(mockStatusesService.update(anyString(), anyString()))
+        when(mockStatusesService.update(anyString(), isNull(String.class)))
                 .thenReturn(Calls.<Tweet>failure(new IOException()));
+        service.intent = mock(Intent.class);
         service.uploadTweet(mock(TwitterSession.class), EXPECTED_TWEET_TEXT);
 
         verify(mockStatusesService).update(eq(EXPECTED_TWEET_TEXT), isNull(String.class));
-        verify(service).sendFailureBroadcast(any(Intent.class));
+        verify(service).sendFailureBroadcast(service.intent);
         verify(service).stopSelf();
     }
 

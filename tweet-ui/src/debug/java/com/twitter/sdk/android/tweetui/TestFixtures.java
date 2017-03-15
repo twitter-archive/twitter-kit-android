@@ -50,18 +50,21 @@ public final class TestFixtures {
     public static final String TEST_SCREEN_NAME = "longestusername";
     public static final String TEST_FORMATTED_SCREEN_NAME = "@longestusername";
     public static final String TEST_RETWEETER_SCREEN_NAME = "retweets";
+    public static final String TEST_PROFILE_IMAGE_URL = "https://twimg.twitter.com/image";
 
     public static final User TEST_USER = new UserBuilder()
             .setId(12L)
             .setName(TEST_NAME)
             .setScreenName(TEST_SCREEN_NAME)
             .setVerified(false)
+            .setProfileImageUrlHttps(TEST_PROFILE_IMAGE_URL)
             .build();
 
     public static final User TEST_RETWEETER = new UserBuilder()
             .setId(13L)
             .setName(TEST_RETWEETER_NAME)
             .setScreenName(TEST_RETWEETER_SCREEN_NAME)
+            .setProfileImageUrlHttps(TEST_PROFILE_IMAGE_URL)
             .build();
 
     public static final User EMPTY_USER = new UserBuilder()

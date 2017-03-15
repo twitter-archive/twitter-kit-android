@@ -34,6 +34,7 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricTestRunner.class)
 public class LoggingCallbackTest {
+    static final String TEST_MESSAGE = "TEST_MESSAGE";
 
     @Test
     public void testFailure_callsCb() {
@@ -49,7 +50,7 @@ public class LoggingCallbackTest {
         final Logger logger = mock(Logger.class);
         final LoggingCallback<Tweet> cb = new TestLoggingCallback<>(null, logger);
         try {
-            cb.failure(mock(TwitterException.class));
+            cb.failure(new TwitterException(TEST_MESSAGE));
             verify(logger).e(any(String.class), any(String.class), any(Throwable.class));
         } catch (NullPointerException e) {
             fail("Should have handled null callback");
@@ -61,7 +62,7 @@ public class LoggingCallbackTest {
         final Callback<Tweet> developerCallback = mock(Callback.class);
         final Logger logger = mock(Logger.class);
         final LoggingCallback<Tweet> cb = new TestLoggingCallback<>(developerCallback, logger);
-        cb.failure(mock(TwitterException.class));
+        cb.failure(new TwitterException(TEST_MESSAGE));
         verify(logger).e(any(String.class), any(String.class), any(Throwable.class));
     }
 

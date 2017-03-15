@@ -18,8 +18,8 @@
 package com.twitter.sdk.android.tweetui;
 
 import android.net.Uri;
+import android.test.AndroidTestCase;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
 import io.fabric.sdk.android.FabricTestUtils;
 import io.fabric.sdk.android.KitStub;
 
@@ -30,7 +30,7 @@ import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.core.models.TweetEntities;
 import com.twitter.sdk.android.core.models.UserBuilder;
 
-public class TweetUtilsTest extends FabricAndroidTestCase {
+public class TweetUtilsTest extends AndroidTestCase {
     private static final String A_FULL_PERMALINK =
             "https://twitter.com/jack/status/20?ref_src=twsrc%5Etwitterkit";
     private static final String A_PERMALINK_WITH_NO_SCREEN_NAME

@@ -35,6 +35,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import retrofit2.Call;
 
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyObject;
@@ -50,6 +51,7 @@ final class MockUtils {
     static Picasso mockPicasso(Picasso picasso, RequestCreator requestCreator) {
         when(picasso.load(anyString())).thenReturn(requestCreator);
         when(picasso.load(anyInt())).thenReturn(requestCreator);
+        when(picasso.load(isNull(String.class))).thenReturn(requestCreator);
         when(requestCreator.centerCrop()).thenReturn(requestCreator);
         when(requestCreator.error(anyInt())).thenReturn(requestCreator);
         when(requestCreator.fit()).thenReturn(requestCreator);

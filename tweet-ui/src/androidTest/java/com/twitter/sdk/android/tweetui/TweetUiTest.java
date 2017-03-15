@@ -17,7 +17,8 @@
 
 package com.twitter.sdk.android.tweetui;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
+import android.test.AndroidTestCase;
+
 import io.fabric.sdk.android.FabricTestUtils;
 import io.fabric.sdk.android.KitStub;
 import io.fabric.sdk.android.services.concurrency.UnmetDependencyException;
@@ -26,7 +27,7 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 
-public class TweetUiTest extends FabricAndroidTestCase {
+public class TweetUiTest extends AndroidTestCase {
 
     private static final String ANY_CLIENT_NAME = "client";
 

@@ -18,15 +18,15 @@
 package com.twitter.sdk.android.core;
 
 import android.app.Activity;
+import android.test.AndroidTestCase;
 
-import io.fabric.sdk.android.FabricAndroidTestCase;
 import io.fabric.sdk.android.FabricTestUtils;
 import io.fabric.sdk.android.KitStub;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class TwitterCoreTest extends FabricAndroidTestCase {
+public class TwitterCoreTest extends AndroidTestCase {
 
     private static final String TWITTER_NOT_INIT_ERROR_MSG = "Must start Twitter Kit with Fabric.with() first";
     private static final String FABRIC_NOT_INIT_ERROR_MSG = "Must Initialize Fabric before using singleton()";

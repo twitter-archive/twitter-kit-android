@@ -53,6 +53,7 @@ public class CardTest {
         mockContext = mock(Context.class);
         when(mockContext.getApplicationInfo()).thenReturn(mockApplicationInfo);
         when(mockContext.getPackageName()).thenReturn(TEST_PACKAGE_NAME);
+        when(mockContext.getPackageManager()).thenReturn(mock(PackageManager.class));
     }
 
     @Test

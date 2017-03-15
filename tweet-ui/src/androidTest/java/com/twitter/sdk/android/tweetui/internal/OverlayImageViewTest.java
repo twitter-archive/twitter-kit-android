@@ -19,9 +19,8 @@ package com.twitter.sdk.android.tweetui.internal;
 
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.test.AndroidTestCase;
 import android.widget.ImageView;
-
-import io.fabric.sdk.android.FabricAndroidTestCase;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -30,7 +29,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-public class OverlayImageViewTest extends FabricAndroidTestCase {
+public class OverlayImageViewTest extends AndroidTestCase {
     public final int[] TEST_STATE = new int[]{0, 0};
     public final int TEST_HEIGHT = 2;
     public final int TEST_WIDTH = 4;

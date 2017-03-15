@@ -20,8 +20,8 @@ package com.twitter.sdk.android.core.identity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.test.ActivityUnitTestCase;
 
-import io.fabric.sdk.android.FabricActivityTestCase;
 import io.fabric.sdk.android.FabricTestUtils;
 
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -32,7 +32,7 @@ import org.mockito.ArgumentCaptor;
 
 import static org.mockito.Mockito.*;
 
-public class OAuthActivityTest extends FabricActivityTestCase<OAuthActivity> {
+public class OAuthActivityTest extends ActivityUnitTestCase<OAuthActivity> {
 
     private Context context;
     private TwitterCore twitterCore;

@@ -19,11 +19,11 @@ package com.twitter.sdk.android.core.identity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.test.AndroidTestCase;
 import android.util.Log;
 import android.view.View;
 
 import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.FabricAndroidTestCase;
 import io.fabric.sdk.android.FabricTestUtils;
 import io.fabric.sdk.android.KitStub;
 import io.fabric.sdk.android.Logger;
@@ -37,7 +37,7 @@ import org.mockito.ArgumentCaptor;
 
 import static org.mockito.Mockito.*;
 
-public class TwitterLoginButtonTest extends FabricAndroidTestCase {
+public class TwitterLoginButtonTest extends AndroidTestCase {
 
     private static final int TEST_REQUEST_CODE = 100;
 
