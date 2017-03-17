@@ -59,7 +59,8 @@ public class OAuth1aServiceTest {
     @Before
     public void setUp() throws Exception {
         authConfig = new TwitterAuthConfig("key", "secret");
-        twitterCore = new TwitterCore(authConfig);
+        twitterCore = mock(TwitterCore.class);
+        when(twitterCore.getAuthConfig()).thenReturn(authConfig);
         twitterApi = new TwitterApi();
         service = new OAuth1aService(twitterCore, twitterApi);
     }

@@ -34,7 +34,7 @@ ext {
             espresso                   : 'com.android.support.test.espresso:espresso-core:2.2.2',
             androidTestingSupport      : 'com.android.support.test:runner:0.5',
             junit                      : 'junit:junit:4.12',
-            junitAddons                : 'junit-addons:junit-addons:1.4',
+            equalsVerifier             : 'nl.jqno.equalsverifier:equalsverifier:2.2.1',
             robolectric                : 'org.robolectric:robolectric:3.2.2',
             mockito                    : 'org.mockito:mockito-core:2.2.0',
             dexmakerMockito            : 'com.linkedin.dexmaker:dexmaker-mockito:2.2.0',

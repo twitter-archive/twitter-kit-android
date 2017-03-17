@@ -83,9 +83,6 @@ dependencies {
     androidTestCompile dependency.mockito
     androidTestCompile dependency.dexmakerMockito
     androidTestCompile dependency.fabricTest
-    androidTestCompile (dependency.junitAddons) {
-        transitive = false
-    }
 
     testCompile dependency.fabricTest
     testCompile dependency.mockito
@@ -95,7 +92,5 @@ dependencies {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
-    testCompile (dependency.junitAddons) {
-        transitive = false
-    }
+    testCompile dependency.equalsVerifier
 }

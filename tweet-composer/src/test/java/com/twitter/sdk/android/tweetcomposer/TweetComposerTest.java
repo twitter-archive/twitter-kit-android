@@ -60,6 +60,7 @@ public class TweetComposerTest {
         assertEquals(version, composer.getVersion());
     }
 
+    @Test
     public void testGetIdentifier() {
         final TweetComposer composer = new TweetComposer();
         final String identifier = BuildConfig.GROUP + ":" + BuildConfig.ARTIFACT_ID;
