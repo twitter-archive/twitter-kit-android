@@ -130,7 +130,7 @@ public class CommonUtils {
      * @param defaultValue value to be returned if the specified resource could be not be found.
      * @return {@link String} value of the specified property, or an empty string if it could not be found.
      */
-    static boolean getBooleanResourceValue(Context context, String key,
+    public static boolean getBooleanResourceValue(Context context, String key,
                                                   boolean defaultValue) {
         if (context != null) {
             final Resources resources = context.getResources();
@@ -146,6 +146,33 @@ public class CommonUtils {
 
                 if (id > 0) {
                     return Boolean.parseBoolean(context.getString(id));
+                }
+            }
+        }
+
+        return defaultValue;
+    }
+
+    /**
+     * <p>
+     * Gets a value for a string resource by its name. If a key is not present, the provided default value
+     * will be returned.
+     * </p>
+     *
+     * @param context {@link Context} to use when accessing resources
+     * @param key {@link String} name of the boolean value to look up
+     * @param defaultValue value to be returned if the specified resource could be not be found.
+     * @return {@link String} value of the specified property, or an empty string if it could not be found.
+     */
+    public static String getStringResourceValue(Context context, String key, String defaultValue) {
+        if (context != null) {
+            final Resources resources = context.getResources();
+
+            if (resources != null) {
+                final int id = getResourcesIdentifier(context, key, "string");
+
+                if (id > 0) {
+                    return resources.getString(id);
                 }
             }
         }
