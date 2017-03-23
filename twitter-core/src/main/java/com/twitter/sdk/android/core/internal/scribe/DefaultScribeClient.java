@@ -32,12 +32,12 @@ import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.internal.ExecutorUtils;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 
-import io.fabric.sdk.android.services.common.ExecutorUtils;
 import io.fabric.sdk.android.services.common.IdManager;
 
 /**
