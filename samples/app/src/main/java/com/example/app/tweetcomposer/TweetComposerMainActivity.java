@@ -58,7 +58,7 @@ public class TweetComposerMainActivity extends BaseActivity {
             public void onClick(View view) {
                 try {
                     new TweetComposer.Builder(TweetComposerMainActivity.this)
-                            .text("Tweet from Fabric!")
+                            .text("Tweet from TwitterKit!")
                             .url(new URL("http://www.twitter.com"))
                             .show();
 
@@ -103,7 +103,7 @@ public class TweetComposerMainActivity extends BaseActivity {
         final Intent intent = new ComposerActivity.Builder(TweetComposerMainActivity.this)
                 .session(session)
                 .card(card)
-                .hashtags("#fabric")
+                .hashtags("#twitter")
                 .createIntent();
         startActivity(intent);
     }

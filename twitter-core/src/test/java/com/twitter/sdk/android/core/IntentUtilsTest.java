@@ -69,7 +69,7 @@ public class IntentUtilsTest {
                 .thenReturn(Collections.EMPTY_LIST);
         when(context.getPackageManager()).thenReturn(pm);
 
-        final Intent intent = new Intent("io.fabric.is.awesome");
+        final Intent intent = new Intent("com.twitter.is.awesome");
         assertFalse(IntentUtils.safeStartActivity(context, intent));
         verify(context).getPackageManager();
         verify(pm).queryIntentActivities(intent, 0);

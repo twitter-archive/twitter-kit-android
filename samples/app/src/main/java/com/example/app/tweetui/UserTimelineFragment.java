@@ -67,7 +67,7 @@ public class UserTimelineFragment extends ListFragment {
             }
         };
 
-        final UserTimeline userTimeline = new UserTimeline.Builder().screenName("fabric").build();
+        final UserTimeline userTimeline = new UserTimeline.Builder().screenName("twitterdev").build();
         final TweetTimelineListAdapter adapter = new TweetTimelineListAdapter.Builder(getActivity())
                 .setTimeline(userTimeline)
                 .setViewStyle(R.style.tw__TweetLightWithActionsStyle)
