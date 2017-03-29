@@ -19,6 +19,7 @@ package com.twitter.sdk.android.core;
 
 import android.content.Context;
 
+import com.twitter.sdk.android.core.internal.ActivityLifecycleManager;
 import com.twitter.sdk.android.core.internal.CommonUtils;
 import com.twitter.sdk.android.core.internal.ExecutorUtils;
 import com.twitter.sdk.android.core.internal.IdManager;
@@ -42,12 +43,14 @@ public class Twitter {
     private final IdManager idManager;
     private final ExecutorService executorService;
     private final TwitterAuthConfig twitterAuthConfig;
+    private final ActivityLifecycleManager lifecycleManager;
     private final Logger logger;
     private final boolean isDebug;
 
     private Twitter(TwitterConfig config) {
-        this.context = config.context;
-        this.idManager = new IdManager(context);
+        context = config.context;
+        idManager = new IdManager(context);
+        lifecycleManager = new ActivityLifecycleManager(context);
 
         if (config.twitterAuthConfig == null) {
             final String key = CommonUtils.getStringResourceValue(context, CONSUMER_KEY, "");
@@ -174,6 +177,13 @@ public class Twitter {
      */
     public ExecutorService getExecutorService() {
         return executorService;
+    }
+
+    /**
+     * @return the global {@link ActivityLifecycleManager}.
+     */
+    public ActivityLifecycleManager getActivityLifecycleManager() {
+        return lifecycleManager;
     }
 
     /**

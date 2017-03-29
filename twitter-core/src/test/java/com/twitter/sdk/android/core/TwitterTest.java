@@ -95,6 +95,7 @@ public class TwitterTest {
         assertEquals(mockLogger, Twitter.getLogger());
         assertEquals(mockTwitterAuthConfig, Twitter.getInstance().getTwitterAuthConfig());
         assertNotNull(Twitter.getInstance().getIdManager());
+        assertNotNull(Twitter.getInstance().getActivityLifecycleManager());
         assertTrue(Twitter.getInstance().isDebug());
         assertTrue(Twitter.getInstance().getContext("") instanceof TwitterContext);
     }
@@ -105,6 +106,7 @@ public class TwitterTest {
 
         assertNotNull(Twitter.getInstance().getExecutorService());
         assertNotNull(Twitter.getInstance().getIdManager());
+        assertNotNull(Twitter.getInstance().getActivityLifecycleManager());
         assertEquals(Twitter.DEFAULT_LOGGER, Twitter.getLogger());
         assertFalse(Twitter.getInstance().isDebug());
         assertTrue(Twitter.getInstance().getContext("") instanceof TwitterContext);
