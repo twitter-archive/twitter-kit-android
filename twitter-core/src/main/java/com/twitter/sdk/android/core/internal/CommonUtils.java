@@ -33,8 +33,8 @@ import io.fabric.sdk.android.Fabric;
 
 public class CommonUtils {
     static final String CLS_SHARED_PREFERENCES_NAME = "com.crashlytics.prefs";
-    static final String CLS_TRACE_PREFERENCE_NAME = "com.crashlytics.Trace";
-    static final boolean CLS_TRACE_DEFAULT = false;
+    static final String TRACE_ENABLED_RESOURCE_NAME = "com.twitter.sdk.android.TRACE_ENABLED";
+    static final boolean TRACE_ENABLED_DEFAULT = false;
     private static Boolean clsTrace = null;
 
     public static SharedPreferences getSharedPrefs(Context context) {
@@ -186,8 +186,8 @@ public class CommonUtils {
         // Since the cached value is a Boolean object, it can be null. If it's null, load the value
         // and cache it.
         if (clsTrace == null) {
-            clsTrace = getBooleanResourceValue(context, CLS_TRACE_PREFERENCE_NAME,
-                    CLS_TRACE_DEFAULT);
+            clsTrace = getBooleanResourceValue(context, TRACE_ENABLED_RESOURCE_NAME,
+                    TRACE_ENABLED_DEFAULT);
         }
 
         return clsTrace;

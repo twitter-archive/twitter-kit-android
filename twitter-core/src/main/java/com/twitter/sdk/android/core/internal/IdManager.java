@@ -30,7 +30,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Pattern;
 
 public class IdManager {
-    static final String COLLECT_DEVICE_IDENTIFIERS = "com.twitter.sdk.android.CollectDeviceIdentifiers";
+    static final String COLLECT_IDENTIFIERS_ENABLED = "com.twitter.sdk.android.COLLECT_IDENTIFIERS_ENABLED";
     static final String PREFKEY_INSTALLATION_UUID = "crashlytics.installation.id";
 
     /** Regex for stripping all non-alphnumeric characters from ALL the identifier fields. */
@@ -69,7 +69,7 @@ public class IdManager {
         this.advertisingInfoProvider = advertisingInfoProvider;
 
         collectHardwareIds = CommonUtils.getBooleanResourceValue(appContext,
-                COLLECT_DEVICE_IDENTIFIERS, true);
+                COLLECT_IDENTIFIERS_ENABLED, true);
         if (!collectHardwareIds) {
             Twitter.getLogger().d(Twitter.TAG, "Device ID collection disabled for "
                     + appContext.getPackageName());
