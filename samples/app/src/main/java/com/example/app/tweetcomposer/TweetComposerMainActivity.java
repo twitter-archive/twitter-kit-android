@@ -86,16 +86,17 @@ public class TweetComposerMainActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == IMAGE_PICKER_CODE && resultCode == Activity.RESULT_OK) {
-            launchComposer("Hello world!", data.getData());
+            launchComposer(data.getData());
         }
     }
 
-    void launchComposer(String text, Uri uri) {
+    void launchComposer(Uri uri) {
         final TwitterSession session = TwitterCore.getInstance().getSessionManager()
                 .getActiveSession();
         final Intent intent = new ComposerActivity.Builder(TweetComposerMainActivity.this)
                 .session(session)
                 .image(uri)
+                .text("Tweet from TwitterKit!")
                 .hashtags("#twitter")
                 .createIntent();
         startActivity(intent);

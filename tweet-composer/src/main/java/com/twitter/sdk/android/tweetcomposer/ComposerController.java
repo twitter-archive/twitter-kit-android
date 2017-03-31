@@ -28,7 +28,6 @@ import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
-import com.twitter.sdk.android.core.internal.TwitterApiConstants;
 import com.twitter.sdk.android.core.models.User;
 
 class ComposerController {
@@ -39,13 +38,13 @@ class ComposerController {
     final DependencyProvider dependencyProvider;
 
     ComposerController(final ComposerView composerView, TwitterSession session, Uri imageUri,
-                       String hashtags, ComposerActivity.Finisher finisher) {
-        this(composerView, session, imageUri, hashtags, finisher, new DependencyProvider());
+            String text, String hashtags, ComposerActivity.Finisher finisher) {
+        this(composerView, session, imageUri, text, hashtags, finisher, new DependencyProvider());
     }
 
     // testing purposes
     ComposerController(final ComposerView composerView, TwitterSession session, Uri imageUri,
-                       String hashtags, ComposerActivity.Finisher finisher,
+            String text, String hashtags, ComposerActivity.Finisher finisher,
             DependencyProvider dependencyProvider) {
         this.composerView = composerView;
         this.session = session;
@@ -54,10 +53,24 @@ class ComposerController {
         this.dependencyProvider = dependencyProvider;
 
         composerView.setCallbacks(new ComposerCallbacksImpl());
-        composerView.setTweetText(hashtags);
+        composerView.setTweetText(generateText(text, hashtags));
         setProfilePhoto();
         setImageView(imageUri);
         dependencyProvider.getScribeClient().impression();
+    }
+
+    String generateText(String text, String hashtags) {
+        final StringBuilder sb = new StringBuilder();
+        if (!TextUtils.isEmpty(text)) {
+            sb.append(text);
+        }
+        if (!TextUtils.isEmpty(hashtags)) {
+            if (sb.length() > 0) {
+                sb.append(" ");
+            }
+            sb.append(hashtags);
+        }
+        return sb.toString();
     }
 
     void setProfilePhoto() {
@@ -82,7 +95,7 @@ class ComposerController {
         }
     }
 
-    public interface ComposerCallbacks {
+    interface ComposerCallbacks {
         void onTextChanged(String text);
         void onTweetPost(String text);
         void onCloseClick();
@@ -131,21 +144,21 @@ class ComposerController {
     }
 
     static int remainingCharCount(int charCount) {
-        return TwitterApiConstants.MAX_TWEET_CHARS - charCount;
+        return Validator.MAX_TWEET_LENGTH - charCount;
     }
 
     /*
      * @return true if the Tweet text is a valid length, false otherwise.
      */
     static boolean isPostEnabled(int charCount) {
-        return charCount > 0 && charCount <= TwitterApiConstants.MAX_TWEET_CHARS;
+        return charCount > 0 && charCount <= Validator.MAX_TWEET_LENGTH;
     }
 
     /*
      * @return true if the Tweet text is too long, false otherwise.
      */
     static boolean isTweetTextOverflow(int charCount) {
-        return charCount > TwitterApiConstants.MAX_TWEET_CHARS;
+        return charCount > Validator.MAX_TWEET_LENGTH;
     }
 
     /*

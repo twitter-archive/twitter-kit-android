@@ -40,6 +40,7 @@ import static org.mockito.Mockito.when;
 @RunWith(RobolectricTestRunner.class)
 public class ComposerActivityTest {
     private static final String ANY_HASHTAG = "#hashtag";
+    private static final String ANY_TEXT = "text";
     private Context mockContext;
     private TwitterSession mockSession;
     private TwitterAuthToken mockAuthToken;
@@ -127,6 +128,16 @@ public class ComposerActivityTest {
     }
 
     @Test
+    public void testBuilderText() {
+        final Intent intent = new ComposerActivity.Builder(mockContext)
+                .session(mockSession)
+                .text(ANY_TEXT)
+                .createIntent();
+
+        assertEquals(ANY_TEXT, intent.getStringExtra(ComposerActivity.EXTRA_TEXT));
+    }
+
+    @Test
     public void testBuilder_emptyArray() {
         final Intent intent = new ComposerActivity.Builder(mockContext)
                 .session(mockSession)
@@ -143,7 +154,7 @@ public class ComposerActivityTest {
                 .hashtags(ANY_HASHTAG)
                 .createIntent();
 
-        assertEquals(" " + ANY_HASHTAG, intent.getStringExtra(ComposerActivity.EXTRA_HASHTAGS));
+        assertEquals(ANY_HASHTAG, intent.getStringExtra(ComposerActivity.EXTRA_HASHTAGS));
     }
 
     @Test

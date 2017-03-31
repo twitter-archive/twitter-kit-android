@@ -18,8 +18,6 @@
 package com.twitter.sdk.android.core.internal;
 
 public class TwitterApiConstants {
-    public static final int MAX_TWEET_CHARS = 140;
-
     public static class Errors {
 
         // error when app auth token not recognized (such as when expired)
@@ -30,9 +28,5 @@ public class TwitterApiConstants {
         public static final int ALREADY_UNFAVORITED = 144;
         // error when guest auth token not recognized (such as when expired)
         public static final int GUEST_AUTH_ERROR_CODE = 239;
-
-        // legacy errors are errors that are returned by the api in a different format, where there
-        // is no array of errors.
-        public static final int LEGACY_ERROR = 0;
     }
 }

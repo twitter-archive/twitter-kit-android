@@ -31,6 +31,7 @@ public class ComposerActivity extends Activity {
     static final String EXTRA_USER_TOKEN = "EXTRA_USER_TOKEN";
     static final String EXTRA_IMAGE_URI = "EXTRA_IMAGE_URI";
     static final String EXTRA_THEME = "EXTRA_THEME";
+    static final String EXTRA_TEXT = "EXTRA_TEXT";
     static final String EXTRA_HASHTAGS = "EXTRA_HASHTAGS";
     private static final int PLACEHOLDER_ID = -1;
     private static final String PLACEHOLDER_SCREEN_NAME = "";
@@ -44,13 +45,14 @@ public class ComposerActivity extends Activity {
         final TwitterSession session = new TwitterSession(token, PLACEHOLDER_ID,
                 PLACEHOLDER_SCREEN_NAME);
         final Uri imageUri = intent.getParcelableExtra(EXTRA_IMAGE_URI);
+        final String text = intent.getStringExtra(EXTRA_TEXT);
         final String hashtags = intent.getStringExtra(EXTRA_HASHTAGS);
         final int themeResId = intent.getIntExtra(EXTRA_THEME, R.style.ComposerLight);
 
         setTheme(themeResId);
         setContentView(R.layout.tw__activity_composer);
         final ComposerView composerView = (ComposerView) findViewById(R.id.tw__composer_view);
-        new ComposerController(composerView, session, imageUri, hashtags, new FinisherImpl());
+        new ComposerController(composerView, session, imageUri, text, hashtags, new FinisherImpl());
     }
 
     interface Finisher {
@@ -70,6 +72,7 @@ public class ComposerActivity extends Activity {
         private TwitterAuthToken token;
         private int themeResId = R.style.ComposerLight;
         private Uri imageUri;
+        private String text;
         private String hashtags;
 
         public Builder(Context context) {
@@ -97,14 +100,21 @@ public class ComposerActivity extends Activity {
             return this;
         }
 
+        public Builder text(String text) {
+            this.text = text;
+            return this;
+        }
+
         public Builder hashtags(String... hashtags) {
             if (hashtags == null) return this;
 
             final StringBuilder sb = new StringBuilder();
             for (String hashtag : hashtags) {
-                final boolean isValid = Regex.VALID_HASHTAG.matcher(hashtag).find();
-                if (isValid) {
-                    sb.append(" ").append(hashtag);
+                if (Regex.VALID_HASHTAG.matcher(hashtag).find()) {
+                    if (sb.length() > 0) {
+                        sb.append(" ");
+                    }
+                    sb.append(hashtag);
                 }
             }
 
@@ -126,6 +136,7 @@ public class ComposerActivity extends Activity {
             intent.putExtra(EXTRA_USER_TOKEN, token);
             intent.putExtra(EXTRA_IMAGE_URI, imageUri);
             intent.putExtra(EXTRA_THEME, themeResId);
+            intent.putExtra(EXTRA_TEXT, text);
             intent.putExtra(EXTRA_HASHTAGS, hashtags);
             return intent;
         }
