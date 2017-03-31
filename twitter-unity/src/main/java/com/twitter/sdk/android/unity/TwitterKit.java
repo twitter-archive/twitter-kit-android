@@ -19,9 +19,7 @@ package com.twitter.sdk.android.unity;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 
-import com.google.gson.Gson;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterCore;
@@ -29,13 +27,11 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.TwitterSessionHelper;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
-import com.twitter.sdk.android.tweetcomposer.Card;
 import com.twitter.sdk.android.tweetcomposer.ComposerActivity;
 import com.unity3d.player.UnityPlayer;
 
 public class TwitterKit {
     public static final String GAME_OBJECT_NAME = "TwitterGameObject";
-    public static final String EXTRA_TWITTER_SESSION = "EXTRA_TWITTER_SESSION";
 
     /**
      * Convenience method for launching Twitter login using JNI.
@@ -66,21 +62,12 @@ public class TwitterKit {
      * Convenience method for starting Tweet composer with app card preview.
      *
      * @param session the user session
-     * @param config card settings
      */
-    public static void compose(String session, String config, String[] hashtags) {
+    public static void compose(String session, String[] hashtags) {
         final Activity currentActivity = UnityPlayer.currentActivity;
-        final CardConfig cardConfig = new Gson().fromJson(config, CardConfig.class);
-        final Card card = new Card.AppCardBuilder(currentActivity)
-                .imageUri(Uri.parse(cardConfig.imageUri))
-                .googlePlayId(cardConfig.appGooglePlayId)
-                .iPadId(cardConfig.appIPadId)
-                .iPhoneId(cardConfig.appIPhoneId)
-                .build();
 
         final Intent intent = new ComposerActivity.Builder(currentActivity)
                 .session(TwitterSessionHelper.deserialize(session))
-                .card(card)
                 .hashtags(hashtags)
                 .createIntent();
         currentActivity.startActivity(intent);
@@ -114,20 +101,5 @@ public class TwitterKit {
                 message.send();
             }
         });
-    }
-
-    static class CardConfig {
-        final public String appIPhoneId;
-        final public String appIPadId;
-        final public String appGooglePlayId;
-        final public String imageUri;
-
-        CardConfig(String imageUri, String appGooglePlayId, String appIPadId,
-                String appIPhoneId) {
-            this.imageUri = imageUri;
-            this.appGooglePlayId = appGooglePlayId;
-            this.appIPadId = appIPadId;
-            this.appIPhoneId = appIPhoneId;
-        }
     }
 }

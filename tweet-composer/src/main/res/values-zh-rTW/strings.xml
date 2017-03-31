@@ -19,7 +19,6 @@
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="tw__composer_hint">有什麼新鮮事？</string>
-    <string name="tw__install">安裝</string>
     <string name="tw__max_tweet_chars">140</string>
     <string name="tw__post_tweet">推文</string>
 </resources>

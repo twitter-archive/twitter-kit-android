@@ -19,12 +19,12 @@ package com.twitter.sdk.android.tweetcomposer;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -49,7 +49,7 @@ public class ComposerView extends LinearLayout {
     // styled drawables for images
     ColorDrawable mediaBg;
     // callbacks
-    ViewGroup cardView;
+    ImageView imageView;
     ComposerController.ComposerCallbacks callbacks;
 
     private Picasso imageLoader;
@@ -138,7 +138,7 @@ public class ComposerView extends LinearLayout {
         tweetButton = (Button) findViewById(R.id.tw__post_tweet);
         scrollView = (ObservableScrollView) findViewById(R.id.tw__composer_scroll_view);
         divider = findViewById(R.id.tw__composer_profile_divider);
-        cardView = (ViewGroup) findViewById(R.id.tw__card_view);
+        imageView = (ImageView) findViewById(R.id.tw__image_view);
     }
 
     void setCallbacks(ComposerController.ComposerCallbacks callbacks) {
@@ -178,8 +178,10 @@ public class ComposerView extends LinearLayout {
         tweetButton.setEnabled(enabled);
     }
 
-    void setCardView(View card) {
-        cardView.addView(card);
-        cardView.setVisibility(View.VISIBLE);
+    void setImageView(Uri imageUri) {
+        if (imageLoader != null) {
+            imageView.setVisibility(VISIBLE);
+            imageLoader.load(imageUri).into(imageView);
+        }
     }
 }

@@ -66,15 +66,15 @@ class FileUtils {
         return null;
     }
 
-    public static boolean isMediaDocumentAuthority(Uri uri) {
+    static boolean isMediaDocumentAuthority(Uri uri) {
         return MEDIA_SCHEME.equalsIgnoreCase(uri.getAuthority());
     }
 
-    public static boolean isContentScheme(Uri uri) {
+    static boolean isContentScheme(Uri uri) {
         return ContentResolver.SCHEME_CONTENT.equalsIgnoreCase(uri.getScheme());
     }
 
-    public static boolean isFileScheme(Uri uri) {
+    static boolean isFileScheme(Uri uri) {
         return ContentResolver.SCHEME_FILE.equalsIgnoreCase(uri.getScheme());
     }
 

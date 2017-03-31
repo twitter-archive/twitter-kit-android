@@ -24,13 +24,13 @@ interface ComposerScribeClient {
 
 
     /**
-     * Scribes an impression of the Tweet Composer with a Card.
+     * Scribes an impression of the Tweet Composer.
      */
-    void impression(Card card);
+    void impression();
 
 
     /**
      * Scribes a click on the Tweet Composer 'Tweet' or 'Cancel' button element.
      */
-    void click(Card card, String element);
+    void click(String element);
 }

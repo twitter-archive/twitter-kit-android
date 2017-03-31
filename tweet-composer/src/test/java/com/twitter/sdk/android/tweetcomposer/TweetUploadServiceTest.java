@@ -21,11 +21,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
+import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterAuthToken;
+import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.core.services.MediaService;
+import com.twitter.sdk.android.core.services.StatusesService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -50,6 +53,7 @@ import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
@@ -57,7 +61,7 @@ public class TweetUploadServiceTest {
     private static final String EXPECTED_TWEET_TEXT = "tweet text";
 
     private Context context;
-    private ComposerApiClient mockComposerApiClient;
+    private TwitterApiClient mockTwitterApiClient;
     private StatusesService mockStatusesService;
     private MediaService mockMediaService;
     private TweetUploadService.DependencyProvider mockDependencyProvider;
@@ -73,19 +77,18 @@ public class TweetUploadServiceTest {
         when(mockMediaService
                 .upload(any(RequestBody.class), any(RequestBody.class), any(RequestBody.class)))
                 .thenReturn(mock(Call.class));
-        when(mockStatusesService.update(anyString(), isNull(String.class)))
-                .thenReturn(mock(Call.class));
+        when(mockStatusesService.update(anyString(), isNull(Long.class), isNull(Boolean.class),
+                isNull(Double.class), isNull(Double.class), isNull(String.class),
+                isNull(Boolean.class), eq(true), isNull(String.class)))
+                .thenReturn(Calls.response(tweet));
 
-        mockComposerApiClient = mock(ComposerApiClient.class);
-        when(mockComposerApiClient.getComposerStatusesService()).thenReturn(mockStatusesService);
-        when(mockComposerApiClient.getMediaService()).thenReturn(mockMediaService);
+        mockTwitterApiClient = mock(TwitterApiClient.class);
+        when(mockTwitterApiClient.getStatusesService()).thenReturn(mockStatusesService);
+        when(mockTwitterApiClient.getMediaService()).thenReturn(mockMediaService);
 
         mockDependencyProvider = mock(TweetUploadService.DependencyProvider.class);
-        when(mockDependencyProvider.getComposerApiClient(any(TwitterSession.class)))
-                .thenReturn(mockComposerApiClient);
-
-        when(mockDependencyProvider.getComposerApiClient(any(TwitterSession.class)))
-                .thenReturn(mockComposerApiClient);
+        when(mockDependencyProvider.getTwitterApiClient(any(TwitterSession.class)))
+                .thenReturn(mockTwitterApiClient);
 
         service = spy(Robolectric.buildService(TweetUploadService.class).create().get());
         service.dependencyProvider = mockDependencyProvider;
@@ -94,58 +97,53 @@ public class TweetUploadServiceTest {
     @Test
     public void testOnHandleIntent() {
         final TwitterAuthToken mockToken = mock(TwitterAuthToken.class);
-        final Card mockCard = mock(Card.class);
 
         final Intent intent = new Intent(context, TweetUploadService.class);
         intent.putExtra(TweetUploadService.EXTRA_USER_TOKEN, mockToken);
         intent.putExtra(TweetUploadService.EXTRA_TWEET_TEXT, EXPECTED_TWEET_TEXT);
-        intent.putExtra(TweetUploadService.EXTRA_TWEET_CARD, mockCard);
+        intent.putExtra(TweetUploadService.EXTRA_IMAGE_URI, Uri.EMPTY);
         service.onHandleIntent(intent);
 
-        assertEquals(service.twitterSession.getAuthToken(), mockToken);
-        assertEquals(service.tweetText, EXPECTED_TWEET_TEXT);
-        assertEquals(service.tweetCard, mockCard);
-        verify(service).uploadTweet(any(TwitterSession.class), eq(EXPECTED_TWEET_TEXT));
+        verify(service).uploadTweet(any(TwitterSession.class), eq(EXPECTED_TWEET_TEXT),
+                eq(Uri.EMPTY));
     }
 
     @Test
-    public void testOnHandleIntent_withAppCard() {
-        final TwitterAuthToken mockToken = mock(TwitterAuthToken.class);
-        final Card appCard = new Card.AppCardBuilder(context).imageUri(mock(Uri.class)).build();
+    public void testUploadTweet_withNoMediaSuccess() {
+        service.uploadTweet(mock(TwitterSession.class), EXPECTED_TWEET_TEXT, null);
 
-        final Intent intent = new Intent(context, TweetUploadService.class);
-        intent.putExtra(TweetUploadService.EXTRA_USER_TOKEN, mockToken);
-        intent.putExtra(TweetUploadService.EXTRA_TWEET_TEXT, EXPECTED_TWEET_TEXT);
-        intent.putExtra(TweetUploadService.EXTRA_TWEET_CARD, appCard);
-        service.onHandleIntent(intent);
-
-        assertEquals(service.twitterSession.getAuthToken(), mockToken);
-        assertEquals(service.tweetText, EXPECTED_TWEET_TEXT);
-        assertEquals(service.tweetCard, appCard);
-        verify(service).uploadAppCardTweet(any(TwitterSession.class), eq(EXPECTED_TWEET_TEXT),
-                eq(appCard));
-    }
-
-    @Test
-    public void testUploadTweet_success() {
-        when(mockStatusesService.update(anyString(), isNull(String.class)))
-                .thenReturn(Calls.response(tweet));
-        service.uploadTweet(mock(TwitterSession.class), EXPECTED_TWEET_TEXT);
-
-        verify(mockStatusesService).update(eq(EXPECTED_TWEET_TEXT), isNull(String.class));
+        verify(mockStatusesService).update(eq(EXPECTED_TWEET_TEXT), isNull(Long.class),
+                isNull(Boolean.class), isNull(Double.class), isNull(Double.class),
+                isNull(String.class), isNull(Boolean.class), eq(true), isNull(String.class));
+        verifyZeroInteractions(mockMediaService);
         verify(service).sendSuccessBroadcast(eq(123L));
         verify(service).stopSelf();
     }
 
     @Test
-    public void testUploadTweet_failure() {
-        when(mockStatusesService.update(anyString(), isNull(String.class)))
-                .thenReturn(Calls.<Tweet>failure(new IOException()));
-        service.intent = mock(Intent.class);
-        service.uploadTweet(mock(TwitterSession.class), EXPECTED_TWEET_TEXT);
+    public void testUploadTweet_withNoMediaFailure() {
+        when(mockStatusesService.update(anyString(), isNull(Long.class), isNull(Boolean.class),
+                isNull(Double.class), isNull(Double.class), isNull(String.class),
+                isNull(Boolean.class), eq(true), isNull(String.class)))
+                .thenReturn(Calls.<Tweet>failure(new IOException("")));
 
-        verify(mockStatusesService).update(eq(EXPECTED_TWEET_TEXT), isNull(String.class));
-        verify(service).sendFailureBroadcast(service.intent);
+        service.uploadTweet(mock(TwitterSession.class), EXPECTED_TWEET_TEXT, null);
+
+        verify(mockStatusesService).update(eq(EXPECTED_TWEET_TEXT), isNull(Long.class),
+                isNull(Boolean.class), isNull(Double.class), isNull(Double.class),
+                isNull(String.class), isNull(Boolean.class), eq(true), isNull(String.class));
+        verifyZeroInteractions(mockMediaService);
+        verify(service).fail(any(TwitterException.class));
+        verify(service).stopSelf();
+    }
+
+    @Test
+    public void testUploadTweet_withInvalidUri() {
+        service.uploadTweet(mock(TwitterSession.class), EXPECTED_TWEET_TEXT, Uri.EMPTY);
+
+        verifyZeroInteractions(mockStatusesService);
+        verifyZeroInteractions(mockMediaService);
+        verify(service).fail(any(TwitterException.class));
         verify(service).stopSelf();
     }
 

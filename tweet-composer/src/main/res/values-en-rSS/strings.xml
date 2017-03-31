@@ -19,7 +19,6 @@
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="tw__composer_hint">[[141545]] What\'s Happening?</string>
-    <string name="tw__install">[[141548]] Install</string>
     <string name="tw__max_tweet_chars">[[141547]] 140</string>
     <string name="tw__post_tweet">[[141546]] Tweet</string>
 </resources>

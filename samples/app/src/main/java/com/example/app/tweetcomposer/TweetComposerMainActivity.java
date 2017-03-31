@@ -29,7 +29,6 @@ import android.widget.Button;
 import com.example.app.BaseActivity;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterSession;
-import com.twitter.sdk.android.tweetcomposer.Card;
 import com.twitter.sdk.android.tweetcomposer.ComposerActivity;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
 
@@ -94,15 +93,9 @@ public class TweetComposerMainActivity extends BaseActivity {
     void launchComposer(String text, Uri uri) {
         final TwitterSession session = TwitterCore.getInstance().getSessionManager()
                 .getActiveSession();
-        final Card card = new Card.AppCardBuilder(TweetComposerMainActivity.this)
-                .imageUri(uri)
-                .iPhoneId("333903271")
-                .iPadId("333903271")
-                .googlePlayId("com.twitter.android")
-                .build();
         final Intent intent = new ComposerActivity.Builder(TweetComposerMainActivity.this)
                 .session(session)
-                .card(card)
+                .image(uri)
                 .hashtags("#twitter")
                 .createIntent();
         startActivity(intent);

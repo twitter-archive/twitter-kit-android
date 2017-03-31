@@ -19,7 +19,6 @@
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="tw__composer_hint">지금 무슨 일이   일어나고 있나요?</string>
-    <string name="tw__install">설치</string>
     <string name="tw__max_tweet_chars">140</string>
     <string name="tw__post_tweet">트윗</string>
 </resources>

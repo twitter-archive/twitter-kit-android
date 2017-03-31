@@ -19,7 +19,6 @@
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="tw__composer_hint">શું ચાલી રહ્યું છ?</string>
-    <string name="tw__install">ઇન્સ્ટૉલ કરો</string>
     <string name="tw__max_tweet_chars">140</string>
     <string name="tw__post_tweet">ટ્વીટ કરો</string>
 </resources>

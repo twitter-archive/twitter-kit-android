@@ -24,13 +24,13 @@ import android.net.Uri;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.Twitter;
+import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterAuthToken;
+import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.models.Media;
 import com.twitter.sdk.android.core.models.Tweet;
-import com.twitter.sdk.android.tweetcomposer.internal.CardCreate;
-import com.twitter.sdk.android.tweetcomposer.internal.CardData;
 
 import java.io.File;
 
@@ -48,14 +48,11 @@ public class TweetUploadService extends IntentService {
     static final String TAG = "TweetUploadService";
     static final String EXTRA_USER_TOKEN = "EXTRA_USER_TOKEN";
     static final String EXTRA_TWEET_TEXT = "EXTRA_TWEET_TEXT";
-    static final String EXTRA_TWEET_CARD = "EXTRA_TWEET_CARD";
+    static final String EXTRA_IMAGE_URI = "EXTRA_IMAGE_URI";
     private static final int PLACEHOLDER_ID = -1;
     private static final String PLACEHOLDER_SCREEN_NAME = "";
     DependencyProvider dependencyProvider;
 
-    TwitterSession twitterSession;
-    String tweetText;
-    Card tweetCard;
     Intent intent;
 
     public TweetUploadService() {
@@ -72,38 +69,56 @@ public class TweetUploadService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         final TwitterAuthToken token = intent.getParcelableExtra(EXTRA_USER_TOKEN);
         this.intent = intent;
-        twitterSession = new TwitterSession(token, PLACEHOLDER_ID, PLACEHOLDER_SCREEN_NAME);
-        tweetText = intent.getStringExtra(EXTRA_TWEET_TEXT);
-        tweetCard = (Card) intent.getSerializableExtra(EXTRA_TWEET_CARD);
+        final TwitterSession twitterSession =
+                new TwitterSession(token, PLACEHOLDER_ID, PLACEHOLDER_SCREEN_NAME);
+        final String tweetText = intent.getStringExtra(EXTRA_TWEET_TEXT);
+        final Uri imageUri = intent.getParcelableExtra(EXTRA_IMAGE_URI);
 
-        if (Card.isAppCard(tweetCard)) {
-            uploadAppCardTweet(twitterSession, tweetText, tweetCard);
+        uploadTweet(twitterSession, tweetText, imageUri);
+    }
+
+    void uploadTweet(final TwitterSession session, final String text, final Uri imageUri) {
+        if (imageUri != null) {
+            uploadMedia(session, imageUri, new Callback<Media>() {
+                @Override
+                public void success(Result<Media> result) {
+                    uploadTweetWithMedia(session, text, result.data.mediaIdString);
+                }
+
+                @Override
+                public void failure(TwitterException exception) {
+                    fail(exception);
+                }
+
+            });
         } else {
-            uploadTweet(twitterSession, tweetText);
+            uploadTweetWithMedia(session, text, null);
         }
     }
 
-    void uploadTweet(TwitterSession session, final String text) {
-        final ComposerApiClient client = dependencyProvider.getComposerApiClient(session);
-        client.getComposerStatusesService().update(text, null).enqueue(new Callback<Tweet>() {
-            @Override
-            public void success(Result<Tweet> result) {
-                sendSuccessBroadcast(result.data.getId());
-                stopSelf();
-            }
+    void uploadTweetWithMedia(TwitterSession session, String text, String mediaId) {
+        final TwitterApiClient client = dependencyProvider.getTwitterApiClient(session);
 
-            @Override
-            public void failure(TwitterException exception) {
-                fail(exception);
-            }
-        });
+        client.getStatusesService().update(text, null, null, null, null, null, null, true, mediaId)
+                .enqueue(
+                        new Callback<Tweet>() {
+                            @Override
+                            public void success(Result<Tweet> result) {
+                                sendSuccessBroadcast(result.data.getId());
+                                stopSelf();
+                            }
+
+                            @Override
+                            public void failure(TwitterException exception) {
+                                fail(exception);
+                            }
+                        });
     }
 
-    void uploadAppCardTweet(TwitterSession session, final String text, final Card card) {
-        final ComposerApiClient client = dependencyProvider.getComposerApiClient(session);
+    void uploadMedia(TwitterSession session, Uri imageUri, Callback<Media> callback) {
+        final TwitterApiClient client = dependencyProvider.getTwitterApiClient(session);
 
-        final Uri uri = Uri.parse(card.imageUri);
-        final String path = FileUtils.getPath(TweetUploadService.this, uri);
+        final String path = FileUtils.getPath(TweetUploadService.this, imageUri);
         if (path == null) {
             fail(new TwitterException("Uri file path resolved to null"));
             return;
@@ -112,42 +127,7 @@ public class TweetUploadService extends IntentService {
         final String mimeType = FileUtils.getMimeType(file);
         final RequestBody media = RequestBody.create(MediaType.parse(mimeType), file);
 
-        client.getMediaService().upload(media, null, null).enqueue(new Callback<Media>() {
-            @Override
-            public void success(Result<Media> result) {
-                final CardData cardData = CardDataFactory.createAppCardData(card,
-                        result.data.mediaId, dependencyProvider.getAdvertisingId());
-                client.getCardService().create(cardData).enqueue(new Callback<CardCreate>() {
-                    @Override
-                    public void success(Result<CardCreate> result) {
-                        final String cardUri = result.data.cardUri;
-                        client.getComposerStatusesService().update(text, cardUri).enqueue(
-                                new Callback<Tweet>() {
-                                    @Override
-                                    public void success(Result<Tweet> result) {
-                                        sendSuccessBroadcast(result.data.getId());
-                                        stopSelf();
-                                    }
-
-                                    @Override
-                                    public void failure(TwitterException exception) {
-                                        fail(exception);
-                                    }
-                                });
-                    }
-
-                    @Override
-                    public void failure(TwitterException exception) {
-                        fail(exception);
-                    }
-                });
-            }
-
-            @Override
-            public void failure(TwitterException exception) {
-                fail(exception);
-            }
-        });
+        client.getMediaService().upload(media, null, null).enqueue(callback);
     }
 
     void fail(TwitterException e) {
@@ -175,12 +155,8 @@ public class TweetUploadService extends IntentService {
      */
     static class DependencyProvider {
 
-        ComposerApiClient getComposerApiClient(TwitterSession session) {
-            return TweetComposer.getInstance().getApiClient(session);
-        }
-
-        String getAdvertisingId() {
-            return TweetComposer.getInstance().getAdvertisingId();
+        TwitterApiClient getTwitterApiClient(TwitterSession session) {
+            return TwitterCore.getInstance().getApiClient(session);
         }
     }
 }

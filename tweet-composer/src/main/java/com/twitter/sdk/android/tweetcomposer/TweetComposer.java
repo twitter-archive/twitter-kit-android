@@ -25,7 +25,6 @@ import android.net.Uri;
 import android.text.TextUtils;
 
 import com.twitter.sdk.android.core.GuestSessionProvider;
-import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterCore;
@@ -37,7 +36,6 @@ import com.twitter.sdk.android.core.internal.scribe.ScribeConfig;
 
 import java.net.URL;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The TweetComposer Kit provides a lightweight mechanism for creating intents to interact with the installed Twitter app or a browser.
@@ -50,11 +48,10 @@ public class TweetComposer {
     private static final String WEB_INTENT = "https://twitter.com/intent/tweet?text=%s&url=%s";
     private static final String KIT_SCRIBE_NAME = "TweetComposer";
 
-    private final ConcurrentHashMap<Session, ComposerApiClient> apiClients;
     SessionManager<TwitterSession> sessionManager;
     GuestSessionProvider guestSessionProvider;
     Context context;
-    private ScribeClient scribeClient;
+    ScribeClient scribeClient;
 
     public static TweetComposer getInstance() {
         if (instance == null) {
@@ -68,7 +65,6 @@ public class TweetComposer {
     }
 
     TweetComposer() {
-        this.apiClients = new ConcurrentHashMap<>();
         scribeClient = new ScribeClientImpl(null);
 
         sessionManager = TwitterCore.getInstance().getSessionManager();
@@ -94,24 +90,8 @@ public class TweetComposer {
         return BuildConfig.GROUP + ":" + BuildConfig.ARTIFACT_ID;
     }
 
-    public ComposerApiClient getApiClient(TwitterSession session) {
-        if (!apiClients.containsKey(session)) {
-            apiClients.putIfAbsent(session, new ComposerApiClient(session));
-        }
-        return apiClients.get(session);
-    }
-
-    protected ScribeClient getScribeClient() {
+    ScribeClient getScribeClient() {
         return scribeClient;
-    }
-
-    String getAdvertisingId() {
-        /*
-         * The advertising ID may be null if this method is called before doInBackground completes.
-         * It also may be null depending on the users preferences and if Google Play Services has
-         * been installed on the device.
-         */
-        return Twitter.getInstance().getIdManager().getAdvertisingId();
     }
 
     /**

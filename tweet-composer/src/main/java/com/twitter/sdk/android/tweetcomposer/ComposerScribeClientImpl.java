@@ -18,13 +18,11 @@
 package com.twitter.sdk.android.tweetcomposer;
 
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
-import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 /**
- * CardComposerScribeClientImpl implements the scribe events corresponding to the Tweet Composer.
+ * ComposerScribeClientImpl implements the scribe events corresponding to the Tweet Composer.
  */
 class ComposerScribeClientImpl implements ComposerScribeClient {
     private final ScribeClient scribeClient;
@@ -37,26 +35,22 @@ class ComposerScribeClientImpl implements ComposerScribeClient {
     }
 
     @Override
-    public void impression(Card card) {
+    public void impression() {
         final EventNamespace ns = ScribeConstants.ComposerEventBuilder
                 .setComponent(ScribeConstants.SCRIBE_COMPONENT)
                 .setElement(ScribeConstants.SCRIBE_IMPRESSION_ELEMENT)
                 .setAction(ScribeConstants.SCRIBE_IMPRESSION_ACTION)
                 .builder();
-        final List<ScribeItem> items = new ArrayList<>();
-        items.add(ScribeConstants.newCardScribeItem(card));
-        scribeClient.scribe(ns, items);
+        scribeClient.scribe(ns, Collections.EMPTY_LIST);
     }
 
     @Override
-    public void click(Card card, String element) {
+    public void click(String element) {
         final EventNamespace ns = ScribeConstants.ComposerEventBuilder
                 .setComponent(ScribeConstants.SCRIBE_COMPONENT)
                 .setElement(element)
                 .setAction(ScribeConstants.SCRIBE_CLICK_ACTION)
                 .builder();
-        final List<ScribeItem> items = new ArrayList<>();
-        items.add(ScribeConstants.newCardScribeItem(card));
-        scribeClient.scribe(ns, items);
+        scribeClient.scribe(ns, Collections.EMPTY_LIST);
     }
 }

@@ -19,6 +19,7 @@ package com.twitter.sdk.android.tweetcomposer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 
 import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterSession;
@@ -42,14 +43,14 @@ public class ComposerActivityTest {
     private Context mockContext;
     private TwitterSession mockSession;
     private TwitterAuthToken mockAuthToken;
-    private Card mockCardData;
+    private Uri mockUri;
 
     @Before
     public void setUp() {
         mockContext = mock(Context.class);
         mockSession = mock(TwitterSession.class);
         mockAuthToken = mock(TwitterAuthToken.class);
-        mockCardData = mock(Card.class);
+        mockUri = Uri.EMPTY;
         when(mockSession.getAuthToken()).thenReturn(mockAuthToken);
     }
 
@@ -156,11 +157,11 @@ public class ComposerActivityTest {
     }
 
     @Test
-    public void testBuilderCardData() {
+    public void testBuilderImage() {
         final Intent intent = new ComposerActivity.Builder(mockContext)
                 .session(mockSession)
-                .card(mockCardData)
+                .image(mockUri)
                 .createIntent();
-        assertEquals(mockCardData, intent.getSerializableExtra(ComposerActivity.EXTRA_CARD));
+        assertEquals(mockUri, intent.getParcelableExtra(ComposerActivity.EXTRA_IMAGE_URI));
     }
 }

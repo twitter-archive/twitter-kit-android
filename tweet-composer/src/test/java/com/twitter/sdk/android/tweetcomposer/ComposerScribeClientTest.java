@@ -28,7 +28,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static junit.framework.Assert.assertNotNull;
@@ -73,29 +73,29 @@ public class ComposerScribeClientTest {
 
     @Test
     public void testImpression() throws Exception {
-        composerScribeClient.impression(mock(Card.class));
+        composerScribeClient.impression();
         verify(mockClient).scribe(eventNamespaceCaptor.capture(), scribeItemsCaptor.capture());
         final EventNamespace eventNamespace = eventNamespaceCaptor.getValue();
         assertEquals(expectedImpression(), eventNamespace);
-        assertEquals(expectedScribeItems(), scribeItemsCaptor.getValue());
+        assertEquals(Collections.EMPTY_LIST, scribeItemsCaptor.getValue());
     }
 
     @Test
     public void testTweetClick() throws Exception {
-        composerScribeClient.click(mock(Card.class), ScribeConstants.SCRIBE_TWEET_ELEMENT);
+        composerScribeClient.click(ScribeConstants.SCRIBE_TWEET_ELEMENT);
         verify(mockClient).scribe(eventNamespaceCaptor.capture(), scribeItemsCaptor.capture());
         final EventNamespace eventNamespace = eventNamespaceCaptor.getValue();
         assertEquals(expectedTweetClick(), eventNamespace);
-        assertEquals(expectedScribeItems(), scribeItemsCaptor.getValue());
+        assertEquals(Collections.EMPTY_LIST, scribeItemsCaptor.getValue());
     }
 
     @Test
     public void testCancelClick() throws Exception {
-        composerScribeClient.click(mock(Card.class), ScribeConstants.SCRIBE_CANCEL_ELEMENT);
+        composerScribeClient.click(ScribeConstants.SCRIBE_CANCEL_ELEMENT);
         verify(mockClient).scribe(eventNamespaceCaptor.capture(), scribeItemsCaptor.capture());
         final EventNamespace eventNamespace = eventNamespaceCaptor.getValue();
         assertEquals(expectedCancelClick(), eventNamespace);
-        assertEquals(expectedScribeItems(), scribeItemsCaptor.getValue());
+        assertEquals(Collections.EMPTY_LIST, scribeItemsCaptor.getValue());
     }
 
     private EventNamespace expectedImpression() {
@@ -129,12 +129,6 @@ public class ComposerScribeClientTest {
                 .setElement(ScribeConstants.SCRIBE_CANCEL_ELEMENT)
                 .setAction(ScribeConstants.SCRIBE_CLICK_ACTION)
                 .builder();
-    }
-
-    private List<ScribeItem> expectedScribeItems() {
-        final List<ScribeItem> scribeItems = new ArrayList<>();
-        scribeItems.add(ScribeConstants.newCardScribeItem(mock(Card.class)));
-        return scribeItems;
     }
 }
 

@@ -18,8 +18,8 @@
 package com.twitter.sdk.android.tweetcomposer;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.text.TextUtils;
-import android.view.View;
 
 import com.twitter.Validator;
 import com.twitter.sdk.android.core.Callback;
@@ -34,30 +34,30 @@ import com.twitter.sdk.android.core.models.User;
 class ComposerController {
     final ComposerView composerView;
     final TwitterSession session;
-    final Card card;
+    final Uri imageUri;
     final ComposerActivity.Finisher finisher;
     final DependencyProvider dependencyProvider;
 
-    ComposerController(final ComposerView composerView, TwitterSession session, Card card,
+    ComposerController(final ComposerView composerView, TwitterSession session, Uri imageUri,
                        String hashtags, ComposerActivity.Finisher finisher) {
-        this(composerView, session, card, hashtags, finisher, new DependencyProvider());
+        this(composerView, session, imageUri, hashtags, finisher, new DependencyProvider());
     }
 
     // testing purposes
-    ComposerController(final ComposerView composerView, TwitterSession session, Card card,
+    ComposerController(final ComposerView composerView, TwitterSession session, Uri imageUri,
                        String hashtags, ComposerActivity.Finisher finisher,
             DependencyProvider dependencyProvider) {
         this.composerView = composerView;
         this.session = session;
-        this.card = card;
+        this.imageUri = imageUri;
         this.finisher = finisher;
         this.dependencyProvider = dependencyProvider;
 
         composerView.setCallbacks(new ComposerCallbacksImpl());
         composerView.setTweetText(hashtags);
         setProfilePhoto();
-        setCardView(card);
-        dependencyProvider.getScribeClient().impression(card);
+        setImageView(imageUri);
+        dependencyProvider.getScribeClient().impression();
     }
 
     void setProfilePhoto() {
@@ -76,11 +76,9 @@ class ComposerController {
                 });
     }
 
-    void setCardView(Card card) {
-        if (card != null) {
-            final CardViewFactory cardViewFactory = dependencyProvider.getCardViewFactory();
-            final View view = cardViewFactory.createCard(composerView.getContext(), card);
-            composerView.setCardView(view);
+    void setImageView(Uri imageUri) {
+        if (imageUri != null) {
+            composerView.setImageView(imageUri);
         }
     }
 
@@ -108,18 +106,18 @@ class ComposerController {
 
         @Override
         public void onTweetPost(String text) {
-            dependencyProvider.getScribeClient().click(card, ScribeConstants.SCRIBE_TWEET_ELEMENT);
+            dependencyProvider.getScribeClient().click(ScribeConstants.SCRIBE_TWEET_ELEMENT);
             final Intent intent = new Intent(composerView.getContext(), TweetUploadService.class);
             intent.putExtra(TweetUploadService.EXTRA_USER_TOKEN, session.getAuthToken());
             intent.putExtra(TweetUploadService.EXTRA_TWEET_TEXT, text);
-            intent.putExtra(TweetUploadService.EXTRA_TWEET_CARD, card);
+            intent.putExtra(TweetUploadService.EXTRA_IMAGE_URI, imageUri);
             composerView.getContext().startService(intent);
             finisher.finish();
         }
 
         @Override
         public void onCloseClick() {
-            dependencyProvider.getScribeClient().click(card, ScribeConstants.SCRIBE_CANCEL_ELEMENT);
+            dependencyProvider.getScribeClient().click(ScribeConstants.SCRIBE_CANCEL_ELEMENT);
             finisher.finish();
         }
     }
@@ -154,15 +152,10 @@ class ComposerController {
      * Mockable class that provides ComposerController dependencies.
      */
     static class DependencyProvider {
-        final CardViewFactory cardViewFactory = new CardViewFactory();
         final Validator tweetValidator = new Validator();
 
         TwitterApiClient getApiClient(TwitterSession session) {
             return TwitterCore.getInstance().getApiClient(session);
-        }
-
-        CardViewFactory getCardViewFactory() {
-            return cardViewFactory;
         }
 
         Validator getTweetValidator() {

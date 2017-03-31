@@ -71,12 +71,14 @@
                 android:id="@+id/tw__edit_tweet"
                 style="@style/tw__EditTweet"/>
 
-            <FrameLayout
-                android:id="@+id/tw__card_view"
-                android:visibility="gone"
+            <ImageView
+                android:id="@+id/tw__image_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/tw__card_spacing_large"/>
+                android:layout_margin="@dimen/tw__composer_spacing_large"
+                android:adjustViewBounds="true"
+                android:visibility="gone"
+                tools:ignore="ContentDescription"/>
         </LinearLayout>
     </com.twitter.sdk.android.tweetcomposer.internal.util.ObservableScrollView>
 

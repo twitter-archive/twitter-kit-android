@@ -20,6 +20,7 @@ package com.twitter.sdk.android.tweetcomposer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.twitter.Regex;
@@ -28,7 +29,7 @@ import com.twitter.sdk.android.core.TwitterSession;
 
 public class ComposerActivity extends Activity {
     static final String EXTRA_USER_TOKEN = "EXTRA_USER_TOKEN";
-    static final String EXTRA_CARD = "EXTRA_CARD";
+    static final String EXTRA_IMAGE_URI = "EXTRA_IMAGE_URI";
     static final String EXTRA_THEME = "EXTRA_THEME";
     static final String EXTRA_HASHTAGS = "EXTRA_HASHTAGS";
     private static final int PLACEHOLDER_ID = -1;
@@ -42,14 +43,14 @@ public class ComposerActivity extends Activity {
         final TwitterAuthToken token = intent.getParcelableExtra(EXTRA_USER_TOKEN);
         final TwitterSession session = new TwitterSession(token, PLACEHOLDER_ID,
                 PLACEHOLDER_SCREEN_NAME);
-        final Card card = (Card) intent.getSerializableExtra(EXTRA_CARD);
+        final Uri imageUri = intent.getParcelableExtra(EXTRA_IMAGE_URI);
         final String hashtags = intent.getStringExtra(EXTRA_HASHTAGS);
         final int themeResId = intent.getIntExtra(EXTRA_THEME, R.style.ComposerLight);
 
         setTheme(themeResId);
         setContentView(R.layout.tw__activity_composer);
         final ComposerView composerView = (ComposerView) findViewById(R.id.tw__composer_view);
-        new ComposerController(composerView, session, card, hashtags, new FinisherImpl());
+        new ComposerController(composerView, session, imageUri, hashtags, new FinisherImpl());
     }
 
     interface Finisher {
@@ -68,7 +69,7 @@ public class ComposerActivity extends Activity {
         private final Context context;
         private TwitterAuthToken token;
         private int themeResId = R.style.ComposerLight;
-        private Card card;
+        private Uri imageUri;
         private String hashtags;
 
         public Builder(Context context) {
@@ -91,8 +92,8 @@ public class ComposerActivity extends Activity {
             return this;
         }
 
-        public Builder card(Card card) {
-            this.card = card;
+        public Builder image(Uri imageUri) {
+            this.imageUri = imageUri;
             return this;
         }
 
@@ -123,7 +124,7 @@ public class ComposerActivity extends Activity {
             }
             final Intent intent = new Intent(context, ComposerActivity.class);
             intent.putExtra(EXTRA_USER_TOKEN, token);
-            intent.putExtra(EXTRA_CARD, card);
+            intent.putExtra(EXTRA_IMAGE_URI, imageUri);
             intent.putExtra(EXTRA_THEME, themeResId);
             intent.putExtra(EXTRA_HASHTAGS, hashtags);
             return intent;

@@ -19,7 +19,7 @@ package com.twitter.sdk.android.tweetcomposer;
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.View;
+import android.net.Uri;
 
 import com.twitter.Validator;
 import com.twitter.sdk.android.core.TwitterApiClient;
@@ -56,8 +56,6 @@ public class ComposerControllerTest {
     private TwitterAuthToken mockAuthToken;
     private TwitterSession mockTwitterSession;
     private AccountService mockAccountService;
-    private CardViewFactory mockCardViewFactory;
-    private Card mockCard;
     private ComposerActivity.Finisher mockFinisher;
     private ComposerScribeClient mockComposerScribeClient;
     private ComposerController.DependencyProvider mockDependencyProvider;
@@ -68,7 +66,6 @@ public class ComposerControllerTest {
         mockContext = mock(Context.class);
         when(mockComposerView.getContext()).thenReturn(mockContext);
 
-        mockCard = mock(Card.class);
         mockFinisher = mock(ComposerActivity.Finisher.class);
         mockAuthToken = mock(TwitterAuthToken.class);
         mockTwitterSession = mock(TwitterSession.class);
@@ -81,22 +78,18 @@ public class ComposerControllerTest {
                 .thenReturn(mock(Call.class));
         when(mockTwitterApiClient.getAccountService()).thenReturn(mockAccountService);
 
-        mockCardViewFactory = mock(CardViewFactory.class);
-        when(mockCardViewFactory.createCard(any(Context.class), any(Card.class)))
-                .thenReturn(mock(View.class));
         mockComposerScribeClient = mock(ComposerScribeClient.class);
 
         mockDependencyProvider = mock(ComposerController.DependencyProvider.class);
         when(mockDependencyProvider.getApiClient(any(TwitterSession.class)))
                 .thenReturn(mockTwitterApiClient);
-        when(mockDependencyProvider.getCardViewFactory()).thenReturn(mockCardViewFactory);
         when(mockDependencyProvider.getTweetValidator()).thenReturn(new Validator());
         when(mockDependencyProvider.getScribeClient()).thenReturn(mockComposerScribeClient);
     }
 
     @Test
     public void testComposerController() {
-        controller = new ComposerController(mockComposerView, mockTwitterSession, mockCard,
+        controller = new ComposerController(mockComposerView, mockTwitterSession, Uri.EMPTY,
                 ANY_HASHTAG, mockFinisher, mockDependencyProvider);
         assertEquals(mockTwitterSession, controller.session);
         // assert that
@@ -107,16 +100,15 @@ public class ComposerControllerTest {
         // - scribes a Tweet Composer impression
         verify(mockComposerView).setCallbacks(any(ComposerController.ComposerCallbacks.class));
         verify(mockComposerView).setTweetText(ANY_HASHTAG);
-        verify(mockComposerView).setCardView(any(View.class));
+        verify(mockComposerView).setImageView(Uri.EMPTY);
         verify(mockDependencyProvider).getApiClient(mockTwitterSession);
-        verify(mockDependencyProvider).getCardViewFactory();
         verify(mockAccountService).verifyCredentials(eq(false), eq(true), eq(false));
-        verify(mockComposerScribeClient).impression(mockCard);
+        verify(mockComposerScribeClient).impression();
     }
 
     @Test
     public void testTweetTextLength() {
-        controller = new ComposerController(mockComposerView, mockTwitterSession, mockCard,
+        controller = new ComposerController(mockComposerView, mockTwitterSession, Uri.EMPTY,
                 ANY_HASHTAG, mockFinisher, mockDependencyProvider);
 
         assertEquals(0, controller.tweetTextLength(null));
@@ -154,7 +146,7 @@ public class ComposerControllerTest {
     @Test
     public void testComposerCallbacksImpl_onTextChangedOk() {
         mockTwitterSession = mock(TwitterSession.class);
-        controller = new ComposerController(mockComposerView, mockTwitterSession, mockCard,
+        controller = new ComposerController(mockComposerView, mockTwitterSession, Uri.EMPTY,
                 ANY_HASHTAG, mockFinisher, mockDependencyProvider);
         final ComposerController.ComposerCallbacks callbacks
                 = controller.new ComposerCallbacksImpl();
@@ -170,7 +162,7 @@ public class ComposerControllerTest {
         final String OVERFLOW_TEXT = "This tweet is longer than 140 characters. This tweet is " +
                 "longer than 140 characters. This tweet is longer than 140 characters. Overflow." +
                 "Overflow";
-        controller = new ComposerController(mockComposerView, mockTwitterSession, mockCard,
+        controller = new ComposerController(mockComposerView, mockTwitterSession, Uri.EMPTY,
                 ANY_HASHTAG, mockFinisher, mockDependencyProvider);
         final ComposerController.ComposerCallbacks callbacks
                 = controller.new ComposerCallbacksImpl();
@@ -186,7 +178,7 @@ public class ComposerControllerTest {
         final Context mockContext = mock(Context.class);
         when(mockComposerView.getContext()).thenReturn(mockContext);
 
-        controller = new ComposerController(mockComposerView, mockTwitterSession, mockCard,
+        controller = new ComposerController(mockComposerView, mockTwitterSession, Uri.EMPTY,
                 ANY_HASHTAG, mockFinisher, mockDependencyProvider);
         final ComposerController.ComposerCallbacks callbacks
                 = controller.new ComposerCallbacksImpl();
@@ -201,14 +193,13 @@ public class ComposerControllerTest {
         assertEquals(TweetUploadService.class.getCanonicalName(),
                 intent.getComponent().getClassName());
         assertEquals(mockAuthToken, intent.getParcelableExtra(TweetUploadService.EXTRA_USER_TOKEN));
-        assertEquals(mockCard, intent.getSerializableExtra(TweetUploadService.EXTRA_TWEET_CARD));
-        verify(mockComposerScribeClient).click(eq(mockCard),
-                eq(ScribeConstants.SCRIBE_TWEET_ELEMENT));
+        assertEquals(Uri.EMPTY, intent.getParcelableExtra(TweetUploadService.EXTRA_IMAGE_URI));
+        verify(mockComposerScribeClient).click(eq(ScribeConstants.SCRIBE_TWEET_ELEMENT));
     }
 
     @Test
     public void testComposerCallbacksImpl_onClose() {
-        controller = new ComposerController(mockComposerView, mockTwitterSession, mockCard,
+        controller = new ComposerController(mockComposerView, mockTwitterSession, Uri.EMPTY,
                 ANY_HASHTAG, mockFinisher, mockDependencyProvider);
         final ComposerController.ComposerCallbacks callbacks
                 = controller.new ComposerCallbacksImpl();
@@ -217,7 +208,6 @@ public class ComposerControllerTest {
         // - finishes the activity
         // - scribes a Tweet Composer Cancel click
         verify(mockFinisher).finish();
-        verify(mockComposerScribeClient).click(eq(mockCard),
-                eq(ScribeConstants.SCRIBE_CANCEL_ELEMENT));
+        verify(mockComposerScribeClient).click(eq(ScribeConstants.SCRIBE_CANCEL_ELEMENT));
     }
 }

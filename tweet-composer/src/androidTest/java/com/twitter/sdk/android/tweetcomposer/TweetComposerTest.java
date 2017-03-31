@@ -22,7 +22,6 @@ import android.test.AndroidTestCase;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterConfig;
 import com.twitter.sdk.android.core.TwitterCoreTestUtils;
-import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.TwitterTestUtils;
 
 import java.util.concurrent.ThreadPoolExecutor;
@@ -59,11 +58,6 @@ public class TweetComposerTest extends AndroidTestCase {
     public void testGetIdentifier() {
         final String identifier = BuildConfig.GROUP + ":" + BuildConfig.ARTIFACT_ID;
         assertEquals(identifier, tweetComposer.getIdentifier());
-    }
-
-    public void testGetApiClient() throws Exception {
-        final ComposerApiClient client = tweetComposer.getApiClient(mock(TwitterSession.class));
-        assertNotNull(client);
     }
 
     public void testGetInstance_twitterNotInitialized() throws Exception {
