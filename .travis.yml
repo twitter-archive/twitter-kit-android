@@ -11,8 +11,8 @@ android:
     - extra-android-m2repository
 
 script:
-    - echo "twitterConsumerKey=$TWITTER_CONSUMER_KEY" >> samples/app/fabric.properties
-    - echo "twitterConsumerSecret=$TWITTER_CONSUMER_SECRET" >> samples/app/fabric.properties
-    - echo "apiKey=$API_KEY" >> samples/app/fabric.properties
-    - echo "apiSecret=$API_SECRET" >> samples/app/fabric.properties
+    - echo "twitterConsumerKey=$TWITTER_CONSUMER_KEY" >> samples/app/twitter.properties
+    - echo "twitterConsumerSecret=$TWITTER_CONSUMER_SECRET" >> samples/app/twitter.properties
+    - echo "apiKey=$API_KEY" >> samples/app/twitter.properties
+    - echo "apiSecret=$API_SECRET" >> samples/app/twitter.properties
     - ./gradlew assemble test

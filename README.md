@@ -41,7 +41,7 @@ Check out [more details and other build tool integrations](https://fabric.io/dow
 
 * Sign up for a [Fabric account](https://fabric.io) and follow onboarding instructions to get your Fabric API Key and build secret, found under the organization settings of the Fabric web dashboard.
 * Either create your Twitter app by through [this portal](https://apps.twitter.com/) or by using the Fabric IDE plugin.
-* Rename samples/app/fabric.properties.sample to samples/app/fabric.properties and populate information.
+* Rename samples/app/twitter.properties.sample to samples/app/twitter.properties and populate information.
 * Run Sample app to verify build.
 * For extensive documentation, please see the [official documentation](http://docs.fabric.io/android/twitter/index.html).
 

@@ -11,14 +11,14 @@ buildscript {
 
 // Load API Key information in from property file
 Properties props = new Properties()
-File propsFile = file('fabric.properties')
+File propsFile = file('twitter.properties')
 if (propsFile.exists()) {
     props.load(propsFile.newDataInputStream())
 } else if (System.env.TWITTER_KEY != null && System.env.TWITTER_SECRET != null) {
     props.setProperty("twitterConsumerKey", System.env.TWITTER_KEY)
     props.setProperty("twitterConsumerSecret", System.env.TWITTER_SECRET)
 } else {
-    throw new GradleException("Missing fabric.properties, check the fabric.properties.sample file.");
+    throw new GradleException("Missing twitter.properties, check the twitter.properties.sample file.");
 }
 
 apply plugin: 'com.android.application'

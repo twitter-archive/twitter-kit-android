@@ -7,9 +7,9 @@ buildscript {
 //Load API Key information in from property file
 Properties props = new Properties()
 try {
-    props.load(file('fabric.properties').newDataInputStream())
+    props.load(file('twitter.properties').newDataInputStream())
 } catch (Exception ex) {
-    throw new GradleException("Missing fabric.properties, check the fabric.properties.sample file.");
+    throw new GradleException("Missing twitter.properties, check the twitter.properties.sample file.");
 }
 
 apply plugin: 'com.android.application'
