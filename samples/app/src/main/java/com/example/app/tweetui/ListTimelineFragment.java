@@ -24,7 +24,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.app.R;
-
 import com.example.app.twittercore.TwitterCoreMainActivity;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;

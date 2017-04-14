@@ -20,21 +20,21 @@ package com.twitter.sdk.android.core.identity;
 import android.app.Activity;
 import android.content.Intent;
 
-import retrofit2.Call;
-
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthException;
 import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.internal.scribe.TwitterCoreScribeClientHolder;
 import com.twitter.sdk.android.core.models.User;
+
+import retrofit2.Call;
 
 /**
  * Client for requesting authorization and email from the user.

@@ -19,16 +19,15 @@ package com.twitter.sdk.android.core.internal.scribe;
 
 import android.content.Context;
 
-import com.twitter.sdk.android.core.internal.CommonUtils;
-import com.twitter.sdk.android.core.internal.IdManager;
-import com.twitter.sdk.android.core.internal.SystemCurrentTimeProvider;
-import com.twitter.sdk.android.core.internal.persistence.FileStoreImpl;
-
 import com.twitter.sdk.android.core.GuestSessionProvider;
 import com.twitter.sdk.android.core.Session;
 import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthToken;
+import com.twitter.sdk.android.core.internal.CommonUtils;
+import com.twitter.sdk.android.core.internal.IdManager;
+import com.twitter.sdk.android.core.internal.SystemCurrentTimeProvider;
+import com.twitter.sdk.android.core.internal.persistence.FileStoreImpl;
 
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;

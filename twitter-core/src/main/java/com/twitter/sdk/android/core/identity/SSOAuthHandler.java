@@ -28,8 +28,8 @@ import android.content.pm.Signature;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.IntentUtils;
 import com.twitter.sdk.android.core.Twitter;
-import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterSession;
 
 /**

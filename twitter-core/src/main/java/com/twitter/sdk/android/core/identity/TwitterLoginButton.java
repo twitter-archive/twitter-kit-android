@@ -17,8 +17,8 @@
 
 package com.twitter.sdk.android.core.identity;
 
-import android.app.Activity;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;

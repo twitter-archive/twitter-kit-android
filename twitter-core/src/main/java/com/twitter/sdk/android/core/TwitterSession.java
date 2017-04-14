@@ -19,10 +19,9 @@ package com.twitter.sdk.android.core;
 
 import android.text.TextUtils;
 
-import com.twitter.sdk.android.core.internal.persistence.SerializationStrategy;
-
-import com.google.gson.annotations.SerializedName;
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
+import com.twitter.sdk.android.core.internal.persistence.SerializationStrategy;
 
 /**
  * Represents a Twitter session that is associated with a {@link com.twitter.sdk.android.core.TwitterAuthToken}.

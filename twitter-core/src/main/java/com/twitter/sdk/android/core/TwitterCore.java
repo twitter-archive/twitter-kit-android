@@ -19,12 +19,11 @@ package com.twitter.sdk.android.core;
 
 import android.content.Context;
 
-import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreImpl;
-
 import com.twitter.sdk.android.core.internal.SessionMonitor;
 import com.twitter.sdk.android.core.internal.TwitterApi;
 import com.twitter.sdk.android.core.internal.TwitterSessionVerifier;
 import com.twitter.sdk.android.core.internal.oauth.OAuth2Service;
+import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreImpl;
 import com.twitter.sdk.android.core.internal.scribe.TwitterCoreScribeClientHolder;
 
 import java.util.concurrent.ConcurrentHashMap;

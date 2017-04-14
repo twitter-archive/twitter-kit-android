@@ -17,14 +17,14 @@
 
 package com.twitter.sdk.android.core.internal.oauth;
 
-import com.twitter.sdk.android.core.Twitter;
-import com.twitter.sdk.android.core.internal.network.UrlUtils;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.internal.TwitterApi;
+import com.twitter.sdk.android.core.internal.network.UrlUtils;
 
 import okio.ByteString;
 import retrofit2.Call;

@@ -23,10 +23,10 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.twitter.sdk.android.core.internal.network.UrlUtils;
+
 import java.net.URI;
 import java.util.TreeMap;
-
-import com.twitter.sdk.android.core.internal.network.UrlUtils;
 
 class OAuthWebViewClient extends WebViewClient {
 

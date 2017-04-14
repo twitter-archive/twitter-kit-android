@@ -27,12 +27,11 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.app.BaseActivity;
+import com.example.app.R;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.tweetcomposer.ComposerActivity;
 import com.twitter.sdk.android.tweetcomposer.TweetComposer;
-
-import com.example.app.R;
 
 import java.net.MalformedURLException;
 import java.net.URL;

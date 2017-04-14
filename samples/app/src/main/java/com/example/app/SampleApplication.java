@@ -21,14 +21,14 @@ import android.app.Application;
 import android.os.StrictMode;
 import android.util.Log;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-
 import com.squareup.leakcanary.LeakCanary;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterSession;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 public class SampleApplication extends Application {
     private static final String TAG = SampleApplication.class.getSimpleName();

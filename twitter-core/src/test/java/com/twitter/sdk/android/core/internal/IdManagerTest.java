@@ -32,6 +32,7 @@ import org.robolectric.shadows.ShadowSettings;
 
 import static com.twitter.sdk.android.core.internal.CommonUtils.CLS_SHARED_PREFERENCES_NAME;
 import static com.twitter.sdk.android.core.internal.IdManager.PREFKEY_INSTALLATION_UUID;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;

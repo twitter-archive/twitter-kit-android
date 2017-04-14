@@ -27,7 +27,7 @@ import com.twitter.sdk.android.core.TwitterTestUtils;
 
 import java.util.concurrent.ThreadPoolExecutor;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
 public class TweetUiBackgroundTest extends InstrumentationTestCase {
 

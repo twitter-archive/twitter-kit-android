@@ -24,7 +24,6 @@ import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.internal.CommonUtils;
 import com.twitter.sdk.android.core.internal.CurrentTimeProvider;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;

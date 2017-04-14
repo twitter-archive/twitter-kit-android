@@ -33,7 +33,9 @@ import org.mockito.ArgumentCaptor;
 
 import java.util.concurrent.ExecutorService;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class OAuthActivityTest extends ActivityUnitTestCase<OAuthActivity> {
 

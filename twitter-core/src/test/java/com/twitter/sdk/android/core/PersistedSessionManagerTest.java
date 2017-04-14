@@ -19,17 +19,17 @@ package com.twitter.sdk.android.core;
 
 import android.content.SharedPreferences;
 
+import com.twitter.sdk.android.core.internal.persistence.PreferenceStore;
+import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreImpl;
+import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreStrategy;
+import com.twitter.sdk.android.core.internal.persistence.SerializationStrategy;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-
-import com.twitter.sdk.android.core.internal.persistence.PreferenceStore;
-import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreImpl;
-import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreStrategy;
-import com.twitter.sdk.android.core.internal.persistence.SerializationStrategy;
 
 import java.util.ArrayList;
 import java.util.List;

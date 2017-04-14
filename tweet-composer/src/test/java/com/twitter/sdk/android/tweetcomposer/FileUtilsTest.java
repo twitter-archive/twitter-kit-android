@@ -27,10 +27,10 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.internal.ShadowExtractor;
 import org.robolectric.shadows.ShadowMimeTypeMap;
 
+import java.io.File;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
-import java.io.File;
 
 @RunWith(RobolectricTestRunner.class)
 public class FileUtilsTest {

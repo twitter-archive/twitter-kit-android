@@ -33,8 +33,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.twitter.sdk.android.core.internal.UserUtils;
-import com.twitter.sdk.android.tweetcomposer.internal.util.ObservableScrollView;
 import com.twitter.sdk.android.core.models.User;
+import com.twitter.sdk.android.tweetcomposer.internal.util.ObservableScrollView;
 
 import java.util.Locale;
 

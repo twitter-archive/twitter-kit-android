@@ -28,7 +28,6 @@ import android.os.Looper;
 import android.os.Parcel;
 import android.os.RemoteException;
 
-
 import com.twitter.sdk.android.core.Twitter;
 
 import java.util.concurrent.LinkedBlockingQueue;

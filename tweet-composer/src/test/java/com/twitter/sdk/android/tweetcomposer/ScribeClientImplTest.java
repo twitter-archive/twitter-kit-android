@@ -30,7 +30,8 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.List;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 @RunWith(RobolectricTestRunner.class)
 public class ScribeClientImplTest {

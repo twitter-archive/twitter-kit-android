@@ -19,7 +19,6 @@ package com.twitter.sdk.android.core.internal;
 
 import android.content.Context;
 
-
 import com.twitter.sdk.android.core.Twitter;
 
 import java.lang.reflect.Method;

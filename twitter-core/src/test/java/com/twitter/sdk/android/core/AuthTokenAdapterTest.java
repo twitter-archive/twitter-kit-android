@@ -17,12 +17,11 @@
 
 package com.twitter.sdk.android.core;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.twitter.sdk.android.core.internal.oauth.GuestAuthToken;
 import com.twitter.sdk.android.core.internal.oauth.OAuth2Token;
 import com.twitter.sdk.android.core.internal.oauth.OAuthUtils;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import org.junit.Before;
 import org.junit.Test;

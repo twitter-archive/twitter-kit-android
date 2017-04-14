@@ -18,12 +18,12 @@
 package com.twitter.sdk.android.tweetui;
 
 import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.models.TwitterCollection;
 import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
+import com.twitter.sdk.android.core.models.TwitterCollection;
 import com.twitter.sdk.android.core.models.User;
 
 import java.util.ArrayList;

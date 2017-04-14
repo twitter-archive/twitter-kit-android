@@ -21,10 +21,12 @@ import android.content.Context;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
-
 import com.twitter.sdk.android.core.models.Tweet;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class CompactTweetViewTest extends BaseTweetViewTest {
     private static final float DELTA = 0.001f;

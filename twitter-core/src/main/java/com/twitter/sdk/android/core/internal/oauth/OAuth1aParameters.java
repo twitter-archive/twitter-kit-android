@@ -18,12 +18,10 @@
 package com.twitter.sdk.android.core.internal.oauth;
 
 import com.twitter.sdk.android.core.Twitter;
-import com.twitter.sdk.android.core.internal.network.UrlUtils;
-import okio.ByteString;
-
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterCore;
+import com.twitter.sdk.android.core.internal.network.UrlUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -37,6 +35,8 @@ import java.util.TreeMap;
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+
+import okio.ByteString;
 
 class OAuth1aParameters {
     private static final String VERSION = "1.0";

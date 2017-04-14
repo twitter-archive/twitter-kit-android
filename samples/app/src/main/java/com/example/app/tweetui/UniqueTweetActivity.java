@@ -25,13 +25,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.example.app.R;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.core.models.User;
 import com.twitter.sdk.android.core.models.UserBuilder;
 import com.twitter.sdk.android.tweetui.TweetView;
-
-import com.example.app.R;
 
 public class UniqueTweetActivity extends TweetUiActivity {
 

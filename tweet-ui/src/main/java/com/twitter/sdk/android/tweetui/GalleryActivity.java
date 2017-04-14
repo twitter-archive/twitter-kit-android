@@ -25,10 +25,9 @@ import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.tweetui.internal.SwipeToDismissTouchListener;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
-
-import java.io.Serializable;
 
 public class GalleryActivity extends Activity {
     public static final String GALLERY_ITEM = "GALLERY_ITEM";

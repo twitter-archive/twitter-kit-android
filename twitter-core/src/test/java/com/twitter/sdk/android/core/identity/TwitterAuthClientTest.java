@@ -22,9 +22,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
-import retrofit2.Call;
-import retrofit2.mock.Calls;
-
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.SessionManager;
@@ -48,6 +45,9 @@ import org.mockito.ArgumentCaptor;
 import org.robolectric.RobolectricTestRunner;
 
 import java.io.IOException;
+
+import retrofit2.Call;
+import retrofit2.mock.Calls;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;

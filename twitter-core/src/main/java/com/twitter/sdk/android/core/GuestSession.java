@@ -22,7 +22,6 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.twitter.sdk.android.core.internal.oauth.GuestAuthToken;
-
 import com.twitter.sdk.android.core.internal.persistence.SerializationStrategy;
 
 public class GuestSession extends Session<GuestAuthToken> {

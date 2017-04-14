@@ -27,7 +27,6 @@ import com.example.app.BuildConfig;
 import com.example.app.R;
 import com.example.app.twittercore.TwitterCoreMainActivity;
 import com.mopub.nativeads.MoPubAdAdapter;
-import com.mopub.nativeads.RequestParameters;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterAuthException;

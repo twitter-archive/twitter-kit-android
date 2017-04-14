@@ -22,7 +22,6 @@ import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterCore;
-
 import com.twitter.sdk.android.core.internal.persistence.SerializationStrategy;
 
 class ApiError {

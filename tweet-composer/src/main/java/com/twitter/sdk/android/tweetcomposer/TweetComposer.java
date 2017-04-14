@@ -29,9 +29,8 @@ import com.twitter.sdk.android.core.SessionManager;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterSession;
-import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
-
 import com.twitter.sdk.android.core.internal.network.UrlUtils;
+import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
 import com.twitter.sdk.android.core.internal.scribe.ScribeConfig;
 
 import java.net.URL;

@@ -24,14 +24,13 @@ import android.support.v7.app.ActionBar;
 import android.widget.Toast;
 
 import com.example.app.BaseActivity;
+import com.example.app.R;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
-
-import com.example.app.R;
 
 public class TwitterCoreMainActivity extends BaseActivity {
 
