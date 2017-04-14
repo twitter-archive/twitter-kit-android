@@ -29,7 +29,7 @@ android {
     defaultConfig {
         versionCode 1
         versionName version
-        minSdkVersion rootProject.minSdkVersion.twitter
+        minSdkVersion rootProject.minSdkVersion
         consumerProguardFiles 'proguard.txt'
     }
 

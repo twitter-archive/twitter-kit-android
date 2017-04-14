@@ -17,6 +17,7 @@
 
 package com.twitter.sdk.android.core;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.twitter.sdk.android.core.internal.SessionMonitor;
@@ -32,6 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * The TwitterCore Kit provides Login with Twitter and the Twitter API.
  */
 public class TwitterCore {
+    @SuppressLint("StaticFieldLeak")
     static volatile TwitterCore instance;
     public static final String TAG = "Twitter";
 

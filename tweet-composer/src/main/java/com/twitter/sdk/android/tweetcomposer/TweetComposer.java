@@ -17,6 +17,7 @@
 
 package com.twitter.sdk.android.tweetcomposer;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -40,6 +41,7 @@ import java.util.List;
  * The TweetComposer Kit provides a lightweight mechanism for creating intents to interact with the installed Twitter app or a browser.
  */
 public class TweetComposer {
+    @SuppressLint("StaticFieldLeak")
     static volatile TweetComposer instance;
     private static final String MIME_TYPE_PLAIN_TEXT = "text/plain";
     private static final String MIME_TYPE_JPEG = "image/jpeg";

@@ -17,6 +17,7 @@
 
 package com.twitter.sdk.android.core;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.twitter.sdk.android.core.internal.ActivityLifecycleManager;
@@ -37,6 +38,7 @@ public class Twitter {
     private static final String NOT_INITIALIZED_MESSAGE = "Must initialize Twitter before using getInstance()";
     static final Logger DEFAULT_LOGGER = new DefaultLogger();
 
+    @SuppressLint("StaticFieldLeak")
     static volatile Twitter instance;
 
     private final Context context;

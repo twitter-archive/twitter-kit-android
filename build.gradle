@@ -21,7 +21,6 @@ subprojects { Project subproject ->
     buildscript {
         repositories {
             jcenter()
-            maven { url 'https://maven.fabric.io/public' }
         }
         dependencies {
             classpath dependency.androidGradlePlugin
@@ -35,6 +34,6 @@ subprojects { Project subproject ->
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.12'
+    gradleVersion = '3.3'
 }
 

@@ -17,6 +17,7 @@
 
 package com.twitter.sdk.android.core.internal.scribe;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import com.twitter.sdk.android.core.GuestSessionProvider;
@@ -27,6 +28,7 @@ import com.twitter.sdk.android.core.internal.IdManager;
 
 public class TwitterCoreScribeClientHolder {
 
+    @SuppressLint("StaticFieldLeak")
     private static DefaultScribeClient instance;
 
     /**

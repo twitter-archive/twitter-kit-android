@@ -23,7 +23,7 @@ android {
         applicationId "com.example.app.twitter"
         versionCode 1
         versionName "1.0"
-        minSdkVersion rootProject.minSdkVersion.twitter
+        minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         testInstrumentationRunner "com.example.app.SpoonInstrumentationTestRunner"
     }

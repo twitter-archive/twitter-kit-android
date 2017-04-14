@@ -17,6 +17,7 @@
 
 package com.twitter.sdk.android.core.internal;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -211,6 +212,7 @@ public class IdManager {
         String toReturn = null;
 
         if (collectHardwareIds) {
+            @SuppressLint("HardwareIds")
             final String androidId = Secure.getString(appContext.getContentResolver(),
                     Secure.ANDROID_ID);
 

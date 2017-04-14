@@ -17,6 +17,7 @@
 
 package com.twitter.sdk.android.tweetui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
@@ -38,6 +39,7 @@ import java.util.List;
  * The TweetUi Kit provides views to render Tweets.
  */
 public class TweetUi {
+    @SuppressLint("StaticFieldLeak")
     static volatile TweetUi instance;
     static final String LOGTAG = "TweetUi";
 
