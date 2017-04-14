@@ -22,8 +22,6 @@ import com.twitter.sdk.android.core.internal.scribe.SyndicatedSdkImpressionEvent
 import com.twitter.sdk.android.core.internal.scribe.SyndicationClientEvent;
 
 final class ScribeConstants {
-    private ScribeConstants() {}
-
     // tfw client event specific names
     static final String TFW_CLIENT_EVENT_PAGE = "android";
 
@@ -36,6 +34,8 @@ final class ScribeConstants {
     static final String SCRIBE_TIMELINE_SECTION = "timeline";
     static final String SCRIBE_TIMELINE_PAGE = "timeline";
     static final String SCRIBE_INITIAL_COMPONENT = "initial";
+
+    private ScribeConstants() {}
 
     static EventNamespace getSyndicatedSdkTimelineNamespace(String timelineType) {
         return new EventNamespace.Builder()

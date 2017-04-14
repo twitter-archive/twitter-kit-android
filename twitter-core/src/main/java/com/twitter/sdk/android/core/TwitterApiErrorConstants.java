@@ -30,9 +30,9 @@ public class TwitterApiErrorConstants {
 
     //Incorrect challenge errors
     //1. account creation
-    public final static int CREATE_ACCOUNT_INVALID_NUMERIC_PIN_PARAMETER = 44;
+    public static final int CREATE_ACCOUNT_INVALID_NUMERIC_PIN_PARAMETER = 44;
     //2. login
-    public final static int LOGIN_INCORRECT_CHALLENGE_RESPONSE = 236;
+    public static final int LOGIN_INCORRECT_CHALLENGE_RESPONSE = 236;
 
     //device already registered by other user
     public static final int DEVICE_ALREADY_REGISTERED = 285;

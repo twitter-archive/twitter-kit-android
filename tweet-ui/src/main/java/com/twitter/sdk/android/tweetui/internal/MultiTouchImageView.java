@@ -32,9 +32,9 @@ import android.widget.ImageView;
 
 public class MultiTouchImageView extends ImageView
         implements SwipeToDismissTouchListener.SwipeableViewProvider {
-    private final static long SCALE_ANIMATION_DURATION = 300L;
-    private final static float DOUBLE_TAP_SCALE_FACTOR = 2.0f;
-    private final static float MINIMUM_SCALE_FACTOR = 1.0f;
+    private static final long SCALE_ANIMATION_DURATION = 300L;
+    private static final float DOUBLE_TAP_SCALE_FACTOR = 2.0f;
+    private static final float MINIMUM_SCALE_FACTOR = 1.0f;
 
     final ScaleGestureDetector scaleGestureDetector;
     final GestureDetector gestureDetector;
@@ -48,7 +48,7 @@ public class MultiTouchImageView extends ImageView
     final RectF drawRect = new RectF();
     final float[] matrixValues = new float[9];
 
-    boolean allowIntercept = false;
+    boolean allowIntercept;
 
     public MultiTouchImageView(Context context) {
         this(context, null);

@@ -41,7 +41,7 @@ import java.util.List;
  * The TweetComposer Kit provides a lightweight mechanism for creating intents to interact with the installed Twitter app or a browser.
  */
 public class TweetComposer {
-    static volatile TweetComposer instance = null;
+    static volatile TweetComposer instance;
     private static final String MIME_TYPE_PLAIN_TEXT = "text/plain";
     private static final String MIME_TYPE_JPEG = "image/jpeg";
     private static final String TWITTER_PACKAGE_NAME = "com.twitter.android";

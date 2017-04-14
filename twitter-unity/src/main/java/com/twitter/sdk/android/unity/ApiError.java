@@ -26,8 +26,8 @@ import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.internal.persistence.SerializationStrategy;
 
 class ApiError {
-    final public int code;
-    final public String message;
+    public final int code;
+    public final String message;
 
     ApiError(int code, String message) {
         this.code = code;

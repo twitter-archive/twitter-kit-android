@@ -20,8 +20,6 @@ package com.twitter.sdk.android.mopub;
 import android.graphics.Color;
 
 final class ColorUtils {
-    private ColorUtils() {}
-
     private static final int RGB_TOTAL_COLORS = 256;
 
     private static final float DEFAULT_LIGHTNESS_THRESHOLD = .6f;
@@ -35,6 +33,8 @@ final class ColorUtils {
     private static final int TRANSPARENT_ALPHA = Math.round(255 * 0.9f);
     private static final int COLOR_FULLY_WHITE = Math.round(255 * 1.0f);
     private static final int COLOR_PARTIALLY_BLACK = Math.round(255 * 0.4f);
+
+    private ColorUtils() {}
 
     public static int calculateCtaTextColor(final int ctaBackgroundColor) {
         if (isLightColor(ctaBackgroundColor)) {

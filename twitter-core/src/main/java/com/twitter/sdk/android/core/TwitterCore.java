@@ -33,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * The TwitterCore Kit provides Login with Twitter and the Twitter API.
  */
 public class TwitterCore {
-    static volatile TwitterCore instance = null;
+    static volatile TwitterCore instance;
     public static final String TAG = "Twitter";
 
     static final String PREF_KEY_ACTIVE_TWITTER_SESSION = "active_twittersession";

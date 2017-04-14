@@ -22,13 +22,12 @@ import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
 
-import junit.framework.Assert;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -61,7 +60,7 @@ public class ReplaceTweetCallbackTest {
         try {
             replaceCallback.success(successResult);
         } catch (NullPointerException e) {
-            Assert.fail("Should have handled null callback");
+            fail("Should have handled null callback");
         }
         verify(mockTimelineDelegate).setItemById(TestFixtures.TEST_TWEET);
     }
@@ -85,7 +84,7 @@ public class ReplaceTweetCallbackTest {
         try {
             replaceCallback.failure(exception);
         } catch (NullPointerException e) {
-            Assert.fail("Should have handled null callback");
+            fail("Should have handled null callback");
         }
     }
 }

@@ -39,7 +39,7 @@ public class ActivityLifecycleManager {
     /**
      * Override the methods corresponding to the activity.
      */
-    public static abstract class Callbacks {
+    public abstract static class Callbacks {
         public void onActivityCreated(Activity activity, Bundle bundle) {}
         public void onActivityStarted(Activity activity) {}
         public void onActivityResumed(Activity activity) {}

@@ -22,8 +22,6 @@ import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.models.Tweet;
 
-import junit.framework.Assert;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -66,7 +64,7 @@ public class ResetTweetCallbackTest {
         try {
             resetCallback.success(successResult);
         } catch (NullPointerException e) {
-            Assert.fail("Should have handled null callback");
+            fail("Should have handled null callback");
         }
         verify(mockTweetRepository).updateCache(TestFixtures.TEST_TWEET);
         verify(mockTweetView).setTweet(TestFixtures.TEST_TWEET);
@@ -91,7 +89,7 @@ public class ResetTweetCallbackTest {
         try {
             resetCallback.failure(exception);
         } catch (NullPointerException e) {
-            Assert.fail("Should have handled null callback");
+            fail("Should have handled null callback");
         }
     }
 }

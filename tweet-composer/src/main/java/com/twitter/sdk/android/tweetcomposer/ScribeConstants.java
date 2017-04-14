@@ -20,9 +20,6 @@ package com.twitter.sdk.android.tweetcomposer;
 import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 
 final class ScribeConstants {
-
-    private ScribeConstants() {}
-
     // namespaces with client "tfw" become SyndicationClientEvent scribes to /logs/tfw_client_event
     static final String SCRIBE_TFW_CLIENT = "tfw";
 
@@ -41,4 +38,6 @@ final class ScribeConstants {
             .setClient(SCRIBE_TFW_CLIENT)
             .setPage(SCRIBE_PAGE)
             .setSection(SCRIBE_SECTION);
+
+    private ScribeConstants() {}
 }

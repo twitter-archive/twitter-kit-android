@@ -127,7 +127,7 @@ public class Twitter {
         createTwitter(config);
     }
 
-    synchronized static Twitter createTwitter(TwitterConfig config) {
+    static synchronized Twitter createTwitter(TwitterConfig config) {
         if (instance == null) {
             instance = new Twitter(config);
             return instance;

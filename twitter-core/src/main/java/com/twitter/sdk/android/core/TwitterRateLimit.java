@@ -26,9 +26,9 @@ import okhttp3.Headers;
  */
 public class TwitterRateLimit  {
 
-    private final static String LIMIT_KEY = "x-rate-limit-limit";
-    private final static String REMAINING_KEY = "x-rate-limit-remaining";
-    private final static String RESET_KEY = "x-rate-limit-reset";
+    private static final String LIMIT_KEY = "x-rate-limit-limit";
+    private static final String REMAINING_KEY = "x-rate-limit-remaining";
+    private static final String RESET_KEY = "x-rate-limit-reset";
 
     private int requestLimit;
     private int remainingRequest;

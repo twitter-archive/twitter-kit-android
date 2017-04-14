@@ -42,18 +42,6 @@ public class VideoControlView extends FrameLayout {
     TextView duration;
     SeekBar seekBar;
 
-    public VideoControlView(Context context) {
-        super(context);
-    }
-
-    public VideoControlView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
-
-    public VideoControlView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
     @SuppressLint("HandlerLeak")
     private final Handler handler = new Handler() {
         @Override
@@ -71,6 +59,18 @@ public class VideoControlView extends FrameLayout {
             }
         }
     };
+
+    public VideoControlView(Context context) {
+        super(context);
+    }
+
+    public VideoControlView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public VideoControlView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
 
     public void setMediaPlayer(MediaPlayerControl player) {
         this.player = player;

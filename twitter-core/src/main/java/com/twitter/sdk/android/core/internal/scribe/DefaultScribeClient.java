@@ -153,7 +153,7 @@ public class DefaultScribeClient extends ScribeClient {
         return executor;
     }
 
-    static public ScribeConfig getScribeConfig(String kitName, String kitVersion) {
+    public static ScribeConfig getScribeConfig(String kitName, String kitVersion) {
         final String scribeUrl = getScribeUrl(SCRIBE_URL, BuildConfig.SCRIBE_ENDPOINT_OVERRIDE);
         return new ScribeConfig(isEnabled(), scribeUrl, SCRIBE_PATH_VERSION,
                 SCRIBE_PATH_TYPE, BuildConfig.SCRIBE_SEQUENCE, getUserAgent(kitName, kitVersion),

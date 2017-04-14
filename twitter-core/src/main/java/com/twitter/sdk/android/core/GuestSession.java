@@ -37,7 +37,7 @@ public class GuestSession extends Session<GuestAuthToken> {
         super(authToken, LOGGED_OUT_USER_ID);
     }
 
-    static public class Serializer implements SerializationStrategy<GuestSession> {
+    public static class Serializer implements SerializationStrategy<GuestSession> {
 
         private final Gson gson;
 

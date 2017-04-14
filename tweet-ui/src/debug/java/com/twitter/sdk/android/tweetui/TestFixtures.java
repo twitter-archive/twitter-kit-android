@@ -122,6 +122,11 @@ public final class TestFixtures {
     public static final List<Tweet> UNORDERED_MISSING_TWEETS = new ArrayList<>();
     public static final List<Tweet> ORDERED_MISSING_TWEETS = new ArrayList<>();
 
+    public static final BindingValues TEST_BINDING_VALUES =
+            new BindingValues(Collections.<String, Object>emptyMap());
+    public static final String PLAYER_CARD_VINE = VineCardUtils.VINE_CARD;
+    public static final String TEST_VINE_USER_ID = "586671909";
+
     static {
         TWEET_IDS.addAll(Arrays.asList(100L, 101L, 102L));
         DUPLICATE_TWEET_IDS.addAll(Arrays.asList(100L, 101L, 102L, 101L));
@@ -272,17 +277,9 @@ public final class TestFixtures {
         return new VideoInfo(null, 0, Collections.singletonList(variant));
     }
 
-
-    public static final BindingValues TEST_BINDING_VALUES =
-            new BindingValues(Collections.<String, Object>emptyMap());
-
     public static Card sampleInvalidVineCard() {
         return new Card(TEST_BINDING_VALUES, "invalid");
     }
-
-    public static final String PLAYER_CARD_VINE = VineCardUtils.VINE_CARD;
-
-    public static final String TEST_VINE_USER_ID = "586671909";
 
     public static Card sampleValidVineCard() {
         return new Card(createBindingValuesForCard(), PLAYER_CARD_VINE);

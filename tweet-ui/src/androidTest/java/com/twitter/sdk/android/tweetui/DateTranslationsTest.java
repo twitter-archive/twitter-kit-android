@@ -31,7 +31,7 @@ import java.util.Locale;
 public class DateTranslationsTest extends AndroidTestCase {
     private Locale defaultLocale;
 
-    final SimpleDateFormat RELATIVE_DATE_FORMAT =
+    static final SimpleDateFormat RELATIVE_DATE_FORMAT =
             new SimpleDateFormat("MM/dd/yy", Locale.ENGLISH);
 
     @Override

@@ -30,9 +30,9 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 public class OverlayImageViewTest extends AndroidTestCase {
-    public final int[] TEST_STATE = new int[]{0, 0};
-    public final int TEST_HEIGHT = 2;
-    public final int TEST_WIDTH = 4;
+    public static final int[] TEST_STATE = new int[]{0, 0};
+    public static final int TEST_HEIGHT = 2;
+    public static final int TEST_WIDTH = 4;
 
     public void testOnDraw() {
         final OverlayImageView overlayImageView = new OverlayImageView(getContext());

@@ -38,7 +38,7 @@ import java.util.List;
  * The TweetUi Kit provides views to render Tweets.
  */
 public class TweetUi {
-    static volatile TweetUi instance = null;
+    static volatile TweetUi instance;
     static final String LOGTAG = "TweetUi";
 
     private static final String KIT_SCRIBE_NAME = "TweetUi";

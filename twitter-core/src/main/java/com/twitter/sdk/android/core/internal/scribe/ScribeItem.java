@@ -166,12 +166,13 @@ public class ScribeItem implements Serializable {
      * Card event.
      */
     public static class CardEvent implements Serializable {
-        public CardEvent(int cardType) {
-            promotionCardType = cardType;
-        }
 
         @SerializedName("promotion_card_type")
         final int promotionCardType;
+
+        public CardEvent(int cardType) {
+            promotionCardType = cardType;
+        }
 
         @Override
         public boolean equals(Object o) {

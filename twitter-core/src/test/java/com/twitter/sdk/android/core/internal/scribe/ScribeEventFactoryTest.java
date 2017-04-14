@@ -27,7 +27,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(RobolectricTestRunner.class)
 public class ScribeEventFactoryTest {
-    private static long ANY_TIMESTAMP = 0;
+    private static long ANY_TIMESTAMP = 123;
     private static String ANY_ADVERTISING_ID = "id";
     private static String ANY_LANGUAGE = "lang";
 

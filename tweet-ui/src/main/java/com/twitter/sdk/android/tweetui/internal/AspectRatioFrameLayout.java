@@ -70,7 +70,8 @@ public class AspectRatioFrameLayout extends FrameLayout {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int width, height;
+        int width;
+        int height;
         final int horizontalPadding = getPaddingLeft() + getPaddingRight();
         final int verticalPadding = getPaddingBottom() + getPaddingTop();
 

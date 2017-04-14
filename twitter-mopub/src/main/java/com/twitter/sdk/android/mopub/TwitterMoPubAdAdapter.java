@@ -28,7 +28,7 @@ import com.mopub.nativeads.MoPubNativeAdPositioning;
 import com.mopub.nativeads.RequestParameters;
 
 public class TwitterMoPubAdAdapter extends MoPubAdAdapter{
-    private final static String TWITTERKIT_KEYWORD = "src:twitterkit";
+    private static final String TWITTERKIT_KEYWORD = "src:twitterkit";
 
     /**
      * Creates a new TwitterMoPubAdAdapter object.

@@ -45,7 +45,7 @@ import java.lang.ref.WeakReference;
  * in the {@link com.twitter.sdk.android.core.Callback#success(com.twitter.sdk.android.core.Result)}
  */
 public class TwitterLoginButton extends Button {
-    final static String TAG = TwitterCore.TAG;
+    static final String TAG = TwitterCore.TAG;
     static final String ERROR_MSG_NO_ACTIVITY = "TwitterLoginButton requires an activity."
             + " Override getActivity to provide the activity for this button.";
 

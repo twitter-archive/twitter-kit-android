@@ -33,7 +33,7 @@ public class CommonUtils {
     static final String CLS_SHARED_PREFERENCES_NAME = "com.crashlytics.prefs";
     static final String TRACE_ENABLED_RESOURCE_NAME = "com.twitter.sdk.android.TRACE_ENABLED";
     static final boolean TRACE_ENABLED_DEFAULT = false;
-    private static Boolean clsTrace = null;
+    private static Boolean clsTrace;
 
     public static SharedPreferences getSharedPrefs(Context context) {
         return context.getSharedPreferences(CLS_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);

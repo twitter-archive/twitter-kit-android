@@ -29,8 +29,6 @@ import com.twitter.sdk.android.core.models.UrlEntity;
 import com.twitter.sdk.android.core.models.User;
 import com.twitter.sdk.android.core.models.UserBuilder;
 
-import junit.framework.Assert;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -203,77 +201,77 @@ public class BasicTimelineFilterTest {
     public void testNormalizeHandle() {
         String twitterHandle = "@twitter";
         String normalizedHandle = BasicTimelineFilter.normalizeHandle(twitterHandle);
-        Assert.assertEquals("twitter", normalizedHandle);
+        assertEquals("twitter", normalizedHandle);
 
         twitterHandle = "＠twitter";
         normalizedHandle = BasicTimelineFilter.normalizeHandle(twitterHandle);
-        Assert.assertEquals("twitter", normalizedHandle);
+        assertEquals("twitter", normalizedHandle);
     }
 
     @Test
     public void testNormalizeHandleWithoutAtSign() {
         final String twitterHandle = "twiTTer";
         final String normalizedHandle = BasicTimelineFilter.normalizeHandle(twitterHandle);
-        Assert.assertEquals("twitter", normalizedHandle);
+        assertEquals("twitter", normalizedHandle);
     }
 
     @Test
     public void testNormalizeHashtag() {
         String hashtag = "#twitter";
         String normalizedHashtag = BasicTimelineFilter.normalizeHashtag(hashtag);
-        Assert.assertEquals("twitter", normalizedHashtag);
+        assertEquals("twitter", normalizedHashtag);
 
         hashtag = "＃twitter";
         normalizedHashtag = BasicTimelineFilter.normalizeHashtag(hashtag);
-        Assert.assertEquals("twitter", normalizedHashtag);
+        assertEquals("twitter", normalizedHashtag);
 
         hashtag = "$TWTR";
         normalizedHashtag = BasicTimelineFilter.normalizeHashtag(hashtag);
-        Assert.assertEquals("TWTR", normalizedHashtag);
+        assertEquals("TWTR", normalizedHashtag);
     }
 
     @Test
     public void testNormalizeHashtagWithoutHashtag() {
         final String hashtag = "TWTR";
         final String normalizedHashtag = BasicTimelineFilter.normalizeHashtag(hashtag);
-        Assert.assertEquals(hashtag, normalizedHashtag);
+        assertEquals(hashtag, normalizedHashtag);
     }
 
     @Test
     public void testNormalizeUrl() {
         String url = "twitter.com";
         String normalizedUrl = BasicTimelineFilter.normalizeUrl(url);
-        Assert.assertEquals("twitter.com", normalizedUrl);
+        assertEquals("twitter.com", normalizedUrl);
 
         url = "dev.twitter.com";
         normalizedUrl = BasicTimelineFilter.normalizeUrl(url);
-        Assert.assertEquals("dev.twitter.com", normalizedUrl);
+        assertEquals("dev.twitter.com", normalizedUrl);
 
         url = "http://twitter.com";
         normalizedUrl = BasicTimelineFilter.normalizeUrl(url);
-        Assert.assertEquals("twitter.com", normalizedUrl);
+        assertEquals("twitter.com", normalizedUrl);
 
         url = "http://TwiTTer.com";
         normalizedUrl = BasicTimelineFilter.normalizeUrl(url);
-        Assert.assertEquals("twitter.com", normalizedUrl);
+        assertEquals("twitter.com", normalizedUrl);
 
         url = "https://twitter.com/test";
         normalizedUrl = BasicTimelineFilter.normalizeUrl(url);
-        Assert.assertEquals("twitter.com", normalizedUrl);
+        assertEquals("twitter.com", normalizedUrl);
 
         url = "транспорт.com";
         normalizedUrl = BasicTimelineFilter.normalizeUrl(url);
-        Assert.assertEquals("xn--80a0addceeeh.com", normalizedUrl);
+        assertEquals("xn--80a0addceeeh.com", normalizedUrl);
 
         url = "https://транспорт.com/test";
         normalizedUrl = BasicTimelineFilter.normalizeUrl(url);
-        Assert.assertEquals("xn--80a0addceeeh.com", normalizedUrl);
+        assertEquals("xn--80a0addceeeh.com", normalizedUrl);
     }
 
     @Test
     public void testNormalizeUrl_withProhibitedCodePoint() {
         final String url = "twitter\u180E.com";
         final String normalizedUrl = BasicTimelineFilter.normalizeUrl(url);
-        Assert.assertEquals(url, normalizedUrl);
+        assertEquals(url, normalizedUrl);
     }
 }

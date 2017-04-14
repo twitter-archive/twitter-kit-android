@@ -28,8 +28,6 @@ import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.tweetui.R;
 import com.twitter.sdk.android.tweetui.TestFixtures;
 
-import junit.framework.Assert;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,6 +40,8 @@ import java.util.List;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.mock;
@@ -67,7 +67,7 @@ public class TweetMediaViewTest {
     public void testInitialViewState() {
         for (int index = 0; index < TweetMediaView.MAX_IMAGE_VIEW_COUNT; index++) {
             final ImageView imageView = (ImageView) tweetMediaView.getChildAt(index);
-            Assert.assertNull(imageView);
+            assertNull(imageView);
         }
 
         assertArrayEquals(new float[]{0, 0, 0, 0, 0, 0, 0, 0}, tweetMediaView.radii, 0);
@@ -90,7 +90,7 @@ public class TweetMediaViewTest {
 
         for (int index = 0; index < TweetMediaView.MAX_IMAGE_VIEW_COUNT; index++) {
             final ImageView imageView = (ImageView) tweetMediaView.getChildAt(index);
-            Assert.assertNull(imageView);
+            assertNull(imageView);
         }
     }
 
@@ -102,10 +102,10 @@ public class TweetMediaViewTest {
         tweetMediaView.setTweetMediaEntities(TestFixtures.TEST_TWEET, mediaEntities);
 
         final ImageView imageView = (ImageView) tweetMediaView.getChildAt(0);
-        Assert.assertEquals(View.VISIBLE, imageView.getVisibility());
-        Assert.assertNull(tweetMediaView.getChildAt(1));
-        Assert.assertNull(tweetMediaView.getChildAt(2));
-        Assert.assertNull(tweetMediaView.getChildAt(3));
+        assertEquals(View.VISIBLE, imageView.getVisibility());
+        assertNull(tweetMediaView.getChildAt(1));
+        assertNull(tweetMediaView.getChildAt(2));
+        assertNull(tweetMediaView.getChildAt(3));
     }
 
     @Test
@@ -116,9 +116,9 @@ public class TweetMediaViewTest {
 
         for (int index = 0; index < TweetMediaView.MAX_IMAGE_VIEW_COUNT; index++) {
             final ImageView imageView = (ImageView) tweetMediaView.getChildAt(index);
-            Assert.assertEquals(View.VISIBLE, imageView.getVisibility());
-            Assert.assertEquals(index, imageView.getTag(R.id.tw__entity_index));
-            Assert.assertEquals(contentDefaultDescription, imageView.getContentDescription());
+            assertEquals(View.VISIBLE, imageView.getVisibility());
+            assertEquals(index, imageView.getTag(R.id.tw__entity_index));
+            assertEquals(contentDefaultDescription, imageView.getContentDescription());
         }
     }
 
@@ -132,11 +132,11 @@ public class TweetMediaViewTest {
         tweetMediaView.setVineCard(tweetWithVineCard);
 
         final OverlayImageView imageView = (OverlayImageView) tweetMediaView.getChildAt(0);
-        Assert.assertEquals(View.VISIBLE, imageView.getVisibility());
-        Assert.assertNotNull(imageView.overlay.drawable);
-        Assert.assertNull(tweetMediaView.getChildAt(1));
-        Assert.assertNull(tweetMediaView.getChildAt(2));
-        Assert.assertNull(tweetMediaView.getChildAt(3));
+        assertEquals(View.VISIBLE, imageView.getVisibility());
+        assertNotNull(imageView.overlay.drawable);
+        assertNull(tweetMediaView.getChildAt(1));
+        assertNull(tweetMediaView.getChildAt(2));
+        assertNull(tweetMediaView.getChildAt(3));
     }
 
     @Test
@@ -185,7 +185,7 @@ public class TweetMediaViewTest {
         tweetMediaView.clearImageViews();
         for (int index = 0; index < TweetMediaView.MAX_IMAGE_VIEW_COUNT; index++) {
             final ImageView imageView = (ImageView) tweetMediaView.getChildAt(index);
-            Assert.assertEquals(View.GONE, imageView.getVisibility());
+            assertEquals(View.GONE, imageView.getVisibility());
         }
     }
 }

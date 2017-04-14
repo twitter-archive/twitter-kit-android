@@ -28,16 +28,16 @@ import java.util.Map;
  */
 public class TwitterCollection {
 
-    public TwitterCollection(Content contents, Metadata metadata) {
-        this.contents = contents;
-        this.metadata = metadata;
-    }
-
     @SerializedName("objects")
     public final Content contents;
 
     @SerializedName("response")
     public final Metadata metadata;
+
+    public TwitterCollection(Content contents, Metadata metadata) {
+        this.contents = contents;
+        this.metadata = metadata;
+    }
 
     /**
      * Contents represent the grouped, decomposed collection objects (tweets, users).
@@ -67,12 +67,6 @@ public class TwitterCollection {
      */
     public static final class Metadata {
 
-        public Metadata(String timelineId, Position position, List<TimelineItem> timelines) {
-            this.timelineId = timelineId;
-            this.position = position;
-            this.timelineItems = timelines;
-        }
-
         /**
          * The collection object identifier (e.g. "custom-393773270547177472")
          */
@@ -87,6 +81,12 @@ public class TwitterCollection {
          */
         @SerializedName("timeline")
         public final List<TimelineItem> timelineItems;
+
+        public Metadata(String timelineId, Position position, List<TimelineItem> timelines) {
+            this.timelineId = timelineId;
+            this.position = position;
+            this.timelineItems = timelines;
+        }
 
         /**
          * Position information for navigation.
@@ -119,27 +119,27 @@ public class TwitterCollection {
      */
     public static class TimelineItem {
 
-        public TimelineItem(TweetItem tweetItem) {
-            this.tweetItem = tweetItem;
-        }
-
         /**
          * Represents a reference to a Tweet.
          */
         @SerializedName("tweet")
         public final TweetItem tweetItem;
 
-        public static final class TweetItem {
+        public TimelineItem(TweetItem tweetItem) {
+            this.tweetItem = tweetItem;
+        }
 
-            public TweetItem(Long id) {
-                this.id = id;
-            }
+        public static final class TweetItem {
 
             /**
              * A Tweet id.
              */
             @SerializedName("id")
             public final Long id;
+
+            public TweetItem(Long id) {
+                this.id = id;
+            }
         }
     }
 }

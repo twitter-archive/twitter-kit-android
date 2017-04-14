@@ -37,7 +37,7 @@ class PlayerController {
     final ProgressBar videoProgressView;
     final TextView callToActionView;
     View rootView;
-    int seekPosition = 0;
+    int seekPosition;
     boolean isPlaying = true;
     final SwipeToDismissTouchListener.Callback callback;
 

@@ -380,7 +380,7 @@ abstract class AbstractTweetView extends RelativeLayout{
         return (double) imageValue.width / imageValue.height;
     }
 
-    abstract protected double getAspectRatioForPhotoEntity(int photoCount);
+    protected abstract double getAspectRatioForPhotoEntity(int photoCount);
 
     protected void clearTweetMedia() {
         mediaContainer.setVisibility(ImageView.GONE);

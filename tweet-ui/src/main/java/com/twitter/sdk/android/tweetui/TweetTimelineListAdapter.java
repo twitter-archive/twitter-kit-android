@@ -37,7 +37,7 @@ import java.util.List;
  */
 public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
     protected Callback<Tweet> actionCallback;
-    final protected int styleResId;
+    protected final int styleResId;
     protected TweetUi tweetUi;
 
     static final String TOTAL_FILTERS_JSON_PROP = "total_filters";

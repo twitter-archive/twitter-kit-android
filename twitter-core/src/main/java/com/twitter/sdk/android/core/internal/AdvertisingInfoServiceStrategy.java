@@ -105,7 +105,7 @@ class AdvertisingInfoServiceStrategy implements AdvertisingInfoStrategy {
     private static final class AdvertisingConnection implements ServiceConnection {
         private static final int QUEUE_TIMEOUT_IN_MS = 200;
 
-        private boolean retrieved = false;
+        private boolean retrieved;
         // LinkedBlockingQueue(1) ensures that the connection only ever talks to 1 service at a time
         private final LinkedBlockingQueue<IBinder> queue = new LinkedBlockingQueue<IBinder>(1);
 

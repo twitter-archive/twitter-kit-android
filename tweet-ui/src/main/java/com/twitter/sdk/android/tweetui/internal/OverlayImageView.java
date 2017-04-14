@@ -93,7 +93,7 @@ public class OverlayImageView extends ImageView {
      * Takes a {@link android.graphics.drawable.Drawable} and draws it on top the ImageView content.
      * The overlay drawable will respect the view's current state so a selector can be passed in.
      */
-    static protected class Overlay {
+    protected static class Overlay {
         final Drawable drawable;
 
         Overlay(Drawable drawable) {
