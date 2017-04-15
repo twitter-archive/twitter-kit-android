@@ -20,7 +20,6 @@ apply from: rootProject.qualityScript
 apply from: rootProject.deployScript
 apply plugin: 'io.fabric.gradle.unity'
 apply plugin: io.fabric.gradle.weaving.ArtifactSizePlugin
-apply plugin: io.fabric.gradle.weaving.FabricPropertiesPlugin
 apply plugin: io.fabric.gradle.weaving.DexMethodCountPlugin
 
 android {
