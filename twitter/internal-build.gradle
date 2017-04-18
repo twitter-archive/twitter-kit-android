@@ -17,7 +17,6 @@
 
 apply plugin: 'com.android.library'
 apply from: rootProject.qualityScript
-apply from: rootProject.deployScript
 apply plugin: io.fabric.gradle.weaving.ArtifactSizePlugin
 
 android {
@@ -27,6 +26,8 @@ android {
     defaultConfig {
         versionCode 1
         versionName version
+        group pom_group_id
+
         minSdkVersion rootProject.minSdkVersion
     }
 
@@ -84,3 +85,5 @@ dependencies {
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
 }
+
+apply from: rootProject.deployScript
