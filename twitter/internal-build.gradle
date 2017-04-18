@@ -19,7 +19,6 @@ apply plugin: 'com.android.library'
 apply from: rootProject.qualityScript
 apply from: rootProject.deployScript
 apply plugin: io.fabric.gradle.weaving.ArtifactSizePlugin
-apply plugin: io.fabric.gradle.release.FabricKitReleasePlugin
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -84,48 +83,4 @@ dependencies {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
-}
-
-fabricKitRelease {
-    apiKey = project.hasProperty('TWITTER_KIT_API_KEY') ? project.TWITTER_KIT_API_KEY : ""
-    friendlyName = "Twitter"
-    name = "${project.pom_group_id}.${project.pom_artifact_id}"
-    description = "Integrate Log in with Twitter, embed Tweets, and leverage the Twitter API."
-    version = project.version
-    artifactUrl {
-        repository = "https://maven.fabric.io/public"
-        groupId = project.pom_group_id
-        artifactId = project.pom_artifact_id
-    }
-    releaseNotesUrl = "https://s3.amazonaws.com/kits-crashlytics-com/android/com/twitter/sdk/android/twitter/${project.version}/twitter-${project.version}-release-notes.html"
-    learnMoreUrl = "http://docs.fabric.io/android/twitter/index.html"
-    price {
-        plan = "free"
-    }
-    license {
-        name = "Twitter"
-        url = "https://twitter.com/tos"
-    }
-    releaseChannel = "public"
-    minBuild = 0
-    maxBuild = Integer.MAX_VALUE
-    minPlatformVersion {
-        apiVersion "14"
-    }
-    docsUrl = "https://docs.fabric.io/javadocs/twitter-core/${project.version}/index.html"
-    twitterHandle = "@twitterdev"
-    websiteUrl = "https://docs.fabric.io/android/twitter/index.html"
-}
-
-project.tasks.getByName('fabricKitRelease').enabled = rootProject.ext.kitsForRelease.get(project.path)
-
-task uploadFabricReleaseNotes(group: 'Release',
-        description: 'Upload Release Notes to S3 bucket kits-crashlytics-com',
-        type: io.fabric.gradle.release.FileUploadS3Task) {
-    enabled = rootProject.ext.kitsForRelease.get(project.path)
-    accessKey = System.properties['AWS_ACCESS_KEY_ID']
-    secretKey = System.properties['AWS_SECRET_ACCESS_KEY']
-    bucketName = System.properties['AWS_BUCKET']
-    destination = "android/com/twitter/sdk/android/twitter/${project.version}/twitter-${project.version}-release-notes.html"
-    srcFile = new File("${project.projectDir}/release-notes.html")
 }
