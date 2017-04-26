@@ -92,10 +92,3 @@ dependencies {
     androidTestCompile dependency.espresso
     androidTestCompile dependency.androidTestingSupport
 }
-
-task setupCi << {
-    propsFile.write(
-            "apiKey=$System.env.FABRIC_KEY\n" +
-            "apiSecret=$System.env.FABRIC_SECRET\n"
-    )
-}
