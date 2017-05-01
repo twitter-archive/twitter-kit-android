@@ -19,7 +19,6 @@ package com.twitter.sdk.android.core.internal;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.provider.Settings;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +27,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.shadows.ShadowSettings;
 
 import static com.twitter.sdk.android.core.internal.CommonUtils.CLS_SHARED_PREFERENCES_NAME;
 import static com.twitter.sdk.android.core.internal.IdManager.PREFKEY_INSTALLATION_UUID;
@@ -73,13 +71,6 @@ public class IdManagerTest {
     }
 
     @Test
-    public void testGetAndroidId() {
-        ShadowSettings.ShadowSecure.putString(RuntimeEnvironment.application.getContentResolver(),
-                Settings.Secure.ANDROID_ID, TEST_SECURE_ID);
-        assertEquals(TEST_SECURE_ID, idManager.getAndroidId());
-    }
-
-    @Test
     public void testGetAdvertisingId() {
         assertEquals(TEST_AD_ID, idManager.getAdvertisingId());
         assertTrue(idManager.fetchedAdvertisingInfo);
@@ -89,13 +80,6 @@ public class IdManagerTest {
     public void testIsLimitAdTrackingEnabled() {
         assertTrue(idManager.isLimitAdTrackingEnabled());
         assertTrue(idManager.fetchedAdvertisingInfo);
-    }
-
-    @Test
-    public void testGetDeviceUUID_shouldReturnSecureId() {
-        ShadowSettings.ShadowSecure.putString(RuntimeEnvironment.application.getContentResolver(),
-                Settings.Secure.ANDROID_ID, TEST_SECURE_ID);
-        assertEquals(TEST_SECURE_ID, idManager.getDeviceUUID());
     }
 
     @Test

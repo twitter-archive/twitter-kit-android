@@ -17,11 +17,9 @@
 
 package com.twitter.sdk.android.core.internal;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.provider.Settings.Secure;
 
 import com.twitter.sdk.android.core.Twitter;
 
@@ -34,11 +32,10 @@ public class IdManager {
     static final String COLLECT_IDENTIFIERS_ENABLED = "com.twitter.sdk.android.COLLECT_IDENTIFIERS_ENABLED";
     static final String PREFKEY_INSTALLATION_UUID = "crashlytics.installation.id";
 
-    /** Regex for stripping all non-alphnumeric characters from ALL the identifier fields. */
+    /**
+     * Regex for stripping all non-alphnumeric characters from ALL the identifier fields.
+     */
     private static final Pattern ID_PATTERN = Pattern.compile("[^\\p{Alnum}]");
-
-    // http://groups.google.com/group/android-developers/browse_thread/thread/53898e508fab44f6/84e54feb28272384?lnk=raot
-    private static final String BAD_ANDROID_ID = "9774d56d682e549c";
 
     private static final String FORWARD_SLASH_REGEX = Pattern.quote("/");
 
@@ -82,7 +79,7 @@ public class IdManager {
      * null.
      */
     private String formatId(String id) {
-        return  (id == null) ? null : ID_PATTERN.matcher(id).replaceAll("").toLowerCase(Locale.US);
+        return (id == null) ? null : ID_PATTERN.matcher(id).replaceAll("").toLowerCase(Locale.US);
     }
 
     /**
@@ -94,7 +91,7 @@ public class IdManager {
 
     /**
      * @return {@link String} identifying the version of Android OS that the device is running. Includes the
-     *         public version number, and an incremental build number, like "4.2.2/573038"
+     * public version number, and an incremental build number, like "4.2.2/573038"
      */
     public String getOsVersionString() {
         return getOsDisplayVersionString() + "/" + getOsBuildVersionString();
@@ -131,22 +128,17 @@ public class IdManager {
     /**
      * If hardware ID collection is off, returns an empty String. Otherwise returns the AndroidId for this
      * device, or the Crashlytics installation UUID if the Android id is not valid.
-     *
+     * <p>
      * Always returns either an empty string or a hex string of at least 16 characters.
      **/
     public String getDeviceUUID() {
         String toReturn = "";
 
         if (collectHardwareIds) {
-            toReturn = getAndroidId();
-
+            final SharedPreferences prefs = CommonUtils.getSharedPrefs(appContext);
+            toReturn = prefs.getString(PREFKEY_INSTALLATION_UUID, null);
             if (toReturn == null) {
-                final SharedPreferences prefs = CommonUtils.getSharedPrefs(appContext);
-                toReturn = prefs.getString(PREFKEY_INSTALLATION_UUID, null);
-
-                if (toReturn == null) {
-                    toReturn = createInstallationUUID(prefs);
-                }
+                toReturn = createInstallationUUID(prefs);
             }
         }
 
@@ -208,19 +200,5 @@ public class IdManager {
         return toReturn;
     }
 
-    String getAndroidId() {
-        String toReturn = null;
 
-        if (collectHardwareIds) {
-            @SuppressLint("HardwareIds")
-            final String androidId = Secure.getString(appContext.getContentResolver(),
-                    Secure.ANDROID_ID);
-
-            if (!BAD_ANDROID_ID.equals(androidId)) {
-                toReturn = formatId(androidId);
-            }
-        }
-
-        return toReturn;
-    }
 }
