@@ -1,4 +1,4 @@
-This form is for reporting issues in the Twitter Kit Android library. For all other developer questions/issues about Twitter or Fabric please use [Twitter Community](https://twittercommunity.com/).
+This form is for reporting issues in the Twitter Kit Android library. For all other developer questions/issues about Twitter please visit [Twitter Community](https://twittercommunity.com/).
 
 **Bug Report**
 
