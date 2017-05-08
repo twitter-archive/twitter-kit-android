@@ -29,8 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TimelineDelegate manages timeline data items and loads items from a Timeline. This logic is
- * common to TimelineListAdapter and TimelineRecyclerAdapter.
+ * TimelineDelegate manages timeline data items and loads items from a Timeline.
  * @param <T> the item type
  */
 class TimelineDelegate<T extends Identifiable> {
