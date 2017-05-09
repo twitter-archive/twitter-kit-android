@@ -100,8 +100,8 @@ public final class TweetUtils {
 
     static boolean showQuoteTweet(Tweet tweet) {
         return tweet.quotedStatus != null &&
-                tweet.card == null &&
-                (tweet.entities.media == null || tweet.entities.media.isEmpty());
+                tweet.card == null && (tweet.entities == null || tweet.entities.media == null
+                || tweet.entities.media.isEmpty());
     }
 
     /**

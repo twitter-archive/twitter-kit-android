@@ -197,4 +197,13 @@ public class TweetUtilsTest extends AndroidTestCase {
                 .build();
         assertFalse(TweetUtils.showQuoteTweet(tweet));
     }
+
+    public void testShowQuoteTweet_nullEntity() {
+        final Tweet tweet = new TweetBuilder()
+                .copy(TestFixtures.TEST_PHOTO_TWEET)
+                .setQuotedStatus(TestFixtures.TEST_TWEET)
+                .setEntities(null)
+                .build();
+        assertTrue(TweetUtils.showQuoteTweet(tweet));
+    }
 }
