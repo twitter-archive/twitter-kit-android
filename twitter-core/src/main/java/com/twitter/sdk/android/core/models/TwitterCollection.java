@@ -56,8 +56,8 @@ public class TwitterCollection {
         public final Map<Long, User> userMap;
 
         public Content(Map<Long, Tweet> tweetMap, Map<Long, User> userMap) {
-            this.tweetMap = tweetMap;
-            this.userMap = userMap;
+            this.tweetMap = ModelUtils.getSafeMap(tweetMap);
+            this.userMap = ModelUtils.getSafeMap(userMap);
         }
     }
 

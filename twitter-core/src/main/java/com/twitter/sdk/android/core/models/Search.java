@@ -32,7 +32,7 @@ public class Search {
     public final SearchMetadata searchMetadata;
 
     public Search(List<Tweet> tweets, SearchMetadata searchMetadata) {
-        this.tweets = tweets;
+        this.tweets = ModelUtils.getSafeList(tweets);
         this.searchMetadata = searchMetadata;
     }
 }

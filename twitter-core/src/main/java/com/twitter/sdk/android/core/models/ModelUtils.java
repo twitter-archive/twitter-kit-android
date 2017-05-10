@@ -17,35 +17,30 @@
 
 package com.twitter.sdk.android.core.models;
 
-import com.google.gson.annotations.SerializedName;
-
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Entities for User Objects describe URLs that appear in the user defined profile URL and
- * description fields.
+ * Util class for twitter-core models
  */
-public class UserEntities {
+public final class ModelUtils {
 
-    @SerializedName("url")
-    public final UrlEntities url;
+    private ModelUtils() {}
 
-    @SerializedName("description")
-    public final UrlEntities description;
-
-    public UserEntities(UrlEntities url, UrlEntities description) {
-        this.url = url;
-        this.description = description;
+    public static <T> List<T> getSafeList(List<T> entities) {
+        if (entities == null) {
+            return Collections.emptyList();
+        } else {
+            return Collections.unmodifiableList(entities);
+        }
     }
 
-    public static class UrlEntities {
-
-        @SerializedName("urls")
-        public final List<UrlEntity> urls;
-
-        public UrlEntities(List<UrlEntity> urls) {
-            this.urls = ModelUtils.getSafeList(urls);
+    public static <K, V> Map<K, V> getSafeMap(Map<K, V> entities) {
+        if (entities == null) {
+            return Collections.emptyMap();
+        } else {
+            return Collections.unmodifiableMap(entities);
         }
-
     }
 }

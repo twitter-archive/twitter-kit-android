@@ -129,6 +129,7 @@ public class CollectionTimeline extends BaseTimeline implements Timeline<Tweet> 
     static List<Tweet> getOrderedTweets(TwitterCollection collection) {
         if (collection == null || collection.contents == null ||
                 collection.contents.tweetMap == null || collection.contents.userMap == null ||
+                collection.contents.tweetMap.isEmpty() || collection.contents.userMap.isEmpty() ||
                 collection.metadata == null || collection.metadata.timelineItems == null ||
                 collection.metadata.position == null) {
             return Collections.emptyList();

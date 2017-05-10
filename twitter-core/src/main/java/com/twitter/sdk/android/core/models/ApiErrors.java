@@ -26,6 +26,6 @@ public class ApiErrors {
     public final List<ApiError> errors;
 
     public ApiErrors(List<ApiError> errors) {
-        this.errors = errors;
+        this.errors = ModelUtils.getSafeList(errors);
     }
 }

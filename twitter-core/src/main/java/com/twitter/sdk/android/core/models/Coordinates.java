@@ -49,7 +49,7 @@ public class Coordinates {
         coords.add(INDEX_LONGITUDE, longitude);
         coords.add(INDEX_LATITUDE, latitude);
 
-        this.coordinates = coords;
+        this.coordinates = ModelUtils.getSafeList(coords);
         this.type = type;
     }
 

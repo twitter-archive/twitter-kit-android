@@ -19,7 +19,6 @@ package com.twitter.sdk.android.core.models;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -59,20 +58,11 @@ public class TweetEntities {
 
     public TweetEntities(List<UrlEntity> urls, List<MentionEntity> userMentions,
             List<MediaEntity> media, List<HashtagEntity> hashtags, List<SymbolEntity> symbols) {
-        this.urls = getSafeList(urls);
-        this.userMentions = getSafeList(userMentions);
-        this.media = getSafeList(media);
-        this.hashtags = getSafeList(hashtags);
-        this.symbols = getSafeList(symbols);
+        this.urls = ModelUtils.getSafeList(urls);
+        this.userMentions = ModelUtils.getSafeList(userMentions);
+        this.media = ModelUtils.getSafeList(media);
+        this.hashtags = ModelUtils.getSafeList(hashtags);
+        this.symbols = ModelUtils.getSafeList(symbols);
     }
 
-    private <T> List<T> getSafeList(List<T> entities) {
-        // Entities may be null if Gson does not find object to parse. When that happens, make sure
-        // to return an empty list.
-        if (entities == null) {
-            return Collections.EMPTY_LIST;
-        } else {
-            return Collections.unmodifiableList(entities);
-        }
-    }
 }

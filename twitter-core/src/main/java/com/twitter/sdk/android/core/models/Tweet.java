@@ -317,11 +317,11 @@ public class Tweet implements Identifiable {
         this.retweetedStatus = retweetedStatus;
         this.source = source;
         this.text = text;
-        this.displayTextRange = displayTextRange;
+        this.displayTextRange = ModelUtils.getSafeList(displayTextRange);
         this.truncated = truncated;
         this.user = user;
         this.withheldCopyright = withheldCopyright;
-        this.withheldInCountries = withheldInCountries;
+        this.withheldInCountries = ModelUtils.getSafeList(withheldInCountries);
         this.withheldScope = withheldScope;
         this.card = card;
     }

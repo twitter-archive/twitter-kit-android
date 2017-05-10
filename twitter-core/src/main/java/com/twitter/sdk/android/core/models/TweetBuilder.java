@@ -17,7 +17,6 @@
 
 package com.twitter.sdk.android.core.models;
 
-import java.util.Collections;
 import java.util.List;
 
 public class TweetBuilder {
@@ -48,11 +47,11 @@ public class TweetBuilder {
     private Tweet retweetedStatus;
     private String source;
     private String text;
-    private List<Integer> displayTextRange = Collections.EMPTY_LIST;
+    private List<Integer> displayTextRange;
     private boolean truncated;
     private User user;
     private boolean withheldCopyright;
-    private List<String> withheldInCountries = Collections.EMPTY_LIST;
+    private List<String> withheldInCountries;
     private String withheldScope;
     private Card card;
 
