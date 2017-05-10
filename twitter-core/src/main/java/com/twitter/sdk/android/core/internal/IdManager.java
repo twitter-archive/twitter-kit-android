@@ -126,8 +126,8 @@ public class IdManager {
     }
 
     /**
-     * If hardware ID collection is off, returns an empty String. Otherwise returns the AndroidId for this
-     * device, or the Crashlytics installation UUID if the Android id is not valid.
+     * If hardware ID collection is off, returns an empty String. Otherwise returns
+     * installation UUID.
      * <p>
      * Always returns either an empty string or a hex string of at least 16 characters.
      **/

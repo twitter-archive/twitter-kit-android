@@ -192,7 +192,7 @@ public class CommonUtils {
     }
 
     /**
-     * Used by Crashlytics internally to log only when the com.crashlytics.Trace property
+     * Used internally to log only when the com.twitter.sdk.android.TRACE_ENABLED resource value
      * is set to true.  When it is, this API passes processing to the log API.
      */
     public static void logControlled(Context context, String msg){
@@ -202,8 +202,8 @@ public class CommonUtils {
     }
 
     /**
-     * Used by Crashlytics internally to log errors only when the com.crashlytics.Trace property
-     * is set to true.  When it is, this API passes processing to the logError API.
+     * Used internally to log errors only when the com.twitter.sdk.android.TRACE_ENABLED resource
+     * value is set to true.  When it is, this API passes processing to the logError API.
      */
     public static void logControlledError(Context context, String msg, Throwable tr){
         if (isClsTrace(context)){
@@ -212,7 +212,7 @@ public class CommonUtils {
     }
 
     /**
-     * Used by Crashlytics internally to log only when the com.crashlytics.Trace property
+     * Used internally to log only when the com.twitter.sdk.android.TRACE_ENABLED resource value
      * is set to true.  When it is, this API passes processing to the log API.
      */
     public static void logControlled(Context context, int level, String tag, String msg) {

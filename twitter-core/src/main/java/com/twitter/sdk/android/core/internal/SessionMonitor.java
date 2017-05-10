@@ -76,11 +76,6 @@ public class SessionMonitor<T extends Session> {
      * triggerVerificationIfNecessary checks if there are any sessions to verify and if enough time
      * has passed in order to run another verification. If it determines it can verify, it submits a
      * runnable that does the verification in a background thread.
-     *
-     * Note on monitoring digits sessions. There is an initial case where the active session from
-     * the Digits SessionManager is a session using an app session. The app session will be
-     * attempted to be verified until the user logs in using Digits. This will at worst case cause
-     * 1 wasted request every 6 hours.
      */
     public void triggerVerificationIfNecessary() {
         final Session session = sessionManager.getActiveSession();

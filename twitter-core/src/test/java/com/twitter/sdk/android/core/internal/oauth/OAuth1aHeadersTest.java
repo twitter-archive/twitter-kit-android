@@ -33,7 +33,7 @@ import static org.mockito.Mockito.mock;
 
 @RunWith(RobolectricTestRunner.class)
 public class OAuth1aHeadersTest  {
-    private static final String VERIFY_CREDENTIALS_URL = "api.digits.com";
+    private static final String VERIFY_CREDENTIALS_URL = "api.twitter.com";
     private static final String ANY_AUTH_CREDENTIALS = "auth_credentials";
     private OAuth1aParameters oAuth1aParameters;
     private OAuth1aHeaders oAuthHeaders;

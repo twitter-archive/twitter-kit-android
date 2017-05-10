@@ -32,8 +32,8 @@ import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
 public class OAuthSigningTests  {
-    private static final String ANY_AUTH_HEADER = "Digits Authority!";
-    private static final String VERIFY_CREDENTIALS_URL = "http://digits.com";
+    private static final String ANY_AUTH_HEADER = "Twitter Authority!";
+    private static final String VERIFY_CREDENTIALS_URL = "https://twitter.com";
 
     private TwitterAuthConfig authConfig;
     private TwitterAuthToken authToken;

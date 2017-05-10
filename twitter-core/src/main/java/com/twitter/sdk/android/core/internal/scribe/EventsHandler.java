@@ -68,7 +68,7 @@ public abstract class EventsHandler<T> implements EventsStorageListener {
                     strategy.recordEvent(event);
                 } catch (Exception e) {
                     CommonUtils.logControlledError(context,
-                            "Crashlytics failed to record event", e);
+                            "Failed to record event", e);
                 }
             }
         });
