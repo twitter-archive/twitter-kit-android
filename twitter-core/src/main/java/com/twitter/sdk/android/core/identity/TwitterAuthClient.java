@@ -113,6 +113,13 @@ public class TwitterAuthClient {
         }
     }
 
+    /**
+     * Cancels any pending authorization request
+     */
+    public void cancelAuthorize() {
+        authState.endAuthorize();
+    }
+
     private boolean authorizeUsingSSO(Activity activity, CallbackWrapper callbackWrapper) {
         if (SSOAuthHandler.isAvailable(activity)) {
             Twitter.getLogger().d(TwitterCore.TAG, "Using SSO");

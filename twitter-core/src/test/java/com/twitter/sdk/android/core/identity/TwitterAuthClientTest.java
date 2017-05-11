@@ -130,6 +130,12 @@ public class TwitterAuthClientTest {
     }
 
     @Test
+    public void testAuthorize_cancelAuthorize() {
+        authClient.cancelAuthorize();
+        verify(mockAuthState).endAuthorize();
+    }
+
+    @Test
     public void testAuthorize_authorizeInProgress() throws PackageManager.NameNotFoundException {
         final Activity mockActivity = mock(Activity.class);
         TestUtils.setupNoSSOAppInstalled(mockActivity);
