@@ -69,14 +69,14 @@ public class TwitterConfigTest {
                 .executorService(mockExecutorService)
                 .logger(mockLogger)
                 .twitterAuthConfig(mockTwitterAuthConfig)
-                .isDebug(true)
+                .debug(true)
                 .build();
 
         assertEquals(mockApplication, config.context);
         assertEquals(mockExecutorService, config.executorService);
         assertEquals(mockLogger, config.logger);
         assertEquals(mockTwitterAuthConfig, config.twitterAuthConfig);
-        assertTrue(config.isDebug);
+        assertTrue(config.debug);
     }
 
     @Test
@@ -89,7 +89,7 @@ public class TwitterConfigTest {
         assertNull(config.executorService);
         assertNull(config.logger);
         assertNull(config.twitterAuthConfig);
-        assertNull(config.isDebug);
+        assertNull(config.debug);
     }
 
     @Test(expected = IllegalArgumentException.class)

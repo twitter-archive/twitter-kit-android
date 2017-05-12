@@ -29,15 +29,15 @@ public class TwitterConfig {
     final Logger logger;
     final TwitterAuthConfig twitterAuthConfig;
     final ExecutorService executorService;
-    final Boolean isDebug;
+    final Boolean debug;
 
     private TwitterConfig(Context context, Logger logger, TwitterAuthConfig twitterAuthConfig,
-            ExecutorService executorService, Boolean isDebug) {
+            ExecutorService executorService, Boolean debug) {
         this.context = context;
         this.logger = logger;
         this.twitterAuthConfig = twitterAuthConfig;
         this.executorService = executorService;
-        this.isDebug = isDebug;
+        this.debug = debug;
     }
 
     /**
@@ -48,7 +48,7 @@ public class TwitterConfig {
         private Logger logger;
         private TwitterAuthConfig twitterAuthConfig;
         private ExecutorService executorService;
-        private Boolean isDebug;
+        private Boolean debug;
 
         /**
          * Start building a new {@link TwitterConfig} instance.
@@ -103,8 +103,8 @@ public class TwitterConfig {
         /**
          * Enable debug mode
          */
-        public Builder isDebug(boolean isDebug) {
-            this.isDebug = isDebug;
+        public Builder debug(boolean debug) {
+            this.debug = debug;
 
             return this;
         }
@@ -113,7 +113,7 @@ public class TwitterConfig {
          * Build the {@link TwitterConfig} instance
          */
         public TwitterConfig build() {
-            return new TwitterConfig(context, logger, twitterAuthConfig, executorService, isDebug);
+            return new TwitterConfig(context, logger, twitterAuthConfig, executorService, debug);
         }
     }
 }

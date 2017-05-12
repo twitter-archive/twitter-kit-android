@@ -47,7 +47,7 @@ public class Twitter {
     private final TwitterAuthConfig twitterAuthConfig;
     private final ActivityLifecycleManager lifecycleManager;
     private final Logger logger;
-    private final boolean isDebug;
+    private final boolean debug;
 
     private Twitter(TwitterConfig config) {
         context = config.context;
@@ -74,10 +74,10 @@ public class Twitter {
             logger = config.logger;
         }
 
-        if (config.isDebug == null) {
-            isDebug = false;
+        if (config.debug == null) {
+            debug = false;
         } else {
-            isDebug = config.isDebug;
+            debug = config.debug;
         }
     }
 
@@ -196,7 +196,7 @@ public class Twitter {
             return false;
         }
 
-        return instance.isDebug;
+        return instance.debug;
     }
 
     /**

@@ -195,7 +195,7 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
     public void testOnClick_callbackNullDebuggableTrue() throws Exception {
         Twitter.initialize(new TwitterConfig.Builder(getContext())
                 .executorService(mock(ExecutorService.class))
-                .isDebug(true)
+                .debug(true)
                 .build());
         try {
             loginButton.performClick();
@@ -222,7 +222,7 @@ public class TwitterLoginButtonTest extends AndroidTestCase {
     public void testOnClick_activityNullDebuggableTrue() throws Exception {
         Twitter.initialize(new TwitterConfig.Builder(getContext())
                 .executorService(mock(ExecutorService.class))
-                .isDebug(true)
+                .debug(true)
                 .build());
         loginButton = new TwitterLoginButton(getContext(), null, 0, mockAuthClient) {
             // This is to allow us to test TwitterLoginButton without having to set up a real

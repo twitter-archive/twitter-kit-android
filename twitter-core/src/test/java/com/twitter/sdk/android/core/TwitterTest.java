@@ -86,7 +86,7 @@ public class TwitterTest {
                 .executorService(mockExecutorService)
                 .logger(mockLogger)
                 .twitterAuthConfig(mockTwitterAuthConfig)
-                .isDebug(true)
+                .debug(true)
                 .build();
 
         Twitter.initialize(config);
