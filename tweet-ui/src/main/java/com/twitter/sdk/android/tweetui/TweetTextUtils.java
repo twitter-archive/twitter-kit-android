@@ -19,6 +19,7 @@ package com.twitter.sdk.android.tweetui;
 
 import android.text.TextUtils;
 
+import com.twitter.sdk.android.core.models.HashtagEntity;
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.UrlEntity;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 final class TweetTextUtils {
+
     private TweetTextUtils() {}
 
     /**
@@ -60,7 +62,8 @@ final class TweetTextUtils {
         final List<UrlEntity> coreUrls = tweet.entities.urls;
         if (coreUrls != null) {
             for (UrlEntity entity : coreUrls) {
-                final FormattedUrlEntity formattedUrlEntity = new FormattedUrlEntity(entity);
+                final FormattedUrlEntity formattedUrlEntity =
+                        FormattedUrlEntity.createFormattedUrlEntity(entity);
                 formattedTweetText.urlEntities.add(formattedUrlEntity);
             }
         }
@@ -70,6 +73,15 @@ final class TweetTextUtils {
             for (MediaEntity entity : coreMedia) {
                 final FormattedMediaEntity formattedMediaEntity = new FormattedMediaEntity(entity);
                 formattedTweetText.mediaEntities.add(formattedMediaEntity);
+            }
+        }
+
+        final List<HashtagEntity> coreHashtags = tweet.entities.hashtags;
+        if (coreHashtags != null) {
+            for (HashtagEntity entity : coreHashtags) {
+                final FormattedUrlEntity formattedHashtagEntity =
+                        FormattedUrlEntity.createFormattedUrlEntity(entity);
+                formattedTweetText.hashtagEntities.add(formattedHashtagEntity);
             }
         }
     }
@@ -89,6 +101,7 @@ final class TweetTextUtils {
 
         adjustIndicesForEscapedChars(formattedTweetText.urlEntities, u.indices);
         adjustIndicesForEscapedChars(formattedTweetText.mediaEntities, u.indices);
+        adjustIndicesForEscapedChars(formattedTweetText.hashtagEntities, u.indices);
         adjustIndicesForSupplementaryChars(result, formattedTweetText);
         formattedTweetText.text = result.toString();
     }
@@ -163,6 +176,7 @@ final class TweetTextUtils {
 
         adjustEntitiesWithOffsets(formattedTweetText.urlEntities, highSurrogateIndices);
         adjustEntitiesWithOffsets(formattedTweetText.mediaEntities, highSurrogateIndices);
+        adjustEntitiesWithOffsets(formattedTweetText.hashtagEntities, highSurrogateIndices);
     }
 
     /**

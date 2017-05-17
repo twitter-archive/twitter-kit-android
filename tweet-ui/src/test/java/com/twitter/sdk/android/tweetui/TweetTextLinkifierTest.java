@@ -20,6 +20,7 @@ package com.twitter.sdk.android.tweetui;
 import android.text.SpannableStringBuilder;
 import android.text.style.ClickableSpan;
 
+import com.twitter.sdk.android.core.models.HashtagEntity;
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.UrlEntity;
 
@@ -72,7 +73,7 @@ public class TweetTextLinkifierTest {
 
         final FormattedTweetText formattedText = new FormattedTweetText();
         formattedText.text = fullText;
-        formattedText.urlEntities.add(new FormattedUrlEntity(urlEntity));
+        formattedText.urlEntities.add(FormattedUrlEntity.createFormattedUrlEntity(urlEntity));
 
         final CharSequence linkifiedText
                 = TweetTextLinkifier.linkifyUrls(formattedText, null, 0, 0, true, true);
@@ -87,7 +88,7 @@ public class TweetTextLinkifierTest {
         final UrlEntity urlEntity = new UrlEntity("x z", "y", "z", -1, 30);
         final FormattedTweetText formattedText = new FormattedTweetText();
         formattedText.text = fullText;
-        formattedText.urlEntities.add(new FormattedUrlEntity(urlEntity));
+        formattedText.urlEntities.add(FormattedUrlEntity.createFormattedUrlEntity(urlEntity));
 
         final CharSequence linkifiedText
                 = TweetTextLinkifier.linkifyUrls(formattedText, null, 0, 0, true, true);
@@ -106,12 +107,54 @@ public class TweetTextLinkifierTest {
                 EntityFactory.newUrlEntity(fullText, url, displayUrl);
         final FormattedTweetText formattedText = new FormattedTweetText();
         formattedText.text = fullText;
-        formattedText.urlEntities.add(new FormattedUrlEntity(urlEntity));
+        formattedText.urlEntities.add(FormattedUrlEntity.createFormattedUrlEntity(urlEntity));
 
         final SpannableStringBuilder linkifiedText = (SpannableStringBuilder)
-                TweetTextLinkifier.linkifyUrls(formattedText, mockClickListener, 0, 0, true, true);
+                TweetTextLinkifier.linkifyUrls(formattedText, mockClickListener, 0, 0, true,
+                        true);
         final ClickableSpan[] clickables =
                 linkifiedText.getSpans(urlEntity.getStart(), urlEntity.getEnd(),
+                        ClickableSpan.class);
+        assertEquals(1, clickables.length);
+    }
+
+    @Test
+    public void testLinkifyHashtags_oneHashtagEntity() {
+        final String hashtag = "TwitterForGood";
+        final String fullHashtag = "#" + hashtag;
+        final String fullText = BASE_TEXT + " " + fullHashtag;
+        final HashtagEntity hashtagEntity = EntityFactory.newHashtagEntity(fullText, hashtag);
+
+        final FormattedTweetText formattedText = new FormattedTweetText();
+        formattedText.text = fullText;
+        formattedText.hashtagEntities.add(FormattedUrlEntity.createFormattedUrlEntity(
+                hashtagEntity));
+
+        final CharSequence linkifiedText
+                = TweetTextLinkifier.linkifyUrls(formattedText, null, 0, 0, true, true);
+        final String displayUrlFromEntity = linkifiedText.subSequence(hashtagEntity.getStart(),
+                        hashtagEntity.getEnd()).toString();
+        assertEquals(fullHashtag, displayUrlFromEntity);
+    }
+
+    @Test
+    public void testLinkifyHashtags_linkClickListener() {
+        final String hashtag = "TwitterForGood";
+        final String fullText = BASE_TEXT + " #" + hashtag;
+
+        final LinkClickListener mockClickListener = mock(LinkClickListener.class);
+
+        final HashtagEntity hashtagEntity = EntityFactory.newHashtagEntity(fullText, hashtag);
+        final FormattedTweetText formattedText = new FormattedTweetText();
+        formattedText.text = fullText;
+        formattedText.hashtagEntities.add(FormattedUrlEntity.createFormattedUrlEntity(
+                hashtagEntity));
+
+        final SpannableStringBuilder linkifiedText = (SpannableStringBuilder)
+                TweetTextLinkifier.linkifyUrls(formattedText, mockClickListener, 0, 0, true,
+                        true);
+        final ClickableSpan[] clickables =
+                linkifiedText.getSpans(hashtagEntity.getStart(), hashtagEntity.getEnd(),
                         ClickableSpan.class);
         assertEquals(1, clickables.length);
     }
@@ -161,8 +204,8 @@ public class TweetTextLinkifierTest {
         final UrlEntity urlEntity = new UrlEntity("https://t.co/kMXdOEnVMg",
                 "https://twitter.com/nasajpl/status/634475698174865408",
                 "twitter.com/nasajpl/status\u2026", 50, 72);
-        final FormattedUrlEntity formattedUrlEntity = new FormattedUrlEntity(urlEntity);
-
+        final FormattedUrlEntity formattedUrlEntity = new FormattedUrlEntity(urlEntity.getStart(),
+                urlEntity.getEnd(), urlEntity.displayUrl, urlEntity.url, urlEntity.expandedUrl);
         assertTrue(TweetTextLinkifier.isQuotedStatus(formattedUrlEntity));
     }
 
@@ -170,7 +213,8 @@ public class TweetTextLinkifierTest {
     public void testIsVineCard_withVineUrl() {
         final UrlEntity urlEntity = new UrlEntity("https://t.co/NdpqweoNbi",
                 "https://vine.co/v/eVmZVXbeDK1", "vine.co/v/eVmZVXbeDK1", 1, 23);
-        final FormattedUrlEntity formattedUrlEntity = new FormattedUrlEntity(urlEntity);
+        final FormattedUrlEntity formattedUrlEntity = new FormattedUrlEntity(urlEntity.getStart(),
+                urlEntity.getEnd(), urlEntity.displayUrl, urlEntity.url, urlEntity.expandedUrl);
 
         assertTrue(TweetTextLinkifier.isVineCard(formattedUrlEntity));
     }
@@ -188,7 +232,7 @@ public class TweetTextLinkifierTest {
 
         final FormattedTweetText formattedText = new FormattedTweetText();
         formattedText.text = text;
-        formattedText.urlEntities.add(new FormattedUrlEntity(urlEntity));
+        formattedText.urlEntities.add(FormattedUrlEntity.createFormattedUrlEntity(urlEntity));
         formattedText.mediaEntities.add(new FormattedMediaEntity(mediaEntity));
 
         return formattedText;
@@ -210,17 +254,19 @@ public class TweetTextLinkifierTest {
      * mergeAndSortEntities method
      */
     @Test
-    public void testMergeAndSortEntities_nullMedia() {
-        final List<FormattedUrlEntity> urls
-                = new ArrayList<>();
-        assertEquals(urls, TweetTextLinkifier.mergeAndSortEntities(urls, null));
+    public void testMergeAndSortEntities_emptyEntities() {
+        final List<FormattedUrlEntity> urls = new ArrayList<>();
+        final List<FormattedMediaEntity> media = new ArrayList<>();
+        final List<FormattedUrlEntity> hashtags = new ArrayList<>();
+        assertEquals(urls, TweetTextLinkifier.mergeAndSortEntities(urls, media, hashtags));
     }
 
     @Test
-    public void testMergeAndSortEntities_sortUrlsAndMedia() {
+    public void testMergeAndSortEntities_sortUrlsAndMediaAndHashtags() {
         final List<FormattedUrlEntity> urls = new ArrayList<>();
-        final UrlEntity url = TestFixtures.newUrlEntity(2, 5);
-        final FormattedUrlEntity adjustedUrl = new FormattedUrlEntity(url);
+        final UrlEntity urlEntity = TestFixtures.newUrlEntity(2, 5);
+        final FormattedUrlEntity adjustedUrl = FormattedUrlEntity.createFormattedUrlEntity(
+                urlEntity);
         urls.add(adjustedUrl);
 
         final List<FormattedMediaEntity> media = new ArrayList<>();
@@ -228,9 +274,16 @@ public class TweetTextLinkifierTest {
         final FormattedMediaEntity adjustedPhoto = new FormattedMediaEntity(photo);
         media.add(adjustedPhoto);
 
+        final List<FormattedUrlEntity> hashtags = new ArrayList<>();
+        final HashtagEntity hashtag = TestFixtures.newHashtagEntity("TwitterForGood", 31, 44);
+        final FormattedUrlEntity adjustedHashtag =
+                FormattedUrlEntity.createFormattedUrlEntity(hashtag);
+        hashtags.add(adjustedHashtag);
+
         final List<? extends FormattedUrlEntity> combined
-                = TweetTextLinkifier.mergeAndSortEntities(urls, media);
+                = TweetTextLinkifier.mergeAndSortEntities(urls, media, hashtags);
         assertEquals(adjustedPhoto, combined.get(0));
         assertEquals(adjustedUrl, combined.get(1));
+        assertEquals(adjustedHashtag, combined.get(2));
     }
 }

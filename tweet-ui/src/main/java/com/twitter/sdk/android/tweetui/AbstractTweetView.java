@@ -204,8 +204,8 @@ abstract class AbstractTweetView extends RelativeLayout{
     }
 
     /**
-     * Override the default action when link is clicked.
-     * @param tweetLinkClickListener called when url is clicked.
+     * Override the default action when any link or entity is clicked.
+     * @param tweetLinkClickListener called when any link or entity is clicked.
      */
     public void setTweetLinkClickListener(TweetLinkClickListener tweetLinkClickListener) {
         this.tweetLinkClickListener = tweetLinkClickListener;
@@ -401,8 +401,8 @@ abstract class AbstractTweetView extends RelativeLayout{
 
         final boolean stripQuoteTweet = TweetUtils.showQuoteTweet(displayTweet);
 
-        return TweetTextLinkifier.linkifyUrls(formattedText, getLinkClickListener(),
-                actionColor, actionHighlightColor, stripQuoteTweet, stripVineCard);
+        return TweetTextLinkifier.linkifyUrls(formattedText, getLinkClickListener(), actionColor,
+                actionHighlightColor, stripQuoteTweet, stripVineCard);
     }
 
     void setContentDescription(Tweet displayTweet) {

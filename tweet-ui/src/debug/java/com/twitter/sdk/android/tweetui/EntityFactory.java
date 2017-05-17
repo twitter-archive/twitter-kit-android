@@ -17,6 +17,7 @@
 
 package com.twitter.sdk.android.tweetui;
 
+import com.twitter.sdk.android.core.models.HashtagEntity;
 import com.twitter.sdk.android.core.models.UrlEntity;
 
 class EntityFactory {
@@ -26,5 +27,12 @@ class EntityFactory {
         final int end = text.length();
 
         return new UrlEntity(url, "http://" + displayUrl, displayUrl, start, end);
+    }
+
+    public static HashtagEntity newHashtagEntity(String text, String hashtag) {
+        final int start = text.length() - hashtag.length() - 1;
+        final int end = text.length();
+
+        return new HashtagEntity(hashtag, start, end);
     }
 }

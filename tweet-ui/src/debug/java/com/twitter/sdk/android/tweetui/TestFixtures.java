@@ -17,9 +17,12 @@
 
 package com.twitter.sdk.android.tweetui;
 
+import android.net.Uri;
+
 import com.twitter.sdk.android.core.internal.VineCardUtils;
 import com.twitter.sdk.android.core.models.BindingValues;
 import com.twitter.sdk.android.core.models.Card;
+import com.twitter.sdk.android.core.models.HashtagEntity;
 import com.twitter.sdk.android.core.models.ImageValue;
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.Tweet;
@@ -84,7 +87,9 @@ public final class TestFixtures {
 
     public static final String TEST_PHOTO_URL = "https://pbs.twimg.com/media/someimage.jpg";
     public static final String TEST_URL = "https://twitter.com/";
+    public static final String TEST_HASHTAG = "https://twitter.com/search?q=" + Uri.encode("#") + "TwitterForGood";
     public static final String TEST_STATUS_WITH_LINK = "A test Tweet status message. " + TEST_URL;
+    public static final String TEST_STATUS_WITH_HASHTAG = "A test Tweet status message. " + TEST_HASHTAG;
 
     public static final String TEST_CONTENT_DESCRIPTION
             = "Alfred Verbose Named. A test Tweet status message.. Jun 6, 2012.";
@@ -99,6 +104,8 @@ public final class TestFixtures {
     public static final Tweet TEST_TWEET = createTweet(1L, TEST_USER, TEST_STATUS, TEST_TIMESTAMP,
             false);
     public static final Tweet TEST_TWEET_LINK = createTweet(1L, TEST_USER, TEST_STATUS_WITH_LINK, TEST_TIMESTAMP,
+            false);
+    public static final Tweet TEST_TWEET_HASHTAG = createTweet(1L, TEST_USER, TEST_STATUS_WITH_HASHTAG, TEST_TIMESTAMP,
             false);
     public static final Tweet TEST_FAVORITED_TWEET = createTweet(1L, TEST_USER, TEST_STATUS,
             TEST_TIMESTAMP, true);
@@ -229,6 +236,10 @@ public final class TestFixtures {
                 new VideoInfo(Collections.EMPTY_LIST, durationInMillis, Collections.EMPTY_LIST);
         return new MediaEntity("url", "expandedUrl", "displayUrl", start, end, 0L, "0", "mediaUrl",
                 "mediaUrlHttps", null, 0L, "0", type, videoInfo, "");
+    }
+
+    public static HashtagEntity newHashtagEntity(String text, int start, int end) {
+        return new HashtagEntity(text, start, end);
     }
 
     public static List<Tweet> getTweetList(long count) {

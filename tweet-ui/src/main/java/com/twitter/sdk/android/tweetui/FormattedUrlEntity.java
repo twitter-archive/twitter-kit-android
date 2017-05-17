@@ -17,6 +17,7 @@
 
 package com.twitter.sdk.android.tweetui;
 
+import com.twitter.sdk.android.core.models.HashtagEntity;
 import com.twitter.sdk.android.core.models.UrlEntity;
 
 class FormattedUrlEntity {
@@ -26,11 +27,24 @@ class FormattedUrlEntity {
     final String url;
     final String expandedUrl;
 
-    FormattedUrlEntity(UrlEntity entity) {
-        this.start = entity.getStart();
-        this.end = entity.getEnd();
-        this.displayUrl = entity.displayUrl;
-        this.url = entity.url;
-        this.expandedUrl = entity.expandedUrl;
+    private static final String TWITTER_HASHTAG_URL = "https://twitter.com/hashtag/";
+
+    FormattedUrlEntity(int start, int end, String displayUrl, String url, String expandedUrl) {
+        this.start = start;
+        this.end = end;
+        this.displayUrl = displayUrl;
+        this.url = url;
+        this.expandedUrl = expandedUrl;
+    }
+
+    static FormattedUrlEntity createFormattedUrlEntity(UrlEntity entity) {
+        return new FormattedUrlEntity(entity.getStart(), entity.getEnd(), entity.displayUrl,
+                entity.url, entity.expandedUrl);
+    }
+
+    static FormattedUrlEntity createFormattedUrlEntity(HashtagEntity hashtagEntity) {
+        final String url = TWITTER_HASHTAG_URL + hashtagEntity.text;
+        return new FormattedUrlEntity(hashtagEntity.getStart(), hashtagEntity.getEnd(),
+                "#" + hashtagEntity.text, url, url);
     }
 }

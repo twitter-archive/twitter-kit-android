@@ -182,6 +182,18 @@ public abstract class AbstractTweetViewTest extends TweetUiTestCase {
         verify(linkClickListener).onLinkClick(TestFixtures.TEST_TWEET_LINK, TestFixtures.TEST_URL);
     }
 
+    public void testSetHashtagLinkClickListener() {
+        final AbstractTweetView view = createView(context, TestFixtures.TEST_TWEET_HASHTAG);
+        final TweetLinkClickListener linkClickListener = mock(TweetLinkClickListener.class);
+        view.setTweetLinkClickListener(linkClickListener);
+
+        assertNotNull(view.tweetLinkClickListener);
+
+        view.getLinkClickListener().onUrlClicked(TestFixtures.TEST_HASHTAG);
+        verify(linkClickListener).onLinkClick(TestFixtures.TEST_TWEET_HASHTAG,
+                TestFixtures.TEST_HASHTAG);
+    }
+
     public void testSetTweet_defaultClickListener() {
         final AbstractTweetView view = createView(context, TestFixtures.TEST_TWEET_LINK);
 

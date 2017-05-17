@@ -45,7 +45,6 @@ public class UrlEntity extends Entity {
 
     public UrlEntity(String url, String expandedUrl, String displayUrl, int start, int end) {
         super(start, end);
-
         this.url = url;
         this.expandedUrl = expandedUrl;
         this.displayUrl = displayUrl;

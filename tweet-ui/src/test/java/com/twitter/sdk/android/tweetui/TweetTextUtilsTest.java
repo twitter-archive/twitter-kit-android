@@ -104,23 +104,23 @@ public class TweetTextUtilsTest {
 
         UrlEntity url = TestFixtures.newUrlEntity(4, 8);
         // Hello
-        formattedTweetText.urlEntities.add(new FormattedUrlEntity(url));
+        formattedTweetText.urlEntities.add(FormattedUrlEntity.createFormattedUrlEntity(url));
 
         // There
         url = TestFixtures.newUrlEntity(10, 14);
-        formattedTweetText.urlEntities.add(new FormattedUrlEntity(url));
+        formattedTweetText.urlEntities.add(FormattedUrlEntity.createFormattedUrlEntity(url));
 
         // What
         url = TestFixtures.newUrlEntity(26, 29);
-        formattedTweetText.urlEntities.add(new FormattedUrlEntity(url));
+        formattedTweetText.urlEntities.add(FormattedUrlEntity.createFormattedUrlEntity(url));
 
         // is
         url = TestFixtures.newUrlEntity(31, 32);
-        formattedTweetText.urlEntities.add(new FormattedUrlEntity(url));
+        formattedTweetText.urlEntities.add(FormattedUrlEntity.createFormattedUrlEntity(url));
 
         // a
         url = TestFixtures.newUrlEntity(34, 34);
-        formattedTweetText.urlEntities.add(new FormattedUrlEntity(url));
+        formattedTweetText.urlEntities.add(FormattedUrlEntity.createFormattedUrlEntity(url));
 
         return formattedTweetText;
     }

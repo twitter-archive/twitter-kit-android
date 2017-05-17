@@ -29,9 +29,11 @@ class FormattedTweetText {
     String text;
     final List<FormattedUrlEntity> urlEntities;
     final List<FormattedMediaEntity> mediaEntities;
+    final List<FormattedUrlEntity> hashtagEntities;
 
     FormattedTweetText() {
         urlEntities = new ArrayList<>();
         mediaEntities = new ArrayList<>();
+        hashtagEntities = new ArrayList<>();
     }
 }

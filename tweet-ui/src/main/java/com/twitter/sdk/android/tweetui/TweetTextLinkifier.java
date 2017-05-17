@@ -23,6 +23,7 @@ import android.text.TextUtils;
 import android.text.style.CharacterStyle;
 import android.view.View;
 
+import com.twitter.sdk.android.core.models.ModelUtils;
 import com.twitter.sdk.android.tweetui.internal.ClickableLinkSpan;
 import com.twitter.sdk.android.tweetui.internal.TweetMediaUtils;
 
@@ -46,14 +47,15 @@ final class TweetTextLinkifier {
      * value can be set directly onto a text view.
      *
      * @param tweetText             The formatted and adjusted tweet wrapper
-     * @param listener              A listener to handle link clicks
+     * @param linkListener          A listener to handle link clicks
      * @param linkColor             The link color
      * @param linkHighlightColor    The link background color when pressed
      * @param stripQuoteTweet       If true we should strip the quote Tweet URL
      * @param stripVineCard         If true we should strip the Vine card URL
      * @return                      The Tweet text with displayUrls substituted in
      */
-    static CharSequence linkifyUrls(FormattedTweetText tweetText, final LinkClickListener listener,
+    static CharSequence linkifyUrls(FormattedTweetText tweetText,
+                                    final LinkClickListener linkListener,
                                     final int linkColor, final int linkHighlightColor,
                                     boolean stripQuoteTweet, boolean stripVineCard) {
         if (tweetText == null) return null;
@@ -63,18 +65,18 @@ final class TweetTextLinkifier {
         }
 
         final SpannableStringBuilder spannable = new SpannableStringBuilder(tweetText.text);
-        final List<FormattedUrlEntity> urls = tweetText.urlEntities;
-        final List<FormattedMediaEntity> media = tweetText.mediaEntities;
-
+        final List<FormattedUrlEntity> urls = ModelUtils.getSafeList(tweetText.urlEntities);
+        final List<FormattedMediaEntity> media = ModelUtils.getSafeList(tweetText.mediaEntities);
+        final List<FormattedUrlEntity> hashtags = ModelUtils.getSafeList(tweetText.hashtagEntities);
         /*
          * We combine and sort the entities here so that we can correctly calculate the offsets
          * into the text.
          */
-        final List<FormattedUrlEntity> combined = mergeAndSortEntities(urls, media);
+        final List<FormattedUrlEntity> combined = mergeAndSortEntities(urls, media, hashtags);
         final FormattedUrlEntity strippedEntity = getEntityToStrip(tweetText.text, combined,
                 stripQuoteTweet, stripVineCard);
 
-        addUrlEntities(spannable, combined, strippedEntity, listener, linkColor,
+        addUrlEntities(spannable, combined, strippedEntity, linkListener, linkColor,
                 linkHighlightColor);
 
         return trimEnd(spannable);
@@ -103,12 +105,10 @@ final class TweetTextLinkifier {
      * @return      Combined and sorted list of urls and media
      */
     static List<FormattedUrlEntity> mergeAndSortEntities(final List<FormattedUrlEntity> urls,
-            final List<FormattedMediaEntity> media) {
-        if (media == null) return urls;
-
-        final ArrayList<FormattedUrlEntity> combined
-                = new ArrayList<>(urls);
+            final List<FormattedMediaEntity> media, final List<FormattedUrlEntity> hashtags) {
+        final ArrayList<FormattedUrlEntity> combined = new ArrayList<>(urls);
         combined.addAll(media);
+        combined.addAll(hashtags);
         Collections.sort(combined, new Comparator<FormattedUrlEntity>() {
             @Override
             public int compare(FormattedUrlEntity lhs, FormattedUrlEntity rhs) {
@@ -130,14 +130,15 @@ final class TweetTextLinkifier {
      * @param spannable          The final formatted text that we are building
      * @param entities           The combined list of media and url entities
      * @param strippedEntity     The trailing entity that we should strip from the text
-     * @param listener           The link click listener to attach to the span
+     * @param linkListener       The link click listener to attach to the span
      * @param linkColor          The link color
      * @param linkHighlightColor The link background color when pressed
      */
     private static void addUrlEntities(final SpannableStringBuilder spannable,
             final List<FormattedUrlEntity> entities,
             final FormattedUrlEntity strippedEntity,
-            final LinkClickListener listener, final int linkColor, final int linkHighlightColor) {
+            final LinkClickListener linkListener,
+            final int linkColor, final int linkHighlightColor) {
         if (entities == null || entities.isEmpty()) return;
 
         int offset = 0;
@@ -154,7 +155,6 @@ final class TweetTextLinkifier {
                 if (strippedEntity != null && strippedEntity.start == url.start) {
                     spannable.replace(start, end, "");
                     len = end - start;
-                    end -= len;
                     offset += len;
                 } else if (!TextUtils.isEmpty(url.displayUrl)) {
                     spannable.replace(start, end, url.displayUrl);
@@ -166,8 +166,8 @@ final class TweetTextLinkifier {
                             linkColor, false) {
                         @Override
                         public void onClick(View widget) {
-                            if (listener == null) return;
-                            listener.onUrlClicked(url.url);
+                            if (linkListener == null) return;
+                            linkListener.onUrlClicked(url.url);
                         }
                     };
                     spannable.setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
