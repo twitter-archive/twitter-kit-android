@@ -25,9 +25,12 @@ import android.content.res.Resources;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.robolectric.RobolectricTestRunner;
 
+import java.io.File;
 import java.util.concurrent.ExecutorService;
 
 import static org.junit.Assert.assertEquals;
@@ -36,10 +39,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
+@RunWith(RobolectricTestRunner.class)
 public class TwitterTest {
     private static final String CONSUMER_KEY = "com.twitter.sdk.android.CONSUMER_KEY";
     private static final String CONSUMER_SECRET = "com.twitter.sdk.android.CONSUMER_SECRET";
     private static final String TEST_PACKAGE_NAME = "com.twitter.sdk.android.test";
+    private static final String TEST_PATH_SUFFIX = ".TwitterKit" + File.separator + TEST_PACKAGE_NAME;
 
     @Mock
     Context mockContext;
@@ -97,7 +102,8 @@ public class TwitterTest {
         assertNotNull(Twitter.getInstance().getIdManager());
         assertNotNull(Twitter.getInstance().getActivityLifecycleManager());
         assertTrue(Twitter.getInstance().isDebug());
-        assertTrue(Twitter.getInstance().getContext("") instanceof TwitterContext);
+
+        verifyContext(Twitter.getInstance().getContext(TEST_PACKAGE_NAME));
     }
 
     @Test
@@ -109,12 +115,19 @@ public class TwitterTest {
         assertNotNull(Twitter.getInstance().getActivityLifecycleManager());
         assertEquals(Twitter.DEFAULT_LOGGER, Twitter.getLogger());
         assertFalse(Twitter.getInstance().isDebug());
-        assertTrue(Twitter.getInstance().getContext("") instanceof TwitterContext);
 
         final TwitterAuthConfig authConfig = Twitter.getInstance().getTwitterAuthConfig();
         assertNotNull(authConfig);
         assertEquals(TestFixtures.KEY, authConfig.getConsumerKey());
         assertEquals(TestFixtures.SECRET, authConfig.getConsumerSecret());
+
+        verifyContext(Twitter.getInstance().getContext(TEST_PACKAGE_NAME));
+    }
+
+    private void verifyContext(Context context) {
+        assertNotNull(context);
+        assertTrue(context instanceof TwitterContext);
+        assertTrue(context.getFilesDir().getAbsolutePath().endsWith(TEST_PATH_SUFFIX));
     }
 
     @Test(expected = IllegalStateException.class)

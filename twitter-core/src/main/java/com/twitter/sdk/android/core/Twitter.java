@@ -157,7 +157,7 @@ public class Twitter {
      * @return A {@link TwitterContext} for specified component.
      */
     public Context getContext(String component) {
-        return new TwitterContext(context, component, ".Fabric" + File.separator + component);
+        return new TwitterContext(context, component, ".TwitterKit" + File.separator + component);
     }
 
     /**
