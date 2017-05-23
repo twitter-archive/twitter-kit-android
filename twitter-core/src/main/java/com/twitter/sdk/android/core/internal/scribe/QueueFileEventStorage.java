@@ -131,7 +131,7 @@ public class QueueFileEventStorage implements EventsStorage {
 
     @Override
     public List<File> getBatchOfFilesToSend(int maxBatchSize) {
-        final List<File> batch = new ArrayList<File>();
+        final List<File> batch = new ArrayList<>();
 
         for (File file : targetDirectory.listFiles()){
             batch.add(file);

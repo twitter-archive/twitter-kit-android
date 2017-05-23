@@ -145,7 +145,7 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
      * SearchTimeline Builder
      */
     public static class Builder {
-        private TwitterCore twitterCore;
+        private final TwitterCore twitterCore;
         private String query;
         private String lang;
         private String resultType = ResultType.FILTERED.type;
@@ -158,7 +158,7 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
          */
         public Builder() {
             twitterCore = TwitterCore.getInstance();
-        };
+        }
 
         // For testing
         Builder(TwitterCore twitterCore) {

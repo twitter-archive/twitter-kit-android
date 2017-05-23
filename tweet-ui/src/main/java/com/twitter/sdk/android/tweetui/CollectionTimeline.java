@@ -173,7 +173,7 @@ public class CollectionTimeline extends BaseTimeline implements Timeline<Tweet> 
      * CollectionTimeline Builder.
      */
     public static class Builder {
-        private TwitterCore twitterCore;
+        private final TwitterCore twitterCore;
         private Long collectionId;
         private Integer maxItemsPerRequest = 30;
 

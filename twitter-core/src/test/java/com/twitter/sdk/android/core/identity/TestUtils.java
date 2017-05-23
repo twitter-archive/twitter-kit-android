@@ -54,7 +54,7 @@ public final class TestUtils {
         when(mockPm.getPackageInfo(SSOAuthHandler.DOGFOOD_PACKAGE_NAME,
                 PackageManager.GET_SIGNATURES))
             .thenThrow(new PackageManager.NameNotFoundException());
-        final List<ResolveInfo> activities = new ArrayList<ResolveInfo>();
+        final List<ResolveInfo> activities = new ArrayList<>();
         activities.add(mock(ResolveInfo.class));
         when(mockContext.getPackageManager().queryIntentActivities(any(Intent.class),
                 anyInt())).thenReturn(activities);
@@ -73,7 +73,7 @@ public final class TestUtils {
         when(mockPm.getPackageInfo(SSOAuthHandler.TWITTER_PACKAGE_NAME,
                 PackageManager.GET_SIGNATURES))
                 .thenThrow(new PackageManager.NameNotFoundException());
-        final List<ResolveInfo> activities = new ArrayList<ResolveInfo>();
+        final List<ResolveInfo> activities = new ArrayList<>();
         activities.add(mock(ResolveInfo.class));
         when(mockContext.getPackageManager().queryIntentActivities(any(Intent.class),
                 anyInt())).thenReturn(activities);

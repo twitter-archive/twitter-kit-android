@@ -57,7 +57,6 @@ class AdvertisingInfoServiceStrategy implements AdvertisingInfoStrategy {
             pm.getPackageInfo(GOOGLE_PLAY_SERVICE_PACKAGE_NAME, 0);
         } catch (PackageManager.NameNotFoundException e) {
             // Can happen if the device doesn't have Google play services
-            // (Genymotion emulator is an example)
             Twitter.getLogger().d(Twitter.TAG, "Unable to find Google Play Services package name");
             return null;
         } catch (Exception e) {
@@ -106,7 +105,7 @@ class AdvertisingInfoServiceStrategy implements AdvertisingInfoStrategy {
 
         private boolean retrieved;
         // LinkedBlockingQueue(1) ensures that the connection only ever talks to 1 service at a time
-        private final LinkedBlockingQueue<IBinder> queue = new LinkedBlockingQueue<IBinder>(1);
+        private final LinkedBlockingQueue<IBinder> queue = new LinkedBlockingQueue<>(1);
 
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {

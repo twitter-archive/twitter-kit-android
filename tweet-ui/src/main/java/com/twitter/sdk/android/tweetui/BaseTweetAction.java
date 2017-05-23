@@ -24,7 +24,7 @@ import com.twitter.sdk.android.core.models.Tweet;
  * BaseTweetAction keeps a Callback which should be called after Tweet actions are performed.
  */
 class BaseTweetAction {
-    protected Callback<Tweet> actionCallback;
+    protected final Callback<Tweet> actionCallback;
 
     BaseTweetAction(Callback<Tweet> actionCallback) {
         this.actionCallback = actionCallback;

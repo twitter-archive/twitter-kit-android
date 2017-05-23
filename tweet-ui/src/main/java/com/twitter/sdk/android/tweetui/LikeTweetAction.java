@@ -81,9 +81,9 @@ class LikeTweetAction extends BaseTweetAction implements View.OnClickListener {
      * the given action callback.
      */
     static class LikeCallback extends Callback<Tweet> {
-        ToggleImageButton button;
-        Tweet tweet;
-        Callback<Tweet> cb;
+        final ToggleImageButton button;
+        final Tweet tweet;
+        final Callback<Tweet> cb;
 
         /*
          * Constructs a new FavoriteCallback.

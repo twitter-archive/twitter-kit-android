@@ -104,8 +104,7 @@ public class FixedTimelineActivity extends TweetUiActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            final View view = inflater.inflate(R.layout.tweetui_timeline, container, false);
-            return view;
+            return inflater.inflate(R.layout.tweetui_timeline, container, false);
         }
     }
 }

@@ -45,18 +45,6 @@ import java.util.Map;
 public class HtmlEntities {
     /**
      * <p>
-     * The set of entities supported by standard XML.
-     * </p>
-     */
-    // public static final Entities XML;
-    /**
-     * <p>
-     * The set of entities supported by HTML 3.2.
-     * </p>
-     */
-    // public static final Entities HTML32;
-    /**
-     * <p>
      * The set of entities supported by HTML 4.0.
      * </p>
      */

@@ -87,7 +87,7 @@ public class UserTimeline extends BaseTimeline implements Timeline<Tweet> {
      * UserTimeline Builder.
      */
     public static class Builder {
-        private TwitterCore twitterCore;
+        private final TwitterCore twitterCore;
         private Long userId;
         private String screenName;
         private Integer maxItemsPerRequest = 30;

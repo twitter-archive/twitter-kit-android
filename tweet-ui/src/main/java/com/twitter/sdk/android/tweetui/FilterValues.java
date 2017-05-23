@@ -18,8 +18,8 @@
 package com.twitter.sdk.android.tweetui;
 
 import com.google.gson.annotations.SerializedName;
+import com.twitter.sdk.android.core.models.ModelUtils;
 
-import java.util.Collections;
 import java.util.List;
 
 public class FilterValues {
@@ -38,19 +38,9 @@ public class FilterValues {
 
     public FilterValues(List<String> keywords, List<String> hashtags,
                         List<String> handles, List<String> urls) {
-        this.keywords = getSafeList(keywords);
-        this.hashtags = getSafeList(hashtags);
-        this.handles = getSafeList(handles);
-        this.urls = getSafeList(urls);
-    }
-
-    private <T> List<T> getSafeList(List<T> filters) {
-        // Entities may be null if Gson does not find object to parse. When that happens, make sure
-        // to return an empty list.
-        if (filters == null) {
-            return Collections.EMPTY_LIST;
-        } else {
-            return Collections.unmodifiableList(filters);
-        }
+        this.keywords = ModelUtils.getSafeList(keywords);
+        this.hashtags = ModelUtils.getSafeList(hashtags);
+        this.handles = ModelUtils.getSafeList(handles);
+        this.urls = ModelUtils.getSafeList(urls);
     }
 }

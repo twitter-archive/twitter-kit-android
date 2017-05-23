@@ -259,7 +259,7 @@ class ScribeFilesSender implements FilesSender {
                 builder.header(USER_AGENT_HEADER, scribeConfig.userAgent);
             }
 
-            /**
+            /*
              * X-Client-UUID is used to populate the device-id field in the log base structure of
              * the event. It is read by the macaw-core UserTrackingFilter which places the value
              * into the deviceId field on the Request object.
@@ -273,7 +273,7 @@ class ScribeFilesSender implements FilesSender {
                 builder.header(CLIENT_UUID_HEADER, idManager.getDeviceUUID());
             }
 
-            /**
+            /*
              * Add the polling header to help guarantee that our scribe request is properly
              * attributed on the backend.
              *

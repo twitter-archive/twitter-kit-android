@@ -88,7 +88,7 @@ public class TwitterListTimeline extends BaseTimeline implements Timeline<Tweet>
      * TwitterListTimeline Builder.
      */
     public static class Builder {
-        private TwitterCore twitterCore;
+        private final TwitterCore twitterCore;
         private Long listId;
         private String slug;
         private Long ownerId;
@@ -101,7 +101,7 @@ public class TwitterListTimeline extends BaseTimeline implements Timeline<Tweet>
          */
         public Builder() {
             twitterCore = TwitterCore.getInstance();
-        };
+        }
 
         // For testing
         Builder(TwitterCore twitterCore) {

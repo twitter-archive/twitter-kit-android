@@ -240,7 +240,7 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
         }
 
         this.tweet = tweet;
-        this.mediaEntities = Collections.emptyList();;
+        this.mediaEntities = Collections.emptyList();
 
         clearImageViews();
         initializeImageViews(tweet.card);

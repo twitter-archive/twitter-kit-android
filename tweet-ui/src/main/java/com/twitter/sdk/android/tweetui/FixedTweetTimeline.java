@@ -28,7 +28,7 @@ import java.util.List;
 
 public class FixedTweetTimeline extends BaseTimeline implements Timeline<Tweet> {
     private static final String SCRIBE_SECTION = "fixed";
-    List<Tweet> tweets;
+    final List<Tweet> tweets;
 
     FixedTweetTimeline(List<Tweet> tweets) {
         this.tweets = tweets == null ? new ArrayList<Tweet>() : tweets;

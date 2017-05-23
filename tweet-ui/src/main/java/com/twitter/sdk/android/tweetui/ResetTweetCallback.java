@@ -27,9 +27,9 @@ import com.twitter.sdk.android.core.models.Tweet;
  * clearing the single Tweet cache. Calls through to the given Callback.
  */
 class ResetTweetCallback extends Callback<Tweet> {
-    BaseTweetView baseTweetView;
-    TweetRepository tweetRepository;
-    Callback<Tweet> cb;
+    final BaseTweetView baseTweetView;
+    final TweetRepository tweetRepository;
+    final Callback<Tweet> cb;
 
     ResetTweetCallback(BaseTweetView baseTweetView, TweetRepository tweetRepository,
                         Callback<Tweet> cb) {

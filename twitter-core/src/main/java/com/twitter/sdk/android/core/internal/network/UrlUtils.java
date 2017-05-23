@@ -37,7 +37,7 @@ public final class UrlUtils {
     }
 
     public static TreeMap<String, String> getQueryParams(String paramsString, boolean decode) {
-        final TreeMap<String, String> params = new TreeMap<String, String>();
+        final TreeMap<String, String> params = new TreeMap<>();
         if (paramsString == null) {
             return params;
         }

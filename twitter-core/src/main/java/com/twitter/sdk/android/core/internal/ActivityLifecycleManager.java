@@ -17,11 +17,9 @@
 
 package com.twitter.sdk.android.core.internal;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 
 import java.util.HashSet;
@@ -33,8 +31,7 @@ import java.util.Set;
  * OS Version checks that make it compatible with Android versions less than Ice Cream Sandwich.
  */
 public class ActivityLifecycleManager {
-    private final Application application;
-    private ActivityLifecycleCallbacksWrapper callbacksWrapper;
+    private final ActivityLifecycleCallbacksWrapper callbacksWrapper;
 
     /**
      * Override the methods corresponding to the activity.
@@ -53,10 +50,8 @@ public class ActivityLifecycleManager {
      * @param context Any context object, it is not stored
      */
     public ActivityLifecycleManager(Context context) {
-        application = (Application) context.getApplicationContext();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            callbacksWrapper = new ActivityLifecycleCallbacksWrapper(application);
-        }
+        final Application application = (Application) context.getApplicationContext();
+        callbacksWrapper = new ActivityLifecycleCallbacksWrapper(application);
     }
 
     /**
@@ -80,21 +75,19 @@ public class ActivityLifecycleManager {
 
     private static class ActivityLifecycleCallbacksWrapper {
         private final Set<Application.ActivityLifecycleCallbacks> registeredCallbacks =
-                new HashSet<Application.ActivityLifecycleCallbacks>();
+                new HashSet<>();
         private final Application application;
 
         ActivityLifecycleCallbacksWrapper(Application application) {
             this.application = application;
         }
 
-        @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
         private void clearCallbacks() {
             for (Application.ActivityLifecycleCallbacks callback : registeredCallbacks) {
                 application.unregisterActivityLifecycleCallbacks(callback);
             }
         }
 
-        @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
         private boolean registerLifecycleCallbacks(final Callbacks callbacks) {
 
             if (application != null) {

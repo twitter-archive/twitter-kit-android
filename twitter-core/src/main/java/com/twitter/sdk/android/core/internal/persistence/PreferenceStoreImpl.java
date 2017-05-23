@@ -22,14 +22,12 @@ import android.content.SharedPreferences;
 
 public class PreferenceStoreImpl implements PreferenceStore {
     private final SharedPreferences sharedPreferences;
-    private final String preferenceName;
 
     public PreferenceStoreImpl(Context context, String name) {
         if (context == null) {
             throw new IllegalArgumentException("Context must not be null");
         }
-        preferenceName = name;
-        sharedPreferences = context.getSharedPreferences(preferenceName, Context.MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE);
     }
 
     /**
