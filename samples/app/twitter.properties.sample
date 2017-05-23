@@ -1,7 +1,6 @@
-#These keys are provisioned on the plugin. Copy the keys on the plugin here.
+# Twitter API key can be obtained at https://apps.twitter.com.
 twitterConsumerKey=EDIT_THIS
 twitterConsumerSecret=EDIT_THIS
 
-#Contains API Secret used to validate your application. Commit to internal source control; avoid making secret public.
-apiKey=EDIT_THIS
-apiSecret=EDIT_THIS
+# MoPub AD Unit Id can be obtained at https://app.mopub.com/.
+mopubAdUnitId=EDIT_THIS
