@@ -10,15 +10,6 @@ Using Twitter Kit from source in production applications is not officially suppo
 Define via Gradle:
 ```groovy
 
-buildscript {
-  repositories {
-    jcenter()
-  }
-  dependencies {
-    classpath 'io.fabric.tools:gradle:1.+'
-  }
-}
-
 repositories {
   jcenter()
 }
