@@ -3,6 +3,11 @@
 
 ## Unreleased
 
+## v3.0.0
+
+* Fixed crash when liking a quote Tweet
+* Fixed crash with multi-touch gestures in ViewPager
+
 ## v2.3.2
 
 * Added ability to set geocode for SearchTimeline builder.

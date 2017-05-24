@@ -3,6 +3,12 @@
 
 ## Unreleased
 
+## v3.0.0
+
+* Removed dependency on Fabric
+* Updated Retrofit and OkHttp dependencies
+* Request email permission screen removed
+
 ## v2.3.1
 
 * Removed unused Vine utility method.

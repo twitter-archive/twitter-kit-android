@@ -3,10 +3,14 @@
 
 ## Unreleased
 
+## v3.0.0
+
+* Bumped version number
+
 ## v2.0.0
 
 * Dropped support for API versions before API 14 (ICS).
 
 ## v1.0.0
 
- * Initial release.
+* Initial release.

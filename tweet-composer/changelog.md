@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+## v3.0.0
+
+* App card creation removed from composer
+
 ## v2.3.1
 
 * Restricted Broadcast Intents to current application to avoid leaking sensitive information.
