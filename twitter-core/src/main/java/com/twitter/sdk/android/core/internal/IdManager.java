@@ -22,6 +22,8 @@ import android.content.SharedPreferences;
 import android.os.Build;
 
 import com.twitter.sdk.android.core.Twitter;
+import com.twitter.sdk.android.core.internal.persistence.PreferenceStore;
+import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreImpl;
 
 import java.util.Locale;
 import java.util.UUID;
@@ -30,7 +32,8 @@ import java.util.regex.Pattern;
 
 public class IdManager {
     static final String COLLECT_IDENTIFIERS_ENABLED = "com.twitter.sdk.android.COLLECT_IDENTIFIERS_ENABLED";
-    static final String PREFKEY_INSTALLATION_UUID = "crashlytics.installation.id";
+    static final String ADVERTISING_PREFERENCES = "com.twitter.sdk.android.AdvertisingPreferences";
+    static final String PREFKEY_INSTALLATION_UUID = "installation_uuid";
 
     /**
      * Regex for stripping all non-alphnumeric characters from ALL the identifier fields.
@@ -41,8 +44,8 @@ public class IdManager {
 
     private final ReentrantLock installationIdLock = new ReentrantLock();
     private final boolean collectHardwareIds;
-    private final Context appContext;
     private final String appIdentifier;
+    private final PreferenceStore preferenceStore;
 
     AdvertisingInfoProvider advertisingInfoProvider;
     AdvertisingInfo advertisingInfo;
@@ -54,17 +57,22 @@ public class IdManager {
      * is null
      */
     public IdManager(Context appContext) {
-        this(appContext, new AdvertisingInfoProvider(appContext));
+        this(appContext, new PreferenceStoreImpl(appContext, ADVERTISING_PREFERENCES));
     }
 
-    IdManager(Context appContext, AdvertisingInfoProvider advertisingInfoProvider) {
+    IdManager(Context appContext, PreferenceStore preferenceStore) {
+        this(appContext, preferenceStore, new AdvertisingInfoProvider(appContext, preferenceStore));
+    }
+
+    IdManager(Context appContext,  PreferenceStore preferenceStore,
+            AdvertisingInfoProvider advertisingInfoProvider) {
         if (appContext == null) {
             throw new IllegalArgumentException("appContext must not be null");
         }
 
-        this.appContext = appContext;
         this.appIdentifier = appContext.getPackageName();
         this.advertisingInfoProvider = advertisingInfoProvider;
+        this.preferenceStore = preferenceStore;
 
         collectHardwareIds = CommonUtils.getBooleanResourceValue(appContext,
                 COLLECT_IDENTIFIERS_ENABLED, true);
@@ -75,8 +83,8 @@ public class IdManager {
     }
 
     /**
-     * Apply consistent formatting and stripping of special characters. Null input is allowed, will return
-     * null.
+     * Apply consistent formatting and stripping of special characters. Null input is allowed,
+     * will return null.
      */
     private String formatId(String id) {
         return (id == null) ? null : ID_PATTERN.matcher(id).replaceAll("").toLowerCase(Locale.US);
@@ -90,8 +98,8 @@ public class IdManager {
     }
 
     /**
-     * @return {@link String} identifying the version of Android OS that the device is running. Includes the
-     * public version number, and an incremental build number, like "4.2.2/573038"
+     * @return {@link String} identifying the version of Android OS that the device is running.
+     * Includes the public version number, and an incremental build number, like "4.2.2/573038"
      */
     public String getOsVersionString() {
         return getOsDisplayVersionString() + "/" + getOsBuildVersionString();
@@ -114,7 +122,8 @@ public class IdManager {
     }
 
     /**
-     * @return {@link String} identifying the model of this device. Includes the manufacturer and model names.
+     * @return {@link String} identifying the model of this device. Includes the manufacturer and
+     * model names.
      */
     public String getModelName() {
         return String.format(Locale.US, "%s/%s", removeForwardSlashesIn(Build.MANUFACTURER),
@@ -135,10 +144,10 @@ public class IdManager {
         String toReturn = "";
 
         if (collectHardwareIds) {
-            final SharedPreferences prefs = CommonUtils.getSharedPrefs(appContext);
+            final SharedPreferences prefs = preferenceStore.get();
             toReturn = prefs.getString(PREFKEY_INSTALLATION_UUID, null);
             if (toReturn == null) {
-                toReturn = createInstallationUUID(prefs);
+                toReturn = createInstallationUUID();
             }
         }
 
@@ -146,18 +155,19 @@ public class IdManager {
     }
 
     /**
-     * Creates the Application Installation ID and stores it in shared prefs. This method is thread safe: if
-     * the ID already exists when the lock is acquired, that ID will be returned instead of a newly-created
-     * one.
+     * Creates the Application Installation ID and stores it in shared prefs. This method is thread
+     * safe: if the ID already exists when the lock is acquired, that ID will be returned instead of
+     * a newly-created one.
      **/
-    private String createInstallationUUID(SharedPreferences prefs) {
+    private String createInstallationUUID() {
         installationIdLock.lock();
         try {
-            String uuid = prefs.getString(PREFKEY_INSTALLATION_UUID, null);
+            String uuid = preferenceStore.get().getString(PREFKEY_INSTALLATION_UUID, null);
 
             if (uuid == null) {
                 uuid = formatId(UUID.randomUUID().toString());
-                prefs.edit().putString(PREFKEY_INSTALLATION_UUID, uuid).apply();
+                preferenceStore
+                        .save(preferenceStore.edit().putString(PREFKEY_INSTALLATION_UUID, uuid));
             }
 
             return uuid;
@@ -199,6 +209,4 @@ public class IdManager {
 
         return toReturn;
     }
-
-
 }

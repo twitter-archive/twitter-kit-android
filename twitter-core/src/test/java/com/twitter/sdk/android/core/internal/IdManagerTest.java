@@ -20,6 +20,9 @@ package com.twitter.sdk.android.core.internal;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.twitter.sdk.android.core.internal.persistence.PreferenceStore;
+import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreImpl;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +31,7 @@ import org.mockito.MockitoAnnotations;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
-import static com.twitter.sdk.android.core.internal.CommonUtils.CLS_SHARED_PREFERENCES_NAME;
+import static com.twitter.sdk.android.core.internal.IdManager.ADVERTISING_PREFERENCES;
 import static com.twitter.sdk.android.core.internal.IdManager.PREFKEY_INSTALLATION_UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -46,6 +49,7 @@ public class IdManagerTest {
 
     @Mock
     AdvertisingInfoProvider mockAdvertisingInfoProvider;
+    PreferenceStore mockPreferenceStore;
     AdvertisingInfo advertisingInfo;
     IdManager idManager;
     Context context;
@@ -57,7 +61,10 @@ public class IdManagerTest {
         when(mockAdvertisingInfoProvider.getAdvertisingInfo()).thenReturn(advertisingInfo);
 
         context = RuntimeEnvironment.application;
-        idManager = new IdManager(context, mockAdvertisingInfoProvider);
+
+        mockPreferenceStore = new PreferenceStoreImpl(context, ADVERTISING_PREFERENCES);
+
+        idManager = new IdManager(context, mockPreferenceStore, mockAdvertisingInfoProvider);
     }
 
     @Test
@@ -88,14 +95,14 @@ public class IdManagerTest {
         assertNotNull(TEST_SECURE_ID, uuid);
 
         final SharedPreferences prefs = context
-                .getSharedPreferences(CLS_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+                .getSharedPreferences(ADVERTISING_PREFERENCES, Context.MODE_PRIVATE);
         assertEquals(uuid, prefs.getString(PREFKEY_INSTALLATION_UUID, ""));
     }
 
     @Test
     public void testGetDeviceUUID_shouldReturnSavedUUID() {
         final SharedPreferences prefs = context
-                .getSharedPreferences(CLS_SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+                .getSharedPreferences(ADVERTISING_PREFERENCES, Context.MODE_PRIVATE);
         prefs.edit().putString(PREFKEY_INSTALLATION_UUID, TEST_UUID).apply();
 
         final String uuid = idManager.getDeviceUUID();

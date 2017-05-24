@@ -23,18 +23,16 @@ import android.text.TextUtils;
 
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.internal.persistence.PreferenceStore;
-import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreImpl;
 
 class AdvertisingInfoProvider {
-    private static final String ADVERTISING_INFO_PREFERENCES = "TwitterAdvertisingInfoPreferences";
     private static final String PREFKEY_LIMIT_AD_TRACKING = "limit_ad_tracking_enabled";
     private static final String PREFKEY_ADVERTISING_ID = "advertising_id";
     private final Context context;
     private final PreferenceStore preferenceStore;
 
-    AdvertisingInfoProvider(Context context) {
+    AdvertisingInfoProvider(Context context, PreferenceStore preferenceStore) {
         this.context = context.getApplicationContext();
-        this.preferenceStore = new PreferenceStoreImpl(context, ADVERTISING_INFO_PREFERENCES);
+        this.preferenceStore = preferenceStore;
     }
 
     /**
