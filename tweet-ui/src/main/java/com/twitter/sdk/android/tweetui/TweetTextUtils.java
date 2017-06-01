@@ -150,7 +150,7 @@ final class TweetTextUtils {
                 }
             }
             // Once we've accumulated diffs, calc the offset
-            entity.start = entity.start - diff;
+            entity.start = entity.start  - (diff + inDiff);
             entity.end = entity.end - (diff + inDiff);
         }
     }

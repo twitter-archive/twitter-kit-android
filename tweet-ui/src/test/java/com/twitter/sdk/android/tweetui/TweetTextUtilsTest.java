@@ -32,6 +32,8 @@ public class TweetTextUtilsTest {
     private static final String UNESCAPED_TWEET_TEXT = ">Hello there <\"What is a?\" &;";
     private static final String ESCAPED_TWEET_TEXT
             = "&gt;Hello there &lt;&quot;What is a?&quot; &;";
+    private static final String ESCAPED_TWEET_TEXT_WITH_EMOJI =
+            "\ud83d\udc69\ud83c\udffd\u200d\ud83d\udcbb, community \ud83d\udc93 &amp; https://t.co/oCkwy2C80m";
 
     // test ported from:
     // twitter-android/app/src/androidTest/java/com/twitter/library/util/EntitiesTests.java
@@ -93,6 +95,21 @@ public class TweetTextUtilsTest {
         tweet = new TweetBuilder().setText("&&&&gt&&lt&&amplt;").build();
         TweetTextUtils.format(formattedTweetText, tweet);
         assertEquals("&&&&gt&&lt&&amplt;", formattedTweetText.text);
+    }
+
+    @Test
+    public void testFormat_withEmojiAndEscapedHtml() {
+        final FormattedTweetText formattedTweetText = new FormattedTweetText();
+        final UrlEntity url = TestFixtures.newUrlEntity(24, 47);
+        formattedTweetText.urlEntities.add(FormattedUrlEntity.createFormattedUrlEntity(url));
+
+        final Tweet tweet = new TweetBuilder()
+                .setText(ESCAPED_TWEET_TEXT_WITH_EMOJI)
+                .build();
+        TweetTextUtils.format(formattedTweetText, tweet);
+
+        assertEquals(24, formattedTweetText.urlEntities.get(0).start);
+        assertEquals(47, formattedTweetText.urlEntities.get(0).end);
     }
 
     private Tweet setupTweetToBeFormatted() {
