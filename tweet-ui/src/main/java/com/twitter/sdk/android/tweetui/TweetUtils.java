@@ -34,6 +34,7 @@ import java.util.Locale;
  */
 public final class TweetUtils {
     private static final String PERMALINK_FORMAT = "https://twitter.com/%s/status/%d?ref_src=twsrc%%5Etwitterkit";
+    private static final String PROFILE_PERMALINK_FORMAT = "https://twitter.com/%s?ref_src=twsrc%%5Etwitterkit";
     private static final String UNKNOWN_SCREEN_NAME = "twitter_unknown";
     static final String LOAD_TWEET_DEBUG = "loadTweet failure for Tweet Id %d.";
 
@@ -127,5 +128,20 @@ public final class TweetUtils {
             permalink = String.format(Locale.US, PERMALINK_FORMAT, screenName, tweetId);
         }
         return Uri.parse(permalink);
+    }
+    /**
+     * Builds a permalink for the profile of a given screen name
+     *
+     * @param screenName The screen name to build the url with
+     * @return           Can be null, otherwise a resolvable permalink to a Profile.
+     */
+    static String getProfilePermalink(String screenName) {
+        String permalink;
+        if (TextUtils.isEmpty(screenName)) {
+            permalink = String.format(Locale.US, PROFILE_PERMALINK_FORMAT, UNKNOWN_SCREEN_NAME);
+        } else {
+            permalink = String.format(Locale.US, PROFILE_PERMALINK_FORMAT, screenName);
+        }
+        return permalink;
     }
 }

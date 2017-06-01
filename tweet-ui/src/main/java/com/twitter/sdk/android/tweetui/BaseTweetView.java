@@ -18,10 +18,14 @@
 package com.twitter.sdk.android.tweetui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -29,6 +33,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.IntentUtils;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterException;
@@ -306,6 +311,7 @@ public abstract class BaseTweetView extends AbstractTweetView {
 
         final Tweet displayTweet = TweetUtils.getDisplayTweet(tweet);
         setProfilePhotoView(displayTweet);
+        linkifyProfilePhotoView(displayTweet);
         setTimestamp(displayTweet);
         setTweetActions(tweet);
         showRetweetedBy(tweet);
@@ -401,6 +407,54 @@ public abstract class BaseTweetView extends AbstractTweetView {
         }
 
         imageLoader.load(url).placeholder(avatarMediaBg).into(avatarView);
+    }
+
+    /**
+     * Linkify the profile photo
+     * @param displayTweet The tweet from which to linkify the profile photo
+     */
+    void linkifyProfilePhotoView(final Tweet displayTweet) {
+        if (displayTweet != null && displayTweet.user != null) {
+            avatarView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (tweetLinkClickListener != null) {
+                        tweetLinkClickListener.onLinkClick(displayTweet,
+                                TweetUtils.getProfilePermalink(displayTweet.user.screenName));
+                    } else {
+                        final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(
+                                TweetUtils.getProfilePermalink(displayTweet.user.screenName)));
+                        if (!IntentUtils.safeStartActivity(getContext(), intent)) {
+                            Twitter.getLogger().e(TweetUi.LOGTAG,
+                                    "Activity cannot be found to open URL");
+                        }
+                    }
+
+                }
+            });
+            avatarView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    final ImageView imageView = (ImageView) v;
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            imageView.getDrawable().setColorFilter(getResources().getColor(
+                                    R.color.tw__black_opacity_10), PorterDuff.Mode.SRC_ATOP);
+                            imageView.invalidate();
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            v.performClick();
+                        case MotionEvent.ACTION_CANCEL: {
+                            imageView.getDrawable().clearColorFilter();
+                            imageView.invalidate();
+                            break;
+                        }
+                        default: break;
+                    }
+                    return false;
+                }
+            });
+        }
     }
 
     void setTweetActions(Tweet tweet) {
