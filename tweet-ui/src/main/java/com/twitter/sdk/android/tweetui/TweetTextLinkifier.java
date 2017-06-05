@@ -68,11 +68,14 @@ final class TweetTextLinkifier {
         final List<FormattedUrlEntity> urls = ModelUtils.getSafeList(tweetText.urlEntities);
         final List<FormattedMediaEntity> media = ModelUtils.getSafeList(tweetText.mediaEntities);
         final List<FormattedUrlEntity> hashtags = ModelUtils.getSafeList(tweetText.hashtagEntities);
+        final List<FormattedUrlEntity> mentions = ModelUtils.getSafeList(tweetText.mentionEntities);
+        final List<FormattedUrlEntity> symbols = ModelUtils.getSafeList(tweetText.symbolEntities);
         /*
          * We combine and sort the entities here so that we can correctly calculate the offsets
          * into the text.
          */
-        final List<FormattedUrlEntity> combined = mergeAndSortEntities(urls, media, hashtags);
+        final List<FormattedUrlEntity> combined = mergeAndSortEntities(urls, media, hashtags,
+                mentions, symbols);
         final FormattedUrlEntity strippedEntity = getEntityToStrip(tweetText.text, combined,
                 stripQuoteTweet, stripVineCard);
 
@@ -105,10 +108,13 @@ final class TweetTextLinkifier {
      * @return      Combined and sorted list of urls and media
      */
     static List<FormattedUrlEntity> mergeAndSortEntities(final List<FormattedUrlEntity> urls,
-            final List<FormattedMediaEntity> media, final List<FormattedUrlEntity> hashtags) {
+            final List<FormattedMediaEntity> media, final List<FormattedUrlEntity> hashtags,
+            final List<FormattedUrlEntity> mentions, final List<FormattedUrlEntity> symbols) {
         final ArrayList<FormattedUrlEntity> combined = new ArrayList<>(urls);
         combined.addAll(media);
         combined.addAll(hashtags);
+        combined.addAll(mentions);
+        combined.addAll(symbols);
         Collections.sort(combined, new Comparator<FormattedUrlEntity>() {
             @Override
             public int compare(FormattedUrlEntity lhs, FormattedUrlEntity rhs) {

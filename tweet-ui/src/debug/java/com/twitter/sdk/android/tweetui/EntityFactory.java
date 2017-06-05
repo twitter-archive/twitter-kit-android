@@ -18,6 +18,8 @@
 package com.twitter.sdk.android.tweetui;
 
 import com.twitter.sdk.android.core.models.HashtagEntity;
+import com.twitter.sdk.android.core.models.MentionEntity;
+import com.twitter.sdk.android.core.models.SymbolEntity;
 import com.twitter.sdk.android.core.models.UrlEntity;
 
 class EntityFactory {
@@ -34,5 +36,19 @@ class EntityFactory {
         final int end = text.length();
 
         return new HashtagEntity(hashtag, start, end);
+    }
+
+    public static MentionEntity newMentionEntity(String text, String screenName) {
+        final int start = text.length() - screenName.length() - 1;
+        final int end = text.length();
+
+        return new MentionEntity(100, "100", screenName, screenName, start, end);
+    }
+
+    public static SymbolEntity newSymbolEntity(String text, String symbol) {
+        final int start = text.length() - symbol.length() - 1;
+        final int end = text.length();
+
+        return new SymbolEntity(symbol, start, end);
     }
 }

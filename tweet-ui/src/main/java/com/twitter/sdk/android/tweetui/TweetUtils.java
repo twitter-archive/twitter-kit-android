@@ -33,9 +33,13 @@ import java.util.Locale;
  * sign in flow.
  */
 public final class TweetUtils {
-    private static final String PERMALINK_FORMAT = "https://twitter.com/%s/status/%d?ref_src=twsrc%%5Etwitterkit";
-    private static final String PROFILE_PERMALINK_FORMAT = "https://twitter.com/%s?ref_src=twsrc%%5Etwitterkit";
     private static final String UNKNOWN_SCREEN_NAME = "twitter_unknown";
+    private static final String TWITTER_URL = "https://twitter.com/";
+    private static final String TWITTER_KIT_REF = "ref_src=twsrc%%5Etwitterkit";
+    private static final String TWEET_URL = TWITTER_URL + "%s/status/%d?" + TWITTER_KIT_REF;
+    private static final String HASHTAG_URL = TWITTER_URL + "hashtag/%s?" + TWITTER_KIT_REF;
+    private static final String PROFILE_URL = TWITTER_URL + "%s?" + TWITTER_KIT_REF;
+    private static final String SYMBOL_URL = TWITTER_URL + "search?q=%%24%s&" + TWITTER_KIT_REF;
     static final String LOAD_TWEET_DEBUG = "loadTweet failure for Tweet Id %d.";
 
     private TweetUtils() {}
@@ -123,9 +127,9 @@ public final class TweetUtils {
 
         String permalink;
         if (TextUtils.isEmpty(screenName)) {
-            permalink = String.format(Locale.US, PERMALINK_FORMAT, UNKNOWN_SCREEN_NAME, tweetId);
+            permalink = String.format(Locale.US, TWEET_URL, UNKNOWN_SCREEN_NAME, tweetId);
         } else {
-            permalink = String.format(Locale.US, PERMALINK_FORMAT, screenName, tweetId);
+            permalink = String.format(Locale.US, TWEET_URL, screenName, tweetId);
         }
         return Uri.parse(permalink);
     }
@@ -138,10 +142,28 @@ public final class TweetUtils {
     static String getProfilePermalink(String screenName) {
         String permalink;
         if (TextUtils.isEmpty(screenName)) {
-            permalink = String.format(Locale.US, PROFILE_PERMALINK_FORMAT, UNKNOWN_SCREEN_NAME);
+            permalink = String.format(Locale.US, PROFILE_URL, UNKNOWN_SCREEN_NAME);
         } else {
-            permalink = String.format(Locale.US, PROFILE_PERMALINK_FORMAT, screenName);
+            permalink = String.format(Locale.US, PROFILE_URL, screenName);
         }
         return permalink;
+    }
+
+    /**
+     * Builds a permalink for a hashtag entity
+     * @param text
+     * @return Formatted url string
+     */
+    static String getHashtagPermalink(String text) {
+        return String.format(Locale.US, TweetUtils.HASHTAG_URL, text);
+    }
+
+    /**
+     * Builds a permalink for a symbol entity
+     * @param text
+     * @return Formatted url string
+     */
+    static String getSymbolPermalink(String text) {
+        return String.format(Locale.US, TweetUtils.SYMBOL_URL, text);
     }
 }

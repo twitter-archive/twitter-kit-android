@@ -21,6 +21,8 @@ import android.text.TextUtils;
 
 import com.twitter.sdk.android.core.models.HashtagEntity;
 import com.twitter.sdk.android.core.models.MediaEntity;
+import com.twitter.sdk.android.core.models.MentionEntity;
+import com.twitter.sdk.android.core.models.SymbolEntity;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.UrlEntity;
 import com.twitter.sdk.android.tweetui.internal.util.HtmlEntities;
@@ -84,6 +86,24 @@ final class TweetTextUtils {
                 formattedTweetText.hashtagEntities.add(formattedHashtagEntity);
             }
         }
+
+        final List<MentionEntity> coreMentions = tweet.entities.userMentions;
+        if (coreMentions != null) {
+            for (MentionEntity entity : coreMentions) {
+                final FormattedUrlEntity formattedMentionEntity =
+                        FormattedUrlEntity.createFormattedUrlEntity(entity);
+                formattedTweetText.mentionEntities.add(formattedMentionEntity);
+            }
+        }
+
+        final List<SymbolEntity> coreSymbols = tweet.entities.symbols;
+        if (coreSymbols != null) {
+            for (SymbolEntity entity : coreSymbols) {
+                final FormattedUrlEntity formattedSymbolEntity =
+                        FormattedUrlEntity.createFormattedUrlEntity(entity);
+                formattedTweetText.symbolEntities.add(formattedSymbolEntity);
+            }
+        }
     }
 
     /**
@@ -102,6 +122,8 @@ final class TweetTextUtils {
         adjustIndicesForEscapedChars(formattedTweetText.urlEntities, u.indices);
         adjustIndicesForEscapedChars(formattedTweetText.mediaEntities, u.indices);
         adjustIndicesForEscapedChars(formattedTweetText.hashtagEntities, u.indices);
+        adjustIndicesForEscapedChars(formattedTweetText.mentionEntities, u.indices);
+        adjustIndicesForEscapedChars(formattedTweetText.symbolEntities, u.indices);
         adjustIndicesForSupplementaryChars(result, formattedTweetText);
         formattedTweetText.text = result.toString();
     }
@@ -177,6 +199,8 @@ final class TweetTextUtils {
         adjustEntitiesWithOffsets(formattedTweetText.urlEntities, highSurrogateIndices);
         adjustEntitiesWithOffsets(formattedTweetText.mediaEntities, highSurrogateIndices);
         adjustEntitiesWithOffsets(formattedTweetText.hashtagEntities, highSurrogateIndices);
+        adjustEntitiesWithOffsets(formattedTweetText.mentionEntities, highSurrogateIndices);
+        adjustEntitiesWithOffsets(formattedTweetText.symbolEntities, highSurrogateIndices);
     }
 
     /**

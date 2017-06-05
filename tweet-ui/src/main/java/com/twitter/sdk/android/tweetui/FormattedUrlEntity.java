@@ -18,6 +18,8 @@
 package com.twitter.sdk.android.tweetui;
 
 import com.twitter.sdk.android.core.models.HashtagEntity;
+import com.twitter.sdk.android.core.models.MentionEntity;
+import com.twitter.sdk.android.core.models.SymbolEntity;
 import com.twitter.sdk.android.core.models.UrlEntity;
 
 class FormattedUrlEntity {
@@ -26,8 +28,6 @@ class FormattedUrlEntity {
     final String displayUrl;
     final String url;
     final String expandedUrl;
-
-    private static final String TWITTER_HASHTAG_URL = "https://twitter.com/hashtag/";
 
     FormattedUrlEntity(int start, int end, String displayUrl, String url, String expandedUrl) {
         this.start = start;
@@ -43,8 +43,20 @@ class FormattedUrlEntity {
     }
 
     static FormattedUrlEntity createFormattedUrlEntity(HashtagEntity hashtagEntity) {
-        final String url = TWITTER_HASHTAG_URL + hashtagEntity.text;
+        final String url = TweetUtils.getHashtagPermalink(hashtagEntity.text);
         return new FormattedUrlEntity(hashtagEntity.getStart(), hashtagEntity.getEnd(),
                 "#" + hashtagEntity.text, url, url);
+    }
+
+    static FormattedUrlEntity createFormattedUrlEntity(MentionEntity mentionEntity) {
+        final String url = TweetUtils.getProfilePermalink(mentionEntity.screenName);
+        return new FormattedUrlEntity(mentionEntity.getStart(), mentionEntity.getEnd(),
+                "@" + mentionEntity.screenName, url, url);
+    }
+
+    static FormattedUrlEntity createFormattedUrlEntity(SymbolEntity symbolEntity) {
+        final String url = TweetUtils.getSymbolPermalink(symbolEntity.text);
+        return new FormattedUrlEntity(symbolEntity.getStart(), symbolEntity.getEnd(),
+                "$" + symbolEntity.text, url, url);
     }
 }

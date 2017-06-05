@@ -22,6 +22,8 @@ import android.text.style.ClickableSpan;
 
 import com.twitter.sdk.android.core.models.HashtagEntity;
 import com.twitter.sdk.android.core.models.MediaEntity;
+import com.twitter.sdk.android.core.models.MentionEntity;
+import com.twitter.sdk.android.core.models.SymbolEntity;
 import com.twitter.sdk.android.core.models.UrlEntity;
 
 import org.junit.Test;
@@ -160,6 +162,88 @@ public class TweetTextLinkifierTest {
     }
 
     @Test
+    public void testLinkifyMentions_oneMentionEntity() {
+        final String mention = "TwitterDev";
+        final String fullMention = "@" + mention;
+        final String fullText = BASE_TEXT + " " + fullMention;
+        final MentionEntity mentionEntity = EntityFactory.newMentionEntity(fullText, mention);
+
+        final FormattedTweetText formattedText = new FormattedTweetText();
+        formattedText.text = fullText;
+        formattedText.mentionEntities.add(FormattedUrlEntity.createFormattedUrlEntity(
+                mentionEntity));
+
+        final CharSequence linkifiedText
+                = TweetTextLinkifier.linkifyUrls(formattedText, null, 0, 0, true, true);
+        final String displayUrlFromEntity = linkifiedText.subSequence(mentionEntity.getStart(),
+                mentionEntity.getEnd()).toString();
+        assertEquals(fullMention, displayUrlFromEntity);
+    }
+
+    @Test
+    public void testLinkifyMentions_linkClickListener() {
+        final String mention = "TwitterDev";
+        final String fullText = BASE_TEXT + " @" + mention;
+
+        final LinkClickListener mockClickListener = mock(LinkClickListener.class);
+
+        final MentionEntity mentionEntity = EntityFactory.newMentionEntity(fullText, mention);
+        final FormattedTweetText formattedText = new FormattedTweetText();
+        formattedText.text = fullText;
+        formattedText.mentionEntities.add(FormattedUrlEntity.createFormattedUrlEntity(
+                mentionEntity));
+
+        final SpannableStringBuilder linkifiedText = (SpannableStringBuilder)
+                TweetTextLinkifier.linkifyUrls(formattedText, mockClickListener, 0, 0, true,
+                        true);
+        final ClickableSpan[] clickables =
+                linkifiedText.getSpans(mentionEntity.getStart(), mentionEntity.getEnd(),
+                        ClickableSpan.class);
+        assertEquals(1, clickables.length);
+    }
+
+    @Test
+    public void testLinkifySymbols_oneSymbolEntity() {
+        final String symbol = "TWTR";
+        final String fullSymbol = "$" + symbol;
+        final String fullText = BASE_TEXT + " " + fullSymbol;
+        final SymbolEntity symbolEntity = EntityFactory.newSymbolEntity(fullText, symbol);
+
+        final FormattedTweetText formattedText = new FormattedTweetText();
+        formattedText.text = fullText;
+        formattedText.symbolEntities.add(FormattedUrlEntity.createFormattedUrlEntity(
+                symbolEntity));
+
+        final CharSequence linkifiedText
+                = TweetTextLinkifier.linkifyUrls(formattedText, null, 0, 0, true, true);
+        final String displayUrlFromEntity = linkifiedText.subSequence(symbolEntity.getStart(),
+                symbolEntity.getEnd()).toString();
+        assertEquals(fullSymbol, displayUrlFromEntity);
+    }
+
+    @Test
+    public void testLinkifySymbols_linkClickListener() {
+        final String symbol = "TWTR";
+        final String fullText = BASE_TEXT + " $" + symbol;
+
+        final LinkClickListener mockClickListener = mock(LinkClickListener.class);
+
+        final SymbolEntity symbolEntity = EntityFactory.newSymbolEntity(fullText, symbol);
+        final FormattedTweetText formattedText = new FormattedTweetText();
+        formattedText.text = fullText;
+        formattedText.symbolEntities.add(FormattedUrlEntity.createFormattedUrlEntity(
+                symbolEntity));
+
+        final SpannableStringBuilder linkifiedText = (SpannableStringBuilder)
+                TweetTextLinkifier.linkifyUrls(formattedText, mockClickListener, 0, 0, true,
+                        true);
+        final ClickableSpan[] clickables =
+                linkifiedText.getSpans(symbolEntity.getStart(), symbolEntity.getEnd(),
+                        ClickableSpan.class);
+        assertEquals(1, clickables.length);
+    }
+
+    @Test
     public void testLinkifyUrls_verifyPhotoOnlyStrippedFromEnd() {
         final FormattedTweetText formattedText = setupPicTwitterEntities();
         final FormattedMediaEntity lastPhotoUrl = formattedText.mediaEntities.get(0);
@@ -258,7 +342,10 @@ public class TweetTextLinkifierTest {
         final List<FormattedUrlEntity> urls = new ArrayList<>();
         final List<FormattedMediaEntity> media = new ArrayList<>();
         final List<FormattedUrlEntity> hashtags = new ArrayList<>();
-        assertEquals(urls, TweetTextLinkifier.mergeAndSortEntities(urls, media, hashtags));
+        final List<FormattedUrlEntity> mentions = new ArrayList<>();
+        final List<FormattedUrlEntity> symbols = new ArrayList<>();
+        assertEquals(urls, TweetTextLinkifier.mergeAndSortEntities(urls, media, hashtags,
+                mentions, symbols));
     }
 
     @Test
@@ -275,15 +362,29 @@ public class TweetTextLinkifierTest {
         media.add(adjustedPhoto);
 
         final List<FormattedUrlEntity> hashtags = new ArrayList<>();
-        final HashtagEntity hashtag = TestFixtures.newHashtagEntity("TwitterForGood", 31, 44);
+        final HashtagEntity hashtag = TestFixtures.newHashtagEntity("TwitterForGood", 0, 13);
         final FormattedUrlEntity adjustedHashtag =
                 FormattedUrlEntity.createFormattedUrlEntity(hashtag);
         hashtags.add(adjustedHashtag);
 
+        final List<FormattedUrlEntity> mentions = new ArrayList<>();
+        final MentionEntity mention = TestFixtures.newMentionEntity("twitterdev", 0, 9);
+        final FormattedUrlEntity adjustedMention =
+                FormattedUrlEntity.createFormattedUrlEntity(mention);
+        mentions.add(adjustedMention);
+
+        final List<FormattedUrlEntity> symbols = new ArrayList<>();
+        final SymbolEntity symbol = TestFixtures.newSymbolEntity("TWTR", 0, 3);
+        final FormattedUrlEntity adjustedSymbol =
+                FormattedUrlEntity.createFormattedUrlEntity(symbol);
+        symbols.add(adjustedSymbol);
+
         final List<? extends FormattedUrlEntity> combined
-                = TweetTextLinkifier.mergeAndSortEntities(urls, media, hashtags);
-        assertEquals(adjustedPhoto, combined.get(0));
-        assertEquals(adjustedUrl, combined.get(1));
-        assertEquals(adjustedHashtag, combined.get(2));
+                = TweetTextLinkifier.mergeAndSortEntities(urls, media, hashtags, mentions, symbols);
+        assertEquals(adjustedPhoto, combined.get(3));
+        assertEquals(adjustedUrl, combined.get(4));
+        assertEquals(adjustedHashtag, combined.get(0));
+        assertEquals(adjustedMention, combined.get(1));
+        assertEquals(adjustedSymbol, combined.get(2));
     }
 }

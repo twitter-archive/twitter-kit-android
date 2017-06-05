@@ -25,6 +25,8 @@ import com.twitter.sdk.android.core.models.Card;
 import com.twitter.sdk.android.core.models.HashtagEntity;
 import com.twitter.sdk.android.core.models.ImageValue;
 import com.twitter.sdk.android.core.models.MediaEntity;
+import com.twitter.sdk.android.core.models.MentionEntity;
+import com.twitter.sdk.android.core.models.SymbolEntity;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 import com.twitter.sdk.android.core.models.TweetEntities;
@@ -240,6 +242,14 @@ public final class TestFixtures {
 
     public static HashtagEntity newHashtagEntity(String text, int start, int end) {
         return new HashtagEntity(text, start, end);
+    }
+
+    public static MentionEntity newMentionEntity(String screenName, int start, int end) {
+        return new MentionEntity(100, "100", screenName, screenName, start, end);
+    }
+
+    public static SymbolEntity newSymbolEntity(String symbol, int start, int end) {
+        return new SymbolEntity(symbol, start, end);
     }
 
     public static List<Tweet> getTweetList(long count) {

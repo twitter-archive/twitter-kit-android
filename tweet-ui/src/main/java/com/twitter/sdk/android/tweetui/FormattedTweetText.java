@@ -30,10 +30,14 @@ class FormattedTweetText {
     final List<FormattedUrlEntity> urlEntities;
     final List<FormattedMediaEntity> mediaEntities;
     final List<FormattedUrlEntity> hashtagEntities;
+    final List<FormattedUrlEntity> mentionEntities;
+    final List<FormattedUrlEntity> symbolEntities;
 
     FormattedTweetText() {
         urlEntities = new ArrayList<>();
         mediaEntities = new ArrayList<>();
         hashtagEntities = new ArrayList<>();
+        mentionEntities = new ArrayList<>();
+        symbolEntities = new ArrayList<>();
     }
 }
