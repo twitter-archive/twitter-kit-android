@@ -280,6 +280,12 @@ public class Tweet implements Identifiable {
     @SerializedName("card")
     public final Card card;
 
+    private Tweet() {
+        this(null, null, null, TweetEntities.EMPTY, TweetEntities.EMPTY, 0, false, null, 0, "0",
+                null, 0, "0", 0, "0", null, null, false, null, 0, "0", null, 0, false, null, null,
+                null, null, false, null, false, null, null, null);
+    }
+
     public Tweet(Coordinates coordinates, String createdAt, Object currentUserRetweet,
             TweetEntities entities, TweetEntities extendedEntities, Integer favoriteCount,
             boolean favorited, String filterLevel, long id, String idStr,
@@ -293,8 +299,8 @@ public class Tweet implements Identifiable {
         this.coordinates = coordinates;
         this.createdAt = createdAt;
         this.currentUserRetweet = currentUserRetweet;
-        this.entities = entities;
-        this.extendedEntities = extendedEntities;
+        this.entities = entities == null ? TweetEntities.EMPTY : entities;
+        this.extendedEntities = extendedEntities == null ? TweetEntities.EMPTY : extendedEntities;
         this.favoriteCount = favoriteCount;
         this.favorited = favorited;
         this.filterLevel = filterLevel;

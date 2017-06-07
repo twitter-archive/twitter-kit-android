@@ -36,6 +36,10 @@ public class FilterValues {
     @SerializedName("urls")
     public final List<String> urls;
 
+    private FilterValues() {
+        this(null, null, null, null);
+    }
+
     public FilterValues(List<String> keywords, List<String> hashtags,
                         List<String> handles, List<String> urls) {
         this.keywords = ModelUtils.getSafeList(keywords);

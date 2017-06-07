@@ -68,6 +68,11 @@ public class TweetTest {
             // verify parsing of the individual objects.
             assertEquals(EXPECTED_CREATED_AT, tweet.createdAt);
             assertNotNull(tweet.entities);
+            assertNotNull(tweet.entities.hashtags);
+            assertNotNull(tweet.entities.media);
+            assertNotNull(tweet.entities.symbols);
+            assertNotNull(tweet.entities.urls);
+            assertNotNull(tweet.entities.userMentions);
             assertNotNull(tweet.user);
             assertTrue(tweet.retweeted);
             assertEquals(EXPECTED_ID, tweet.id);

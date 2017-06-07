@@ -31,6 +31,10 @@ public class Search {
     @SerializedName("search_metadata")
     public final SearchMetadata searchMetadata;
 
+    private Search() {
+        this(null, null);
+    }
+
     public Search(List<Tweet> tweets, SearchMetadata searchMetadata) {
         this.tweets = ModelUtils.getSafeList(tweets);
         this.searchMetadata = searchMetadata;

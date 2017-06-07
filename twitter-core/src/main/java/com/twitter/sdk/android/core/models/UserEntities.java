@@ -43,9 +43,12 @@ public class UserEntities {
         @SerializedName("urls")
         public final List<UrlEntity> urls;
 
+        private UrlEntities() {
+            this(null);
+        }
+
         public UrlEntities(List<UrlEntity> urls) {
             this.urls = ModelUtils.getSafeList(urls);
         }
-
     }
 }

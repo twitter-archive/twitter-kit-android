@@ -45,6 +45,10 @@ public class VideoInfo implements Serializable {
     @SerializedName("variants")
     public final List<Variant> variants;
 
+    private VideoInfo() {
+        this(null, 0, null);
+    }
+
     public VideoInfo(List<Integer> aspectRatio, long durationMillis, List<Variant> variants) {
         this.aspectRatio = ModelUtils.getSafeList(aspectRatio);
         this.durationMillis = durationMillis;

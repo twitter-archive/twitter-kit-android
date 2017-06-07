@@ -26,6 +26,8 @@ import java.util.List;
  */
 public class TweetEntities {
 
+    static final TweetEntities EMPTY = new TweetEntities(null, null, null, null, null);
+
     /**
      * Represents URLs included in the text of a Tweet or within textual fields of a user object.
      */
@@ -55,6 +57,10 @@ public class TweetEntities {
      */
     @SerializedName("symbols")
     public final List<SymbolEntity> symbols;
+
+    private TweetEntities() {
+        this(null, null, null, null, null);
+    }
 
     public TweetEntities(List<UrlEntity> urls, List<MentionEntity> userMentions,
             List<MediaEntity> media, List<HashtagEntity> hashtags, List<SymbolEntity> symbols) {

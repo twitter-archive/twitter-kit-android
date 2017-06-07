@@ -33,6 +33,7 @@ import java.io.InputStreamReader;
 import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 @RunWith(RobolectricTestRunner.class)
@@ -84,5 +85,22 @@ public class TweetEntitiesTest {
         } finally {
             CommonUtils.closeQuietly(reader);
         }
+    }
+
+    @Test
+    public void testDeserialization_noEntities() throws IOException {
+        final TweetEntities tweetEntities = gson.fromJson("{\"urls\":[]}", TweetEntities.class);
+        // We simply assert that we parsed it successfully and rely on our other unit tests to
+        // verify parsing of the individual objects.
+        assertNotNull(tweetEntities.urls);
+        assertEquals(0, tweetEntities.urls.size());
+        assertNotNull(tweetEntities.userMentions);
+        assertEquals(0, tweetEntities.userMentions.size());
+        assertNotNull(tweetEntities.media);
+        assertEquals(0, tweetEntities.media.size());
+        assertNotNull(tweetEntities.hashtags);
+        assertEquals(0, tweetEntities.hashtags.size());
+        assertNotNull(tweetEntities.symbols);
+        assertEquals(0, tweetEntities.symbols.size());
     }
 }

@@ -25,6 +25,10 @@ public class ApiErrors {
     @SerializedName("errors")
     public final List<ApiError> errors;
 
+    private ApiErrors() {
+        this(null);
+    }
+
     public ApiErrors(List<ApiError> errors) {
         this.errors = ModelUtils.getSafeList(errors);
     }

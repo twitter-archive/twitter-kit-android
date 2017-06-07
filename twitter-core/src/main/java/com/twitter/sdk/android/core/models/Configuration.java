@@ -55,6 +55,10 @@ public class Configuration {
     @SerializedName("short_url_length_https")
     public final int shortUrlLengthHttps;
 
+    private Configuration() {
+        this(0, null, 0, null, 0);
+    }
+
     public Configuration(int dmTextCharacterLimit, List<String> nonUsernamePaths,
             long photoSizeLimit, MediaEntity.Sizes photoSizes, int shortUrlLengthHttps) {
         this.dmTextCharacterLimit = dmTextCharacterLimit;

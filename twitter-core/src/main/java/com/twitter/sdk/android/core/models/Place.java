@@ -113,6 +113,10 @@ public class Place {
         @SerializedName("type")
         public final String type;
 
+        private BoundingBox() {
+            this(null, null);
+        }
+
         public BoundingBox(List<List<List<Double>>> coordinates, String type) {
             this.coordinates = ModelUtils.getSafeList(coordinates);
             this.type = type;
