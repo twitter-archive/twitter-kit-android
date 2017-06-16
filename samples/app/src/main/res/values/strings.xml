@@ -35,6 +35,7 @@
     <string name="button_timelines_activity">Timelines</string>
     <string name="search_timeline_title">Search Timeline</string>
     <string name="user_timeline_title">User Timeline</string>
+    <string name="user_recycler_view_timeline_title">User RecyclerView Timeline</string>
     <string name="collection_timeline_title">Collection Timeline</string>
     <string name="list_timeline_title">List Timeline</string>
     <string name="fixed_timeline">Fixed Timeline</string>

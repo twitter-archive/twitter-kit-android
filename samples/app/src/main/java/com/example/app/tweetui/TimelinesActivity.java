@@ -34,8 +34,9 @@ import com.example.app.R;
 public class TimelinesActivity extends AppCompatActivity {
     private static final int PAGE_SEARCH = 0;
     private static final int PAGE_USER = 1;
-    private static final int PAGE_COLLECTION = 2;
-    private static final int PAGE_LIST = 3;
+    private static final int PAGE_USER_RECYCLER_VIEW = 2;
+    private static final int PAGE_COLLECTION = 3;
+    private static final int PAGE_LIST = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,7 @@ public class TimelinesActivity extends AppCompatActivity {
         private static final int[] PAGE_TITLE_RES_IDS = {
                 R.string.search_timeline_title,
                 R.string.user_timeline_title,
+                R.string.user_recycler_view_timeline_title,
                 R.string.collection_timeline_title,
                 R.string.list_timeline_title,
         };
@@ -73,6 +75,8 @@ public class TimelinesActivity extends AppCompatActivity {
                     return SearchTimelineFragment.newInstance();
                 case PAGE_USER:
                     return UserTimelineFragment.newInstance();
+                case PAGE_USER_RECYCLER_VIEW:
+                    return UserTimelineRecyclerViewFragment.newInstance();
                 case PAGE_COLLECTION:
                     return CollectionTimelineFragment.newInstance();
                 case PAGE_LIST:
@@ -94,6 +98,8 @@ public class TimelinesActivity extends AppCompatActivity {
                     return resources.getString(PAGE_TITLE_RES_IDS[PAGE_SEARCH]);
                 case PAGE_USER:
                     return resources.getString(PAGE_TITLE_RES_IDS[PAGE_USER]);
+                case PAGE_USER_RECYCLER_VIEW:
+                    return resources.getString(PAGE_TITLE_RES_IDS[PAGE_USER_RECYCLER_VIEW]);
                 case PAGE_COLLECTION:
                     return resources.getString(PAGE_TITLE_RES_IDS[PAGE_COLLECTION]);
                 case PAGE_LIST:

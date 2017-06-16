@@ -18,7 +18,8 @@
 package com.twitter.sdk.android.tweetui;
 
 import android.content.Context;
-import android.view.View;
+import android.database.DataSetObserver;
+import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import com.google.gson.Gson;
@@ -33,67 +34,130 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TweetTimelineListAdapter is a ListAdapter which can provide Timeline Tweets to ListViews.
+ * TweetTimelineRecyclerViewAdapter is a RecyclerView adapter which can provide Timeline Tweets to
+ * RecyclerViews.
  */
-public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
+public class TweetTimelineRecyclerViewAdapter extends
+        RecyclerView.Adapter<TweetTimelineRecyclerViewAdapter.TweetViewHolder> {
+
+    protected final Context context;
+    protected final TimelineDelegate<Tweet> timelineDelegate;
     protected Callback<Tweet> actionCallback;
     protected final int styleResId;
     protected TweetUi tweetUi;
+    private int previousCount;
 
     static final String TOTAL_FILTERS_JSON_PROP = "total_filters";
     static final String DEFAULT_FILTERS_JSON_MSG = "{\"total_filters\":0}";
     final Gson gson = new Gson();
 
     /**
-     * Constructs a TweetTimelineListAdapter for the given Tweet Timeline.
+     * Constructs a TweetTimelineRecyclerViewAdapter for a RecyclerView implementation of a timeline
+     *
      * @param context the context for row views.
      * @param timeline a Timeline&lt;Tweet&gt; providing access to Tweet data items.
      * @throws java.lang.IllegalArgumentException if context is null
      */
-    public TweetTimelineListAdapter(Context context, Timeline<Tweet> timeline) {
+    public TweetTimelineRecyclerViewAdapter(Context context, Timeline<Tweet> timeline) {
         this(context, timeline, R.style.tw__TweetLightStyle, null);
     }
 
-    TweetTimelineListAdapter(Context context, Timeline<Tweet> timeline, int styleResId,
-                             Callback<Tweet> cb) {
+    TweetTimelineRecyclerViewAdapter(Context context, Timeline<Tweet> timeline, int styleResId,
+                                     Callback<Tweet> cb) {
         this(context, new TimelineDelegate<>(timeline), styleResId, cb, TweetUi.getInstance());
     }
 
-    TweetTimelineListAdapter(Context context, TimelineDelegate<Tweet> delegate, int styleResId,
-                             Callback<Tweet> cb, TweetUi tweetUi) {
-        super(context, delegate);
-        this.styleResId = styleResId;
-        this.actionCallback = new ReplaceTweetCallback(delegate, cb);
+    TweetTimelineRecyclerViewAdapter(Context context, TimelineDelegate<Tweet> timelineDelegate,
+                                     int styleResId, Callback<Tweet> cb, TweetUi tweetUi) {
+        this(context, timelineDelegate, styleResId);
+        actionCallback = new ReplaceTweetCallback(timelineDelegate, cb);
         this.tweetUi = tweetUi;
-
         scribeTimelineImpression();
     }
 
-    /**
-     * Returns a CompactTweetView by default. May be overridden to provide another view for the
-     * Tweet item. If Tweet actions are enabled, be sure to call setOnActionCallback(actionCallback)
-     * on each new subclass of BaseTweetView to ensure proper success and failure handling
-     * for Tweet actions (favorite, unfavorite).
-     */
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View rowView = convertView;
-        final Tweet tweet = getItem(position);
-        if (rowView == null) {
-            final BaseTweetView tv = new CompactTweetView(context, tweet, styleResId);
-            tv.setOnActionCallback(actionCallback);
-            rowView = tv;
-        } else {
-            ((BaseTweetView) rowView).setTweet(tweet);
+    TweetTimelineRecyclerViewAdapter(Context context,
+                                     final TimelineDelegate<Tweet> timelineDelegate,
+                                     int styleResId) {
+        if (context == null) {
+            throw new IllegalArgumentException("Context must not be null");
         }
-        return rowView;
+        this.context = context;
+        this.timelineDelegate = timelineDelegate;
+        this.styleResId = styleResId;
+
+        this.timelineDelegate.refresh(new Callback<TimelineResult<Tweet>>() {
+            @Override
+            public void success(Result<TimelineResult<Tweet>> result) {
+                notifyDataSetChanged();
+                previousCount = TweetTimelineRecyclerViewAdapter.this.timelineDelegate.getCount();
+            }
+
+            @Override
+            public void failure(TwitterException exception) {
+
+            }
+        });
+
+        final DataSetObserver dataSetObserver = new DataSetObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                if (previousCount == 0) {
+                    notifyDataSetChanged();
+                } else {
+                    notifyItemRangeInserted(previousCount,
+                            TweetTimelineRecyclerViewAdapter.this.timelineDelegate.getCount()
+                                    - previousCount);
+                }
+                previousCount = TweetTimelineRecyclerViewAdapter.this.timelineDelegate.getCount();
+            }
+
+            @Override
+            public void onInvalidated() {
+                notifyDataSetChanged();
+                super.onInvalidated();
+            }
+        };
+
+        this.timelineDelegate.registerDataSetObserver(dataSetObserver);
+    }
+
+    public void refresh(Callback<TimelineResult<Tweet>> cb) {
+        timelineDelegate.refresh(cb);
+        previousCount = 0;
+    }
+
+    @Override
+    public TweetViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        final Tweet tweet = timelineDelegate.getItem(0);
+        final CompactTweetView compactTweetView = new CompactTweetView(context, tweet, styleResId);
+        compactTweetView.setOnActionCallback(actionCallback);
+        return new TweetViewHolder(compactTweetView);
+    }
+
+    @Override
+    public void onBindViewHolder(TweetViewHolder holder, int position) {
+        final Tweet tweet = timelineDelegate.getItem(position);
+        final CompactTweetView compactTweetView = (CompactTweetView) holder.itemView;
+        compactTweetView.setTweet(tweet);
+    }
+
+    @Override
+    public int getItemCount() {
+        return timelineDelegate.getCount();
+    }
+
+    static final class TweetViewHolder extends RecyclerView.ViewHolder {
+        TweetViewHolder(CompactTweetView itemView) {
+            super(itemView);
+        }
     }
 
     private void scribeTimelineImpression() {
         final String jsonMessage;
-        if (delegate instanceof FilterTimelineDelegate) {
+        if (timelineDelegate instanceof FilterTimelineDelegate) {
             final FilterTimelineDelegate filterTimelineDelegate = (
-                    FilterTimelineDelegate) delegate;
+                    FilterTimelineDelegate) timelineDelegate;
             final TimelineFilter timelineFilter = filterTimelineDelegate.timelineFilter;
             jsonMessage = getJsonMessage(timelineFilter.totalFilters());
         } else {
@@ -104,7 +168,7 @@ public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
         final List<ScribeItem> items = new ArrayList<>();
         items.add(scribeItem);
 
-        final String timelineType = getTimelineType(delegate.getTimeline());
+        final String timelineType = getTimelineType(timelineDelegate.getTimeline());
         tweetUi.scribe(ScribeConstants.getSyndicatedSdkTimelineNamespace(timelineType));
         tweetUi.scribe(ScribeConstants.getTfwClientTimelineNamespace(timelineType), items);
     }
@@ -152,7 +216,7 @@ public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
     }
 
     /**
-     * TweetTimelineListAdapter Builder
+     * TweetTimelineRecyclerViewAdapter Builder
      */
     public static class Builder {
         private Context context;
@@ -173,7 +237,7 @@ public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
          * Sets the Tweet timeline data source.
          * @param timeline Timeline of Tweets
          */
-        public Builder setTimeline(Timeline<Tweet> timeline) {
+        public TweetTimelineRecyclerViewAdapter.Builder setTimeline(Timeline<Tweet> timeline) {
             this.timeline = timeline;
             return this;
         }
@@ -182,7 +246,7 @@ public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
          * Sets the Tweet view style by resource id.
          * @param styleResId resource id of the Tweet view style
          */
-        public Builder setViewStyle(int styleResId) {
+        public TweetTimelineRecyclerViewAdapter.Builder setViewStyle(int styleResId) {
             this.styleResId = styleResId;
             return this;
         }
@@ -191,7 +255,8 @@ public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
          * Sets the callback to call when a Tweet action is performed on a Tweet view.
          * @param actionCallback called when a Tweet action is performed.
          */
-        public Builder setOnActionCallback(Callback<Tweet> actionCallback) {
+        public TweetTimelineRecyclerViewAdapter.Builder setOnActionCallback(
+                Callback<Tweet> actionCallback) {
             this.actionCallback = actionCallback;
             return this;
         }
@@ -200,23 +265,25 @@ public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
          * Sets the TimelineFilter used to filter tweets from timeline.
          * @param timelineFilter timelineFilter for timeline
          */
-        public Builder setTimelineFilter(TimelineFilter timelineFilter) {
+        public TweetTimelineRecyclerViewAdapter.Builder setTimelineFilter(
+                TimelineFilter timelineFilter) {
             this.timelineFilter = timelineFilter;
             return this;
         }
 
         /**
-         * Builds a TweetTimelineListAdapter from Builder parameters.
+         * Builds a TweetTimelineRecyclerViewAdapter from Builder parameters.
          * @return a TweetTimelineListAdpater
          */
-        public TweetTimelineListAdapter build() {
+        public TweetTimelineRecyclerViewAdapter build() {
             if (timelineFilter == null) {
-                return new TweetTimelineListAdapter(context, timeline, styleResId, actionCallback);
+                return new TweetTimelineRecyclerViewAdapter(context, timeline, styleResId,
+                        actionCallback);
             } else {
-                final FilterTimelineDelegate delegate =
-                        new FilterTimelineDelegate(timeline, timelineFilter);
-                return new TweetTimelineListAdapter(context, delegate, styleResId, actionCallback,
-                        TweetUi.getInstance());
+                final FilterTimelineDelegate delegate = new FilterTimelineDelegate(timeline,
+                        timelineFilter);
+                return new TweetTimelineRecyclerViewAdapter(context, delegate, styleResId,
+                        actionCallback, TweetUi.getInstance());
             }
         }
     }
