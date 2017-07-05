@@ -25,7 +25,6 @@ subprojects { Project subproject ->
         }
         dependencies {
             classpath dependency.androidGradlePlugin
-            classpath 'io.fabric.gradle.unity:unity:0.0.1'
         }
     }
 
