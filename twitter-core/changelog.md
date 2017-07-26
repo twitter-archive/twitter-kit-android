@@ -3,6 +3,11 @@
 
 ## Unreleased
 
+## v3.1.0
+
+* Add private constructor for GSON
+* Add support to linkify hashtags
+
 ## v3.0.0
 
 * Removed dependency on Fabric

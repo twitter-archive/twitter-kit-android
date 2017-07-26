@@ -3,6 +3,11 @@
 
 ## Unreleased
 
+## v3.1.0
+
+* Added support for RecyclerView
+* Linkified profile image and entities (hashtags, user mentions, and symbols)
+
 ## v3.0.0
 
 * Fixed crash when liking a quote Tweet

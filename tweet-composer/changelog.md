@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+## v3.1.0
+
+* Bumped version number
+
 ## v3.0.0
 
 * App card creation removed from composer
