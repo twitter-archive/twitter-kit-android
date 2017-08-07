@@ -29,6 +29,7 @@ import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
 import com.twitter.sdk.android.core.models.Tweet;
+import com.twitter.sdk.android.core.models.TweetBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,8 +63,8 @@ public class TweetTimelineRecyclerViewAdapter extends
         this(context, timeline, R.style.tw__TweetLightStyle, null);
     }
 
-    TweetTimelineRecyclerViewAdapter(Context context, Timeline<Tweet> timeline, int styleResId,
-                                     Callback<Tweet> cb) {
+    protected TweetTimelineRecyclerViewAdapter(Context context, Timeline<Tweet> timeline,
+                                               int styleResId, Callback<Tweet> cb) {
         this(context, new TimelineDelegate<>(timeline), styleResId, cb, TweetUi.getInstance());
     }
 
@@ -129,7 +130,7 @@ public class TweetTimelineRecyclerViewAdapter extends
 
     @Override
     public TweetViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final Tweet tweet = timelineDelegate.getItem(0);
+        final Tweet tweet = new TweetBuilder().build();
         final CompactTweetView compactTweetView = new CompactTweetView(context, tweet, styleResId);
         compactTweetView.setOnActionCallback(actionCallback);
         return new TweetViewHolder(compactTweetView);
@@ -147,8 +148,8 @@ public class TweetTimelineRecyclerViewAdapter extends
         return timelineDelegate.getCount();
     }
 
-    static final class TweetViewHolder extends RecyclerView.ViewHolder {
-        TweetViewHolder(CompactTweetView itemView) {
+    protected static final class TweetViewHolder extends RecyclerView.ViewHolder {
+        public TweetViewHolder(CompactTweetView itemView) {
             super(itemView);
         }
     }
