@@ -97,5 +97,13 @@
             </intent-filter>
         </receiver>
 
+        <receiver
+            android:name=".tweetcomposer.TweetCancelReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.twitter.sdk.android.tweetcomposer.TWEET_COMPOSE_CANCEL"/>
+            </intent-filter>
+        </receiver>
+
     </application>
 </manifest>

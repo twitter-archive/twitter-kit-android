@@ -35,6 +35,7 @@ public class ComposerActivity extends Activity {
     static final String EXTRA_HASHTAGS = "EXTRA_HASHTAGS";
     private static final int PLACEHOLDER_ID = -1;
     private static final String PLACEHOLDER_SCREEN_NAME = "";
+    private ComposerController composerController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,8 @@ public class ComposerActivity extends Activity {
         setTheme(themeResId);
         setContentView(R.layout.tw__activity_composer);
         final ComposerView composerView = (ComposerView) findViewById(R.id.tw__composer_view);
-        new ComposerController(composerView, session, imageUri, text, hashtags, new FinisherImpl());
+        composerController = new ComposerController(composerView, session, imageUri, text, hashtags,
+                new FinisherImpl());
     }
 
     interface Finisher {
@@ -65,6 +67,12 @@ public class ComposerActivity extends Activity {
         public void finish() {
             ComposerActivity.this.finish();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        composerController.onClose();
     }
 
     public static class Builder {

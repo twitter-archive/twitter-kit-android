@@ -35,6 +35,8 @@ import org.robolectric.RobolectricTestRunner;
 
 import retrofit2.Call;
 
+import static com.twitter.sdk.android.tweetcomposer.TweetUploadService.TWEET_COMPOSE_CANCEL;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -210,5 +212,17 @@ public class ComposerControllerTest {
         // - scribes a Tweet Composer Cancel click
         verify(mockFinisher).finish();
         verify(mockComposerScribeClient).click(eq(ScribeConstants.SCRIBE_CANCEL_ELEMENT));
+    }
+
+    @Test
+    public void testSendCancelBroadcast() {
+        controller = new ComposerController(mockComposerView, mockTwitterSession, Uri.EMPTY,
+                ANY_TEXT, ANY_HASHTAG, mockFinisher, mockDependencyProvider);
+        final ArgumentCaptor<Intent> intentCaptor = ArgumentCaptor.forClass(Intent.class);
+        controller.sendCancelBroadcast();
+        verify(mockContext).sendBroadcast(intentCaptor.capture());
+
+        final Intent capturedIntent = intentCaptor.getValue();
+        assertEquals(TWEET_COMPOSE_CANCEL, capturedIntent.getAction());
     }
 }

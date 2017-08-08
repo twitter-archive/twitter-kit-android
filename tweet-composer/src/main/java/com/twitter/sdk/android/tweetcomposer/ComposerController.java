@@ -30,6 +30,8 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.models.User;
 
+import static com.twitter.sdk.android.tweetcomposer.TweetUploadService.TWEET_COMPOSE_CANCEL;
+
 class ComposerController {
     final ComposerView composerView;
     final TwitterSession session;
@@ -130,9 +132,14 @@ class ComposerController {
 
         @Override
         public void onCloseClick() {
-            dependencyProvider.getScribeClient().click(ScribeConstants.SCRIBE_CANCEL_ELEMENT);
-            finisher.finish();
+            onClose();
         }
+    }
+
+    void onClose() {
+        dependencyProvider.getScribeClient().click(ScribeConstants.SCRIBE_CANCEL_ELEMENT);
+        sendCancelBroadcast();
+        finisher.finish();
     }
 
     int tweetTextLength(String text) {
@@ -141,6 +148,12 @@ class ComposerController {
         }
 
         return dependencyProvider.getTweetValidator().getTweetLength(text);
+    }
+
+    void sendCancelBroadcast() {
+        final Intent intent = new Intent(TWEET_COMPOSE_CANCEL);
+        intent.setPackage(composerView.getContext().getPackageName());
+        composerView.getContext().sendBroadcast(intent);
     }
 
     static int remainingCharCount(int charCount) {

@@ -42,6 +42,8 @@ public class TweetUploadService extends IntentService {
             = "com.twitter.sdk.android.tweetcomposer.UPLOAD_SUCCESS";
     public static final String UPLOAD_FAILURE
             = "com.twitter.sdk.android.tweetcomposer.UPLOAD_FAILURE";
+    public static final String TWEET_COMPOSE_CANCEL =
+            "com.twitter.sdk.android.tweetcomposer.TWEET_COMPOSE_CANCEL";
     public static final String EXTRA_TWEET_ID = "EXTRA_TWEET_ID";
     public static final String EXTRA_RETRY_INTENT = "EXTRA_RETRY_INTENT";
 
