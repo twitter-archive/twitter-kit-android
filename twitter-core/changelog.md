@@ -3,6 +3,10 @@
 
 ## Unreleased
 
+## v3.1.1
+
+* Bumped version number
+
 ## v3.1.0
 
 * Add private constructor for GSON

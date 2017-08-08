@@ -3,6 +3,10 @@
 
 ## Unreleased
 
+## v3.1.1
+
+* Modified TweetTimelineRecyclerViewAdapter to allow user to override the ViewHolder
+
 ## v3.1.0
 
 * Added support for RecyclerView

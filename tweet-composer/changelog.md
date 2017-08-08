@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+## v3.1.1
+
+* Send broadcast when Tweet compose is cancelled.
+
 ## v3.1.0
 
 * Bumped version number
