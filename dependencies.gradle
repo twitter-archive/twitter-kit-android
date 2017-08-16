@@ -43,6 +43,7 @@ ext {
             okHttp                     : 'com.squareup.okhttp3:okhttp:3.4.2',
             okHttpInterceptor          : 'com.squareup.okhttp3:logging-interceptor:3.4.2',
             design                     : 'com.android.support:design:23.1.1',
-            tweetText                  : 'com.twitter:twitter-text:1.14.3'
+            tweetText                  : 'com.twitter:twitter-text:1.14.3',
+            recyclerview               : 'com.android.support:recyclerview-v7:23.1.1'
     ]
 }

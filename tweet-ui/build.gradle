@@ -70,6 +70,7 @@ dependencies {
 
     compile dependency.picasso
     compile dependency.supportV4
+    compile dependency.recyclerview
 
     androidTestCompile dependency.retrofitMock
     androidTestCompile dependency.mockito
