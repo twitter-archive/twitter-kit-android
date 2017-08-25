@@ -72,7 +72,11 @@ public class RoundedImageView extends ImageView {
 
     @Override
     public void setImageBitmap(Bitmap bitmap) {
-        setImageDrawable(new BitmapDrawable(getResources(), transform(bitmap)));
+        if (bitmap != null) {
+            setImageDrawable(new BitmapDrawable(getResources(), transform(bitmap)));
+        } else {
+            setImageDrawable(null);
+        }
     }
 
     private Bitmap transform(Bitmap source) {
