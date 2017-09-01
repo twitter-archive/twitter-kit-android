@@ -26,6 +26,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.Button;
 
@@ -136,7 +137,10 @@ public class TwitterLoginButton extends Button {
      * context.
      */
     protected Activity getActivity() {
-        if (getContext() instanceof Activity) {
+        if (getContext() instanceof ContextThemeWrapper &&
+                ((ContextThemeWrapper) getContext()).getBaseContext() instanceof Activity) {
+            return (Activity) ((ContextThemeWrapper) getContext()).getBaseContext();
+        } else if (getContext() instanceof Activity) {
             return (Activity) getContext();
         } else if (isInEditMode()) {
             return null;
