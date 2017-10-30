@@ -102,29 +102,18 @@ class AdvertisingInfoProvider {
         return new AdvertisingInfoReflectionStrategy(context);
     }
 
-    private AdvertisingInfoStrategy getServiceStrategy() {
-        return new AdvertisingInfoServiceStrategy(context);
-    }
-
     private boolean isInfoValid(AdvertisingInfo advertisingInfo) {
         return advertisingInfo != null && !TextUtils.isEmpty(advertisingInfo.advertisingId);
     }
 
     private AdvertisingInfo getAdvertisingInfoFromStrategies() {
-        AdvertisingInfo infoToReturn;
+        final AdvertisingInfo infoToReturn;
 
-        AdvertisingInfoStrategy adInfoStrategy = getReflectionStrategy();
+        final AdvertisingInfoStrategy adInfoStrategy = getReflectionStrategy();
         infoToReturn = adInfoStrategy.getAdvertisingInfo();
 
         if (!isInfoValid(infoToReturn)) {
-            adInfoStrategy = getServiceStrategy();
-            infoToReturn = adInfoStrategy.getAdvertisingInfo();
-
-            if (!isInfoValid(infoToReturn)) {
-                Twitter.getLogger().d(Twitter.TAG, "AdvertisingInfo not present");
-            } else {
-                Twitter.getLogger().d(Twitter.TAG, "Using AdvertisingInfo from Service Provider");
-            }
+            Twitter.getLogger().d(Twitter.TAG, "AdvertisingInfo not present");
         } else {
             Twitter.getLogger().d(Twitter.TAG, "Using AdvertisingInfo from Reflection Provider");
         }
