@@ -47,7 +47,7 @@ class TimelineDelegate<T extends Identifiable> {
      * @param timeline Timeline source
      * @throws java.lang.IllegalArgumentException if timeline is null
      */
-    public TimelineDelegate(Timeline<T> timeline) {
+    TimelineDelegate(Timeline<T> timeline) {
         this(timeline, null, null);
     }
 

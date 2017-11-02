@@ -79,7 +79,7 @@ class ScribeFilesSender implements FilesSender {
     private final ExecutorService executorService;
     private final IdManager idManager;
 
-    public ScribeFilesSender(Context context, ScribeConfig scribeConfig, long ownerId,
+    ScribeFilesSender(Context context, ScribeConfig scribeConfig, long ownerId,
             TwitterAuthConfig authConfig,
             SessionManager<? extends Session<TwitterAuthToken>> sessionManager,
             GuestSessionProvider guestSessionProvider, ExecutorService executorService,
@@ -173,7 +173,7 @@ class ScribeFilesSender implements FilesSender {
     synchronized ScribeService getScribeService() {
         if (scribeService.get() == null) {
             final Session session = getSession(ownerId);
-            OkHttpClient client;
+            final OkHttpClient client;
             if (isValidSession(session)) {
                 client = new OkHttpClient.Builder()
                         .certificatePinner(OkHttpClientHelper.getCertificatePinner())

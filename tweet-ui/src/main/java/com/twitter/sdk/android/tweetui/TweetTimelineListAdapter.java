@@ -92,8 +92,7 @@ public class TweetTimelineListAdapter extends TimelineListAdapter<Tweet> {
     private void scribeTimelineImpression() {
         final String jsonMessage;
         if (delegate instanceof FilterTimelineDelegate) {
-            final FilterTimelineDelegate filterTimelineDelegate = (
-                    FilterTimelineDelegate) delegate;
+            final FilterTimelineDelegate filterTimelineDelegate = (FilterTimelineDelegate) delegate;
             final TimelineFilter timelineFilter = filterTimelineDelegate.timelineFilter;
             jsonMessage = getJsonMessage(timelineFilter.totalFilters());
         } else {

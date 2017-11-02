@@ -54,7 +54,7 @@ class OAuth1aParameters {
     private final String url;
     private final Map<String, String> postParams;
 
-    public OAuth1aParameters(TwitterAuthConfig authConfig, TwitterAuthToken authToken,
+    OAuth1aParameters(TwitterAuthConfig authConfig, TwitterAuthToken authToken,
             String callback, String method, String url, Map<String, String> postParams) {
         this.authConfig = authConfig;
         this.authToken = authToken;

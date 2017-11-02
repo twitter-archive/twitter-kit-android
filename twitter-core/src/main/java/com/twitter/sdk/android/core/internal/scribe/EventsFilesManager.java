@@ -66,7 +66,7 @@ public abstract class EventsFilesManager<T> {
      *                              {@link #getMaxFilesToKeep()}
      * @throws IOException
      */
-    public EventsFilesManager(Context context, EventTransform<T> transform,
+    EventsFilesManager(Context context, EventTransform<T> transform,
             CurrentTimeProvider currentTimeProvider, EventsStorage eventStorage,
             int defaultMaxFilesToKeep)
             throws IOException {
@@ -245,7 +245,7 @@ public abstract class EventsFilesManager<T> {
         final File file;
         final long timestamp;
 
-        public FileWithTimestamp(File file, long timestamp) {
+        FileWithTimestamp(File file, long timestamp) {
             this.file = file;
             this.timestamp = timestamp;
         }

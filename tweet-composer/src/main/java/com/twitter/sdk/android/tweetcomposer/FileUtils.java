@@ -44,7 +44,7 @@ class FileUtils {
             final String[] parts = documentId.split(":");
             final String type = parts[0];
 
-            Uri contentUri;
+            final Uri contentUri;
             if ("image".equals(type)) {
                 contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
             } else {

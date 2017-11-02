@@ -97,11 +97,11 @@ public class ClickableLinkSpanTest {
     }
 
     private static class TestClickableLinkSpan extends ClickableLinkSpan {
-        public TestClickableLinkSpan(int selectedColor) {
+        TestClickableLinkSpan(int selectedColor) {
             super(selectedColor, 0, false, false);
         }
 
-        public TestClickableLinkSpan(int selectedColor, int linkColor, boolean underlined) {
+        TestClickableLinkSpan(int selectedColor, int linkColor, boolean underlined) {
             super(selectedColor, linkColor, true, underlined);
         }
 

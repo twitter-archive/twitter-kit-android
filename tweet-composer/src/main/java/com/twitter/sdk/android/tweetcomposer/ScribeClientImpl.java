@@ -29,7 +29,7 @@ import java.util.List;
 class ScribeClientImpl implements ScribeClient {
     private final DefaultScribeClient scribeClient;
 
-    public ScribeClientImpl(DefaultScribeClient scribeClient) {
+    ScribeClientImpl(DefaultScribeClient scribeClient) {
         this.scribeClient = scribeClient;
     }
 

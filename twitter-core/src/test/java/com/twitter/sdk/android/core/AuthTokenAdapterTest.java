@@ -188,7 +188,7 @@ public class AuthTokenAdapterTest  {
     private static class AuthTokenWrapper {
         final AuthToken authToken;
 
-        public AuthTokenWrapper(AuthToken authToken) {
+        AuthTokenWrapper(AuthToken authToken) {
             this.authToken = authToken;
         }
     }

@@ -125,7 +125,7 @@ public final class TweetUtils {
             return null;
         }
 
-        String permalink;
+        final String permalink;
         if (TextUtils.isEmpty(screenName)) {
             permalink = String.format(Locale.US, TWEET_URL, UNKNOWN_SCREEN_NAME, tweetId);
         } else {
@@ -140,7 +140,7 @@ public final class TweetUtils {
      * @return           Can be null, otherwise a resolvable permalink to a Profile.
      */
     static String getProfilePermalink(String screenName) {
-        String permalink;
+        final String permalink;
         if (TextUtils.isEmpty(screenName)) {
             permalink = String.format(Locale.US, PROFILE_URL, UNKNOWN_SCREEN_NAME);
         } else {

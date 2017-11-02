@@ -31,12 +31,12 @@ class TimelineStateHolder {
     // true while a request is in flight, false otherwise
     public final AtomicBoolean requestInFlight = new AtomicBoolean(false);
 
-    public TimelineStateHolder() {
+    TimelineStateHolder() {
         // intentionally blank
     }
 
     /* for testing */
-    public TimelineStateHolder(TimelineCursor nextCursor, TimelineCursor previousCursor) {
+    TimelineStateHolder(TimelineCursor nextCursor, TimelineCursor previousCursor) {
         this.nextCursor = nextCursor;
         this.previousCursor = previousCursor;
     }

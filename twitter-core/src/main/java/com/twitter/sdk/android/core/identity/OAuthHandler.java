@@ -33,7 +33,7 @@ class OAuthHandler extends AuthHandler {
      * @param authConfig The {@link com.twitter.sdk.android.core.TwitterAuthConfig}.
      * @param callback   The listener to callback when authorization completes.
      */
-    public OAuthHandler(TwitterAuthConfig authConfig, Callback<TwitterSession> callback,
+    OAuthHandler(TwitterAuthConfig authConfig, Callback<TwitterSession> callback,
             int requestCode) {
         super(authConfig, callback, requestCode);
     }

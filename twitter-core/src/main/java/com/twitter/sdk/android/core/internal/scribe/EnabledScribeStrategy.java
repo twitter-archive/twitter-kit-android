@@ -25,7 +25,7 @@ class EnabledScribeStrategy extends EnabledEventsStrategy<ScribeEvent> {
 
     private final FilesSender filesSender;
 
-    public EnabledScribeStrategy(Context context, ScheduledExecutorService executorService,
+    EnabledScribeStrategy(Context context, ScheduledExecutorService executorService,
             ScribeFilesManager filesManager, ScribeConfig config, ScribeFilesSender filesSender) {
         super(context, executorService, filesManager);
         this.filesSender = filesSender;

@@ -91,7 +91,7 @@ public class EventsHandlerTest {
     }
 
     class MockEventsHandler extends EventsHandler<Object> {
-        public MockEventsHandler(Context context, EventsStrategy<Object> strategy,
+        MockEventsHandler(Context context, EventsStrategy<Object> strategy,
                                  EventsFilesManager filesManager,
                                  ScheduledExecutorService executor) {
             super(context, strategy, filesManager, executor);

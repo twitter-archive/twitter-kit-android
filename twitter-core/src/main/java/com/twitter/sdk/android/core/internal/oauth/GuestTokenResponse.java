@@ -24,7 +24,7 @@ class GuestTokenResponse {
     @SerializedName("guest_token")
     public final String guestToken;
 
-    public GuestTokenResponse(String guestToken) {
+    GuestTokenResponse(String guestToken) {
         this.guestToken = guestToken;
     }
 }

@@ -29,7 +29,7 @@ class ScribeFilesManager extends EventsFilesManager<ScribeEvent> {
     static final String FILE_PREFIX = "se";
     static final String FILE_EXTENSION = ".tap";
 
-    public ScribeFilesManager(Context context, EventTransform<ScribeEvent> transform,
+    ScribeFilesManager(Context context, EventTransform<ScribeEvent> transform,
                               CurrentTimeProvider currentTimeProvider,
                               QueueFileEventStorage eventsStorage, int defaultMaxFilesToKeep
     ) throws IOException {

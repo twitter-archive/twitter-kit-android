@@ -76,7 +76,7 @@ public class TwitterSession extends Session<TwitterAuthToken> {
 
         private final Gson gson;
 
-        public Serializer() {
+        Serializer() {
             this.gson = new Gson();
         }
 

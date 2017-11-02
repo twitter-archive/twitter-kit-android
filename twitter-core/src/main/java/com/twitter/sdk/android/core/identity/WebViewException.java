@@ -26,7 +26,7 @@ class WebViewException extends Exception {
     private final int errorCode;
     private final String failingUrl;
 
-    public WebViewException(int errorCode, String description, String failingUrl) {
+    WebViewException(int errorCode, String description, String failingUrl) {
         super(description);
         this.errorCode = errorCode;
         this.failingUrl = failingUrl;

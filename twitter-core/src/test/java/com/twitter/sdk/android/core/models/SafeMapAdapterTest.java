@@ -89,7 +89,7 @@ public class SafeMapAdapterTest  {
         public final Map<String, String> mapOfStrings;
 
         // Not used in testing, but needed because of final.
-        public Model1(Map<String, String> mapOfStrings) {
+        Model1(Map<String, String> mapOfStrings) {
             this.mapOfStrings = mapOfStrings;
         }
     }
@@ -100,9 +100,8 @@ public class SafeMapAdapterTest  {
         public final Map<String, Long> stringLongMap;
 
         // Not used in testing, but needed because of final.
-        public Model2(Map<String, Long> stringLongMap) {
+        Model2(Map<String, Long> stringLongMap) {
             this.stringLongMap = stringLongMap;
         }
     }
-
 }

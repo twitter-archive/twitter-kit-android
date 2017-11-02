@@ -48,7 +48,7 @@ public class OAuth1aParametersTest  {
         public final String expectedSignature;
         public final String expectedAuthHeader;
 
-        public TestParameters(String method, String url, Map<String, String> postParams,
+        TestParameters(String method, String url, Map<String, String> postParams,
                 String consumerKey, String consumerSecret, String callback, String nonce,
                 String timestamp, String token, String tokenSecret,
                 String expectedSignatureBase, String expectedSignature,

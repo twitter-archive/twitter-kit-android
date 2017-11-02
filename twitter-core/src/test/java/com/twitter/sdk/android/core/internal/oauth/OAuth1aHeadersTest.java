@@ -68,7 +68,7 @@ public class OAuth1aHeadersTest  {
     }
 
     private class MockOAuth1aParameters extends OAuth1aParameters {
-        public MockOAuth1aParameters() {
+        MockOAuth1aParameters() {
             super(null, null, null, null, null, null);
         }
 

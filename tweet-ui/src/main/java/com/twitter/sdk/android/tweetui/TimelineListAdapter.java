@@ -38,7 +38,7 @@ abstract class TimelineListAdapter<T extends Identifiable> extends BaseAdapter {
      * @param timeline a Timeline providing access to timeline data items.
      * @throws java.lang.IllegalArgumentException if context or timeline is null
      */
-    public TimelineListAdapter(Context context, Timeline<T> timeline) {
+    TimelineListAdapter(Context context, Timeline<T> timeline) {
         this(context, new TimelineDelegate<>(timeline));
     }
 

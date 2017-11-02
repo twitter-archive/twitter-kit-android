@@ -52,7 +52,7 @@ class FilterTimelineDelegate extends TimelineDelegate<Tweet> {
      * @param timelineFilter a timelineFilter for filtering tweets from timeline
      * @throws java.lang.IllegalArgumentException if timeline is null
      */
-    public FilterTimelineDelegate(Timeline<Tweet> timeline, TimelineFilter timelineFilter) {
+    FilterTimelineDelegate(Timeline<Tweet> timeline, TimelineFilter timelineFilter) {
         super(timeline);
         this.timelineFilter = timelineFilter;
         this.tweetUi = TweetUi.getInstance();

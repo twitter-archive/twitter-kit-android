@@ -99,7 +99,7 @@ public class SafeListAdapterTest  {
         public final List<Integer> listOfIntegers;
 
         // Not used in testing, but needed because of final.
-        public Model1(List<Integer> listOfLongs) {
+        Model1(List<Integer> listOfLongs) {
             this.listOfIntegers = listOfLongs;
         }
     }
@@ -110,7 +110,7 @@ public class SafeListAdapterTest  {
         public final List<Long> listOfLongs;
 
         // Not used in testing, but needed because of final.
-        public Model2(List<Long> listOfLongs) {
+        Model2(List<Long> listOfLongs) {
             this.listOfLongs = listOfLongs;
         }
     }

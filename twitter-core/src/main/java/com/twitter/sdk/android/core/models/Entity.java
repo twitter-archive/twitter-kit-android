@@ -37,7 +37,7 @@ class Entity implements Serializable {
     @SerializedName("indices")
     public final List<Integer> indices;
 
-    public Entity(int start, int end) {
+    Entity(int start, int end) {
         final List<Integer> temp = new ArrayList<>(2);
         temp.add(START_INDEX, start);
         temp.add(END_INDEX, end);

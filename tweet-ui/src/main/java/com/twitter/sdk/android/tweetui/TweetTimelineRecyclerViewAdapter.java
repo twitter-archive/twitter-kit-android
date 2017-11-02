@@ -157,8 +157,8 @@ public class TweetTimelineRecyclerViewAdapter extends
     private void scribeTimelineImpression() {
         final String jsonMessage;
         if (timelineDelegate instanceof FilterTimelineDelegate) {
-            final FilterTimelineDelegate filterTimelineDelegate = (
-                    FilterTimelineDelegate) timelineDelegate;
+            final FilterTimelineDelegate filterTimelineDelegate =
+                    (FilterTimelineDelegate) timelineDelegate;
             final TimelineFilter timelineFilter = filterTimelineDelegate.timelineFilter;
             jsonMessage = getJsonMessage(timelineFilter.totalFilters());
         } else {

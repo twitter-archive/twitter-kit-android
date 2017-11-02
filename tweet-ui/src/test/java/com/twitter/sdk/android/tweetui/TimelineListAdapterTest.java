@@ -150,7 +150,7 @@ public class TimelineListAdapterTest {
      * @param <T>
      */
     class TestTimelineDelegate<T extends Identifiable> extends TimelineDelegate {
-        public TestTimelineDelegate(Timeline<T> timeline) {
+        TestTimelineDelegate(Timeline<T> timeline) {
             super(timeline);
         }
     }

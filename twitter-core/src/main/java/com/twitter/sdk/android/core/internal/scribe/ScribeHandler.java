@@ -23,7 +23,7 @@ import java.util.concurrent.ScheduledExecutorService;
 
 class ScribeHandler extends EventsHandler<ScribeEvent> {
 
-    public ScribeHandler(Context context, EventsStrategy<ScribeEvent> strategy,
+    ScribeHandler(Context context, EventsStrategy<ScribeEvent> strategy,
             EventsFilesManager filesManager, ScheduledExecutorService executorService) {
         super(context, strategy, filesManager, executorService);
     }

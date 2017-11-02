@@ -31,7 +31,7 @@ class TwitterContext extends ContextWrapper {
     private final String componentPath;
     private final String componentName;
 
-    public TwitterContext(Context base, String componentName, String componentPath) {
+    TwitterContext(Context base, String componentName, String componentPath) {
         super(base);
         this.componentName = componentName;
         this.componentPath = componentPath;

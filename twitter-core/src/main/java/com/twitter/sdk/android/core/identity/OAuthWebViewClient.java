@@ -39,7 +39,7 @@ class OAuthWebViewClient extends WebViewClient {
     private final String completeUrl;
     private final Listener listener;
 
-    public OAuthWebViewClient(String completeUrl, Listener listener) {
+    OAuthWebViewClient(String completeUrl, Listener listener) {
         this.completeUrl = completeUrl;
         this.listener = listener;
     }

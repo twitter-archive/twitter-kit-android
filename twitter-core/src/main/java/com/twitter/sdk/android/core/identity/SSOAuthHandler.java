@@ -90,7 +90,7 @@ class SSOAuthHandler extends AuthHandler {
     private static final String EXTRA_CONSUMER_KEY = "ck";
     private static final String EXTRA_CONSUMER_SECRET = "cs";
 
-    public SSOAuthHandler(TwitterAuthConfig authConfig, Callback<TwitterSession> callback,
+    SSOAuthHandler(TwitterAuthConfig authConfig, Callback<TwitterSession> callback,
             int requestCode) {
         super(authConfig, callback, requestCode);
     }
@@ -156,7 +156,7 @@ class SSOAuthHandler extends AuthHandler {
 
     private static boolean checkAppSignature(PackageManager pm, String packageName,
             String requiredSignature) {
-        PackageInfo p;
+        final PackageInfo p;
         try {
             p = pm.getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
         } catch (PackageManager.NameNotFoundException e) {
