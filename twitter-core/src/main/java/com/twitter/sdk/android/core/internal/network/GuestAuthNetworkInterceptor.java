@@ -32,7 +32,7 @@ public class GuestAuthNetworkInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Response response = chain.proceed(chain.request());
         if (response.code() == 403) {
-            response = response.newBuilder().code(401).build();
+            response = response.newBuilder().code(401).message("Unauthorized").build();
         }
         return response;
     }

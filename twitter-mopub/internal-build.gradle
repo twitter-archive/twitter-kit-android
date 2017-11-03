@@ -1,3 +1,6 @@
+import io.fabric.gradle.weaving.ArtifactSizePlugin
+import io.fabric.gradle.weaving.DexMethodCountPlugin
+
 /*
  * Copyright (C) 2015 Twitter, Inc.
  *
@@ -17,8 +20,8 @@
 
 apply plugin: 'com.android.library'
 apply from: rootProject.qualityScript
-apply plugin: io.fabric.gradle.weaving.ArtifactSizePlugin
-apply plugin: io.fabric.gradle.weaving.DexMethodCountPlugin
+apply plugin: ArtifactSizePlugin
+apply plugin: DexMethodCountPlugin
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -70,18 +73,12 @@ android {
 
     testOptions {
         unitTests.returnDefaultValues = true
+        unitTests.includeAndroidResources true
     }
 }
 
-ext.projectDependencies = []
-
 dependencies {
-    projectDependencies.each { path, binary ->
-        debugCompile project(path: path, configuration: 'debug')
-        releaseCompile projectOrBinary(path: path, configuration: 'release', binary: binary)
-    }
-
-    compile (dependency.mopub) {
+    api (dependency.mopub) {
         transitive = true;
     }
 

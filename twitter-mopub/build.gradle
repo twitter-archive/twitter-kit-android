@@ -62,12 +62,13 @@ android {
 
     testOptions {
         unitTests.returnDefaultValues = true
+        unitTests.includeAndroidResources true
     }
 }
 
 dependencies {
 
-    compile (dependency.mopub) {
+    api (dependency.mopub) {
         transitive = true;
     }
 

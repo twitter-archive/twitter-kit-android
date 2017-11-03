@@ -1,3 +1,5 @@
+import io.fabric.gradle.weaving.ArtifactSizePlugin
+
 /*
  * Copyright (C) 2015 Twitter, Inc.
  *
@@ -17,7 +19,7 @@
 
 apply plugin: 'com.android.library'
 apply from: rootProject.qualityScript
-apply plugin: io.fabric.gradle.weaving.ArtifactSizePlugin
+apply plugin: ArtifactSizePlugin
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -67,15 +69,14 @@ android {
 }
 
 ext.projectDependencies = [
-        ':sdk:twitter:twitter-core' : 'com.twitter.sdk.android:twitter-core:+@aar',
-        ':sdk:twitter:tweet-ui' : 'com.twitter.sdk.android:tweet-ui:+@aar',
-        ':sdk:twitter:tweet-composer' : 'com.twitter.sdk.android:tweet-composer:+@aar'
+        ':sdk:twitter:twitter-core',
+        ':sdk:twitter:tweet-ui',
+        ':sdk:twitter:tweet-composer'
 ]
 
 dependencies {
-    projectDependencies.each { path, binary ->
-        debugCompile project(path: path, configuration: 'debug')
-        releaseCompile projectOrBinary(path: path, configuration: 'release', binary: binary)
+    projectDependencies.each { path ->
+        api project(path: path)
     }
 
     testCompile dependency.mockito

@@ -77,16 +77,14 @@ android {
 }
 
 dependencies {
-    debugCompile project(path: ':sdk:twitter:twitter', configuration: 'debug')
-    debugCompile project(path: ':sdk:twitter:twitter-mopub', configuration: 'debug')
-    releaseCompile project(path: ':sdk:twitter:twitter', configuration: 'release')
-    releaseCompile project(path: ':sdk:twitter:twitter-mopub', configuration: 'release')
+    implementation project(path: ':sdk:twitter:twitter')
+    implementation project(path: ':sdk:twitter:twitter-mopub')
+    implementation dependency.appCompat
+    implementation dependency.design
+    implementation dependency.okHttpInterceptor
 
-    compile dependency.appCompat
-    compile dependency.design
-    compile dependency.okHttpInterceptor
-    debugCompile dependency.leakCanary
-    releaseCompile dependency.leakCanaryNoOp
+    debugImplementation dependency.leakCanary
+    releaseImplementation dependency.leakCanaryNoOp
 
     androidTestCompile dependency.spoon
     androidTestCompile dependency.espresso

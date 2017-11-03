@@ -21,6 +21,7 @@ subprojects { Project subproject ->
     buildscript {
         repositories {
             jcenter()
+            google()
             maven { url 'https://maven.fabric.io/public' }
         }
         dependencies {
@@ -29,6 +30,7 @@ subprojects { Project subproject ->
     }
 
     repositories {
+        google()
         jcenter()
     }
 }

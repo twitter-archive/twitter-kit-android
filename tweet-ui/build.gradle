@@ -62,15 +62,16 @@ android {
 
     testOptions {
         unitTests.returnDefaultValues = true
+        unitTests.includeAndroidResources true
     }
 }
 
 dependencies {
-    compile project(':twitter-core')
+    api project(':twitter-core')
 
-    compile dependency.picasso
-    compile dependency.supportV4
-    compile dependency.recyclerview
+    implementation dependency.picasso
+    implementation dependency.supportV4
+    implementation dependency.recyclerview
 
     androidTestCompile dependency.retrofitMock
     androidTestCompile dependency.mockito

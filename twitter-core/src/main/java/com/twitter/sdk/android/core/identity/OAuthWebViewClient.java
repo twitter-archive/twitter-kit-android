@@ -26,6 +26,7 @@ import android.webkit.WebViewClient;
 import com.twitter.sdk.android.core.internal.network.UrlUtils;
 
 import java.net.URI;
+import java.util.Map;
 import java.util.TreeMap;
 
 class OAuthWebViewClient extends WebViewClient {
@@ -56,7 +57,7 @@ class OAuthWebViewClient extends WebViewClient {
             final TreeMap<String, String> params =
                     UrlUtils.getQueryParams(URI.create(url), false);
             final Bundle bundle = new Bundle(params.size());
-            for (TreeMap.Entry<String, String> entry : params.entrySet()) {
+            for (Map.Entry<String, String> entry : params.entrySet()) {
                 bundle.putString(entry.getKey(), entry.getValue());
             }
             listener.onSuccess(bundle);

@@ -29,6 +29,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 
 import retrofit2.Call;
@@ -171,7 +172,7 @@ public class OAuth2ServiceTest  {
         service.api = new MockOAuth2Api() {
             @Override
             public Call<GuestTokenResponse> getGuestToken(@Header(OAuthConstants.HEADER_AUTHORIZATION) String auth) {
-                return Calls.failure(null);
+                return Calls.failure(new IOException());
             }
         };
 
@@ -195,7 +196,7 @@ public class OAuth2ServiceTest  {
             @Override
             public Call<OAuth2Token> getAppAuthToken(@Header(OAuthConstants.HEADER_AUTHORIZATION) String auth,
                     @Field(OAuthConstants.PARAM_GRANT_TYPE) String grantType) {
-                return Calls.failure(null);
+                return Calls.failure(new IOException());
             }
         };
 

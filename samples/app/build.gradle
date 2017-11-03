@@ -68,11 +68,11 @@ android {
 }
 
 dependencies {
-    compile project(':twitter')
-    compile project(':twitter-mopub')
-    compile dependency.appCompat
-    compile dependency.design
-    compile dependency.okHttpInterceptor
+    implementation project(':twitter')
+    implementation project(':twitter-mopub')
+    implementation dependency.appCompat
+    implementation dependency.design
+    implementation dependency.okHttpInterceptor
 
     debugCompile dependency.leakCanary
     releaseCompile dependency.leakCanaryNoOp

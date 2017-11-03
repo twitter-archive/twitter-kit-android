@@ -74,10 +74,10 @@ android {
 }
 
 dependencies {
-    compile dependency.retrofit
-    compile dependency.retrofitGsonConverter
-    compile dependency.gson
-    compile dependency.okHttp
+    api dependency.retrofit
+    implementation dependency.retrofitGsonConverter
+    api dependency.gson
+    api dependency.okHttp
 
     androidTestCompile dependency.mockito
     androidTestCompile dependency.dexmakerMockito

@@ -57,6 +57,7 @@ public class GuestAuthNetworkInterceptorTest {
                 .protocol(Protocol.HTTP_1_1)
                 .request(request)
                 .code(403)
+                .message("Forbidden")
                 .build();
 
         when(mockChain.request()).thenReturn(request);
@@ -73,6 +74,7 @@ public class GuestAuthNetworkInterceptorTest {
         final Response response = new Response.Builder()
                 .protocol(Protocol.HTTP_1_1)
                 .request(request)
+                .message("Bad Request")
                 .code(400)
                 .build();
 

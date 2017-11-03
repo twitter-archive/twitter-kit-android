@@ -17,7 +17,6 @@
 
 package com.twitter.sdk.android.tweetui.internal;
 
-import android.annotation.SuppressLint;
 import android.text.Layout;
 import android.text.Spanned;
 import android.view.MotionEvent;
@@ -40,7 +39,6 @@ public class SpanClickHandler {
     public static void enableClicksOnSpans(TextView textView) {
         final SpanClickHandler helper = new SpanClickHandler(textView, null);
         textView.setOnTouchListener(new View.OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View view, MotionEvent event) {
                 final TextView textView = (TextView) view;

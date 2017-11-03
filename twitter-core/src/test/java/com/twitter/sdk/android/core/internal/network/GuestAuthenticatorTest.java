@@ -76,6 +76,7 @@ public class GuestAuthenticatorTest {
 
         response = new Response.Builder()
                 .code(401)
+                .message("Unauthorized")
                 .protocol(Protocol.HTTP_1_1)
                 .request(request)
                 .build();
@@ -100,6 +101,7 @@ public class GuestAuthenticatorTest {
 
         response = new Response.Builder()
                 .code(401)
+                .message("Unauthorized")
                 .protocol(Protocol.HTTP_1_1)
                 .request(request)
                 .build();
@@ -117,6 +119,7 @@ public class GuestAuthenticatorTest {
 
         response = new Response.Builder()
                 .code(401)
+                .message("Unauthorized")
                 .protocol(Protocol.HTTP_1_1)
                 .request(request)
                 .build();
@@ -143,6 +146,7 @@ public class GuestAuthenticatorTest {
     public void testCanRetry_secondRetry() {
         final Response failedResponse = new Response.Builder()
                 .code(401)
+                .message("Unauthorized")
                 .protocol(Protocol.HTTP_1_1)
                 .request(request)
                 .priorResponse(response)

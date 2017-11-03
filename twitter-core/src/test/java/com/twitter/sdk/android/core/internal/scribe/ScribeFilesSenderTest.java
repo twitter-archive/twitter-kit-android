@@ -274,6 +274,7 @@ public class ScribeFilesSenderTest {
                 return new okhttp3.Response.Builder()
                         .protocol(Protocol.HTTP_1_1)
                         .code(HttpURLConnection.HTTP_OK)
+                        .message("OK")
                         .request((Request) args[0])
                         .build();
             }
