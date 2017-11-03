@@ -68,7 +68,7 @@ public class UniqueTweetActivity extends TweetUiActivity {
             final View v = inflater.inflate(R.layout.tweetui_fragment_unique_tweet, container,
                     false);
 
-            final LinearLayout tweetRegion = (LinearLayout) v.findViewById(R.id.tweet_region);
+            final LinearLayout tweetRegion = v.findViewById(R.id.tweet_region);
 
             // Tweet object already present, construct a TweetView
             final Tweet knownTweet = new TweetBuilder()

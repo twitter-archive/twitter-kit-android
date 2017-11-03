@@ -79,10 +79,10 @@ public class TweetPreviewActivity extends TweetUiActivity {
             final View v = inflater.inflate(R.layout.tweetui_fragment_tweet_preview, container,
                     false);
 
-            final ViewGroup tweetRegion = (ViewGroup) v.findViewById(R.id.tweet_region);
-            final EditText selectorInput = (EditText) v.findViewById(R.id.selector_input_tweet_id);
-            final Button lightButton = (Button) v.findViewById(R.id.button_show_light);
-            final Button darkButton = (Button) v.findViewById(R.id.button_show_dark);
+            final ViewGroup tweetRegion = v.findViewById(R.id.tweet_region);
+            final EditText selectorInput = v.findViewById(R.id.selector_input_tweet_id);
+            final Button lightButton = v.findViewById(R.id.button_show_light);
+            final Button darkButton = v.findViewById(R.id.button_show_dark);
 
             lightButton.setOnClickListener(new View.OnClickListener() {
                 @Override

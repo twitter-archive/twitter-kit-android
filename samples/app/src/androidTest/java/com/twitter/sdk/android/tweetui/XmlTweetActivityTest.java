@@ -70,13 +70,13 @@ public class XmlTweetActivityTest extends ActivityInstrumentationTestCase2<XmlTw
     }
 
     private void findViews() {
-        jackTweet = (TweetView) activity.findViewById(R.id.jack_regular_tweet);
-        jackCompactTweet = (CompactTweetView) activity.findViewById(R.id.jack_compact_tweet);
-        bikeTweet = (TweetView) activity.findViewById(R.id.bike_regular_tweet);
-        bikeCompactTweet = (CompactTweetView) activity.findViewById(R.id.bike_compact_tweet);
-        simpsonsRetweet = (TweetView) activity.findViewById(R.id.retweet_simpsons_tweet);
+        jackTweet = activity.findViewById(R.id.jack_regular_tweet);
+        jackCompactTweet = activity.findViewById(R.id.jack_compact_tweet);
+        bikeTweet = activity.findViewById(R.id.bike_regular_tweet);
+        bikeCompactTweet = activity.findViewById(R.id.bike_compact_tweet);
+        simpsonsRetweet = activity.findViewById(R.id.retweet_simpsons_tweet);
         simpsonsCompactRetweet
-                = (CompactTweetView) activity.findViewById(R.id.retweet_simpsons_compact_tweet);
+                = activity.findViewById(R.id.retweet_simpsons_compact_tweet);
     }
 
     public void testTweetView() throws Exception {

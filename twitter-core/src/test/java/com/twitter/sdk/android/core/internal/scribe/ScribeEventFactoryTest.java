@@ -68,7 +68,7 @@ public class ScribeEventFactoryTest {
                 = new EventNamespace.Builder().setClient(OTHER_CLIENT_NAME).builder();
         final String eventInfo = "any info";
         final ScribeEvent event = ScribeEventFactory.newScribeEvent(ns, eventInfo, ANY_TIMESTAMP,
-                ANY_LANGUAGE, ANY_ADVERTISING_ID, Collections.<ScribeItem>emptyList());
+                ANY_LANGUAGE, ANY_ADVERTISING_ID, Collections.emptyList());
         assertEquals(SyndicatedSdkImpressionEvent.class, event.getClass());
     }
 }

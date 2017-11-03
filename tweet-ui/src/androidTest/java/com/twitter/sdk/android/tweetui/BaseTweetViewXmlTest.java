@@ -89,7 +89,7 @@ public abstract class BaseTweetViewXmlTest extends TweetUiTestCase {
         final View view = LayoutInflater.from(getContext()).inflate(
                 R.layout.activity_tweet_actions_enabled, group, true);
 
-        final BaseTweetView tweetView = (BaseTweetView) view.findViewById(R.id.tweet_view);
+        final BaseTweetView tweetView = view.findViewById(R.id.tweet_view);
         assertTrue(tweetView.tweetActionsEnabled);
     }
 

@@ -447,7 +447,7 @@ public class TimelineDelegateTest {
         delegate = new TimelineDelegate<>(mockTimeline);
         final TimelineStateHolder mockHolder = mock(TimelineStateHolder.class);
         final TimelineDelegate.DefaultCallback cb = delegate.new DefaultCallback(null, mockHolder);
-        cb.failure((TwitterException) null);
+        cb.failure(null);
         verify(mockHolder).finishTimelineRequest();
     }
 

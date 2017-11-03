@@ -136,7 +136,7 @@ public class LikeTweetActionTest {
         // - success result Tweet is marked as favorited
         callback.failure(alreadyFavoritedException);
         final ArgumentCaptor<Result<Tweet>> resultCaptor
-                = ArgumentCaptor.forClass((Class) Result.class);
+                = ArgumentCaptor.forClass(Result.class);
         verify(mockCallback).success(resultCaptor.capture());
         assertEquals(tweet.getId(), resultCaptor.getValue().data.getId());
         assertTrue(resultCaptor.getValue().data.favorited);
@@ -158,7 +158,7 @@ public class LikeTweetActionTest {
         // - success result Tweet is marked as unfavorited
         callback.failure(alreadyUnfavoritedException);
         final ArgumentCaptor<Result<Tweet>> resultCaptor
-                = ArgumentCaptor.forClass((Class) Result.class);
+                = ArgumentCaptor.forClass(Result.class);
         verify(mockCallback).success(resultCaptor.capture());
         assertEquals(tweet.getId(), resultCaptor.getValue().data.getId());
         assertFalse(resultCaptor.getValue().data.favorited);

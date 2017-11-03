@@ -45,10 +45,10 @@ public class TimelinesActivity extends AppCompatActivity {
 
         final FragmentManager fm = getSupportFragmentManager();
         final FragmentPagerAdapter pagerAdapter = new TimelinePagerAdapter(fm, getResources());
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        final ViewPager viewPager = findViewById(R.id.pager);
         viewPager.setAdapter(pagerAdapter);
 
-        final TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        final TabLayout tabLayout = findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);
     }
 

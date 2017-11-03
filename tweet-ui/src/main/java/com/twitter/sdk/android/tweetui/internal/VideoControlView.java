@@ -87,10 +87,10 @@ public class VideoControlView extends FrameLayout {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.tw__video_control, this);
 
-        stateControl = (ImageButton) findViewById(R.id.tw__state_control);
-        currentTime = (TextView) findViewById(R.id.tw__current_time);
-        duration = (TextView) findViewById(R.id.tw__duration);
-        seekBar = (SeekBar) findViewById(R.id.tw__progress);
+        stateControl = findViewById(R.id.tw__state_control);
+        currentTime = findViewById(R.id.tw__current_time);
+        duration = findViewById(R.id.tw__duration);
+        seekBar = findViewById(R.id.tw__progress);
 
         seekBar.setMax((int) PROGRESS_BAR_TICKS);
         seekBar.setOnSeekBarChangeListener(createProgressChangeListener());

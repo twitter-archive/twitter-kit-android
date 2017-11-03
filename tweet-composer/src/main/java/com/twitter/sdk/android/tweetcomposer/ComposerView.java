@@ -131,14 +131,14 @@ public class ComposerView extends LinearLayout {
     }
 
     void findSubviews() {
-        avatarView = (ImageView) findViewById(R.id.tw__author_avatar);
-        closeView = (ImageView) findViewById(R.id.tw__composer_close);
-        tweetEditView = (EditText) findViewById(R.id.tw__edit_tweet);
-        charCountView = (TextView) findViewById(R.id.tw__char_count);
-        tweetButton = (Button) findViewById(R.id.tw__post_tweet);
-        scrollView = (ObservableScrollView) findViewById(R.id.tw__composer_scroll_view);
+        avatarView = findViewById(R.id.tw__author_avatar);
+        closeView = findViewById(R.id.tw__composer_close);
+        tweetEditView = findViewById(R.id.tw__edit_tweet);
+        charCountView = findViewById(R.id.tw__char_count);
+        tweetButton = findViewById(R.id.tw__post_tweet);
+        scrollView = findViewById(R.id.tw__composer_scroll_view);
         divider = findViewById(R.id.tw__composer_profile_divider);
-        imageView = (ImageView) findViewById(R.id.tw__image_view);
+        imageView = findViewById(R.id.tw__image_view);
     }
 
     void setCallbacks(ComposerController.ComposerCallbacks callbacks) {

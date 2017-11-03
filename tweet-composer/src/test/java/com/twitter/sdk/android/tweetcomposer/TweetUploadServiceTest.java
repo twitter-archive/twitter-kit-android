@@ -125,7 +125,7 @@ public class TweetUploadServiceTest {
         when(mockStatusesService.update(anyString(), isNull(Long.class), isNull(Boolean.class),
                 isNull(Double.class), isNull(Double.class), isNull(String.class),
                 isNull(Boolean.class), eq(true), isNull(String.class)))
-                .thenReturn(Calls.<Tweet>failure(new IOException("")));
+                .thenReturn(Calls.failure(new IOException("")));
 
         service.uploadTweet(mock(TwitterSession.class), EXPECTED_TWEET_TEXT, null);
 

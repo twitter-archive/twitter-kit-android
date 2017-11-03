@@ -25,7 +25,7 @@ public class ScribeEventFactory {
     public static ScribeEvent newScribeEvent(EventNamespace ns, long timestamp, String language,
             String advertisingId) {
         return newScribeEvent(ns, "", timestamp, language, advertisingId,
-                Collections.<ScribeItem>emptyList());
+                Collections.emptyList());
     }
 
     public static ScribeEvent newScribeEvent(EventNamespace ns, String eventInfo, long timestamp,

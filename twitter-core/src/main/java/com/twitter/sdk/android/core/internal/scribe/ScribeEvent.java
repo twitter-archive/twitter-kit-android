@@ -61,7 +61,7 @@ public class ScribeEvent {
     final List<ScribeItem> items;
 
     public ScribeEvent(String category, EventNamespace eventNamespace, long timestamp) {
-        this(category, eventNamespace, timestamp, Collections.<ScribeItem>emptyList());
+        this(category, eventNamespace, timestamp, Collections.emptyList());
     }
 
     public ScribeEvent(String category, EventNamespace eventNamespace, long timestamp,

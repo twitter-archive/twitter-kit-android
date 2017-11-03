@@ -21,7 +21,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -140,7 +139,7 @@ public class SSOAuthHandlerTest  {
         final Activity mockActivity = mock(Activity.class);
         TestUtils.setupTwitterInstalled(mockActivity, SSOAuthHandler.TWITTER_SIGNATURE);
         when(mockActivity.getPackageManager().queryIntentActivities(any(Intent.class),
-                anyInt())).thenReturn(Collections.<ResolveInfo>emptyList());
+                anyInt())).thenReturn(Collections.emptyList());
         assertFalse(ssoAuthHandler.authorize(mockActivity));
     }
 

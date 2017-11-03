@@ -72,14 +72,14 @@ public class TwitterStaticNativeAd extends FrameLayout {
 
     private void findSubviews() {
         LayoutInflater.from(getContext()).inflate(R.layout.tw__native_ad, this, true);
-        containerLayout = (LinearLayout) findViewById(R.id.tw__ad_mopub_layout);
-        mainImageView = (RoundedImageView) findViewById(R.id.native_ad_main_image);
-        cardLayout = (RelativeLayout) findViewById(R.id.native_ad_card);
-        adIconView = (ImageView) findViewById(R.id.native_ad_icon_image);
-        adTitleView = (TextView) findViewById(R.id.native_ad_title);
-        adTextView = (TextView) findViewById(R.id.native_ad_text);
-        callToActionView = (TextView) findViewById(R.id.native_ad_cta);
-        privacyInfoView = (ImageView) findViewById(R.id.native_ad_privacy_info_icon_image);
+        containerLayout = findViewById(R.id.tw__ad_mopub_layout);
+        mainImageView = findViewById(R.id.native_ad_main_image);
+        cardLayout = findViewById(R.id.native_ad_card);
+        adIconView = findViewById(R.id.native_ad_icon_image);
+        adTitleView = findViewById(R.id.native_ad_title);
+        adTextView = findViewById(R.id.native_ad_text);
+        callToActionView = findViewById(R.id.native_ad_cta);
+        privacyInfoView = findViewById(R.id.native_ad_privacy_info_icon_image);
     }
 
     private void initAttributes(int styleResId) {
@@ -116,7 +116,7 @@ public class TwitterStaticNativeAd extends FrameLayout {
         final int adViewRadius = (int) getResources().getDimension(R.dimen.tw__ad_view_radius);
         mainImageView.setCornerRadii(adViewRadius, adViewRadius, 0, 0);
 
-        final TextView privacyTextView = (TextView) findViewById(R.id.native_ad_privacy_text);
+        final TextView privacyTextView = findViewById(R.id.native_ad_privacy_text);
         privacyTextView.setTextColor(
                 ColorUtils.calculateContrastingColor(containerBackgroundColor));
 

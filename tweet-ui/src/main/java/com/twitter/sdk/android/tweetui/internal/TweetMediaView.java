@@ -225,11 +225,7 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
         clearImageViews();
         initializeImageViews(mediaEntities);
 
-        if (TweetMediaUtils.isPhotoType(mediaEntities.get(0))) {
-            internalRoundedCornersEnabled = true;
-        } else {
-            internalRoundedCornersEnabled = false;
-        }
+        internalRoundedCornersEnabled = TweetMediaUtils.isPhotoType(mediaEntities.get(0));
 
         requestLayout();
     }

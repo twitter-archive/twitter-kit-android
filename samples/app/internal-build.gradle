@@ -18,7 +18,7 @@ if (propsFile.exists()) {
     props.setProperty("twitterConsumerKey", System.env.TWITTER_KEY)
     props.setProperty("twitterConsumerSecret", System.env.TWITTER_SECRET)
 } else {
-    throw new GradleException("Missing twitter.properties, check the twitter.properties.sample file.");
+    throw new GradleException("Missing twitter.properties, check the twitter.properties.sample file.")
 }
 
 apply plugin: 'com.android.application'

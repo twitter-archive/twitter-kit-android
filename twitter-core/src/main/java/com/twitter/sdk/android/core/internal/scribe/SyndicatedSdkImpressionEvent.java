@@ -61,7 +61,7 @@ public class SyndicatedSdkImpressionEvent extends ScribeEvent {
 
     public SyndicatedSdkImpressionEvent(EventNamespace eventNamespace, long timestamp,
                 String language, String adId) {
-        this(eventNamespace, timestamp, language, adId, Collections.<ScribeItem>emptyList());
+        this(eventNamespace, timestamp, language, adId, Collections.emptyList());
     }
 
     public SyndicatedSdkImpressionEvent(EventNamespace eventNamespace, long timestamp,

@@ -132,7 +132,7 @@ public final class TestFixtures {
     public static final List<Tweet> ORDERED_MISSING_TWEETS = new ArrayList<>();
 
     public static final BindingValues TEST_BINDING_VALUES =
-            new BindingValues(Collections.<String, Object>emptyMap());
+            new BindingValues(Collections.emptyMap());
     public static final String PLAYER_CARD_VINE = VineCardUtils.VINE_CARD;
     public static final String TEST_VINE_USER_ID = "586671909";
 

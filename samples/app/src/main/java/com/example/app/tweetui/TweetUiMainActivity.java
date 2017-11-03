@@ -37,7 +37,7 @@ public class TweetUiMainActivity extends BaseActivity {
             actionBar.setTitle(R.string.kit_tweetui);
         }
 
-        final Button xmlTweetButton = (Button) findViewById(R.id.button_xml_tweet_activity);
+        final Button xmlTweetButton = findViewById(R.id.button_xml_tweet_activity);
         xmlTweetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,7 +45,7 @@ public class TweetUiMainActivity extends BaseActivity {
             }
         });
 
-        final Button tweetActivityButton = (Button) findViewById(R.id.button_tweet_activity);
+        final Button tweetActivityButton = findViewById(R.id.button_tweet_activity);
         tweetActivityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,7 +53,7 @@ public class TweetUiMainActivity extends BaseActivity {
             }
         });
 
-        final Button unqiueTweetButton = (Button) findViewById(R.id.button_unique_tweet_activity);
+        final Button unqiueTweetButton = findViewById(R.id.button_unique_tweet_activity);
         unqiueTweetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,7 +61,7 @@ public class TweetUiMainActivity extends BaseActivity {
             }
         });
 
-        final Button tweetListButton = (Button) findViewById(R.id.button_fixed_timeline_activity);
+        final Button tweetListButton = findViewById(R.id.button_fixed_timeline_activity);
         tweetListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,7 +69,7 @@ public class TweetUiMainActivity extends BaseActivity {
             }
         });
 
-        final Button timelineButton = (Button) findViewById(R.id.button_refresh_timeline_activity);
+        final Button timelineButton = findViewById(R.id.button_refresh_timeline_activity);
         timelineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,7 +77,7 @@ public class TweetUiMainActivity extends BaseActivity {
             }
         });
 
-        final Button timelinesButton = (Button) findViewById(R.id.button_timelines_activity);
+        final Button timelinesButton = findViewById(R.id.button_timelines_activity);
         timelinesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,7 +85,7 @@ public class TweetUiMainActivity extends BaseActivity {
             }
         });
 
-        final Button tweetSelectorButton = (Button) findViewById(
+        final Button tweetSelectorButton = findViewById(
                 R.id.button_tweet_preview_activity);
         tweetSelectorButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +94,7 @@ public class TweetUiMainActivity extends BaseActivity {
             }
         });
 
-        final Button tweetPojoButton = (Button) findViewById(
+        final Button tweetPojoButton = findViewById(
                 R.id.button_tweet_pojo_activity);
         tweetPojoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +103,7 @@ public class TweetUiMainActivity extends BaseActivity {
             }
         });
 
-        final Button rtlTimelineButton = (Button) findViewById(R.id.button_rtl_timeline_activity);
+        final Button rtlTimelineButton = findViewById(R.id.button_rtl_timeline_activity);
         rtlTimelineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

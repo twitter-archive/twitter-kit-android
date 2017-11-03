@@ -36,7 +36,7 @@ public class BaseActivity extends AppCompatActivity {
      * @return The Toolbar view or null if not found.
      */
     protected Toolbar setupToolbar() {
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
         }

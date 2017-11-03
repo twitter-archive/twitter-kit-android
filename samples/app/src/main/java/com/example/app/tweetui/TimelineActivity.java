@@ -70,9 +70,9 @@ public class TimelineActivity extends BaseActivity {
             }
         };
 
-        final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_layout);
+        final SwipeRefreshLayout swipeLayout = findViewById(R.id.swipe_layout);
         final View emptyView = findViewById(android.R.id.empty);
-        final ListView listView = (ListView) findViewById(android.R.id.list);
+        final ListView listView = findViewById(android.R.id.list);
         listView.setEmptyView(emptyView);
 
         final SearchTimeline timeline = new SearchTimeline.Builder().query("#twitter").build();

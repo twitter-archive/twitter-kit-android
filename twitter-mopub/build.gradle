@@ -69,7 +69,7 @@ android {
 dependencies {
 
     api (dependency.mopub) {
-        transitive = true;
+        transitive = true
     }
 
     testCompile dependency.mockito

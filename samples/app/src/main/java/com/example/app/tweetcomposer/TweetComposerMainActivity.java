@@ -50,7 +50,7 @@ public class TweetComposerMainActivity extends BaseActivity {
             actionBar.setTitle(R.string.kit_tweetcomposer);
         }
 
-        final Button tweetComposer = (Button) findViewById(R.id.tweet_composer);
+        final Button tweetComposer = findViewById(R.id.tweet_composer);
         tweetComposer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,7 +66,7 @@ public class TweetComposerMainActivity extends BaseActivity {
             }
         });
 
-        final Button organicComposer = (Button) findViewById(R.id.organic_composer);
+        final Button organicComposer = findViewById(R.id.organic_composer);
         organicComposer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

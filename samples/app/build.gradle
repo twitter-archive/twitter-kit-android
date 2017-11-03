@@ -9,7 +9,7 @@ Properties props = new Properties()
 try {
     props.load(file('twitter.properties').newDataInputStream())
 } catch (Exception ex) {
-    throw new GradleException("Missing twitter.properties, check the twitter.properties.sample file.");
+    throw new GradleException("Missing twitter.properties, check the twitter.properties.sample file.")
 }
 
 apply plugin: 'com.android.application'

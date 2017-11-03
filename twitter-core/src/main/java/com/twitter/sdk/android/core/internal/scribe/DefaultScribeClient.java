@@ -81,7 +81,7 @@ public class DefaultScribeClient extends ScribeClient {
 
     public void scribe(EventNamespace... namespaces) {
         for (EventNamespace ns : namespaces) {
-            scribe(ns, Collections.<ScribeItem>emptyList());
+            scribe(ns, Collections.emptyList());
         }
     }
 
@@ -110,7 +110,7 @@ public class DefaultScribeClient extends ScribeClient {
          * been installed on the device.
          */
         scribe(ScribeEventFactory.newScribeEvent(namespace, eventInfo, timestamp, language,
-                advertisingId, Collections.<ScribeItem>emptyList()));
+                advertisingId, Collections.emptyList()));
     }
 
     // visible for tests

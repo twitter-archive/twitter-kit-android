@@ -88,7 +88,7 @@ public class TweetActivity extends TweetUiActivity {
                 Bundle savedInstanceState) {
             final View v = inflater.inflate(R.layout.tweetui_fragment_tweet, container, false);
 
-            final ViewGroup tweetRegion = (ViewGroup) v.findViewById(R.id.tweet_region);
+            final ViewGroup tweetRegion = v.findViewById(R.id.tweet_region);
 
             // load single Tweets and construct TweetViews
             loadTweet(20L, tweetRegion, R.id.jack_regular_tweet);

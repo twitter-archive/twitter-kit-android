@@ -176,7 +176,7 @@ public class TweetTimelineRecyclerViewAdapterTest extends TweetUiTestCase {
         final ArgumentCaptor<EventNamespace> tfwNamespaceCaptor
                 = ArgumentCaptor.forClass(EventNamespace.class);
         final ArgumentCaptor<List<ScribeItem>> scribeItemsCaptor
-                = ArgumentCaptor.forClass((Class) List.class);
+                = ArgumentCaptor.forClass(List.class);
 
         final TimelineDelegate<Tweet> mockTimelineDelegate = mock(TestTimelineDelegate.class);
         new TweetTimelineRecyclerViewAdapter(getContext(), mockTimelineDelegate, ANY_STYLE,

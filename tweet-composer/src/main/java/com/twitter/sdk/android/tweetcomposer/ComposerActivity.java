@@ -52,7 +52,7 @@ public class ComposerActivity extends Activity {
 
         setTheme(themeResId);
         setContentView(R.layout.tw__activity_composer);
-        final ComposerView composerView = (ComposerView) findViewById(R.id.tw__composer_view);
+        final ComposerView composerView = findViewById(R.id.tw__composer_view);
         composerController = new ComposerController(composerView, session, imageUri, text, hashtags,
                 new FinisherImpl());
     }

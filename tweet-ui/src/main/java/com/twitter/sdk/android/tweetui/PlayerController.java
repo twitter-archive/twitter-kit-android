@@ -43,10 +43,10 @@ class PlayerController {
 
     PlayerController(View rootView, SwipeToDismissTouchListener.Callback callback) {
         this.rootView = rootView;
-        this.videoView = (VideoView) rootView.findViewById(R.id.video_view);
-        this.videoControlView = (VideoControlView) rootView.findViewById(R.id.video_control_view);
-        this.videoProgressView = (ProgressBar) rootView.findViewById(R.id.video_progress_view);
-        this.callToActionView = (TextView) rootView.findViewById(R.id.call_to_action_view);
+        this.videoView = rootView.findViewById(R.id.video_view);
+        this.videoControlView = rootView.findViewById(R.id.video_control_view);
+        this.videoProgressView = rootView.findViewById(R.id.video_progress_view);
+        this.callToActionView = rootView.findViewById(R.id.call_to_action_view);
         this.callback = callback;
     }
 
