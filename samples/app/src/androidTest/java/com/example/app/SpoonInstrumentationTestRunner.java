@@ -28,23 +28,20 @@ import android.support.test.runner.AndroidJUnitRunner;
 public class SpoonInstrumentationTestRunner extends AndroidJUnitRunner {
     @Override
     public void onStart() {
-        runOnMainSync(new Runnable() {
-            @Override
-            public void run() {
-                final Application app = (Application) getTargetContext().getApplicationContext();
-                final String simpleName = SpoonInstrumentationTestRunner.class.getSimpleName();
+        runOnMainSync(() -> {
+            final Application app = (Application) getTargetContext().getApplicationContext();
+            final String simpleName = SpoonInstrumentationTestRunner.class.getSimpleName();
 
-                // Unlock the device so that the tests can input keystrokes.
-                ((KeyguardManager) app.getSystemService(Context.KEYGUARD_SERVICE))
-                        .newKeyguardLock(simpleName)
-                        .disableKeyguard();
+            // Unlock the device so that the tests can input keystrokes.
+            ((KeyguardManager) app.getSystemService(Context.KEYGUARD_SERVICE))
+                    .newKeyguardLock(simpleName)
+                    .disableKeyguard();
 
-                // Wake up the screen.
-                ((PowerManager) app.getSystemService(Context.POWER_SERVICE))
-                        .newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager
-                                .ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE, simpleName)
-                        .acquire();
-            }
+            // Wake up the screen.
+            ((PowerManager) app.getSystemService(Context.POWER_SERVICE))
+                    .newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager
+                            .ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE, simpleName)
+                    .acquire();
         });
 
         super.onStart();

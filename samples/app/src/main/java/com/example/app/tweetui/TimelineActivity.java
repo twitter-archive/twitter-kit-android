@@ -105,27 +105,24 @@ public class TimelineActivity extends BaseActivity {
         });
 
         // specify action to take on swipe refresh
-        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeLayout.setRefreshing(true);
-                adapter.refresh(new Callback<TimelineResult<Tweet>>() {
-                    @Override
-                    public void success(Result<TimelineResult<Tweet>> result) {
-                        swipeLayout.setRefreshing(false);
-                    }
+        swipeLayout.setOnRefreshListener(() -> {
+            swipeLayout.setRefreshing(true);
+            adapter.refresh(new Callback<TimelineResult<Tweet>>() {
+                @Override
+                public void success(Result<TimelineResult<Tweet>> result) {
+                    swipeLayout.setRefreshing(false);
+                }
 
-                    @Override
-                    public void failure(TwitterException exception) {
-                        swipeLayout.setRefreshing(false);
-                        final Activity activity = activityRef.get();
-                        if (activity != null && !activity.isFinishing()) {
-                            Toast.makeText(activity, exception.getMessage(),
-                                    Toast.LENGTH_SHORT).show();
-                        }
+                @Override
+                public void failure(TwitterException exception) {
+                    swipeLayout.setRefreshing(false);
+                    final Activity activity = activityRef.get();
+                    if (activity != null && !activity.isFinishing()) {
+                        Toast.makeText(activity, exception.getMessage(),
+                                Toast.LENGTH_SHORT).show();
                     }
-                });
-            }
+                }
+            });
         });
     }
 }

@@ -51,28 +51,20 @@ public class TweetComposerMainActivity extends BaseActivity {
         }
 
         final Button tweetComposer = findViewById(R.id.tweet_composer);
-        tweetComposer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    new TweetComposer.Builder(TweetComposerMainActivity.this)
-                            .text("Tweet from TwitterKit!")
-                            .url(new URL("http://www.twitter.com"))
-                            .show();
+        tweetComposer.setOnClickListener(view -> {
+            try {
+                new TweetComposer.Builder(TweetComposerMainActivity.this)
+                        .text("Tweet from TwitterKit!")
+                        .url(new URL("http://www.twitter.com"))
+                        .show();
 
-                } catch (MalformedURLException e) {
-                    Log.e(TAG, "error creating tweet intent", e);
-                }
+            } catch (MalformedURLException e) {
+                Log.e(TAG, "error creating tweet intent", e);
             }
         });
 
         final Button organicComposer = findViewById(R.id.organic_composer);
-        organicComposer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                launchPicker();
-            }
-        });
+        organicComposer.setOnClickListener(view -> launchPicker());
     }
 
     void launchPicker() {

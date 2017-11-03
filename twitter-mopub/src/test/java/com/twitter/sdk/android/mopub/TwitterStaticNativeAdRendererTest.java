@@ -38,8 +38,6 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
@@ -81,13 +79,10 @@ public class TwitterStaticNativeAdRendererTest {
         Networking.setImageLoaderForTesting(mockImageLoader);
         doReturn(mockBitmap).when(mockImageContainer).getBitmap();
 
-        doAnswer(new Answer<Void>() {
-            @Override
-            public Void answer(InvocationOnMock invocation) throws Throwable {
-                final Object[] args = invocation.getArguments();
-                ((ImageLoader.ImageListener) args[1]).onResponse(mockImageContainer, true);
-                return null;
-            }
+        doAnswer(invocation -> {
+            final Object[] args = invocation.getArguments();
+            ((ImageLoader.ImageListener) args[1]).onResponse(mockImageContainer, true);
+            return null;
         }).when(mockImageLoader).get(anyString(), any(ImageLoader.ImageListener.class));
 
         twitterStaticNativeAdRenderer = new TwitterStaticNativeAdRenderer();

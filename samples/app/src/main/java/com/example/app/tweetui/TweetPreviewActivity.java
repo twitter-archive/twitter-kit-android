@@ -84,22 +84,16 @@ public class TweetPreviewActivity extends TweetUiActivity {
             final Button lightButton = v.findViewById(R.id.button_show_light);
             final Button darkButton = v.findViewById(R.id.button_show_dark);
 
-            lightButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final long tweetId = Long.parseLong(selectorInput.getText().toString());
-                    tweetRegion.removeAllViews();
-                    loadTweet(tweetId, tweetRegion, R.style.tw__TweetLightStyle);
-                }
+            lightButton.setOnClickListener(v12 -> {
+                final long tweetId = Long.parseLong(selectorInput.getText().toString());
+                tweetRegion.removeAllViews();
+                loadTweet(tweetId, tweetRegion, R.style.tw__TweetLightStyle);
             });
 
-            darkButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final long tweetId = Long.parseLong(selectorInput.getText().toString());
-                    tweetRegion.removeAllViews();
-                    loadTweet(tweetId, tweetRegion, R.style.tw__TweetDarkStyle);
-                }
+            darkButton.setOnClickListener(v1 -> {
+                final long tweetId = Long.parseLong(selectorInput.getText().toString());
+                tweetRegion.removeAllViews();
+                loadTweet(tweetId, tweetRegion, R.style.tw__TweetDarkStyle);
             });
 
             return v;

@@ -34,7 +34,6 @@ import com.twitter.sdk.android.core.internal.network.OkHttpClientHelper;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -129,20 +128,17 @@ class ScribeFilesSender implements FilesSender {
             QueueFile qf = null;
             try {
                 qf = new QueueFile(f);
-                qf.forEach(new QueueFile.ElementReader() {
-                    @Override
-                    public void read(InputStream in, int length) throws IOException {
-                        final byte[] buf = new byte[length];
-                        in.read(buf);
+                qf.forEach((in, length) -> {
+                    final byte[] buf = new byte[length];
+                    in.read(buf);
 
-                        if (appendComma[0]) {
-                            out.write(COMMA);
-                        } else {
-                            // First time through we don't append comma, but subsequent times we do
-                            appendComma[0] = true;
-                        }
-                        out.write(buf);
+                    if (appendComma[0]) {
+                        out.write(COMMA);
+                    } else {
+                        // First time through we don't append comma, but subsequent times we do
+                        appendComma[0] = true;
                     }
+                    out.write(buf);
                 });
             } finally {
                 CommonUtils.closeQuietly(qf);

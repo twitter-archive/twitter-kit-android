@@ -429,19 +429,16 @@ abstract class AbstractTweetView extends RelativeLayout{
 
     protected LinkClickListener getLinkClickListener() {
         if (linkClickListener == null) {
-            linkClickListener = new LinkClickListener() {
-                @Override
-                public void onUrlClicked(String url) {
-                    if (TextUtils.isEmpty(url)) return;
+            linkClickListener = url -> {
+                if (TextUtils.isEmpty(url)) return;
 
-                    if (tweetLinkClickListener != null) {
-                        tweetLinkClickListener.onLinkClick(tweet, url);
-                    } else {
-                        final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                        if (!IntentUtils.safeStartActivity(getContext(), intent)) {
-                            Twitter.getLogger().e(TweetUi.LOGTAG,
-                                    "Activity cannot be found to open URL");
-                        }
+                if (tweetLinkClickListener != null) {
+                    tweetLinkClickListener.onLinkClick(tweet, url);
+                } else {
+                    final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    if (!IntentUtils.safeStartActivity(getContext(), intent)) {
+                        Twitter.getLogger().e(TweetUi.LOGTAG,
+                                "Activity cannot be found to open URL");
                     }
                 }
             };

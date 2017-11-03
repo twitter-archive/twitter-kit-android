@@ -29,7 +29,6 @@ import com.twitter.sdk.android.tweetui.internal.TweetMediaUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -115,17 +114,14 @@ final class TweetTextLinkifier {
         combined.addAll(hashtags);
         combined.addAll(mentions);
         combined.addAll(symbols);
-        Collections.sort(combined, new Comparator<FormattedUrlEntity>() {
-            @Override
-            public int compare(FormattedUrlEntity lhs, FormattedUrlEntity rhs) {
-                if (lhs == null && rhs != null) return -1;
-                if (lhs != null && rhs == null) return 1;
-                if (lhs == null && rhs == null) return 0;
-                if (lhs.start < rhs.start) return -1;
-                if (lhs.start > rhs.start) return 1;
+        Collections.sort(combined, (lhs, rhs) -> {
+            if (lhs == null && rhs != null) return -1;
+            if (lhs != null && rhs == null) return 1;
+            if (lhs == null && rhs == null) return 0;
+            if (lhs.start < rhs.start) return -1;
+            if (lhs.start > rhs.start) return 1;
 
-                return 0;
-            }
+            return 0;
         });
         return combined;
     }

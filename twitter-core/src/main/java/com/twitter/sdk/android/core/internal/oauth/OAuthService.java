@@ -21,12 +21,8 @@ import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.internal.TwitterApi;
 import com.twitter.sdk.android.core.internal.network.OkHttpClientHelper;
 
-import java.io.IOException;
-
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -48,14 +44,11 @@ abstract class OAuthService {
         userAgent = TwitterApi.buildUserAgent(CLIENT_NAME, twitterCore.getVersion());
 
         final OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        final Request request = chain.request().newBuilder()
-                                .header("User-Agent", getUserAgent())
-                                .build();
-                        return chain.proceed(request);
-                    }
+                .addInterceptor(chain -> {
+                    final Request request = chain.request().newBuilder()
+                            .header("User-Agent", getUserAgent())
+                            .build();
+                    return chain.proceed(request);
                 })
                 .certificatePinner(OkHttpClientHelper.getCertificatePinner())
                 .build();

@@ -36,8 +36,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
@@ -267,17 +265,14 @@ public class ScribeFilesSenderTest {
         final Request request = new Request.Builder().url("https://dummy.com").build();
         final Interceptor.Chain chain  = mock(Interceptor.Chain.class);
         when(chain.request()).thenReturn(request);
-        when(chain.proceed(any(Request.class))).thenAnswer(new Answer<okhttp3.Response>() {
-            @Override
-            public okhttp3.Response answer(InvocationOnMock invocation) throws Throwable {
-                final Object[] args = invocation.getArguments();
-                return new okhttp3.Response.Builder()
-                        .protocol(Protocol.HTTP_1_1)
-                        .code(HttpURLConnection.HTTP_OK)
-                        .message("OK")
-                        .request((Request) args[0])
-                        .build();
-            }
+        when(chain.proceed(any(Request.class))).thenAnswer(invocation -> {
+            final Object[] args = invocation.getArguments();
+            return new okhttp3.Response.Builder()
+                    .protocol(Protocol.HTTP_1_1)
+                    .code(HttpURLConnection.HTTP_OK)
+                    .message("OK")
+                    .request((Request) args[0])
+                    .build();
         });
         return chain;
     }

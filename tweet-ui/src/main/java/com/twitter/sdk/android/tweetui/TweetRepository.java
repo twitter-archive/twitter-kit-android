@@ -95,12 +95,7 @@ class TweetRepository {
      */
     private void deliverTweet(final Tweet tweet, final Callback<Tweet> cb) {
         if (cb == null) return;
-        mainHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                cb.success(new Result<>(tweet, null));
-            }
-        });
+        mainHandler.post(() -> cb.success(new Result<>(tweet, null)));
     }
 
     void favorite(final long tweetId, final Callback<Tweet> cb) {

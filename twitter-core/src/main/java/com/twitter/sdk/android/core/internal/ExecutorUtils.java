@@ -61,13 +61,10 @@ public final class ExecutorUtils {
     static ThreadFactory getNamedThreadFactory(final String threadNameTemplate) {
         final AtomicLong count = new AtomicLong(1);
 
-        return new ThreadFactory() {
-            @Override
-            public Thread newThread(final Runnable runnable) {
-                final Thread thread = Executors.defaultThreadFactory().newThread(runnable);
-                thread.setName(threadNameTemplate + count.getAndIncrement());
-                return thread;
-            }
+        return runnable -> {
+            final Thread thread = Executors.defaultThreadFactory().newThread(runnable);
+            thread.setName(threadNameTemplate + count.getAndIncrement());
+            return thread;
         };
     }
 
@@ -78,23 +75,20 @@ public final class ExecutorUtils {
 
     static void addDelayedShutdownHook(final String serviceName,
             final ExecutorService service, final long terminationTimeout, final TimeUnit timeUnit) {
-        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    service.shutdown();
-                    if (!service.awaitTermination(terminationTimeout, timeUnit)) {
-                        Twitter.getLogger().d(Twitter.TAG, serviceName + " did not shutdown in the"
-                                + " allocated time. Requesting immediate shutdown.");
-                        service.shutdownNow();
-                    }
-                } catch (InterruptedException e) {
-                    Twitter.getLogger().d(Twitter.TAG, String.format(Locale.US,
-                            "Interrupted while waiting for %s to shut down." +
-                                    " Requesting immediate shutdown.",
-                            serviceName));
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                service.shutdown();
+                if (!service.awaitTermination(terminationTimeout, timeUnit)) {
+                    Twitter.getLogger().d(Twitter.TAG, serviceName + " did not shutdown in the"
+                            + " allocated time. Requesting immediate shutdown.");
                     service.shutdownNow();
                 }
+            } catch (InterruptedException e) {
+                Twitter.getLogger().d(Twitter.TAG, String.format(Locale.US,
+                        "Interrupted while waiting for %s to shut down." +
+                                " Requesting immediate shutdown.",
+                        serviceName));
+                service.shutdownNow();
             }
         }, "Twitter Shutdown Hook for " + serviceName));
     }

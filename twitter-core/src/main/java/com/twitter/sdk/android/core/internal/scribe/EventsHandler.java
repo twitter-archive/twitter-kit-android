@@ -43,62 +43,50 @@ public abstract class EventsHandler<T> implements EventsStorageListener {
     }
 
     public void recordEventAsync(final T event, final boolean sendImmediately) {
-        executeAsync(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    strategy.recordEvent(event);
+        executeAsync(() -> {
+            try {
+                strategy.recordEvent(event);
 
-                    if (sendImmediately) {
-                        // this triggers call to onRollover()
-                        strategy.rollFileOver();
-                    }
-                } catch (Exception e) {
-                    CommonUtils.logControlledError(context, "Failed to record event.", e);
+                if (sendImmediately) {
+                    // this triggers call to onRollover()
+                    strategy.rollFileOver();
                 }
+            } catch (Exception e) {
+                CommonUtils.logControlledError(context, "Failed to record event.", e);
             }
         });
     }
 
     public void recordEventSync(final T event) {
-        executeSync(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    strategy.recordEvent(event);
-                } catch (Exception e) {
-                    CommonUtils.logControlledError(context,
-                            "Failed to record event", e);
-                }
+        executeSync(() -> {
+            try {
+                strategy.recordEvent(event);
+            } catch (Exception e) {
+                CommonUtils.logControlledError(context,
+                        "Failed to record event", e);
             }
         });
     }
 
     @Override
     public void onRollOver(String rolledOverFile) {
-        executeAsync(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    strategy.sendEvents();
-                } catch (Exception e) {
-                    CommonUtils.logControlledError(context, "Failed to send events files.", e);
-                }
+        executeAsync(() -> {
+            try {
+                strategy.sendEvents();
+            } catch (Exception e) {
+                CommonUtils.logControlledError(context, "Failed to send events files.", e);
             }
         });
     }
 
     public void disable() {
-        executeAsync(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final EventsStrategy<T> prevStrategy = strategy;
-                    strategy = getDisabledEventsStrategy();
-                    prevStrategy.deleteAllEvents();
-                } catch (Exception e) {
-                    CommonUtils.logControlledError(context, "Failed to disable events.", e);
-                }
+        executeAsync(() -> {
+            try {
+                final EventsStrategy<T> prevStrategy = strategy;
+                strategy = getDisabledEventsStrategy();
+                prevStrategy.deleteAllEvents();
+            } catch (Exception e) {
+                CommonUtils.logControlledError(context, "Failed to disable events.", e);
             }
         });
     }

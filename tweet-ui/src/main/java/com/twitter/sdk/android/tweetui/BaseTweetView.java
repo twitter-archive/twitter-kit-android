@@ -415,44 +415,38 @@ public abstract class BaseTweetView extends AbstractTweetView {
      */
     void linkifyProfilePhotoView(final Tweet displayTweet) {
         if (displayTweet != null && displayTweet.user != null) {
-            avatarView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (tweetLinkClickListener != null) {
-                        tweetLinkClickListener.onLinkClick(displayTweet,
-                                TweetUtils.getProfilePermalink(displayTweet.user.screenName));
-                    } else {
-                        final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(
-                                TweetUtils.getProfilePermalink(displayTweet.user.screenName)));
-                        if (!IntentUtils.safeStartActivity(getContext(), intent)) {
-                            Twitter.getLogger().e(TweetUi.LOGTAG,
-                                    "Activity cannot be found to open URL");
-                        }
+            avatarView.setOnClickListener(v -> {
+                if (tweetLinkClickListener != null) {
+                    tweetLinkClickListener.onLinkClick(displayTweet,
+                            TweetUtils.getProfilePermalink(displayTweet.user.screenName));
+                } else {
+                    final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(
+                            TweetUtils.getProfilePermalink(displayTweet.user.screenName)));
+                    if (!IntentUtils.safeStartActivity(getContext(), intent)) {
+                        Twitter.getLogger().e(TweetUi.LOGTAG,
+                                "Activity cannot be found to open URL");
                     }
+                }
 
-                }
             });
-            avatarView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    final ImageView imageView = (ImageView) v;
-                    switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            imageView.getDrawable().setColorFilter(getResources().getColor(
-                                    R.color.tw__black_opacity_10), PorterDuff.Mode.SRC_ATOP);
-                            imageView.invalidate();
-                            break;
-                        case MotionEvent.ACTION_UP:
-                            v.performClick();
-                        case MotionEvent.ACTION_CANCEL: {
-                            imageView.getDrawable().clearColorFilter();
-                            imageView.invalidate();
-                            break;
-                        }
-                        default: break;
+            avatarView.setOnTouchListener((v, event) -> {
+                final ImageView imageView = (ImageView) v;
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        imageView.getDrawable().setColorFilter(getResources().getColor(
+                                R.color.tw__black_opacity_10), PorterDuff.Mode.SRC_ATOP);
+                        imageView.invalidate();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        v.performClick();
+                    case MotionEvent.ACTION_CANCEL: {
+                        imageView.getDrawable().clearColorFilter();
+                        imageView.invalidate();
+                        break;
                     }
-                    return false;
+                    default: break;
                 }
+                return false;
             });
         }
     }

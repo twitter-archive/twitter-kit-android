@@ -86,12 +86,7 @@ public class TwitterCore {
             synchronized (TwitterCore.class) {
                 if (instance == null) {
                     instance = new TwitterCore(Twitter.getInstance().getTwitterAuthConfig());
-                    Twitter.getInstance().getExecutorService().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            instance.doInBackground();
-                        }
-                    });
+                    Twitter.getInstance().getExecutorService().execute(() -> instance.doInBackground());
                 }
             }
         }

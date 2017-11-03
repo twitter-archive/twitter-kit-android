@@ -38,77 +38,32 @@ public class TweetUiMainActivity extends BaseActivity {
         }
 
         final Button xmlTweetButton = findViewById(R.id.button_xml_tweet_activity);
-        xmlTweetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(TweetUiMainActivity.this, XmlTweetActivity.class));
-            }
-        });
+        xmlTweetButton.setOnClickListener(v -> startActivity(new Intent(TweetUiMainActivity.this, XmlTweetActivity.class)));
 
         final Button tweetActivityButton = findViewById(R.id.button_tweet_activity);
-        tweetActivityButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(TweetUiMainActivity.this, TweetActivity.class));
-            }
-        });
+        tweetActivityButton.setOnClickListener(v -> startActivity(new Intent(TweetUiMainActivity.this, TweetActivity.class)));
 
         final Button unqiueTweetButton = findViewById(R.id.button_unique_tweet_activity);
-        unqiueTweetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(TweetUiMainActivity.this, UniqueTweetActivity.class));
-            }
-        });
+        unqiueTweetButton.setOnClickListener(v -> startActivity(new Intent(TweetUiMainActivity.this, UniqueTweetActivity.class)));
 
         final Button tweetListButton = findViewById(R.id.button_fixed_timeline_activity);
-        tweetListButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(TweetUiMainActivity.this, FixedTimelineActivity.class));
-            }
-        });
+        tweetListButton.setOnClickListener(v -> startActivity(new Intent(TweetUiMainActivity.this, FixedTimelineActivity.class)));
 
         final Button timelineButton = findViewById(R.id.button_refresh_timeline_activity);
-        timelineButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(TweetUiMainActivity.this, TimelineActivity.class));
-            }
-        });
+        timelineButton.setOnClickListener(v -> startActivity(new Intent(TweetUiMainActivity.this, TimelineActivity.class)));
 
         final Button timelinesButton = findViewById(R.id.button_timelines_activity);
-        timelinesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(TweetUiMainActivity.this, TimelinesActivity.class));
-            }
-        });
+        timelinesButton.setOnClickListener(view -> startActivity(new Intent(TweetUiMainActivity.this, TimelinesActivity.class)));
 
         final Button tweetSelectorButton = findViewById(
                 R.id.button_tweet_preview_activity);
-        tweetSelectorButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(TweetUiMainActivity.this, TweetPreviewActivity.class));
-            }
-        });
+        tweetSelectorButton.setOnClickListener(v -> startActivity(new Intent(TweetUiMainActivity.this, TweetPreviewActivity.class)));
 
         final Button tweetPojoButton = findViewById(
                 R.id.button_tweet_pojo_activity);
-        tweetPojoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(TweetUiMainActivity.this, TweetPojoActivity.class));
-            }
-        });
+        tweetPojoButton.setOnClickListener(v -> startActivity(new Intent(TweetUiMainActivity.this, TweetPojoActivity.class)));
 
         final Button rtlTimelineButton = findViewById(R.id.button_rtl_timeline_activity);
-        rtlTimelineButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(TweetUiMainActivity.this, RtlTimelineActivity.class));
-            }
-        });
+        rtlTimelineButton.setOnClickListener(v -> startActivity(new Intent(TweetUiMainActivity.this, RtlTimelineActivity.class)));
     }
 }

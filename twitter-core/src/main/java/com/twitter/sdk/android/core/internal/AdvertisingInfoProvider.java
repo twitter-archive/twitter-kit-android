@@ -63,15 +63,13 @@ class AdvertisingInfoProvider {
      * date.
      */
     private void refreshInfoIfNeededAsync(final AdvertisingInfo advertisingInfo) {
-        new Thread(new Runnable() {
-            public void run() {
-                final AdvertisingInfo infoToStore = getAdvertisingInfoFromStrategies();
-                if (!advertisingInfo.equals(infoToStore)) {
-                    Twitter.getLogger()
-                            .d(Twitter.TAG, "Asychronously getting Advertising Info and " +
-                            "storing it to preferences");
-                    storeInfoToPreferences(infoToStore);
-                }
+        new Thread(() -> {
+            final AdvertisingInfo infoToStore = getAdvertisingInfoFromStrategies();
+            if (!advertisingInfo.equals(infoToStore)) {
+                Twitter.getLogger()
+                        .d(Twitter.TAG, "Asychronously getting Advertising Info and " +
+                        "storing it to preferences");
+                storeInfoToPreferences(infoToStore);
             }
         }).start();
     }

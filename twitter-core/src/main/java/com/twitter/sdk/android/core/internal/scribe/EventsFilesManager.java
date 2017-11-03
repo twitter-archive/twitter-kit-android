@@ -27,7 +27,6 @@ import com.twitter.sdk.android.core.internal.CurrentTimeProvider;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.TreeSet;
@@ -203,12 +202,7 @@ public abstract class EventsFilesManager<T> {
                 allFiles.size(), maxFiles, numberOfFilesToDelete));
 
         final TreeSet<FileWithTimestamp> sortedFiles = new TreeSet<>(
-                new Comparator<FileWithTimestamp>() {
-                    @Override
-                    public int compare(FileWithTimestamp arg0, FileWithTimestamp arg1) {
-                        return (int) (arg0.timestamp - arg1.timestamp);
-                    }
-        });
+                (arg0, arg1) -> (int) (arg0.timestamp - arg1.timestamp));
 
         for (File file : allFiles){
             final long creationTimestamp = parseCreationTimestampFromFileName(file.getName());

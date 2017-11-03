@@ -18,7 +18,6 @@
 package com.twitter.sdk.android.tweetui.internal;
 
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.view.MotionEvent;
 import android.view.View;
@@ -176,13 +175,10 @@ public class SwipeToDismissTouchListener implements View.OnTouchListener {
         if (swipeableView.getTranslationY() != 0) {
             final ObjectAnimator animator =
                     ObjectAnimator.ofFloat(swipeableView, View.TRANSLATION_Y, 0).setDuration(100);
-            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    final float targetY = (Float) animation.getAnimatedValue();
-                    if (callback != null) {
-                        callback.onMove(targetY);
-                    }
+            animator.addUpdateListener(animation -> {
+                final float targetY = (Float) animation.getAnimatedValue();
+                if (callback != null) {
+                    callback.onMove(targetY);
                 }
             });
             animator.start();

@@ -161,11 +161,8 @@ public abstract class AbstractTweetViewTest extends TweetUiTestCase {
 
     public void testSetTweetMediaClickListener() {
         final AbstractTweetView view = createView(context, TestFixtures.TEST_TWEET_LINK);
-        view.setTweetMediaClickListener(new TweetMediaClickListener() {
-            @Override
-            public void onMediaEntityClick(Tweet tweet, MediaEntity entity) {
+        view.setTweetMediaClickListener((tweet, entity) -> {
 
-            }
         });
 
         assertNotNull(view.tweetMediaClickListener);

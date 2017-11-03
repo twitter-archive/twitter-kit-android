@@ -23,7 +23,6 @@ import android.net.Uri;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -81,26 +80,13 @@ public class ComposerView extends LinearLayout {
         super.onFinishInflate();
         findSubviews();
 
-        closeView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                callbacks.onCloseClick();
-            }
-        });
+        closeView.setOnClickListener(view -> callbacks.onCloseClick());
 
-        tweetButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                callbacks.onTweetPost(getTweetText());
-            }
-        });
+        tweetButton.setOnClickListener(view -> callbacks.onTweetPost(getTweetText()));
 
-        tweetEditView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                callbacks.onTweetPost(getTweetText());
-                return true;
-            }
+        tweetEditView.setOnEditorActionListener((textView, i, keyEvent) -> {
+            callbacks.onTweetPost(getTweetText());
+            return true;
         });
 
         tweetEditView.addTextChangedListener(new TextWatcher() {
@@ -118,14 +104,11 @@ public class ComposerView extends LinearLayout {
             }
         });
 
-        scrollView.setScrollViewListener(new ObservableScrollView.ScrollViewListener() {
-            @Override
-            public void onScrollChanged(int scrollY) {
-                if (scrollY > 0) {
-                    divider.setVisibility(View.VISIBLE);
-                } else {
-                    divider.setVisibility(View.INVISIBLE);
-                }
+        scrollView.setScrollViewListener(scrollY -> {
+            if (scrollY > 0) {
+                divider.setVisibility(View.VISIBLE);
+            } else {
+                divider.setVisibility(View.INVISIBLE);
             }
         });
     }

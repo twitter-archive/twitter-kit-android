@@ -102,16 +102,13 @@ public class VideoControlView extends FrameLayout {
     }
 
     OnClickListener createStateControlClickListener() {
-        return new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (player.isPlaying()) {
-                    player.pause();
-                } else {
-                    player.start();
-                }
-                show();
+        return view -> {
+            if (player.isPlaying()) {
+                player.pause();
+            } else {
+                player.start();
             }
+            show();
         };
     }
 
