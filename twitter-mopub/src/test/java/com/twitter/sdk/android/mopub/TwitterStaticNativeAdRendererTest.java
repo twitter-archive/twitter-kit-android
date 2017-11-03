@@ -25,7 +25,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mopub.nativeads.BaseNativeAd;
-import com.mopub.nativeads.MoPubCustomEventVideoNative;
 import com.mopub.nativeads.StaticNativeAd;
 import com.mopub.network.MaxWidthImageLoader;
 import com.mopub.network.Networking;
@@ -146,7 +145,5 @@ public class TwitterStaticNativeAdRendererTest {
     public void testSupports_withCorrectInstanceOfBaseNativeAd_shouldReturnTrue() throws Exception {
         assertTrue(twitterStaticNativeAdRenderer.supports(new StaticNativeAd() {}));
         assertFalse(twitterStaticNativeAdRenderer.supports(mock(BaseNativeAd.class)));
-        assertFalse(twitterStaticNativeAdRenderer
-                .supports(mock(MoPubCustomEventVideoNative.MoPubVideoNativeAd.class)));
     }
 }

@@ -16,7 +16,7 @@ ext {
             androidGradlePlugin        : 'com.android.tools.build:gradle:3.0.0',
 
             // Mopub
-            mopub                      : 'com.mopub:mopub-sdk:4.11.0@aar',
+            mopub                      : 'com.mopub:mopub-sdk-native-static:4.11.0@aar',
 
             // Sample App
             leakCanary                 : 'com.squareup.leakcanary:leakcanary-android:1.5.3',
@@ -35,7 +35,8 @@ ext {
 
             // Other
             picasso                    : 'com.squareup.picasso:picasso:2.5.2',
-            supportV4                  : 'com.android.support:support-v4:26.1.0',
+            supportCompatV4            : 'com.android.support:support-compat:26.1.0',
+            supportCoreV4              : 'com.android.support:support-core-ui:26.1.0',
             retrofit                   : 'com.squareup.retrofit2:retrofit:2.3.0',
             retrofitMock               : 'com.squareup.retrofit2:retrofit-mock:2.3.0',
             retrofitGsonConverter      : 'com.squareup.retrofit2:converter-gson:2.3.0',

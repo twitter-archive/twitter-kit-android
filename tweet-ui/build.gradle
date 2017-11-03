@@ -70,7 +70,8 @@ dependencies {
     api project(':twitter-core')
 
     implementation dependency.picasso
-    implementation dependency.supportV4
+    implementation dependency.supportCoreV4
+    implementation dependency.supportCompatV4
     implementation dependency.recyclerview
 
     androidTestCompile dependency.retrofitMock
