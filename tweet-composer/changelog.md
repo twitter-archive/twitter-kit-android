@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+## v3.2.0
+
+* Moved build to Java 8
+
 ## v3.1.1
 
 * Send broadcast when Tweet compose is cancelled.

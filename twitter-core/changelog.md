@@ -3,6 +3,11 @@
 
 ## Unreleased
 
+## v3.2.0
+
+* Fixed issue that caused startup delays
+* Moved build to Java 8
+
 ## v3.1.1
 
 * Bumped version number

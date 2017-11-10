@@ -3,6 +3,11 @@
 
 ## Unreleased
 
+## v3.2.0
+
+* Moved build to Java 8
+* Narrowed mopub-sdk dependency to mopub-sdk-native-static
+
 ## v3.1.1
 
 * Bumped version number

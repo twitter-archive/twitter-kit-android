@@ -3,6 +3,11 @@
 
 ## Unreleased
 
+## v3.2.0
+
+* Moved build to Java 8
+* Narrowed support-v4 dependency to support-compat and support-core-ui
+
 ## v3.1.1
 
 * Modified TweetTimelineRecyclerViewAdapter to allow user to override the ViewHolder
