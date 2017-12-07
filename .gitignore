@@ -1,0 +1,33 @@
+# OSX files
+.DS_Store
+
+# Gradle Files
+.gradle
+.m2
+.gradletasknamecache
+
+# Build output directories and files
+target/
+build/
+_build/
+Version.java
+logcat.txt
+
+# Eclipse specific files/directories
+.classpath
+.project
+.settings
+.metadata
+bin/
+
+# IntelliJ specific files/directories
+out
+.idea
+*.ipr
+*.iws
+*.iml
+local.properties
+captures/
+.externalNativeBuild
+
+twitter.properties
