@@ -2,12 +2,23 @@
 
 Twitter Kit is a multi-module gradle project containing several Twitter SDKs including TweetComposer, TwitterCore, and TweetUi. Twitter Kit is designed to make interacting with Twitter seamless and efficient.
 
-Using Twitter Kit from source in production applications is not officially supported. Please utilize the available binaries.
+## Twitter Kit Features
 
-## Download
+* Display Tweets and timelines
+* Compose Tweets
+* Monetize with MoPub integration
+* Log in with Twitter
+* Access the Twitter API
 
+## Getting Started
 
-Define via Gradle:
+* Generate your Twitter API keys through the [Twitter developer apps dashboard](https://apps.twitter.com/).
+* Install Twitter Kit using instructions below.
+* For extensive documentation, please see the [wiki](https://github.com/twitter/twitter-kit-android/wiki).
+
+### Install using Bintray JCenter
+
+Add twitter dependency to your build.gradle:
 ```groovy
 
 repositories {
@@ -22,20 +33,11 @@ dependencies {
 
 ```
 
-## Getting Started
+### Building from source
 
-* Create your Twitter app through [this portal](https://apps.twitter.com/).
-* Rename samples/app/twitter.properties.sample to samples/app/twitter.properties and populate the consumer key and secret.
-* Run Sample app to verify build.
-* For extensive documentation, please see the [official documentation](http://dev.twitter.com/twitterkit/overview.html).
+Rename samples/app/twitter.properties.sample to samples/app/twitter.properties and populate the consumer key and secret.
 
-## Code of Conduct
-
-This, and all github.com/twitter projects, are under the [Twitter Open Source Code of Conduct](https://github.com/twitter/code-of-conduct/blob/master/code-of-conduct.md). Additionally, see the [Typelevel Code of Conduct](http://typelevel.org/conduct) for specific examples of harassing behavior that are not tolerated.
-
-## Building
-
-Please use the provided gradle wrapper to build the project.
+To build the entire project run
 
 ```
 ./gradlew assemble
@@ -44,7 +46,7 @@ Please use the provided gradle wrapper to build the project.
 Run all automated tests on device to verify.
 
 ```
-./gradlew connectedCheck
+./gradlew test connectedCheck
 ```
 
 To run the sample app
@@ -54,9 +56,13 @@ To run the sample app
 ```
 
 
-Contributing
+## Contributing
 
 The master branch of this repository contains the latest stable release of Twitter Kit. See [CONTRIBUTING.md](https://github.com/twitter/twitter-kit-android/blob/master/CONTRIBUTING.md) for more details about how to contribute.
+
+## Code of Conduct
+
+This, and all github.com/twitter projects, are under the [Twitter Open Source Code of Conduct](https://github.com/twitter/code-of-conduct/blob/master/code-of-conduct.md). Additionally, see the [Typelevel Code of Conduct](http://typelevel.org/conduct) for specific examples of harassing behavior that are not tolerated.
 
 ## Contact
 

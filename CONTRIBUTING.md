@@ -23,7 +23,7 @@ The workflow that we support:
 We've use the standard [Android Testing tools](http://developer.android.com/tools/testing/testing_android.html). Most classes are currently using AndroidTestCase, but will slowly be migrated to JUnit 4.
 
 ```
-Running ./gradlew connectedCheck will perform the needed tests
+Running ./gradlew test connectedCheck will perform the needed tests
 ```
 
 ## Styleguide
