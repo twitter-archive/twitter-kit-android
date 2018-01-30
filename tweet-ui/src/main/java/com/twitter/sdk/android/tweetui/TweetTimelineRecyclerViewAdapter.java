@@ -148,7 +148,7 @@ public class TweetTimelineRecyclerViewAdapter extends
         return timelineDelegate.getCount();
     }
 
-    protected static final class TweetViewHolder extends RecyclerView.ViewHolder {
+    public static final class TweetViewHolder extends RecyclerView.ViewHolder {
         public TweetViewHolder(CompactTweetView itemView) {
             super(itemView);
         }
