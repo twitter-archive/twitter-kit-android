@@ -91,9 +91,4 @@ public class TweetView extends BaseTweetView {
             fullNameView.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }
     }
-
-    @Override
-    String getViewTypeName() {
-        return VIEW_TYPE_NAME;
-    }
 }

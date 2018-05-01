@@ -33,7 +33,6 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 import com.twitter.sdk.android.core.IntentUtils;
 import com.twitter.sdk.android.core.internal.VineCardUtils;
-import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
 import com.twitter.sdk.android.core.models.Card;
 import com.twitter.sdk.android.core.models.ImageValue;
 import com.twitter.sdk.android.core.models.MediaEntity;
@@ -198,9 +197,6 @@ public class TweetMediaView extends ViewGroup implements View.OnClickListener {
         final PlayerActivity.PlayerItem playerItem =
                 new PlayerActivity.PlayerItem(playerStreamUrl, true, false, null, null);
         intent.putExtra(PlayerActivity.PLAYER_ITEM, playerItem);
-
-        final ScribeItem scribeItem = ScribeItem.fromTweetCard(tweet.id, card);
-        intent.putExtra(PlayerActivity.SCRIBE_ITEM, scribeItem);
 
         IntentUtils.safeStartActivity(getContext(), intent);
     }

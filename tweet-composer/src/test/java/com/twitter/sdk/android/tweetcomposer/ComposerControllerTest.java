@@ -60,7 +60,6 @@ public class ComposerControllerTest {
     private TwitterSession mockTwitterSession;
     private AccountService mockAccountService;
     private ComposerActivity.Finisher mockFinisher;
-    private ComposerScribeClient mockComposerScribeClient;
     private ComposerController.DependencyProvider mockDependencyProvider;
 
     @Before
@@ -81,13 +80,11 @@ public class ComposerControllerTest {
                 .thenReturn(mock(Call.class));
         when(mockTwitterApiClient.getAccountService()).thenReturn(mockAccountService);
 
-        mockComposerScribeClient = mock(ComposerScribeClient.class);
 
         mockDependencyProvider = mock(ComposerController.DependencyProvider.class);
         when(mockDependencyProvider.getApiClient(any(TwitterSession.class)))
                 .thenReturn(mockTwitterApiClient);
         when(mockDependencyProvider.getTweetValidator()).thenReturn(new Validator());
-        when(mockDependencyProvider.getScribeClient()).thenReturn(mockComposerScribeClient);
     }
 
     @Test
@@ -100,13 +97,11 @@ public class ComposerControllerTest {
         // - sets initial Tweet text and cursor position
         // - gets a TwitterApiClient AccountService to set the profile photo
         // - sets card view in composer
-        // - scribes a Tweet Composer impression
         verify(mockComposerView).setCallbacks(any(ComposerController.ComposerCallbacks.class));
         verify(mockComposerView).setTweetText(ANY_TEXT + " " + ANY_HASHTAG);
         verify(mockComposerView).setImageView(Uri.EMPTY);
         verify(mockDependencyProvider).getApiClient(mockTwitterSession);
         verify(mockAccountService).verifyCredentials(eq(false), eq(true), eq(false));
-        verify(mockComposerScribeClient).impression();
     }
 
     @Test
@@ -189,7 +184,6 @@ public class ComposerControllerTest {
         // assert that
         // - context is used to start the TweetUploadService
         // - intent extras contain the session token and tweet text and card
-        // - scribes a Tweet Composer Tweet Click
         final ArgumentCaptor<Intent> intentCaptor = ArgumentCaptor.forClass(Intent.class);
         verify(mockContext).startService(intentCaptor.capture());
         final Intent intent = intentCaptor.getValue();
@@ -197,7 +191,6 @@ public class ComposerControllerTest {
                 intent.getComponent().getClassName());
         assertEquals(mockAuthToken, intent.getParcelableExtra(TweetUploadService.EXTRA_USER_TOKEN));
         assertEquals(Uri.EMPTY, intent.getParcelableExtra(TweetUploadService.EXTRA_IMAGE_URI));
-        verify(mockComposerScribeClient).click(eq(ScribeConstants.SCRIBE_TWEET_ELEMENT));
     }
 
     @Test
@@ -209,9 +202,7 @@ public class ComposerControllerTest {
         callbacks.onCloseClick();
         // assert that
         // - finishes the activity
-        // - scribes a Tweet Composer Cancel click
         verify(mockFinisher).finish();
-        verify(mockComposerScribeClient).click(eq(ScribeConstants.SCRIBE_CANCEL_ELEMENT));
     }
 
     @Test

@@ -45,7 +45,7 @@ import java.lang.ref.WeakReference;
  */
 public class TimelineActivity extends BaseActivity {
 
-    final WeakReference<Activity> activityRef = new WeakReference<Activity>(TimelineActivity.this);
+    final WeakReference<Activity> activityRef = new WeakReference<>(TimelineActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

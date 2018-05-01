@@ -29,8 +29,6 @@ import retrofit2.Call;
  * UserTimeline provides a timeline of tweets from the statuses/userTimeline API source.
  */
 public class UserTimeline extends BaseTimeline implements Timeline<Tweet> {
-    private static final String SCRIBE_SECTION = "user";
-
     final TwitterCore twitterCore;
     final Long userId;
     final String screenName;
@@ -70,11 +68,6 @@ public class UserTimeline extends BaseTimeline implements Timeline<Tweet> {
         // user timeline api provides results which are inclusive, decrement the maxId to get
         // exclusive results
         createUserTimelineRequest(null, decrementMaxId(maxId)).enqueue(new TweetsCallback(cb));
-    }
-
-    @Override
-    String getTimelineType() {
-        return SCRIBE_SECTION;
     }
 
     Call<List<Tweet>> createUserTimelineRequest(final Long sinceId, final Long maxId) {

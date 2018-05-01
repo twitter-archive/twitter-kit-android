@@ -31,8 +31,6 @@ import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.internal.network.UrlUtils;
-import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
-import com.twitter.sdk.android.core.internal.scribe.ScribeConfig;
 
 import java.net.URL;
 import java.util.List;
@@ -47,12 +45,10 @@ public class TweetComposer {
     private static final String MIME_TYPE_JPEG = "image/jpeg";
     private static final String TWITTER_PACKAGE_NAME = "com.twitter.android";
     private static final String WEB_INTENT = "https://twitter.com/intent/tweet?text=%s&url=%s";
-    private static final String KIT_SCRIBE_NAME = "TweetComposer";
 
     SessionManager<TwitterSession> sessionManager;
     GuestSessionProvider guestSessionProvider;
     Context context;
-    ScribeClient scribeClient;
 
     public static TweetComposer getInstance() {
         if (instance == null) {
@@ -66,33 +62,17 @@ public class TweetComposer {
     }
 
     TweetComposer() {
-        scribeClient = new ScribeClientImpl(null);
-
         sessionManager = TwitterCore.getInstance().getSessionManager();
         guestSessionProvider = TwitterCore.getInstance().getGuestSessionProvider();
         context = Twitter.getInstance().getContext(getIdentifier());
-
-        setUpScribeClient();
     }
 
     public String getVersion() {
         return BuildConfig.VERSION_NAME + "." + BuildConfig.BUILD_NUMBER;
     }
 
-    private void setUpScribeClient() {
-        final ScribeConfig config =
-                DefaultScribeClient.getScribeConfig(KIT_SCRIBE_NAME, getVersion());
-        scribeClient = new ScribeClientImpl(new DefaultScribeClient(context,
-                sessionManager, guestSessionProvider, Twitter.getInstance().getIdManager(),
-                config));
-    }
-
     public String getIdentifier() {
         return BuildConfig.GROUP + ":" + BuildConfig.ARTIFACT_ID;
-    }
-
-    ScribeClient getScribeClient() {
-        return scribeClient;
     }
 
     /**

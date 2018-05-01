@@ -84,8 +84,7 @@ public class UtilsTest {
     @Test
     public void testSortTweets() {
         final List<Long> requestedIds = TestFixtures.TWEET_IDS;
-        final List<Tweet> tweets = new ArrayList<>();
-        tweets.addAll(TestFixtures.UNORDERED_TWEETS);
+        final List<Tweet> tweets = new ArrayList<>(TestFixtures.UNORDERED_TWEETS);
         final List<Tweet> ordered = Utils.orderTweets(requestedIds, tweets);
         assertEquals(TestFixtures.ORDERED_TWEETS, ordered);
     }
@@ -94,8 +93,7 @@ public class UtilsTest {
     @Test
     public void testSortTweets_duplicateRequestedIds() {
         final List<Long> requestedIds = TestFixtures.DUPLICATE_TWEET_IDS;
-        final List<Tweet> tweets = new ArrayList<>();
-        tweets.addAll(TestFixtures.UNORDERED_TWEETS);
+        final List<Tweet> tweets = new ArrayList<>(TestFixtures.UNORDERED_TWEETS);
         final List<Tweet> ordered = Utils.orderTweets(requestedIds, tweets);
         assertEquals(TestFixtures.ORDERED_DUPLICATE_TWEETS, ordered);
     }
@@ -104,8 +102,7 @@ public class UtilsTest {
     @Test
     public void testSortTweets_duplicateTweets() {
         final List<Long> requestedIds = TestFixtures.TWEET_IDS;
-        final List<Tweet> tweets = new ArrayList<>();
-        tweets.addAll(TestFixtures.UNORDERED_DUPLICATE_TWEETS);
+        final List<Tweet> tweets = new ArrayList<>(TestFixtures.UNORDERED_DUPLICATE_TWEETS);
         final List<Tweet> ordered = Utils.orderTweets(requestedIds, tweets);
         assertEquals(TestFixtures.ORDERED_TWEETS, ordered);
     }
@@ -113,8 +110,7 @@ public class UtilsTest {
     @Test
     public void testSortTweets_missingTweets() {
         final List<Long> requestedIds = TestFixtures.TWEET_IDS;
-        final List<Tweet> tweets = new ArrayList<>();
-        tweets.addAll(TestFixtures.UNORDERED_MISSING_TWEETS);
+        final List<Tweet> tweets = new ArrayList<>(TestFixtures.UNORDERED_MISSING_TWEETS);
         final List<Tweet> ordered = Utils.orderTweets(requestedIds, tweets);
         assertEquals(TestFixtures.ORDERED_MISSING_TWEETS, ordered);
     }
@@ -123,8 +119,7 @@ public class UtilsTest {
     @Test
     public void testSortTweets_extraTweetsFirst() {
         final List<Long> requestedIds = TestFixtures.TWEET_IDS;
-        final List<Tweet> tweets = new ArrayList<>();
-        tweets.addAll(TestFixtures.UNORDERED_TWEETS);
+        final List<Tweet> tweets = new ArrayList<>(TestFixtures.UNORDERED_TWEETS);
         tweets.add(TestFixtures.TEST_TWEET);
 
         final List<Tweet> ordered = Utils.orderTweets(requestedIds, tweets);

@@ -20,9 +20,6 @@ package com.twitter.sdk.android.core;
 
 import com.twitter.sdk.android.core.internal.oauth.GuestAuthToken;
 import com.twitter.sdk.android.core.internal.oauth.OAuth2Token;
-import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
-import com.twitter.sdk.android.core.internal.scribe.ScribeEvent;
-import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 
@@ -78,46 +75,6 @@ public class EqualsHashCodeTest {
     @Test
     public void testTwitterSession() throws Exception {
         EqualsVerifier.forClass(TwitterSession.class)
-                .suppress(Warning.STRICT_INHERITANCE)
-                .usingGetClass()
-                .verify();
-    }
-
-    @Test
-    public void testEventNamespace() throws Exception {
-        EqualsVerifier.forClass(EventNamespace.class)
-                .suppress(Warning.STRICT_INHERITANCE)
-                .usingGetClass()
-                .verify();
-    }
-
-    @Test
-    public void testScribeEvent() throws Exception {
-        EqualsVerifier.forClass(ScribeEvent.class)
-                .suppress(Warning.STRICT_INHERITANCE)
-                .usingGetClass()
-                .verify();
-    }
-
-    @Test
-    public void testScribeItem() throws Exception {
-        EqualsVerifier.forClass(ScribeItem.class)
-                .suppress(Warning.STRICT_INHERITANCE)
-                .usingGetClass()
-                .verify();
-    }
-
-    @Test
-    public void testMediaDetails() throws Exception {
-        EqualsVerifier.forClass(ScribeItem.MediaDetails.class)
-                .suppress(Warning.STRICT_INHERITANCE)
-                .usingGetClass()
-                .verify();
-    }
-
-    @Test
-    public void testCardEvent() throws Exception {
-        EqualsVerifier.forClass(ScribeItem.CardEvent.class)
                 .suppress(Warning.STRICT_INHERITANCE)
                 .usingGetClass()
                 .verify();

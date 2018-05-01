@@ -29,18 +29,11 @@ import com.twitter.sdk.android.core.models.Tweet;
 class ShareTweetAction implements View.OnClickListener {
     final Tweet tweet;
     final TweetUi tweetUi;
-    final TweetScribeClient tweetScribeClient;
 
     ShareTweetAction(Tweet tweet, TweetUi tweetUi) {
-        this(tweet, tweetUi, new TweetScribeClientImpl(tweetUi));
-    }
-
-    // For testing only
-    ShareTweetAction(Tweet tweet, TweetUi tweetUi, TweetScribeClient tweetScribeClient) {
         super();
         this.tweet = tweet;
         this.tweetUi = tweetUi;
-        this.tweetScribeClient = tweetScribeClient;
     }
 
     @Override
@@ -48,14 +41,8 @@ class ShareTweetAction implements View.OnClickListener {
         onClick(v.getContext(), v.getResources());
     }
 
-    void scribeShareAction() {
-        tweetScribeClient.share(tweet);
-    }
-
     void onClick(Context context, Resources resources) {
         if (tweet == null || tweet.user == null) return;
-
-        scribeShareAction();
 
         final String shareSubject = getShareSubject(resources);
         final String shareContent = getShareContent(resources);

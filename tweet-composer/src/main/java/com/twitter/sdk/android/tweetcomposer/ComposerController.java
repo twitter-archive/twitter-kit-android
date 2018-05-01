@@ -58,7 +58,6 @@ class ComposerController {
         composerView.setTweetText(generateText(text, hashtags));
         setProfilePhoto();
         setImageView(imageUri);
-        dependencyProvider.getScribeClient().impression();
     }
 
     String generateText(String text, String hashtags) {
@@ -121,7 +120,6 @@ class ComposerController {
 
         @Override
         public void onTweetPost(String text) {
-            dependencyProvider.getScribeClient().click(ScribeConstants.SCRIBE_TWEET_ELEMENT);
             final Intent intent = new Intent(composerView.getContext(), TweetUploadService.class);
             intent.putExtra(TweetUploadService.EXTRA_USER_TOKEN, session.getAuthToken());
             intent.putExtra(TweetUploadService.EXTRA_TWEET_TEXT, text);
@@ -137,7 +135,6 @@ class ComposerController {
     }
 
     void onClose() {
-        dependencyProvider.getScribeClient().click(ScribeConstants.SCRIBE_CANCEL_ELEMENT);
         sendCancelBroadcast();
         finisher.finish();
     }
@@ -186,10 +183,6 @@ class ComposerController {
 
         Validator getTweetValidator() {
             return tweetValidator;
-        }
-
-        ComposerScribeClient getScribeClient() {
-            return new ComposerScribeClientImpl(TweetComposer.getInstance().getScribeClient());
         }
     }
 }

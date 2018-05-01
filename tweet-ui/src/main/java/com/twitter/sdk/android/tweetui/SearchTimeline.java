@@ -37,7 +37,6 @@ import retrofit2.Call;
  */
 public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
     static final String FILTER_RETWEETS = " -filter:retweets";   // leading whitespace intentional
-    private static final String SCRIBE_SECTION = "search";
     private static final SimpleDateFormat QUERY_DATE =
             new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
@@ -83,11 +82,6 @@ public class SearchTimeline extends BaseTimeline implements Timeline<Tweet> {
         // FILTER_RETWEETS is added to the query (which we currently always add), decrement the
         // maxId to get exclusive results
         createSearchRequest(null, decrementMaxId(maxId)).enqueue(new SearchCallback(cb));
-    }
-
-    @Override
-    String getTimelineType() {
-        return SCRIBE_SECTION;
     }
 
     Call<Search> createSearchRequest(final Long sinceId, final Long maxId) {

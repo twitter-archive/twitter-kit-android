@@ -152,14 +152,6 @@ public class SearchTimelineTest {
                 eq(TEST_SINCE_ID), eq(TEST_MAX_ID), eq(true));
     }
 
-    @Test
-    public void testGetScribeSection() {
-        final SearchTimeline timeline = new SearchTimeline.Builder(twitterCore)
-                .query(TEST_QUERY)
-                .build();
-        assertEquals(REQUIRED_IMPRESSION_SECTION, timeline.getTimelineType());
-    }
-
     /* Builder */
     @Test
     public void testBuilder() {

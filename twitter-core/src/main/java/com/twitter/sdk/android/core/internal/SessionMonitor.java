@@ -83,7 +83,7 @@ public class SessionMonitor<T extends Session> {
         final boolean startVerification = session != null &&
                 monitorState.beginVerification(currentTime);
         if (startVerification) {
-            executorService.submit(() -> verifyAll());
+            executorService.submit(this::verifyAll);
         }
     }
 

@@ -24,7 +24,6 @@ import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.core.models.Tweet;
 
 public class CompactTweetView extends BaseTweetView {
-    private static final String VIEW_TYPE_NAME = "compact";
     private static final double SQUARE_ASPECT_RATIO = 1.0;
     private static final double MAX_LANDSCAPE_ASPECT_RATIO = 3.0;
     private static final double MIN_LANDSCAPE_ASPECT_RATIO = 4.0 / 3.0;
@@ -111,10 +110,5 @@ public class CompactTweetView extends BaseTweetView {
     @Override
     protected double getAspectRatioForPhotoEntity(int photoCount) {
         return DEFAULT_ASPECT_RATIO_MEDIA_CONTAINER;
-    }
-
-    @Override
-    String getViewTypeName() {
-        return VIEW_TYPE_NAME;
     }
 }

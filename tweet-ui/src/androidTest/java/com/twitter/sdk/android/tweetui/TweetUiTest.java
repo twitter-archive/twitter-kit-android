@@ -23,16 +23,12 @@ import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterConfig;
 import com.twitter.sdk.android.core.TwitterCoreTestUtils;
 import com.twitter.sdk.android.core.TwitterTestUtils;
-import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 
 import java.util.concurrent.ExecutorService;
 
 import static org.mockito.Mockito.mock;
 
 public class TweetUiTest extends AndroidTestCase {
-
-    private static final String ANY_CLIENT_NAME = "client";
-
     private TweetUi tweetUi;
     @Override
     protected void setUp() throws Exception {
@@ -82,17 +78,6 @@ public class TweetUiTest extends AndroidTestCase {
             if (!(ex instanceof IllegalStateException)) {
                 fail("IllegalStateException was expected");
             }
-        }
-    }
-
-    public void testScribe_scribeClientNull() {
-        final EventNamespace ns = new EventNamespace.Builder().setClient(ANY_CLIENT_NAME).builder();
-
-        try {
-            tweetUi.scribeClient = null;
-            tweetUi.scribe(ns, ns);
-        } catch (NullPointerException e) {
-            fail("should have gracefully ignored events");
         }
     }
 }

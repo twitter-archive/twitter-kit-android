@@ -29,9 +29,4 @@ public class TestDependencyProvider extends BaseTweetView.DependencyProvider {
     public Picasso getImageLoader() {
         return super.getImageLoader();
     }
-
-    @Override
-    public TweetScribeClient getTweetScribeClient() {
-        return super.getTweetScribeClient();
-    }
 }

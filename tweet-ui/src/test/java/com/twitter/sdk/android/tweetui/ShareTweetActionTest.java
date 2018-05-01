@@ -23,13 +23,11 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 
-import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
@@ -59,13 +57,11 @@ public class ShareTweetActionTest {
     private ShareTweetAction listener;
     private Resources resources;
     private TweetUi mockTweetUi;
-    private TweetScribeClient mockScribeClient;
 
     @Before
     public void setUp() throws Exception {
         mockTweetUi = mock(TweetUi.class);
-        mockScribeClient = mock(TweetScribeClient.class);
-        listener = new ShareTweetAction(TestFixtures.TEST_TWEET, mockTweetUi, mockScribeClient);
+        listener = new ShareTweetAction(TestFixtures.TEST_TWEET, mockTweetUi);
         resources = RuntimeEnvironment.application.getResources();
     }
 
@@ -93,16 +89,6 @@ public class ShareTweetActionTest {
         final Context context = createContextWithPackageManager();
         listener.onClick(context, resources);
         verify(context, times(1)).startActivity(any(Intent.class));
-
-        assertScribe();
-    }
-
-    private void assertScribe() {
-        final ArgumentCaptor<Tweet> tweetCaptor
-                = ArgumentCaptor.forClass(Tweet.class);
-
-        verify(mockScribeClient).share(tweetCaptor.capture());
-        assertEquals(TestFixtures.TEST_TWEET, tweetCaptor.getValue());
     }
 
     @Test

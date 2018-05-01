@@ -25,15 +25,12 @@ import android.content.pm.PackageManager;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.SessionManager;
-import com.twitter.sdk.android.core.TestFixtures;
 import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterAuthException;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
-import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
-import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
 import com.twitter.sdk.android.core.models.User;
 import com.twitter.sdk.android.core.models.UserBuilder;
 import com.twitter.sdk.android.core.services.AccountService;
@@ -74,7 +71,6 @@ public class TwitterAuthClientTest {
     private SessionManager<TwitterSession> mockSessionManager;
     private AuthState mockAuthState;
     private Callback<TwitterSession> mockCallback;
-    private DefaultScribeClient mockScribeClient;
     private TwitterAuthClient authClient;
 
     @Before
@@ -88,7 +84,6 @@ public class TwitterAuthClientTest {
         mockSessionManager = mock(SessionManager.class);
         mockAuthState = mock(AuthState.class);
         mockCallback = mock(Callback.class);
-        mockScribeClient = mock(DefaultScribeClient.class);
 
         authClient = new TwitterAuthClient(mockTwitterCore, mockAuthConfig, mockSessionManager,
                 mockAuthState);
@@ -202,43 +197,6 @@ public class TwitterAuthClientTest {
     }
 
     @Test
-    public void testAuthorize_scribesImpression() throws PackageManager.NameNotFoundException {
-        final Activity mockActivity = mock(Activity.class);
-        TestUtils.setupNoSSOAppInstalled(mockActivity);
-        authClient = new TwitterAuthClient(mockTwitterCore, mockAuthConfig, mockSessionManager,
-                mockAuthState) {
-            @Override
-            protected DefaultScribeClient getScribeClient() {
-                return mockScribeClient;
-            }
-        };
-        authClient.authorize(mockActivity, mockCallback);
-
-        verify(mockScribeClient).scribe(any(EventNamespace.class));
-    }
-
-    @Test
-    public void testAuthorize_scribeHandlesNullClient()
-            throws PackageManager.NameNotFoundException {
-        final Activity mockActivity = mock(Activity.class);
-        TestUtils.setupNoSSOAppInstalled(mockActivity);
-
-        authClient = new TwitterAuthClient(mockTwitterCore, mockAuthConfig, mockSessionManager,
-                mockAuthState) {
-            @Override
-            protected DefaultScribeClient getScribeClient() {
-                return null;
-            }
-        };
-
-        try {
-            authClient.authorize(mockActivity, mockCallback);
-        } catch (NullPointerException e) {
-            fail("should not crash with null scribe client");
-        }
-    }
-
-    @Test
     public void testOnActivityResult_noAuthorizeInProgress() {
         when(mockAuthState.isAuthorizeInProgress()).thenReturn(false);
 
@@ -339,27 +297,6 @@ public class TwitterAuthClientTest {
                 assertEquals(exception.getCause(), networkException);
             }
         });
-    }
-
-    @Test
-    public void testRequestEmail_scribesImpression() {
-        final IOException networkException = new IOException("Network failure");
-        final Call<User> call = Calls.failure(networkException);
-        setupMockAccountService(call);
-
-        final TwitterSession mockSession = mock(TwitterSession.class);
-        when(mockSession.getId()).thenReturn(TestFixtures.USER_ID);
-        authClient = new TwitterAuthClient(mockTwitterCore, mockAuthConfig, mockSessionManager,
-                mockAuthState) {
-            @Override
-            protected DefaultScribeClient getScribeClient() {
-                return mockScribeClient;
-            }
-        };
-
-        authClient.requestEmail(mockSession, mock(Callback.class));
-
-        verify(mockScribeClient).scribe(any(EventNamespace.class));
     }
 
     private void setupMockAccountService(Call<User> call) {

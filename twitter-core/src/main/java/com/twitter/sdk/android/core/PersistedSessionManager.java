@@ -45,8 +45,8 @@ public class PersistedSessionManager<T extends Session> implements SessionManage
     public PersistedSessionManager(PreferenceStore preferenceStore,
             SerializationStrategy<T> serializer, String prefKeyActiveSession,
             String prefKeySession) {
-        this(preferenceStore, serializer, new ConcurrentHashMap<Long, T>(NUM_SESSIONS),
-                new ConcurrentHashMap<Long, PreferenceStoreStrategy<T>>(NUM_SESSIONS),
+        this(preferenceStore, serializer, new ConcurrentHashMap<>(NUM_SESSIONS),
+                new ConcurrentHashMap<>(NUM_SESSIONS),
                 new PreferenceStoreStrategy<>(preferenceStore, serializer,
                         prefKeyActiveSession), prefKeySession);
     }

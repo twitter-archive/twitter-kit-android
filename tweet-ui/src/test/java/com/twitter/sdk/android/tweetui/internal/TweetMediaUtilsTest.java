@@ -63,7 +63,7 @@ public class TweetMediaUtilsTest {
 
     @Test
     public void testGetPhotoEntity_emptyMedia() {
-        final TweetEntities entities = new TweetEntities(null, null, new ArrayList<MediaEntity>(),
+        final TweetEntities entities = new TweetEntities(null, null, new ArrayList<>(),
                 null, null);
         final Tweet tweet = new TweetBuilder().setEntities(entities).build();
         assertNull(TweetMediaUtils.getPhotoEntity(tweet));
@@ -145,7 +145,7 @@ public class TweetMediaUtilsTest {
 
     @Test
     public void testGetVideoEntity_emptyMedia() {
-        final TweetEntities entities = new TweetEntities(null, null, new ArrayList<MediaEntity>(),
+        final TweetEntities entities = new TweetEntities(null, null, new ArrayList<>(),
                 null, null);
         final Tweet tweet = new TweetBuilder().setExtendedEntities(entities).build();
         assertNull(TweetMediaUtils.getVideoEntity(tweet));

@@ -19,32 +19,19 @@ package com.twitter.sdk.android.core.internal;
 
 import com.twitter.sdk.android.core.TwitterApiClient;
 import com.twitter.sdk.android.core.TwitterSession;
-import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
-import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
-import com.twitter.sdk.android.core.internal.scribe.TwitterCoreScribeClientHolder;
 import com.twitter.sdk.android.core.services.AccountService;
 
 import java.io.IOException;
 
 public class TwitterSessionVerifier implements SessionVerifier<TwitterSession> {
-    static final String SCRIBE_CLIENT = "android";
-    static final String SCRIBE_PAGE = "credentials";
-    static final String SCRIBE_SECTION = ""; // intentionally blank
-    static final String SCRIBE_COMPONENT = ""; // intentionally blank
-    static final String SCRIBE_ELEMENT = ""; // intentionally blank
-    static final String SCRIBE_ACTION = "impression";
     private final AccountServiceProvider accountServiceProvider;
-    private final DefaultScribeClient scribeClient;
 
     public TwitterSessionVerifier() {
-        this.accountServiceProvider = new AccountServiceProvider();
-        this.scribeClient = TwitterCoreScribeClientHolder.getScribeClient();
+        this(new AccountServiceProvider());
     }
 
-    TwitterSessionVerifier(AccountServiceProvider accountServiceProvider, DefaultScribeClient
-            scribeClient) {
+    TwitterSessionVerifier(AccountServiceProvider accountServiceProvider) {
         this.accountServiceProvider = accountServiceProvider;
-        this.scribeClient = scribeClient;
     }
 
     /**
@@ -55,28 +42,12 @@ public class TwitterSessionVerifier implements SessionVerifier<TwitterSession> {
     public void verifySession(final TwitterSession session) {
         final AccountService accountService = accountServiceProvider.getAccountService(session);
         try {
-            scribeVerifySession();
             accountService.verifyCredentials(true, false, false).execute();
         } catch (IOException | RuntimeException e) {
             // We ignore failures since we will attempt the verification again the next time
             // the verification period comes up. This has the potential to lose events, but we
             // are not aiming towards 100% capture rate.
         }
-    }
-
-    private void scribeVerifySession() {
-        if (scribeClient == null) return;
-
-        final EventNamespace ns = new EventNamespace.Builder()
-                .setClient(SCRIBE_CLIENT)
-                .setPage(SCRIBE_PAGE)
-                .setSection(SCRIBE_SECTION)
-                .setComponent(SCRIBE_COMPONENT)
-                .setElement(SCRIBE_ELEMENT)
-                .setAction(SCRIBE_ACTION)
-                .builder();
-
-        scribeClient.scribe(ns);
     }
 
     /**

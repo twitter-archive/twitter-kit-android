@@ -45,7 +45,7 @@ public final class ExecutorUtils {
         final ThreadFactory threadFactory = ExecutorUtils.getNamedThreadFactory(name);
         final ExecutorService executor =
                 new ThreadPoolExecutor(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE, SECONDS,
-                        new LinkedBlockingQueue<Runnable>(), threadFactory);
+                        new LinkedBlockingQueue<>(), threadFactory);
         ExecutorUtils.addDelayedShutdownHook(name, executor);
         return executor;
     }

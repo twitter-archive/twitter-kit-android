@@ -36,19 +36,11 @@ class LikeTweetAction extends BaseTweetAction implements View.OnClickListener {
     final Tweet tweet;
     final TweetRepository tweetRepository;
     final TweetUi tweetUi;
-    final TweetScribeClient tweetScribeClient;
 
     LikeTweetAction(Tweet tweet, TweetUi tweetUi, Callback<Tweet> cb) {
-        this(tweet, tweetUi, cb, new TweetScribeClientImpl(tweetUi));
-    }
-
-    // For testing only
-    LikeTweetAction(Tweet tweet, TweetUi tweetUi, Callback<Tweet> cb,
-            TweetScribeClient tweetScribeClient) {
         super(cb);
         this.tweet = tweet;
         this.tweetUi = tweetUi;
-        this.tweetScribeClient = tweetScribeClient;
         this.tweetRepository = tweetUi.getTweetRepository();
     }
 
@@ -57,23 +49,13 @@ class LikeTweetAction extends BaseTweetAction implements View.OnClickListener {
         if (view instanceof ToggleImageButton) {
             final ToggleImageButton toggleImageButton = (ToggleImageButton) view;
             if (tweet.favorited) {
-                scribeUnFavoriteAction();
                 tweetRepository.unfavorite(tweet.id,
                         new LikeCallback(toggleImageButton, tweet, getActionCallback()));
             } else {
-                scribeFavoriteAction();
                 tweetRepository.favorite(tweet.id,
                         new LikeCallback(toggleImageButton, tweet, getActionCallback()));
             }
         }
-    }
-
-    void scribeFavoriteAction() {
-        tweetScribeClient.favorite(tweet);
-    }
-
-    void scribeUnFavoriteAction() {
-        tweetScribeClient.unfavorite(tweet);
     }
 
     /*

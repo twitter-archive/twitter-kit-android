@@ -27,11 +27,10 @@ import java.util.List;
 
 
 public class FixedTweetTimeline extends BaseTimeline implements Timeline<Tweet> {
-    private static final String SCRIBE_SECTION = "fixed";
     final List<Tweet> tweets;
 
     FixedTweetTimeline(List<Tweet> tweets) {
-        this.tweets = tweets == null ? new ArrayList<Tweet>() : tweets;
+        this.tweets = tweets == null ? new ArrayList<>() : tweets;
     }
 
     @Override
@@ -48,11 +47,6 @@ public class FixedTweetTimeline extends BaseTimeline implements Timeline<Tweet> 
         final TimelineResult<Tweet> timelineResult = new TimelineResult<>(new TimelineCursor(empty),
                 empty);
         cb.success(new Result(timelineResult, null));
-    }
-
-    @Override
-    String getTimelineType() {
-        return SCRIBE_SECTION;
     }
 
     /**

@@ -26,10 +26,8 @@ import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
 import com.twitter.sdk.android.core.models.Tweet;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
@@ -106,8 +104,6 @@ class FilterTimelineDelegate extends TimelineDelegate<Tweet> {
                         buildTimelineResult(result.data.timelineCursor, filteredTweets);
 
                 handler.post(() -> callback.success(new Result<>(filteredTimelineResult, result.response)));
-
-                scribeFilteredTimeline(result.data.items, filteredTweets);
             };
 
             executorService.execute(timelineFilterRunnable);
@@ -124,21 +120,6 @@ class FilterTimelineDelegate extends TimelineDelegate<Tweet> {
                                                   List<Tweet> filteredTweets) {
             return new TimelineResult<>(timelineCursor, filteredTweets);
         }
-    }
-
-    void scribeFilteredTimeline(List<Tweet> tweets, List<Tweet> filteredTweets) {
-        final int tweetCount = tweets.size();
-        final int totalTweetsFiltered = tweetCount - filteredTweets.size();
-        final int totalFilters = timelineFilter.totalFilters();
-
-        final String jsonMessage = getJsonMessage(tweetCount, totalTweetsFiltered,
-                totalFilters);
-        final ScribeItem scribeItem = ScribeItem.fromMessage(jsonMessage);
-        final List<ScribeItem> items = new ArrayList<>();
-        items.add(scribeItem);
-
-        final String timelineType = TweetTimelineListAdapter.getTimelineType(timeline);
-        tweetUi.scribe(ScribeConstants.getTfwClientFilterTimelineNamespace(timelineType), items);
     }
 
     private String getJsonMessage(int totalTweetsSize, int filteredTweetsSize, int totalFilters) {

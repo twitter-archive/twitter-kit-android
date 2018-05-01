@@ -38,7 +38,6 @@ import retrofit2.Call;
  */
 public class CollectionTimeline extends BaseTimeline implements Timeline<Tweet> {
     static final String COLLECTION_PREFIX = "custom-";
-    private static final String SCRIBE_SECTION = "collection";
 
     final TwitterCore twitterCore;
     final String collectionIdentifier;
@@ -74,11 +73,6 @@ public class CollectionTimeline extends BaseTimeline implements Timeline<Tweet> 
     @Override
     public void previous(Long maxPosition, Callback<TimelineResult<Tweet>> cb) {
         createCollectionRequest(null, maxPosition).enqueue(new CollectionCallback(cb));
-    }
-
-    @Override
-    String getTimelineType() {
-        return SCRIBE_SECTION;
     }
 
     Call<TwitterCollection> createCollectionRequest(final Long minPosition,

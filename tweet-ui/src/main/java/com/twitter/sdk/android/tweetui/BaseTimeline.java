@@ -29,8 +29,6 @@ import java.util.List;
  */
 abstract class BaseTimeline {
 
-    abstract String getTimelineType();
-
     /**
      * Returns a decremented maxId if the given id is non-null. Otherwise returns the given maxId.
      * Suitable for REST Timeline endpoints which return inclusive previous results when exclusive

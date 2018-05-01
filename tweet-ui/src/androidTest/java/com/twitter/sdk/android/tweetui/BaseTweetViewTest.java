@@ -95,7 +95,6 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
         when(mockDependencyProvider.getImageLoader())
                 .thenReturn(TweetUi.getInstance().getImageLoader());
         when(mockDependencyProvider.getTweetUi()).thenReturn(TweetUi.getInstance());
-        when(mockDependencyProvider.getTweetScribeClient()).thenReturn(scribeClient);
     }
 
     // initialization
@@ -431,30 +430,6 @@ public abstract class BaseTweetViewTest extends TweetUiTestCase {
                 view.getAspectRatio(TestFixtures.createMediaEntityWithPhoto(100, 0)));
         assertEquals(BaseTweetView.DEFAULT_ASPECT_RATIO,
                 view.getAspectRatio(TestFixtures.createMediaEntityWithPhoto(0, 100)));
-    }
-
-    // Scribing
-    private BaseTweetView setUpScribeTest() {
-        return createViewWithMocks(context, null, R.style.tw__TweetDarkStyle,
-                mockDependencyProvider);
-    }
-
-    public void testScribeImpression() {
-        final BaseTweetView view = setUpScribeTest();
-        view.tweet = TestFixtures.TEST_TWEET;
-
-        view.scribeImpression();
-
-        verify(scribeClient).impression(TestFixtures.TEST_TWEET, view.getViewTypeName(), false);
-    }
-
-    public void testScribePermalinkClick() {
-        final BaseTweetView view = setUpScribeTest();
-        view.tweet = TestFixtures.TEST_TWEET;
-
-        view.scribePermalinkClick();
-
-        verify(scribeClient).click(TestFixtures.TEST_TWEET, view.getViewTypeName());
     }
 
     public void testSetProfilePhotoView_handlesNullPicasso() {

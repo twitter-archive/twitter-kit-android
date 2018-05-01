@@ -117,12 +117,6 @@ public class UserTimelineTest {
                         isNull(Boolean.class), isNull(Boolean.class));
     }
 
-    @Test
-    public void testGetScribeSection() {
-        final UserTimeline timeline = new UserTimeline.Builder(twitterCore).build();
-        assertEquals(REQUIRED_IMPRESSION_SECTION, timeline.getTimelineType());
-    }
-
     /* Builder */
     @Test
     public void testBuilder() {

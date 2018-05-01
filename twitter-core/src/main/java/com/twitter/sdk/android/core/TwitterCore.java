@@ -25,7 +25,6 @@ import com.twitter.sdk.android.core.internal.TwitterApi;
 import com.twitter.sdk.android.core.internal.TwitterSessionVerifier;
 import com.twitter.sdk.android.core.internal.oauth.OAuth2Service;
 import com.twitter.sdk.android.core.internal.persistence.PreferenceStoreImpl;
-import com.twitter.sdk.android.core.internal.scribe.TwitterCoreScribeClientHolder;
 
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -42,7 +41,6 @@ public class TwitterCore {
     static final String PREF_KEY_ACTIVE_GUEST_SESSION = "active_guestsession";
     static final String PREF_KEY_GUEST_SESSION = "guestsession";
     static final String SESSION_PREF_FILE_NAME = "session_store";
-    static final String KIT_SCRIBE_NAME = "TwitterCore";
 
     SessionManager<TwitterSession> twitterSessionManager;
     SessionManager<GuestSession> guestSessionManager;
@@ -55,7 +53,7 @@ public class TwitterCore {
     private volatile GuestSessionProvider guestSessionProvider;
 
     TwitterCore(TwitterAuthConfig authConfig) {
-        this(authConfig, new ConcurrentHashMap<Session, TwitterApiClient>(), null);
+        this(authConfig, new ConcurrentHashMap<>(), null);
     }
 
     // Testing only
@@ -106,7 +104,6 @@ public class TwitterCore {
         twitterSessionManager.getActiveSession();
         guestSessionManager.getActiveSession();
         getGuestSessionProvider();
-        setUpScribeClient();
         // Monitor activity lifecycle after sessions have been restored. Otherwise we would not
         // have any sessions to monitor anyways.
 
@@ -118,11 +115,6 @@ public class TwitterCore {
         return BuildConfig.GROUP + ":" + BuildConfig.ARTIFACT_ID;
     }
 
-    private void setUpScribeClient() {
-        TwitterCoreScribeClientHolder.initialize(context, getSessionManager(),
-                getGuestSessionProvider(), Twitter.getInstance().getIdManager(), KIT_SCRIBE_NAME,
-                getVersion());
-    }
 
     /**********************************************************************************************
      * BEGIN PUBLIC API METHODS                                                                   *

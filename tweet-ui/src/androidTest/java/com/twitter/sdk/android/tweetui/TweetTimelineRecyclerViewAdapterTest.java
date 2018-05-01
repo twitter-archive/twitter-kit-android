@@ -19,34 +19,18 @@ package com.twitter.sdk.android.tweetui;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
-import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
 import com.twitter.sdk.android.core.models.Identifiable;
 import com.twitter.sdk.android.core.models.Tweet;
-
-import org.mockito.ArgumentCaptor;
 
 import java.util.List;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 public class TweetTimelineRecyclerViewAdapterTest extends TweetUiTestCase {
     static final String NULL_CONTEXT_MESSAGE = "Context must not be null";
     static final String NULL_TIMELINE_MESSAGE = "Timeline must not be null";
     static final int ANY_STYLE = R.style.tw__TweetLightWithActionsStyle;
     private TweetTimelineRecyclerViewAdapter recyclerViewAdapter;
-
-    private static final String REQUIRED_SDK_IMPRESSION_CLIENT = "android";
-    private static final String REQUIRED_SDK_IMPRESSION_PAGE = "timeline";
-    private static final String REQUIRED_SDK_IMPRESSION_COMPONENT = "initial";
-    private static final String REQUIRED_SDK_IMPRESSION_ELEMENT = "";
-    private static final String REQUIRED_TFW_CLIENT = "tfw";
-    private static final String REQUIRED_TFW_PAGE = "android";
-    private static final String REQUIRED_TFW_SECTION = "timeline";
-    private static final String REQUIRED_TFW_ELEMENT = "initial";
-    private static final String REQUIRED_IMPRESSION_ACTION = "impression";
-    private static final String TEST_SCRIBE_SECTION = "other";
 
     private static final int ITEM_COUNT = 10;
 
@@ -167,42 +151,6 @@ public class TweetTimelineRecyclerViewAdapterTest extends TweetUiTestCase {
                         .setViewStyle(R.style.tw__TweetLightWithActionsStyle)
                         .build();
         assertEquals(recyclerViewAdapter.getItemCount(), ITEM_COUNT);
-    }
-
-    public void testConstructor_scribesImpression() {
-        final TweetUi tweetUi = mock(TestTweetUi.class);
-        final ArgumentCaptor<EventNamespace> sdkNamespaceCaptor
-                = ArgumentCaptor.forClass(EventNamespace.class);
-        final ArgumentCaptor<EventNamespace> tfwNamespaceCaptor
-                = ArgumentCaptor.forClass(EventNamespace.class);
-        final ArgumentCaptor<List<ScribeItem>> scribeItemsCaptor
-                = ArgumentCaptor.forClass(List.class);
-
-        final TimelineDelegate<Tweet> mockTimelineDelegate = mock(TestTimelineDelegate.class);
-        new TweetTimelineRecyclerViewAdapter(getContext(), mockTimelineDelegate, ANY_STYLE,
-                null, tweetUi);
-
-        verify(tweetUi).scribe(sdkNamespaceCaptor.capture());
-        verify(tweetUi).scribe(tfwNamespaceCaptor.capture(), scribeItemsCaptor.capture());
-
-        final EventNamespace sdkNs = sdkNamespaceCaptor.getValue();
-        assertEquals(REQUIRED_SDK_IMPRESSION_CLIENT, sdkNs.client);
-        assertEquals(REQUIRED_SDK_IMPRESSION_PAGE, sdkNs.page);
-        assertEquals(TEST_SCRIBE_SECTION, sdkNs.section);
-        assertEquals(REQUIRED_SDK_IMPRESSION_COMPONENT, sdkNs.component);
-        assertEquals(REQUIRED_SDK_IMPRESSION_ELEMENT, sdkNs.element);
-        assertEquals(REQUIRED_IMPRESSION_ACTION, sdkNs.action);
-
-        final EventNamespace tfwNs = tfwNamespaceCaptor.getValue();
-        assertEquals(REQUIRED_TFW_CLIENT, tfwNs.client);
-        assertEquals(REQUIRED_TFW_PAGE, tfwNs.page);
-        assertEquals(REQUIRED_TFW_SECTION, tfwNs.section);
-        assertEquals(TEST_SCRIBE_SECTION, tfwNs.component);
-        assertEquals(REQUIRED_TFW_ELEMENT, tfwNs.element);
-        assertEquals(REQUIRED_IMPRESSION_ACTION, tfwNs.action);
-
-        final List<ScribeItem> scribeItems = scribeItemsCaptor.getValue();
-        assertNotNull(scribeItems);
     }
 
     static class FakeTweetTimeline implements Timeline<Tweet> {

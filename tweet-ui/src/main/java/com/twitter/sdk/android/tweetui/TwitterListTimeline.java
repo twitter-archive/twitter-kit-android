@@ -29,8 +29,6 @@ import retrofit2.Call;
  * TwitterListTimeline provides a timeline of tweets from the lists/statuses API source.
  */
 public class TwitterListTimeline extends BaseTimeline implements Timeline<Tweet> {
-    private static final String SCRIBE_SECTION = "list";
-
     final TwitterCore twitterCore;
     final Long listId;
     final String slug;
@@ -77,11 +75,6 @@ public class TwitterListTimeline extends BaseTimeline implements Timeline<Tweet>
         return twitterCore.getApiClient().getListService().statuses(listId, slug,
                 ownerScreenName, ownerId, sinceId, maxId, maxItemsPerRequest, true,
                 includeRetweets);
-    }
-
-    @Override
-    String getTimelineType() {
-        return SCRIBE_SECTION;
     }
 
     /**

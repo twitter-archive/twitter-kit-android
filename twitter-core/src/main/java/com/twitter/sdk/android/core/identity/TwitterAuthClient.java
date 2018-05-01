@@ -29,9 +29,6 @@ import com.twitter.sdk.android.core.TwitterAuthException;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
-import com.twitter.sdk.android.core.internal.scribe.DefaultScribeClient;
-import com.twitter.sdk.android.core.internal.scribe.EventNamespace;
-import com.twitter.sdk.android.core.internal.scribe.TwitterCoreScribeClientHolder;
 import com.twitter.sdk.android.core.models.User;
 
 import retrofit2.Call;
@@ -44,14 +41,6 @@ public class TwitterAuthClient {
     private static class AuthStateLazyHolder {
         private static final AuthState INSTANCE = new AuthState();
     }
-
-    private static final String SCRIBE_CLIENT = "android";
-    private static final String SCRIBE_LOGIN_PAGE = "login";
-    private static final String SCRIBE_SHARE_EMAIL_PAGE = "shareemail";
-    private static final String SCRIBE_SECTION = ""; // intentionally blank
-    private static final String SCRIBE_COMPONENT = ""; // intentionally blank
-    private static final String SCRIBE_ELEMENT = ""; // intentionally blank
-    private static final String SCRIBE_ACTION = "impression";
 
     final TwitterCore twitterCore;
     final AuthState authState;
@@ -105,7 +94,6 @@ public class TwitterAuthClient {
     }
 
     private void handleAuthorize(Activity activity, Callback<TwitterSession> callback) {
-        scribeAuthorizeImpression();
         final CallbackWrapper callbackWrapper = new CallbackWrapper(sessionManager, callback);
         if (!authorizeUsingSSO(activity, callbackWrapper)
                 && !authorizeUsingOAuth(activity, callbackWrapper)) {
@@ -134,22 +122,6 @@ public class TwitterAuthClient {
         Twitter.getLogger().d(TwitterCore.TAG, "Using OAuth");
         return authState.beginAuthorize(activity,
                 new OAuthHandler(authConfig, callbackWrapper, authConfig.getRequestCode()));
-    }
-
-    private void scribeAuthorizeImpression() {
-        final DefaultScribeClient scribeClient = getScribeClient();
-        if (scribeClient == null) return;
-
-        final EventNamespace ns = new EventNamespace.Builder()
-                .setClient(SCRIBE_CLIENT)
-                .setPage(SCRIBE_LOGIN_PAGE)
-                .setSection(SCRIBE_SECTION)
-                .setComponent(SCRIBE_COMPONENT)
-                .setElement(SCRIBE_ELEMENT)
-                .setAction(SCRIBE_ACTION)
-                .builder();
-
-        scribeClient.scribe(ns);
     }
 
     /**
@@ -184,7 +156,6 @@ public class TwitterAuthClient {
      * @throws java.lang.IllegalArgumentException if session or callback are null.
      */
     public void requestEmail(TwitterSession session, final Callback<String> callback) {
-        scribeRequestEmail();
         final Call<User> verifyRequest = twitterCore.getApiClient(session).getAccountService()
                 .verifyCredentials(false, false, true);
 
@@ -199,26 +170,6 @@ public class TwitterAuthClient {
                 callback.failure(exception);
             }
         });
-    }
-
-    protected DefaultScribeClient getScribeClient() {
-        return TwitterCoreScribeClientHolder.getScribeClient();
-    }
-
-    private void scribeRequestEmail() {
-        final DefaultScribeClient scribeClient = getScribeClient();
-        if (scribeClient == null) return;
-
-        final EventNamespace ns = new EventNamespace.Builder()
-                .setClient(SCRIBE_CLIENT)
-                .setPage(SCRIBE_SHARE_EMAIL_PAGE)
-                .setSection(SCRIBE_SECTION)
-                .setComponent(SCRIBE_COMPONENT)
-                .setElement(SCRIBE_ELEMENT)
-                .setAction(SCRIBE_ACTION)
-                .builder();
-
-        scribeClient.scribe(ns);
     }
 
     static class CallbackWrapper extends Callback<TwitterSession> {

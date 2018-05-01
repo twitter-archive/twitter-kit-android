@@ -43,7 +43,6 @@ public class TwitterListTimelineTest {
     private static final Integer TEST_ITEMS_PER_REQUEST = 100;
     private static final Long TEST_SINCE_ID = 1000L;
     private static final Long TEST_MAX_ID = 1111L;
-    private static final String REQUIRED_IMPRESSION_SECTION = "list";
 
     TwitterCore twitterCore;
     TwitterApiClient apiClient;
@@ -96,14 +95,6 @@ public class TwitterListTimelineTest {
         verify(twitterCore.getApiClient().getListService()).statuses(eq(TEST_LIST_ID),
                 eq(TEST_SLUG), eq(TEST_OWNER_SCREEN_NAME), eq(TEST_OWNER_ID), eq(TEST_SINCE_ID),
                 eq(TEST_MAX_ID), eq(TEST_ITEMS_PER_REQUEST), eq(true), eq(true));
-    }
-
-    @Test
-    public void testGetScribeSection() {
-        final TwitterListTimeline timeline = new TwitterListTimeline.Builder(twitterCore)
-                .id(TEST_LIST_ID)
-                .build();
-        assertEquals(REQUIRED_IMPRESSION_SECTION, timeline.getTimelineType());
     }
 
     /* Builder */

@@ -43,14 +43,12 @@ public class LikeTweetActionTest {
     TweetUi mockTweetUi;
     TweetRepository mockTweetRepository;
     Callback<Tweet> mockCallback;
-    TweetScribeClient mockScribeClient;
 
     @Before
     public void setUp() throws Exception {
         mockTweetUi = mock(TweetUi.class);
         mockTweetRepository = mock(TweetRepository.class);
         when(mockTweetUi.getTweetRepository()).thenReturn(mockTweetRepository);
-        mockScribeClient = mock(TweetScribeClient.class);
         mockCallback = mock(Callback.class);
     }
 
@@ -59,7 +57,7 @@ public class LikeTweetActionTest {
         final ArgumentCaptor<LikeTweetAction.LikeCallback> favoriteCbCaptor
                 = ArgumentCaptor.forClass(LikeTweetAction.LikeCallback.class);
         final LikeTweetAction likeAction = new LikeTweetAction(TestFixtures.TEST_TWEET,
-                mockTweetUi, mockCallback, mockScribeClient);
+                mockTweetUi, mockCallback);
         final ToggleImageButton mockToggleButton = mock(ToggleImageButton.class);
         // assert that click when tweet is unfavorited
         // - performs a like action which favorites the correct tweet id
@@ -69,8 +67,6 @@ public class LikeTweetActionTest {
                 favoriteCbCaptor.capture());
         assertEquals(mockToggleButton, favoriteCbCaptor.getValue().button);
         assertFalse(favoriteCbCaptor.getValue().tweet.favorited);
-
-        assertFavoriteScribe();
     }
 
     @Test
@@ -78,7 +74,7 @@ public class LikeTweetActionTest {
         final ArgumentCaptor<LikeTweetAction.LikeCallback> favoriteCbCaptor
                 = ArgumentCaptor.forClass(LikeTweetAction.LikeCallback.class);
         final LikeTweetAction favoriteAction = new LikeTweetAction(
-                TestFixtures.TEST_FAVORITED_TWEET, mockTweetUi, mockCallback, mockScribeClient);
+                TestFixtures.TEST_FAVORITED_TWEET, mockTweetUi, mockCallback);
         final ToggleImageButton mockToggleButton = mock(ToggleImageButton.class);
         // assert that click when tweet is favorited
         // - performs an unlike action which unfavorites the correct tweet id
@@ -88,24 +84,6 @@ public class LikeTweetActionTest {
                 favoriteCbCaptor.capture());
         assertEquals(mockToggleButton, favoriteCbCaptor.getValue().button);
         assertTrue(favoriteCbCaptor.getValue().tweet.favorited);
-
-        assertUnfavoriteScribe();
-    }
-
-    private void assertFavoriteScribe() {
-        final ArgumentCaptor<Tweet> tweetCaptor
-                = ArgumentCaptor.forClass(Tweet.class);
-        verify(mockScribeClient).favorite(tweetCaptor.capture());
-        final Tweet capturedTweet = tweetCaptor.getValue();
-        assertEquals(TestFixtures.TEST_TWEET, capturedTweet);
-    }
-
-    private void assertUnfavoriteScribe() {
-        final ArgumentCaptor<Tweet> tweetCaptor
-                = ArgumentCaptor.forClass(Tweet.class);
-        verify(mockScribeClient).unfavorite(tweetCaptor.capture());
-        final Tweet capturedTweet = tweetCaptor.getValue();
-        assertEquals(TestFixtures.TEST_FAVORITED_TWEET, capturedTweet);
     }
 
     @Test

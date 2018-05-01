@@ -22,17 +22,11 @@ import android.database.DataSetObserver;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
 import com.twitter.sdk.android.core.models.Tweet;
 import com.twitter.sdk.android.core.models.TweetBuilder;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * TweetTimelineRecyclerViewAdapter is a RecyclerView adapter which can provide Timeline Tweets to
@@ -47,10 +41,6 @@ public class TweetTimelineRecyclerViewAdapter extends
     protected final int styleResId;
     protected TweetUi tweetUi;
     private int previousCount;
-
-    static final String TOTAL_FILTERS_JSON_PROP = "total_filters";
-    static final String DEFAULT_FILTERS_JSON_MSG = "{\"total_filters\":0}";
-    final Gson gson = new Gson();
 
     /**
      * Constructs a TweetTimelineRecyclerViewAdapter for a RecyclerView implementation of a timeline
@@ -73,7 +63,6 @@ public class TweetTimelineRecyclerViewAdapter extends
         this(context, timelineDelegate, styleResId);
         actionCallback = new ReplaceTweetCallback(timelineDelegate, cb);
         this.tweetUi = tweetUi;
-        scribeTimelineImpression();
     }
 
     TweetTimelineRecyclerViewAdapter(Context context,
@@ -152,39 +141,6 @@ public class TweetTimelineRecyclerViewAdapter extends
         public TweetViewHolder(CompactTweetView itemView) {
             super(itemView);
         }
-    }
-
-    private void scribeTimelineImpression() {
-        final String jsonMessage;
-        if (timelineDelegate instanceof FilterTimelineDelegate) {
-            final FilterTimelineDelegate filterTimelineDelegate =
-                    (FilterTimelineDelegate) timelineDelegate;
-            final TimelineFilter timelineFilter = filterTimelineDelegate.timelineFilter;
-            jsonMessage = getJsonMessage(timelineFilter.totalFilters());
-        } else {
-            jsonMessage = DEFAULT_FILTERS_JSON_MSG;
-        }
-
-        final ScribeItem scribeItem = ScribeItem.fromMessage(jsonMessage);
-        final List<ScribeItem> items = new ArrayList<>();
-        items.add(scribeItem);
-
-        final String timelineType = getTimelineType(timelineDelegate.getTimeline());
-        tweetUi.scribe(ScribeConstants.getSyndicatedSdkTimelineNamespace(timelineType));
-        tweetUi.scribe(ScribeConstants.getTfwClientTimelineNamespace(timelineType), items);
-    }
-
-    private String getJsonMessage(int totalFilters) {
-        final JsonObject message = new JsonObject();
-        message.addProperty(TOTAL_FILTERS_JSON_PROP, totalFilters);
-        return gson.toJson(message);
-    }
-
-    static String getTimelineType(Timeline timeline) {
-        if (timeline instanceof BaseTimeline) {
-            return ((BaseTimeline) timeline).getTimelineType();
-        }
-        return "other";
     }
 
     /*

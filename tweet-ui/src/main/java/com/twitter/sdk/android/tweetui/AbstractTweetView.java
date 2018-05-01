@@ -35,7 +35,6 @@ import com.twitter.sdk.android.core.IntentUtils;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.internal.UserUtils;
 import com.twitter.sdk.android.core.internal.VineCardUtils;
-import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
 import com.twitter.sdk.android.core.models.Card;
 import com.twitter.sdk.android.core.models.ImageValue;
 import com.twitter.sdk.android.core.models.MediaEntity;
@@ -161,11 +160,6 @@ abstract class AbstractTweetView extends RelativeLayout{
      */
     abstract int getLayout();
 
-    /*
-     * Gets the scribe namespace
-     */
-    abstract String getViewTypeName();
-
     /**
      * @return id of the Tweet of the TweetView.
      */
@@ -233,7 +227,6 @@ abstract class AbstractTweetView extends RelativeLayout{
 
         // set or update the permalink launcher with the current permalinkUri
         setPermalinkLauncher();
-        scribeImpression();
     }
 
     Uri getPermalinkUri() {
@@ -256,29 +249,6 @@ abstract class AbstractTweetView extends RelativeLayout{
         if (!IntentUtils.safeStartActivity(getContext(), intent)) {
             Twitter.getLogger().e(TweetUi.LOGTAG, "Activity cannot be found to open permalink URI");
         }
-    }
-
-    void scribeImpression() {
-        if (tweet != null) {
-            dependencyProvider.getTweetScribeClient().impression(tweet, getViewTypeName(),
-                    tweetActionsEnabled);
-        }
-    }
-
-    void scribePermalinkClick() {
-        if (tweet != null) {
-            dependencyProvider.getTweetScribeClient().click(tweet, getViewTypeName());
-        }
-    }
-
-    void scribeCardImpression(Long tweetId, Card card) {
-        final ScribeItem scribeItem = ScribeItem.fromTweetCard(tweetId, card);
-        dependencyProvider.getVideoScribeClient().impression(scribeItem);
-    }
-
-    void scribeMediaEntityImpression(long tweetId, MediaEntity mediaEntity) {
-        final ScribeItem scribeItem = ScribeItem.fromMediaEntity(tweetId, mediaEntity);
-        dependencyProvider.getVideoScribeClient().impression(scribeItem);
     }
 
     /**
@@ -340,7 +310,6 @@ abstract class AbstractTweetView extends RelativeLayout{
                 tweetMediaView.setVineCard(displayTweet);
                 mediaBadgeView.setVisibility(View.VISIBLE);
                 mediaBadgeView.setCard(card);
-                scribeCardImpression(displayTweet.id, card);
             }
         } else if (TweetMediaUtils.hasSupportedVideo(displayTweet)) {
             final MediaEntity mediaEntity = TweetMediaUtils.getVideoEntity(displayTweet);
@@ -348,7 +317,6 @@ abstract class AbstractTweetView extends RelativeLayout{
             tweetMediaView.setTweetMediaEntities(tweet, Collections.singletonList(mediaEntity));
             mediaBadgeView.setVisibility(View.VISIBLE);
             mediaBadgeView.setMediaEntity(mediaEntity);
-            scribeMediaEntityImpression(displayTweet.id, mediaEntity);
         } else if (TweetMediaUtils.hasPhoto(displayTweet)) {
             final List<MediaEntity> mediaEntities = TweetMediaUtils.getPhotoEntities(displayTweet);
             setViewsForMedia(getAspectRatioForPhotoEntity(mediaEntities.size()));
@@ -451,7 +419,6 @@ abstract class AbstractTweetView extends RelativeLayout{
         public void onClick(View v) {
             if (getPermalinkUri() == null) return;
 
-            scribePermalinkClick();
             launchPermalink();
         }
     }
@@ -460,28 +427,11 @@ abstract class AbstractTweetView extends RelativeLayout{
      * This is a mockable class that extracts our tight coupling with the TweetUi singleton.
      */
     static class DependencyProvider {
-        TweetScribeClient tweetScribeClient;
-        VideoScribeClient videoScribeClient;
-
         /**
          * Can be null in edit mode
          */
         TweetUi getTweetUi() {
             return TweetUi.getInstance();
-        }
-
-        TweetScribeClient getTweetScribeClient() {
-            if (tweetScribeClient == null) {
-                tweetScribeClient = new TweetScribeClientImpl(getTweetUi());
-            }
-            return tweetScribeClient;
-        }
-
-        VideoScribeClient getVideoScribeClient() {
-            if (videoScribeClient == null) {
-                videoScribeClient = new VideoScribeClientImpl(getTweetUi());
-            }
-            return videoScribeClient;
         }
 
         /**

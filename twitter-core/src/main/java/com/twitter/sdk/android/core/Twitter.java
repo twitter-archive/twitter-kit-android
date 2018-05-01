@@ -23,7 +23,6 @@ import android.content.Context;
 import com.twitter.sdk.android.core.internal.ActivityLifecycleManager;
 import com.twitter.sdk.android.core.internal.CommonUtils;
 import com.twitter.sdk.android.core.internal.ExecutorUtils;
-import com.twitter.sdk.android.core.internal.IdManager;
 
 import java.io.File;
 import java.util.concurrent.ExecutorService;
@@ -42,7 +41,6 @@ public class Twitter {
     static volatile Twitter instance;
 
     private final Context context;
-    private final IdManager idManager;
     private final ExecutorService executorService;
     private final TwitterAuthConfig twitterAuthConfig;
     private final ActivityLifecycleManager lifecycleManager;
@@ -51,7 +49,6 @@ public class Twitter {
 
     private Twitter(TwitterConfig config) {
         context = config.context;
-        idManager = new IdManager(context);
         lifecycleManager = new ActivityLifecycleManager(context);
 
         if (config.twitterAuthConfig == null) {
@@ -158,13 +155,6 @@ public class Twitter {
      */
     public Context getContext(String component) {
         return new TwitterContext(context, component, ".TwitterKit" + File.separator + component);
-    }
-
-    /**
-     * @return the global IdManager.
-     */
-    public IdManager getIdManager() {
-        return idManager;
     }
 
     /**

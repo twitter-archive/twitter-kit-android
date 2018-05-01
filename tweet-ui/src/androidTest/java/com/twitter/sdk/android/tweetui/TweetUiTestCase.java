@@ -45,7 +45,6 @@ public class TweetUiTestCase extends AndroidTestCase {
 
     // mocks
     protected Picasso picasso;
-    protected TweetScribeClient scribeClient;
     protected Handler mainHandler;
     private TwitterApiClient apiClient;
     private ConcurrentHashMap<Session, TwitterApiClient> clients;
@@ -87,8 +86,6 @@ public class TweetUiTestCase extends AndroidTestCase {
     private void createMocks() {
         mainHandler = mock(Handler.class);
         picasso = MockUtils.mockPicasso(mock(Picasso.class), mock(RequestCreator.class));
-
-        scribeClient = mock(TweetScribeClient.class);
 
         apiClient = mock(TwitterApiClient.class);
         MockUtils.mockApiClient(apiClient);

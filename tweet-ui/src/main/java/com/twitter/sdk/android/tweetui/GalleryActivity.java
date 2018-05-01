@@ -21,7 +21,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 
-import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
 import com.twitter.sdk.android.core.models.MediaEntity;
 import com.twitter.sdk.android.tweetui.internal.SwipeToDismissTouchListener;
 
@@ -34,20 +33,12 @@ public class GalleryActivity extends Activity {
     static final String MEDIA_ENTITY = "MEDIA_ENTITY";
     GalleryItem galleryItem;
 
-    final GalleryScribeClient galleryScribeClient =
-            new GalleryScribeClientImpl(TweetUi.getInstance());
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tw__gallery_activity);
 
         galleryItem = getGalleryItem();
-
-        // Only scribe show event when view is first created
-        if (savedInstanceState == null) {
-            scribeShowEvent();
-        }
 
         final GalleryAdapter adapter = new GalleryAdapter(this, getSwipeToDismissCallback());
         adapter.addAll(galleryItem.mediaEntities);
@@ -70,19 +61,13 @@ public class GalleryActivity extends Activity {
                                        int positionOffsetPixels) {
                 // Initial on tap of entity at position 0, which is not invoked by onPageSelected()
                 if (galleryPosition == -1 && position == 0 && positionOffset == 0.0) {
-                    scribeImpressionEvent(position);
                     galleryPosition++;
                 }
             }
 
             @Override
             public void onPageSelected(int position) {
-                if (galleryPosition >= 0) {
-                    scribeNavigateEvent();
-                }
                 galleryPosition++;
-
-                scribeImpressionEvent(position);
             }
 
             @Override
@@ -94,7 +79,6 @@ public class GalleryActivity extends Activity {
        return new SwipeToDismissTouchListener.Callback() {
            @Override
            public void onDismiss() {
-               scribeDismissEvent();
                finish();
                overridePendingTransition(0, R.anim.tw__slide_out);
            }
@@ -116,27 +100,8 @@ public class GalleryActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        scribeDismissEvent();
         super.onBackPressed();
         overridePendingTransition(0, R.anim.tw__slide_out);
-    }
-
-    void scribeShowEvent() {
-        galleryScribeClient.show();
-    }
-
-    void scribeDismissEvent() {
-        galleryScribeClient.dismiss();
-    }
-
-    void scribeImpressionEvent(int mediaEntityPosition) {
-        final MediaEntity mediaEntity = galleryItem.mediaEntities.get(mediaEntityPosition);
-        final ScribeItem scribeItem = ScribeItem.fromMediaEntity(galleryItem.tweetId, mediaEntity);
-        galleryScribeClient.impression(scribeItem);
-    }
-
-    void scribeNavigateEvent() {
-        galleryScribeClient.navigate();
     }
 
     public static class GalleryItem implements Serializable {

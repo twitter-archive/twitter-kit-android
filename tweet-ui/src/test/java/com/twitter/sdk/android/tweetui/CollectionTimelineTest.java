@@ -145,14 +145,6 @@ public class CollectionTimelineTest {
     }
 
     @Test
-    public void testGetScribeSection() {
-        final CollectionTimeline timeline = new CollectionTimeline.Builder(twitterCore)
-                .id(TEST_COLLECTION_ID)
-                .build();
-        assertEquals(REQUIRED_IMPRESSION_SECTION, timeline.getTimelineType());
-    }
-
-    @Test
     public void testGetOrderedTweets() {
         final TwitterCollection.Content contents
                 = new TwitterCollection.Content(testTweetMap, testUserMap);

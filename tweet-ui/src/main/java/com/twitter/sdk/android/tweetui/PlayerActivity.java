@@ -21,7 +21,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.twitter.sdk.android.core.internal.scribe.ScribeItem;
 import com.twitter.sdk.android.tweetui.internal.SwipeToDismissTouchListener;
 
 import java.io.Serializable;
@@ -29,10 +28,6 @@ import java.io.Serializable;
 public class PlayerActivity extends Activity {
 
     public static final String PLAYER_ITEM = "PLAYER_ITEM";
-    public static final String SCRIBE_ITEM = "SCRIBE_ITEM";
-
-    static final VideoScribeClient videoScribeClient =
-            new VideoScribeClientImpl(TweetUi.getInstance());
 
     PlayerController playerController;
 
@@ -58,9 +53,6 @@ public class PlayerActivity extends Activity {
             }
         });
         playerController.prepare(item);
-
-        final ScribeItem scribeItem = (ScribeItem) getIntent().getSerializableExtra(SCRIBE_ITEM);
-        scribeCardPlayImpression(scribeItem);
     }
 
     @Override
@@ -85,10 +77,6 @@ public class PlayerActivity extends Activity {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(0, R.anim.tw__slide_out);
-    }
-
-    private void scribeCardPlayImpression(ScribeItem scribeItem) {
-        videoScribeClient.play(scribeItem);
     }
 
     public static class PlayerItem implements Serializable {
