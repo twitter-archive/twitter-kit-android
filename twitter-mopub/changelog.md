@@ -3,6 +3,10 @@
 
 ## Unreleased
 
+## v3.3.0
+
+* Bumped version number
+
 ## v3.2.0
 
 * Moved build to Java 8
